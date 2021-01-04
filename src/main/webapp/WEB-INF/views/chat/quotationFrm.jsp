@@ -33,7 +33,7 @@ tr, th {
 
 <body>
 	<div class="q-wrap">
-		<img src="/WEB-INF/img/logo/logo_navy.png">
+		<img src="/img/logo/logo_navy.png">
 		<p id="title">견적서</p>
 		<form action="a.html" method="post">
 			<table border="1">
