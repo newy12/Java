@@ -16,5 +16,7 @@
 	<a href="/quotationFrm.do">견적서</a>
 	영재
 	<a href="/introduceFrm.do">프리랜서소개글</a>
+	문정
+	<a href="/requestList.do">의뢰게시판 리스트</a>
 </body>
 </html>
