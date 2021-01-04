@@ -42,9 +42,9 @@
 		<beans:property name="driverClassName"
 			value="oracle.jdbc.driver.OracleDriver" />
 		<beans:property name="url"
-			value="jdbc:oracle:thin:@학원컴퓨터주소:xe" />
-		<beans:property name="username" value="디비이름" />
-		<beans:property name="password" value="디비비번"></beans:property>
+			value="jdbc:oracle:thin:@1.220.236.74:15214:xe" />
+		<beans:property name="username" value="ilgusi" />
+		<beans:property name="password" value="1234"></beans:property>
 	</beans:bean>
 
 	<!-- DB 작업 객체 -->
