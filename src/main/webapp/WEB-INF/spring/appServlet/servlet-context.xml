@@ -71,9 +71,10 @@
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<beans:property name="dataSource" ref="dataSource" />
 	</beans:bean>
+
 	<tx:annotation-driven />
 	<task:annotation-driven />
-
+	
 <!-- 	<websocket:handlers>
 		<websocket:mapping handler="allMemberChat"
 			path="/allChat.kh" />
