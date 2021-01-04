@@ -22,11 +22,15 @@
     <title>Insert title here</title>
 
     <style>
+        .dh-header-container{
+            width: 100%;
+            border-bottom: 1px solid gray;
+        }
         header.dh-header {
             width: 1200px;
             height: 175px;
             margin: 0 auto;
-            border-bottom: 1px solid black;
+            
         }
 
         .dh-header .header-top {
@@ -39,7 +43,7 @@
             width: 15%;
         }
 
-        .dh-header .header-top-left>img {
+        .dh-header .header-top-left img {
             width: 100%;
             margin-top: 10px;
         }
@@ -49,9 +53,11 @@
             width: 60%;
             text-align: center;
         }
-        .dh-header .header-top-center>.header-search{
+
+        .dh-header .header-top-center>.header-search {
             margin-top: 50px;
         }
+
         .dh-header .header-top-right {
             float: left;
             width: 25%;
@@ -99,39 +105,41 @@
 </head>
 
 <body>
-    <header class="dh-header">
-        <div class="header-top">
-            <div class="header-top-left">
-                <img src="/img/logo/logo_white.png" alt="">
-            </div>
-            <div class="header-top-center">
-                <div class="header-search">
-                    <input type="text" name="searach" id="search">
-                    <button>검색</button>
+    <div class="dh-header-container">
+        <header class="dh-header">
+            <div class="header-top">
+                <div class="header-top-left">
+                    <a href="/"><img src="/img/logo/logo_white.png" alt=""></a>
+                </div>
+                <div class="header-top-center">
+                    <div class="header-search">
+                        <input type="text" name="searach" id="search">
+                        <button>검색</button>
+                    </div>
+                </div>
+                <div class="header-top-right">
+                    <div class="header-menu">
+                        <span>고객센터</span>
+                        <span>로그인</span>
+                        <span>무료회원가입</span>
+                    </div>
                 </div>
             </div>
-            <div class="header-top-right">
-                <div class="header-menu">
-                    <span>고객센터</span>
-                    <span>로그인</span>
-                    <span>무료회원가입</span>
+            <div class="header-bottom">
+                <div class="nav">
+                    <ul>
+                        <li><a href="#">디자인</a></li>
+                        <li><a href="#">IT프로그래밍</a></li>
+                        <li><a href="#">영상사진음향</a></li>
+                        <li><a href="#">레슨실무교육</a></li>
+                        <li><a href="#">문서글쓰기</a></li>
+                        <li><a href="#">비즈니스 컨설팅</a></li>
+                        <li><a href="#">주문제작</a></li>
+                    </ul>
                 </div>
             </div>
-        </div>
-        <div class="header-bottom">
-            <div class="nav">
-                <ul>
-                    <li><a href="#">디자인</a></li>
-                    <li><a href="#">IT프로그래밍</a></li>
-                    <li><a href="#">영상사진음향</a></li>
-                    <li><a href="#">레슨실무교육</a></li>
-                    <li><a href="#">문서글쓰기</a></li>
-                    <li><a href="#">비즈니스 컨설팅</a></li>
-                    <li><a href="#">주문제작</a></li>
-                </ul>
-            </div>
-        </div>
-    </header>
+        </header>
+    </div>
 </body>
 
 </html>

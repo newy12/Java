@@ -16,5 +16,7 @@
 	<a href="/quotationFrm.do">견적서</a>
 	영재
 	<a href="/introduceFrm.do">프리랜서소개글</a>
+	
+<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 </body>
 </html>
