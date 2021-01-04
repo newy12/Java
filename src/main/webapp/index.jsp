@@ -7,6 +7,7 @@
 <title>19시 :: 일 구하고 시퍼</title>
 </head>
 <body>
+<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 	<h1>여러분 화이팅~~!!~</h1>
 	<h2>해피뉴이어~~</h2>
 	<hr>
