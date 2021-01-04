@@ -4,10 +4,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>19시(관리자) :: 회원관리</title>
+	<title>19시(관리자) :: 회원관리</title>
 </head>
 <body>
-<h1>회원관리</h1>
+	<h1>회원관리</h1>
 	<a href="#">블랙리스트 회원 보기 > </a>
 
 	<table border=1>

@@ -75,10 +75,10 @@
 	<tx:annotation-driven />
 	<task:annotation-driven />
 	
-<!-- 	<websocket:handlers>
-		<websocket:mapping handler="allMemberChat"
-			path="/allChat.kh" />
-	</websocket:handlers> -->
+	<websocket:handlers>
+		<websocket:mapping handler="startChat"
+			path="/chat.kh" />
+	</websocket:handlers> 
 	
 	
 	<!-- 스캔패키지 추가 -->

@@ -13,14 +13,14 @@ public class Member {
 	private String mPhone;
 	private int mGrade;
 	private int warningCount;
-	private String introduct;
+	private String introduce;
 	private String enrollDate;
 	private String brandName;
 	private String contactTime;
 	
 	//줄바꿈
 	public String getIntroductBr() {
-		return introduct.replaceAll("\r\n", "<br>");
+		return introduce.replaceAll("\r\n", "<br>");
 	}
 
 	public Member(String mName) {

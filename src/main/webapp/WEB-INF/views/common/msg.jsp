@@ -7,6 +7,9 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+	<script>
+		alert("${msg}");
+		location.href = "${loc}";
+	</script>
 </body>
 </html>

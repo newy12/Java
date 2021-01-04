@@ -5,7 +5,6 @@
 <head>
 <meta charset="UTF-8">
 <title>19시 :: 견적서</title>
-
 </head>
 <style>
 .q-wrap {
@@ -30,10 +29,9 @@ tr, th {
 	padding-bottom: 10px;
 }
 </style>
-
 <body>
 	<div class="q-wrap">
-		<img src="/img/logo/logo_navy.png">
+		<img src="img/logo/logo_white.png">
 		<p id="title">견적서</p>
 		<form action="a.html" method="post">
 			<table border="1">
@@ -58,7 +56,7 @@ tr, th {
 					<td><input type="text"> 원</td>
 				</tr>
 			</table>
-			<h5>2021년 01월 04일</h5>
+			<h5>2021년 01월 03일</h5>
 			<h3>
 				위 내용은 수정할 수 없으며,<br> 제출 시 의뢰인에게 전달됩니다.
 			</h3>

@@ -13,7 +13,7 @@
 	<hr>
 	<h3>본인 페이지 테스트</h3>
 	소현
-	<a href="/quotationFrm.do">견적서</a>
+	<a href="/chatList.do">채팅</a>
 	영재
 	<a href="/introduceFrm.do">프리랜서소개글</a>
 	문정
