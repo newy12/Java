@@ -29,61 +29,61 @@
             border-bottom: 1px solid black;
         }
 
-        .header-top {
+        .dh-header .header-top {
             width: 100%;
             height: 65%;
         }
 
-        .header-top-left {
+        .dh-header .header-top-left {
             float: left;
             width: 15%;
         }
 
-        .header-top-left>img {
+        .dh-header .header-top-left>img {
             width: 100%;
             margin-top: 10px;
         }
 
-        .header-top-center {
+        .dh-header .header-top-center {
             float: left;
             width: 60%;
             text-align: center;
         }
-        .header-top-center>.header-search{
+        .dh-header .header-top-center>.header-search{
             margin-top: 50px;
         }
-        .header-top-right {
+        .dh-header .header-top-right {
             float: left;
             width: 25%;
             height: 100%;
             text-align: center;
         }
 
-        .header-top-right>.header-menu {
+        .dh-header .header-top-right>.header-menu {
             margin-top: 50px;
         }
 
-        .header-bottom {
+        .dh-header .header-bottom {
             width: 100%;
             height: 35%;
         }
 
-        .header-bottom>.nav {
+        .dh-header .header-bottom>.nav {
             width: 100%;
             height: 100%;
         }
 
-        .header-bottom>.nav>ul {
+        .dh-header .header-bottom>.nav>ul {
             width: 100%;
             height: 100%;
             list-style: none;
         }
 
-        .header-bottom>.nav>ul>li {
+        .dh-header .header-bottom>.nav>ul>li {
             float: left;
         }
 
-        .header-bottom>.nav>ul>li>a {
+        .dh-header .header-bottom>.nav>ul>li>a {
             display: block;
             text-decoration: none;
             color: black;
@@ -91,7 +91,7 @@
             padding: 16px 30px;
         }
 
-        .header-bottom>.nav>ul>li>a:hover {
+        .dh-header .header-bottom>.nav>ul>li>a:hover {
             border-bottom: 4px solid #314C83;
             color: black;
         }
