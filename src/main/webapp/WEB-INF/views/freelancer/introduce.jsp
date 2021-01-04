@@ -8,12 +8,12 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
 </head>
 <body>
- <br><br><br><br><br><br><br><br>
-      <hr>
+<jsp:include page="/WEB-INF/views/common/header.jsp"/>
+<br><br><br>
       <div class="inner">
         <div class="title">
          <div class="title2"></div>
-         <p class="tt">프리랜서명</p>
+         <p class="tt">${m.mName}</p>
          <p class="tt">★★★★★ 5.0/ n개의 평가</p>
          <form action="#">
          <button type="submit" style="float: right; margin-right: 50px; width: 200px; height: 40px; margin-top:20px;";>문의하기</button>

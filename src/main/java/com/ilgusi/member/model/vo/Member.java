@@ -22,4 +22,18 @@ public class Member {
 	public String getIntroductBr() {
 		return introduct.replaceAll("\r\n", "<br>");
 	}
+
+	public Member(String mName) {
+		super();
+		this.mName = mName;
+	}
+
+	public String getmName() {
+		return mName;
+	}
+
+	public void setmName(String mName) {
+		this.mName = mName;
+	}
+	
 }
