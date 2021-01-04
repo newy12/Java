@@ -18,5 +18,6 @@
 	<a href="/introduceFrm.do">프리랜서소개글</a>
 	문정
 	<a href="/requestList.do">의뢰게시판 리스트</a>
+<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 </body>
 </html>
