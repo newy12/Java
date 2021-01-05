@@ -121,7 +121,7 @@
                     <div class="header-menu">
                         <span>고객센터</span>
                         <span>로그인</span>
-                        <span>무료회원가입</span>
+                        <a href="/join.do"><span>무료회원가입</span></a>
                     </div>
                 </div>
             </div>
