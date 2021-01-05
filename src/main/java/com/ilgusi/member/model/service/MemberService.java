@@ -14,4 +14,8 @@ public class MemberService {
 	public Member selectOneMember(String mName) {
 		return dao.selectOneMember(mName);
 	}
+
+	public Member loginMember(String id, String pw) {
+		return dao.loginMember(id,pw);
+	}
 }

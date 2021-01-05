@@ -22,6 +22,12 @@ public class MemberController {
 		System.out.println("join.do 접속");
 		return "member/joinFrm";
 	}
+	@RequestMapping("/login.do")
+	public String login(String id,String pw) {
+		System.out.println("로그인 시도");
+		
+		return "/";
+	}
 	@RequestMapping("/introduceFrm.do")
 	public String introduceFrm(String mName, Model model) {
 		Member m = service.selectOneMember(mName);

@@ -137,9 +137,6 @@
     <jsp:include page="/WEB-INF/views/common/headerSimple.jsp" />
     <script>
         $(document).ready(function () {
-
-
-
             // 약관 눌렀으면 모달창 띄우기
             $(".terms-bottom label input[type=button]:eq(0)").on("click", function () {
                 $(".background-screen").show();

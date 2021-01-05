@@ -101,6 +101,14 @@
             border-bottom: 4px solid #314C83;
             color: black;
         }
+
+        .header-menu span{
+            font-size: 15px;
+        }
+        .header-menu span:hover{
+            text-decoration: underline;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -120,7 +128,7 @@
                 <div class="header-top-right">
                     <div class="header-menu">
                         <span>고객센터</span>
-                        <span>로그인</span>
+                        <span id="login">로그인</span>
                         <a href="/join.do"><span>무료회원가입</span></a>
                     </div>
                 </div>
