@@ -13,7 +13,7 @@ public class MemberService {
 
 	
 
-	}
+	
 	public Member loginMember(String id, String pw) {
 		return dao.loginMember(id,pw);
 	}

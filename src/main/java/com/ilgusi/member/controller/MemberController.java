@@ -30,10 +30,4 @@ public class MemberController {
 		
 		return "/";
 	}
-	@RequestMapping("/introduceFrm.do")
-	public String introduceFrm(String mName, Model model) {
-		Member m = service.selectOneMember(mName);
-		model.addAttribute("m",m);
-		return "freelancer/introduce";
-	}
 }

@@ -13,9 +13,7 @@ public class MemberDao {
 	private SqlSessionTemplate session;
 
 	
-	public Member selectOneMember(String mName) {
-		return session.selectOne("member.selectOneMember",mName);
-	}
+	
 
 
 	public Member loginMember(String id, String pw) {
