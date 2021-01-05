@@ -12,9 +12,10 @@
     <title>Insert title here</title>
 
     <style>
+        body{
+            margin: 0;
+        }
         .header-container{
-            position: relative;
-            top: -8px;
             width: 100%;
             height: 80px;
             background-color: #314C83;
@@ -26,7 +27,7 @@
             
         }
         .header-left{
-            width: 15%;
+            width: 13%;
         }
         .header-left img{
             width: 100%;
