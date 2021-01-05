@@ -24,8 +24,8 @@ public class ServiceController {
 	public String serviceJoinFrm() {
 		return "freelancer/servicejoin";
 	}
-	@RequestMapping("/serviceJoin.do")
-	public String serviceJoin() {
-		
-	}
+//	@RequestMapping("/serviceJoin.do")
+//	public String serviceJoin() {
+//		
+//	}
 }

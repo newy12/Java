@@ -16,7 +16,7 @@ public class MemberDao {
 	
 
 
-	public Member loginMember(String id, String pw) {
-		return
-	}
+//	public Member loginMember(String id, String pw) {
+//		
+//	}
 }
