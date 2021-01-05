@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class Member {
-
+		//변수명 대문자로
 	private int mNo;          
 	private String mId;
 	private String mPw;
@@ -23,17 +23,4 @@ public class Member {
 		return introduce.replaceAll("\r\n", "<br>");
 	}
 
-	public Member(String mName) {
-		super();
-		this.mName = mName;
-	}
-
-	public String getmName() {
-		return mName;
-	}
-
-	public void setmName(String mName) {
-		this.mName = mName;
-	}
-	
 }

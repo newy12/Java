@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ilgusi.member.model.service.MemberService;
 import com.ilgusi.member.model.vo.Member;
+import com.ilgusi.service.model.vo.Join;
 
 @Controller
 public class MemberController {
@@ -22,10 +23,5 @@ public class MemberController {
 		System.out.println("join.do 접속");
 		return "member/joinFrm";
 	}
-	@RequestMapping("/introduceFrm.do")
-	public String introduceFrm(String mName, Model model) {
-		Member m = service.selectOneMember(mName);
-		model.addAttribute("m",m);
-		return "freelancer/introduce";
-	}
+	
 }

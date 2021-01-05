@@ -16,6 +16,7 @@
 	<a href="/chatList.do">채팅</a>
 	영재
 	<a href="/introduceFrm.do">프리랜서소개글</a>
+	<a href="/serviceJoinFrm.do">서비스등록</a>
 	문정
 	<a href="/requestList.do">의뢰게시판 리스트</a>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"/>
