@@ -432,7 +432,7 @@ textarea::-webkit-scrollbar-thumb {
 		</div>
 		<div id="side-bottom">
 			<button id="mypageBtn">mypage</button>
-			<button id="closeBtn">닫기</button>
+			<button id="closeBtn" onclick="window.close();">닫기</button>
 		</div>
 	</div>
 </body>
