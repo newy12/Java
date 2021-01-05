@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ilgusi.member.model.service.MemberService;
 import com.ilgusi.member.model.vo.Member;
+import com.ilgusi.service.model.vo.Join;
 
 @Controller
 public class MemberController {
@@ -22,6 +23,7 @@ public class MemberController {
 		System.out.println("join.do 접속");
 		return "member/joinFrm";
 	}
+	
 	@RequestMapping("/login.do")
 	public String login(String id,String pw) {
 		System.out.println("로그인 시도");

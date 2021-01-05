@@ -173,6 +173,9 @@
 	<a href="/chatList.do"
 		onClick="window.open(this.href, '', 'width=530, height=630, left=1000, scrollbars=no,location=no, resizable=no'); return false;">채팅하기</a>
 	영재
+	<a href="/introduceFrm.do">프리랜서소개글</a>
+	<a href="/serviceJoinFrm.do">서비스등록</a>
+	문정
 	<a href="/introduceFrm.do">프리랜서소개글</a> 문정
 	<a href="/requestList.do">의뢰게시판 리스트</a>
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />

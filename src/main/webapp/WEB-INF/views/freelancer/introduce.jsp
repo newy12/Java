@@ -13,7 +13,7 @@
       <div class="inner">
         <div class="title">
          <div class="title2"></div>
-         <p class="tt">${m.mName}</p>
+         <p class="tt">${j.MName}</p>
          <p class="tt">★★★★★ 5.0/ n개의 평가</p>
          <form action="#">
          <button type="submit" style="float: right; margin-right: 50px; width: 200px; height: 40px; margin-top:20px;";>문의하기</button>
@@ -32,13 +32,7 @@
           <h2>소개</h2>
         </div>
           <br><br><br>
-          <p>하여도 가슴이 설레는 말이다 청춘! 너의 두손을 가슴에 대고 물방아 같은 심장의 고동을 들어 보라 청춘의 피는 끓는다 끓는 피에 뛰노는 심장은 거선의 기관과
-             같이 힘있다 이것이다 인류의 사를 꾸며 내려온 
-             동력은하여도 가슴이 설레는 말이다 청춘! 너의 두손을
-             가슴에 대고 물방아 같은 심장의 고동을 들어 보라 청춘
-             의 피는 끓는다 끓는 피에 뛰노는 심장은 거선의 기관과
-              같이 힘있다 이것이다 인류의 역사를 꾸며 내려온 동력
-              은</p>
+          <p>${j.introduce}</p>
         </div>
         <div class="middleright">
           
@@ -67,17 +61,17 @@
                 <p>서비스 지역&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   &nbsp;&nbsp;&nbsp;&nbsp;
-                 청주</p>
+                 ${j.SArea}</p>
                  <br><br>
                  <p>연락처&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   &nbsp;&nbsp;
-                 01057212058</p>
+                 ${j.MPhone}</p>
                  <br><br>
                  <p>이메일&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   &nbsp;&nbsp;
                  
-                 newy12@naver.com</p>
+                 ${j.MEmail}</p>
           </div>
           </div>
         </div>
@@ -250,8 +244,6 @@ div.middle4{
     bottom:100px;
     z-index:9;
 }
-
-
 </style>
 </body>
 </html>
