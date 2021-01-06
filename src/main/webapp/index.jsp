@@ -29,13 +29,15 @@
 			border: 2px solid #314C83;
 			box-shadow: 1px 1px 12px 1px gray;
 		}
-		.login-form-close{
+
+		.login-form-close {
 			text-align: center;
 			width: 20px;
 			height: 20px;
 			float: right;
 		}
-		.login-form-close:hover{
+
+		.login-form-close:hover {
 			cursor: pointer;
 		}
 
@@ -54,14 +56,15 @@
 		.login-form .login-form-top>img {
 			height: 100%;
 		}
+
 		.login-title {
 			font-size: x-large;
 			font-weight: bold;
 		}
-		.login-inputs{
-			
-		}
-		.login-inputs input{
+
+		.login-inputs {}
+
+		.login-inputs input {
 			margin: 7px 0;
 			width: 300px;
 			height: 40px;
@@ -69,13 +72,15 @@
 			border-radius: 5px;
 
 		}
-		.login-inputs input[type=submit]{
+
+		.login-inputs input[type=submit] {
 			background-color: #314C83;
 			color: white;
 			border-color: #314C83;
 			font-weight: bold;
 		}
-		.login-inputs a{
+
+		.login-inputs a {
 			display: block;
 			text-decoration: none;
 			color: #282828;
@@ -83,14 +88,16 @@
 			margin-top: 15px;
 		}
 
-		.login-form-center{
+		.login-form-center {
 			height: 53%;
 			border-bottom: 1px solid gray;
 		}
-		.login-form-bottom{
+
+		.login-form-bottom {
 			height: 27%;
 		}
-		.login-form-bottom>a{
+
+		.login-form-bottom>a {
 			margin: 0 auto;
 			margin-top: 30px;
 			display: block;
@@ -105,14 +112,11 @@
 
 		}
 	</style>
-<!-- favicon -->
-<link rel="apple-touch-icon" sizes="180x180"
-	href="favicon_io/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32"
-	href="favicon_io/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16"
-	href="favicon_io/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
+	<!-- favicon -->
+	<link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
 
 </head>
 
@@ -154,10 +158,12 @@
 					<span>로그인</span>
 				</div>
 				<div class="login-inputs">
-					<input type="text" name="id" id="id" placeholder="아이디를 입력해주세요"><br>
-					<input type="password" name="pw" id="pw" placeholder="비밀번호를 입력해주세요."><br>
-					<input type="submit" value="로그인">
-					<a href="#">아이디·비밀번호 찾기</a>
+					<form action="/login.do" method="post">
+						<input type="text" name="id" id="id" placeholder="아이디를 입력해주세요"><br>
+						<input type="password" name="pw" id="pw" placeholder="비밀번호를 입력해주세요."><br>
+						<input type="submit" value="로그인">
+						<a href="#">아이디·비밀번호 찾기</a>
+					</form>
 				</div>
 			</div>
 			<div class="login-form-bottom">
@@ -177,7 +183,7 @@
 	<a href="/introduceFrm.do">프리랜서소개글</a>
 	<a href="/serviceJoinFrm.do">서비스등록</a>
 	<br>
-	 문정
+	문정
 	<a href="/requestList.do">의뢰게시판 리스트 </a> / <a href="/userMypage.do">사용자 마이페이지</a>
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>
