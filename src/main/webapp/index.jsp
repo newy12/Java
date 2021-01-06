@@ -178,7 +178,7 @@
 	<a href="/serviceJoinFrm.do">서비스등록</a>
 	<br>
 	 문정
-	<a href="/requestList.do">의뢰게시판 리스트</a>
+	<a href="/requestList.do">의뢰게시판 리스트 </a> / <a href="/userMypage.do">사용자 마이페이지</a>
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>
 
