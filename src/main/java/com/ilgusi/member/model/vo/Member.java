@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class Member {
-		//변수명 대문자로
-	private int mNo;          
+	// 변수명 대문자로
+	private int mNo;
 	private String mId;
 	private String mPw;
 	private String mName;
@@ -17,8 +17,8 @@ public class Member {
 	private String enrollDate;
 	private String brandName;
 	private String contactTime;
-	
-	//줄바꿈
+
+	// 줄바꿈
 	public String getIntroductBr() {
 		return introduce.replaceAll("\r\n", "<br>");
 	}

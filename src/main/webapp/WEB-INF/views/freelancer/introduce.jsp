@@ -10,20 +10,21 @@
 <body>
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 <br><br><br>
+<div class="content">
       <div class="inner">
         <div class="title">
          <div class="title2"></div>
          <p class="tt">${j.MName}</p>
-         <p class="tt">★★★★★ 5.0/ n개의 평가</p>
+         <p class="tt">★★★★★ ${j.RRate}.0/ n개의 평가</p>
          <form action="#">
          <button type="submit" style="float: right; margin-right: 50px; width: 200px; height: 40px; margin-top:20px;";>문의하기</button>
         </form>     
         </div>
         <div class="menu">
             <ul>
-               <li style="height: 50px;"><a href="#one" style="text-decoration: none;">소개</a></li> 
-               <li style="height: 50px;"><a href="#two" style="text-decoration: none;">평가</a></li>
-               <li style="height: 50px;"><a href="#three" style="text-decoration: none;">서비스</a></li>
+               <li class="ac" style="height: 50px;"><a href="#one" style="text-decoration: none;">소개</a></li> 
+               <li class="ac" style="height: 50px;"><a href="#two" style="text-decoration: none;">평가</a></li>
+               <li class="ac" style="height: 50px;"><a href="#three" style="text-decoration: none;">서비스</a></li>
             </ul>
         </div> 
         <hr>
@@ -43,7 +44,7 @@
             <p>총 작업 수&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              3개</p>
+              ${j.workingCount}개</p>
               <br><br>
             <p>만족도&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -80,14 +81,14 @@
         <h2>평가</h2>
       </div>
         <br>
-         <p>★★★★★ 5.0/ n개의 평가</p>
+         <p>★★★★★ ${j.RRate}.0/ n개의 평가</p>
          <br><br>
          <p>실제 구매한 이용자들이 남긴 평가입니다.</p>
          <br>
          <hr>
          <div class="middle2list">
            <br><br><br>
-           <p>★5.0 / 2020-12-29 / 김**</p>
+           <p>★${j.RRate}.0 / 2020-12-29 / 김**</p>
            <br><br>
            <p>얼음이 있을 뿐이다 그들에게 생명을 불어 넣는 것은 따뜻한 봄바람이다 풀밭에 속잎나고 가지에 싹이 트고 꽃 피고 새 우는 봄날의 천지는 얼마나 기쁘며 얼마나 
              아름다우냐? 이것을 얼음 속에서 불러 내는 것이 따뜻한</p>
@@ -119,8 +120,10 @@
           <br><br><br><br><br>
           <div id="three">
         <h2>서비스(n개)</h2>
-      </div> 
-        ddd
+      </div>
+      <div class="serviceadd">
+      		${j.SImg}
+      </div>
       </div> 
       <div class="middle4">
         <h2>전문분야 및 상세 분야</h2>
@@ -139,10 +142,13 @@
         </h5>
       </div>   
       </div>
+      </div>
      <a id="topBtn" href="#" style="width:100px; height:100px; line-height: 100px;
       background-color: gray; border-radius: 25%; 
       text-decoration: none; text-align: center;">Top</a>
+<jsp:include page="/WEB-INF/views/common/footer.jsp" />      
 </body>
+
 <script>
 $(function(){
     $(window).scroll(function(){
@@ -159,6 +165,8 @@ $(function(){
 });
 </script>
 <style>
+.content{
+height:3600px;}
 body,hr,p,ul{
     margin:0;
 }
@@ -168,7 +176,7 @@ p.tt{
 a{
     color:black;
 }
-li{
+li.ac{
     list-style: none;
     float:left;
     margin-left:-30px;

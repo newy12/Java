@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="member">
-		
-		
+	<select id="loginMember" parameterType="HashMap" resultType="m">
+		select
+		m_no mNo,  
+	    m_id mId,
+	    m_pw mPw ,
+	    m_name mName ,
+	    m_email mEmail ,
+	    m_phone mPhone ,
+	   m_grade mGrade ,
+	  warning_count warningCount , 
+	    introduce ,
+	    enroll_date enrollDate ,
+	    brand_name brandName ,
+	    contact_time contactTime
+		 from member where m_id = #{id} and m_pw = #{pw}
+	</select>
+
 </mapper>

@@ -119,40 +119,46 @@
     </style>
 </head>
 
-    <div class="dh-header-container">
-        <header class="dh-header">
-            <div class="header-top">
-                <div class="header-top-left">
-                    <a href="/"><img src="/img/logo/logo_white.png" alt=""></a>
+<div class="dh-header-container">
+    <header class="dh-header">
+        <div class="header-top">
+            <div class="header-top-left">
+                <a href="/"><img src="/img/logo/logo_white.png" alt=""></a>
+            </div>
+            <div class="header-top-center">
+                <div class="header-search">
+                    <input type="text" name="searach" id="search">
+                    <button>검색</button>
                 </div>
-                <div class="header-top-center">
-                    <div class="header-search">
-                        <input type="text" name="searach" id="search">
-                        <button>검색</button>
-                    </div>
-                </div>
-                <div class="header-top-right">
-                    <div class="header-menu">
-                        <span>고객센터</span>
+            </div>
+            <div class="header-top-right">
+                <div class="header-menu">
+                    <span>고객센터</span>
+                    <c:if test="${empty loginMember}">
                         <span id="login">로그인</span>
                         <a href="/join.do"><span>무료회원가입</span></a>
-                    </div>
+                    </c:if>
+                    <c:if test="${not empty loginMember}">
+                        <span>${loginMember.MName}</span>
+                        <span id="logout"><a href="/logout.do">로그아웃</a></span>
+                    </c:if>
                 </div>
             </div>
-            <div class="header-bottom">
-                <div class="nav">
-                    <ul>
-                        <li><a href="/serviceList.do">디자인</a></li>
-                        <li><a href="#">IT프로그래밍</a></li>
-                        <li><a href="#">영상사진음향</a></li>
-                        <li><a href="#">레슨실무교육</a></li>
-                        <li><a href="#">문서글쓰기</a></li>
-                        <li><a href="#">비즈니스 컨설팅</a></li>
-                        <li><a href="#">주문제작</a></li>
-                    </ul>
-                </div>
+        </div>
+        <div class="header-bottom">
+            <div class="nav">
+                <ul>
+                    <li><a href="#">디자인</a></li>
+                    <li><a href="#">IT프로그래밍</a></li>
+                    <li><a href="#">영상사진음향</a></li>
+                    <li><a href="#">레슨실무교육</a></li>
+                    <li><a href="#">문서글쓰기</a></li>
+                    <li><a href="#">비즈니스 컨설팅</a></li>
+                    <li><a href="#">주문제작</a></li>
+                </ul>
             </div>
-        </header>
-    </div>
+        </div>
+    </header>
+</div>
 
 </html>
