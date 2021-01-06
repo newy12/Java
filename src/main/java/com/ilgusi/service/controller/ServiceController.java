@@ -28,4 +28,9 @@ public class ServiceController {
 //	public String serviceJoin() {
 //		
 //	}
+	
+	@RequestMapping("/serviceList.do")
+	public String serviceList() {
+		return "service/serviceList";
+	}
 }

@@ -142,7 +142,7 @@
             <div class="header-bottom">
                 <div class="nav">
                     <ul>
-                        <li><a href="#">디자인</a></li>
+                        <li><a href="/serviceList.do">디자인</a></li>
                         <li><a href="#">IT프로그래밍</a></li>
                         <li><a href="#">영상사진음향</a></li>
                         <li><a href="#">레슨실무교육</a></li>
