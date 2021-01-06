@@ -19,7 +19,7 @@ public class Member {
 	private String contactTime;
 
 	// 줄바꿈
-	public String getIntroductBr() {
+	public String getIntroduceBr() {
 		return introduce.replaceAll("\r\n", "<br>");
 	}
 

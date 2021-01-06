@@ -22,7 +22,7 @@
 			<div class="content-chat">
 
 				<div id="chat-profile">
-					<span>채팅상대 - 서비스정보</span>
+					<span>${yourId } - ${service.STitle}</span>
 					<div id="option-box">
 						<a href="">대화 나가기</a><br> <a href="/quotationFrm.do">견적서 작성</a>
 					</div>
@@ -36,10 +36,7 @@
 					<p class="replies">
 						네 안녕하세요 <br> <span class="chat-time">오후 03:40</span>
 					</p>
-					<p class="sent">
-						분야에 상관없이 번역 가능한가요? 전문용어가 많이 나오는데 잘 번역 해주시겠죠?? <br> <span
-							class="chat-time">오후 03:40</span>
-					</p>
+				
 
 				</div>
 
@@ -47,7 +44,7 @@
 					<div class="wrap">
 						<textarea class="message"></textarea>
 						<button class="submit"
-							onclick="sendMsg('${sessionScope.m.memberId}');">전송</button>
+							onclick="sendMsg('${myId },${service.SNo}');">전송</button>
 					</div>
 				</div>
 
@@ -72,7 +69,7 @@
 			console.log("서버 접속 완료");
 			var msg = {
 				type : "register",
-				data : "memberId"//"${sessionScope.m.memberId}"
+				data : "${sessionScope.loginMember.MId}"//"${sessionScope.m.memberId}"
 			}
 			//웹소켓은 데이터를 String으로 주고받음
 			//위의 JSON을 String형으로 바꿔서 웹소켓에 전송
@@ -94,7 +91,11 @@
 				sendMsg();
 		});
 
-		function sendMsg(memberId) {
+		function sendMsg(myId,serviceNo) {
+			
+			console.log(myId);
+			console.log(serviceNo);
+			
 			/* 현재 날짜,시간 구하기 */
 			var sendDay = new Date(); //전송시점 시간
 			var sendM = sendDay.getMonth() + 1;

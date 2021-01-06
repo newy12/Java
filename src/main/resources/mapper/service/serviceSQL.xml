@@ -1,24 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="service">
-<select id="selectOneMember" parameterType="j" resultType="j">
+	<select id="selectOneMember" parameterType="j" resultType="j">
 		select
-		 member.m_name as mName,
-		 member.m_phone as mPhone,
-		 member.m_email as mEmail,
-		 member.introduce as introduce,
-		 service.s_area as sArea,
-		 service.s_img as sImg,
-		 service_review.r_content as rContent,
-		 service_review.write_date as writeDate
-		from 
+		member.m_name as mName,
+		member.m_phone as mPhone,
+		member.m_email
+		as mEmail,
+		member.introduce as introduce,
+		service.s_area as sArea,
+		service.s_img as sImg,
+		service_review.r_content as rContent,
+		service_review.write_date as writeDate
+		from
 		member inner join
-		service on member.m_id = service.m_id left outer join
-		service_review on member.m_id = service_review.m_id
-		where member.m_id = 'newy12'
-		<!-- 김영재 <<  -->
-		</select>
-		<insert id="insertService" parameterType="j">
-		insert into service values(service_seq.nextval,'newy12',#{sTitle},#{sPrice},#{sContent},#{sArea},#{sImg},#{sRate},#{mainCategory},#{subCategory},#{workingDate},0,to_char(sysdate,'yyyy-mm-dd'),'y','y')
-		</insert>
+		service on
+		member.m_id = service.m_id left outer join
+		service_review on
+		member.m_id = service_review.m_id
+		where member.m_id =
+		'newy12'
+		<!-- 김영재 << -->
+	</select>
+	<insert id="insertService" parameterType="j">
+		insert into service
+		values(service_seq.nextval,'newy12',#{sTitle},#{sPrice},#{sContent},#{sArea},#{sImg},#{sRate},#{mainCategory},#{subCategory},#{workingDate},0,to_char(sysdate,'yyyy-mm-dd'),'y','y')
+	</insert>
+
+	<!-- (소현)serviceNo로 service 불러오기 -->
+	<select id="selectOneService" parameterType="_int"
+		resultType="s">
+		select
+		s_no as sNo,
+		m_id as mId,
+		s_title as sTitle,
+		s_price as
+		sPrice,
+		s_content
+		as sContent,
+		s_area as sArea,
+		s_img as sImg,
+		s_rate as sRate,
+		main_category as mainCategory,
+		sub_category as subCategory,
+		working_date as workingDate,
+		working_count as workingCount,
+		write_date as writeDate,
+		delete_status as
+		deleteStatus,
+		admin_approval as adminApproval
+		from
+		service
+		where s_no=#{SNo}
+	</select>
 </mapper>

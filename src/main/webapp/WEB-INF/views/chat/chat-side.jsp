@@ -409,7 +409,7 @@ textarea::-webkit-scrollbar-thumb {
 	<div id="side">
 		<div id="side-profile">
 			<div class="wrap">
-				<img src="/img/logo/logo-chat_navy.png" width="120px"> <b>${ sessionScope.m.memberName }</b>
+				<img src="/img/logo/logo-chat_navy.png" width="120px"> <b>${ sessionScope.loginMember.MName }</b>
 				<div>
 					<ul id="account">
 						<li><a href="#">일반 고객 </a>
@@ -422,9 +422,9 @@ textarea::-webkit-scrollbar-thumb {
 		</div>
 		<div id="side-menu">
 			<ul>
-				<li><a href="/chatList.do"><img
+				<li><a href="/chatList.do?"><img
 						src="/img/icon/chat_white.png" width="45px;"><br>문의</a></li>
-				<li><a href="/heartList.do"><img
+				<li><a href="/heartList.do?memberNo=${loginMember.MNo}"><img
 						src="/img/icon/heart_white.png" width="40px;"><br>찜</a></li>
 				<!-- 고객일때 -->
 				<!-- 프리랜서일때 <li>서비스</li>-->
