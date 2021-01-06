@@ -22,9 +22,9 @@
         </div>
         <div class="menu">
             <ul>
-               <li style="height: 50px;"><a href="#one" style="text-decoration: none;">소개</a></li> 
-               <li style="height: 50px;"><a href="#two" style="text-decoration: none;">평가</a></li>
-               <li style="height: 50px;"><a href="#three" style="text-decoration: none;">서비스</a></li>
+               <li class="ac" style="height: 50px;"><a href="#one" style="text-decoration: none;">소개</a></li> 
+               <li class="ac" style="height: 50px;"><a href="#two" style="text-decoration: none;">평가</a></li>
+               <li class="ac" style="height: 50px;"><a href="#three" style="text-decoration: none;">서비스</a></li>
             </ul>
         </div> 
         <hr>
@@ -176,7 +176,7 @@ p.tt{
 a{
     color:black;
 }
-li{
+li.ac{
     list-style: none;
     float:left;
     margin-left:-30px;

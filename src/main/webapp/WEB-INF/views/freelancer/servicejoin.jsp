@@ -197,7 +197,7 @@
 									jpg,gif,png 만 등록할수 있습니다.(이미지 용량 2MG이하)</p> 
 									<input type="file" name="sImg" id="gdsImg" value="파일첨부"
 								style="float: left; margin-left: 30px; color: gray; font-size: 15px;">
-								<div class="select_img"><img src="" /></div>
+								<div class="select_img"><img src="" style="width:50px; height:50px"/></div>
 								
 								<p style="font-size: 11px; margin-right: 150px; color: gray;">(여러파일
 									첨부가능합니다.)</p>
@@ -224,26 +224,19 @@
 		</div>
 	</div>
 	</form>
+	<jsp:include page="/WEB-INF/views/common/footer.jsp" /> 
 <script>
  $("#gdsImg").change(function(){
 		   if(this.files && this.files[0]) {
 		    var reader = new FileReader;
 		    reader.onload = function(data) {
-		     $(".select_img img").attr("src", data.target.result).width(500);        
+		     $(".select_img img").attr("src", data.target.result).width(150).height(150);        
 		    }
 		    reader.readAsDataURL(this.files[0]);
 		   }
 		  });
 </script>
-	<hr>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
-	<br>
+	
 	<style>
 	.select_img img{
 				width:50px;
@@ -270,7 +263,7 @@ div.toptext {
 
 div.bottom {
 	width: 100%;
-	height: 800px;
+	height: 1000px;
 	border: 1px solid gray;
 	text-align: center;
 }
