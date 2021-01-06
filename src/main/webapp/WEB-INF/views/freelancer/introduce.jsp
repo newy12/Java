@@ -86,7 +86,7 @@
          <p>실제 구매한 이용자들이 남긴 평가입니다.</p>
          <br>
          <hr>
-         <div class="middle2list">
+         <%-- <div class="middle2list">
            <br><br><br>
            <p>★${j.RRate}.0 / 2020-12-29 / 김**</p>
            <br><br>
@@ -113,7 +113,15 @@
             <br><br><br><br><br><br><br><br>
              <hr>
              <br><br><br><br><br><br><br><br>
-        </div>
+        </div> --%>
+        <!-- 이부분 부터 값 불러올것 -->
+        안녕여기야!
+        
+        
+        
+        
+        
+        
         </div>
         <div class="middle2right"></div>
         <div class="middle3">

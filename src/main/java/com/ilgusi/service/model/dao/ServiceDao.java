@@ -12,13 +12,15 @@ public class ServiceDao {
 	@Autowired
 	private SqlSessionTemplate session;
 
-	public Join selectOneMember(Join join) {
-		return session.selectOne("service.selectOneMember",join);
+	public Join selectOneMember(String id) {
+		return session.selectOne("service.selectOneMember",id);
 	}
 
 	public int insertService(Join join) {
 		return session.insert("service.insertService",join);
 	}
+
+	
 
 	
 }

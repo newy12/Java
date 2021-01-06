@@ -15,8 +15,8 @@ public class ServiceController {
 	private ServiceService service;
 	
 	@RequestMapping("/introduceFrm.do")
-	public String introduceFrm(Join join, Model model) {
-		Join j = service.selectOneMember(join);
+	public String introduceFrm(String id, Model model) {
+		Join j = service.selectOneMember(id);
 		model.addAttribute("j",j);
 		return "freelancer/introduce";
 	}

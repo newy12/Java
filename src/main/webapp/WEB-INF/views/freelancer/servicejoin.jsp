@@ -61,7 +61,7 @@
 		<div class="bottom">
 			<div class="inner2">
 				<br> <br> <br>
-				<form action="/serviceJoin.do">
+				<form action="/serviceJoin.do" method="post" autocomplete="off" enctype="multipart/form-data">
 					<table border="1" style="border-collapse: collapse">
 						<tr>
 							<td style="width: 250px; height: 80px;">*제목</td>
@@ -195,7 +195,7 @@
 								<p
 									style="font-size: 8px; color: gray; margin-left: -259px; margin-top: 10px;">이미지는
 									jpg,gif,png 만 등록할수 있습니다.(이미지 용량 2MG이하)</p> 
-									<input type="file" name="sImg" id="gdsImg" value="파일첨부"
+									<input type="file" multiple name="sImg" id="gdsImg" value="파일첨부"
 								style="float: left; margin-left: 30px; color: gray; font-size: 15px;">
 								<div class="select_img"><img src="" style="width:50px; height:50px"/></div>
 								

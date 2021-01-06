@@ -12,8 +12,8 @@ public class ServiceService {
 	@Autowired
 	private ServiceDao dao;
 
-		public Join selectOneMember(Join join) {
-		return dao.selectOneMember(join);
+		public Join selectOneMember(String id) {
+		return dao.selectOneMember(id);
 	}
 
 		public int insertService(Join join) {	

@@ -1,5 +1,7 @@
 package com.ilgusi.service.model.vo;
 
+import java.util.ArrayList;
+
 import lombok.Data;
 
 @Data
@@ -34,9 +36,16 @@ public class Join {
 	private String enrollDate;
 	private String brandName;
 	private String contactTime;  //조인 나와라
+	private ArrayList<ServiceFile> filelist;
 	
 	//줄바꿈
 	public String getSContentBr() {
 		return sContent.replaceAll("\r\n", "<br>");
+	}
+	public ArrayList<ServiceFile> getFilelist() {
+		return filelist;
+	}
+	public void setFilelist(ArrayList<ServiceFile> filelist) {
+		this.filelist = filelist;
 	}
 }

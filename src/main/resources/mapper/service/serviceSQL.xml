@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="service">
-<select id="selectOneMember" parameterType="j" resultType="j">
+<select id="selectOneMember" parameterType="String" resultType="j">
 		select
 		 member.m_name as mName,
 		 member.m_phone as mPhone,
@@ -15,7 +15,7 @@
 		member inner join
 		service on member.m_id = service.m_id left outer join
 		service_review on member.m_id = service_review.m_id
-		where member.m_id = 'newy12'
+		where member.m_id = #{id}
 		<!-- 김영재 <<  -->
 		</select>
 		<insert id="insertService" parameterType="j">
