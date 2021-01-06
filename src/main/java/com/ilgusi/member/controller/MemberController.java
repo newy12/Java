@@ -30,4 +30,22 @@ public class MemberController {
 		
 		return "/";
 	}
+	
+	//(문정)사용자 마이페이지 이동
+	@RequestMapping("/userMypage.do")
+	public String userMypage() {
+		return "member/userMypage";
+	}
+	
+	//(문정)사용자 마이페이지-찜한 리스트 이동
+	@RequestMapping("/userHeartList.do")
+	public String userHeartList() {
+		return "member/userHeartList";
+	}
+	
+	//(문정)사용자 마이페이지-거래내역
+	@RequestMapping("/userTradeHistory.do")
+	public String userTradeHistory() {
+		return "member/userTradeHistory";
+	}
 }
