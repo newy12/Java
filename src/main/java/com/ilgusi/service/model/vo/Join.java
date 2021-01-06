@@ -33,7 +33,7 @@ public class Join {
 	private String introduce;
 	private String enrollDate;
 	private String brandName;
-	private String contactTime;
+	private String contactTime;  //조인 나와라
 	
 	//줄바꿈
 	public String getSContentBr() {
