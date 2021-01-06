@@ -24,8 +24,15 @@ public class ServiceController {
 	public String serviceJoinFrm() {
 		return "freelancer/servicejoin";
 	}
-//	@RequestMapping("/serviceJoin.do")
-//	public String serviceJoin() {
-//		
-//	}
+	@RequestMapping("/serviceJoin.do")
+	public String serviceJoin(Join join, Model model) {
+		int result = service.insertService(join);
+		if(result>0) {
+			model.addAttribute("msg","서비스등록완료");
+		}else {
+			model.addAttribute("msg","서비스등록실패");
+		}
+		model.addAttribute("loc","/");
+		return "common/msg";
+	}
 }

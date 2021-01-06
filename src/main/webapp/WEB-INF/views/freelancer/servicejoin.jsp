@@ -5,6 +5,22 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+<script>
+/* $(function() {
+	$("select[name=mainCategory]").change(function(){
+		console.log($(this).val()); //value값 가져오기
+		console.log($("select[name=mainCategory] option:selected").text());
+		var mainCategoryValue = $(this).val();
+		var mainCategoryText = $("select[name=mainCategory] option:selected").text();
+		
+	});	
+		}); */
+		
+		 
+	
+</script>
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/common/header.jsp" /><br>
@@ -56,8 +72,9 @@
 						<tr>
 							<td style="width: 250px; height: 80px;">*카테고리 선택</td>
 
-							<td style="width: 400px;"><select name="mainCategory"
-								style="width: 200px; float: left; margin-left: 30px; height: 30px;">
+							<td style="width: 400px;">
+							<select name="mainCategory" 
+								style="width: 200px; float: left; margin-left: 30px; height: 30px;">	
 									<option value="10">디자인</option>
 									<option value="20">IT/프로그래밍</option>
 									<option value="30">영상/사진/음향</option>
@@ -66,34 +83,86 @@
 									<option value="60">비즈니스컨설팅</option>
 									<option value="70">주문제작</option>
 							</select>
-								<p style="margin-top: 9px;">※메인카테고리</p> ※서브카테고리 <!-- <select name="subitems" style="width:200px; float: left; margin-left: 30px; height: 30px;">
-                            <option value="one">로고/브랜딩</option>
-                            <option value="two">자바스크립트</option>
-                            <option value="three">CSS</option>
-                        </select> --></td>
+								<p style="margin-top: 9px;">※메인카테고리</p> ※서브카테고리
+								 <select name="subCategory" style="width: 200px; float: left; margin-left: 30px; height: 30px;">
+
+									<option value="11">로고/브랜딩</option>
+									<option value="12">인쇄ㆍ홍보물ㆍ배너</option>
+									<option value="13">캘리그라피ㆍ폰트</option>
+									<option value="14">일러스트ㆍ캐리커쳐</option>
+									<option value="15">간판ㆍ시공</option>
+									<option value="16">이벤트 ㆍ상세페이지</option>
+									<option value="17">의류</option>
+									<option value="18">웹툰ㆍ캐릭터ㆍ이모티콘</option>
+
+									<option value="21">워드프레스</option>
+									<option value="22">웹사이트개발</option>
+									<option value="23">프로그램 개발</option>
+									<option value="24">데이터베이스</option>
+									<option value="25">게임개발</option>
+									<option value="26">보안</option>
+									<option value="27">파일변환</option>
+
+									<option value="31">영상촬영ㆍ편집</option>
+									<option value="32">유튜브 제작</option>
+									<option value="33">애니메이션제작</option>
+									<option value="34">더빙ㆍ녹음</option>
+									<option value="35">음악ㆍ사운드</option>
+
+									<option value="41">외국어(영어)</option>
+									<option value="42">외국어(기타언어)</option>
+									<option value="43">취미 라이프</option>
+									<option value="44">입시/학업</option>
+									<option value="45">pptㆍ프레젠테이션</option>
+									<option value="46">마케팅</option>
+									<option value="47">사진</option>
+
+									<option value="51">보도자료</option>
+									<option value="52">광고카피라이팅</option>
+									<option value="53">마케팅 글작성</option>
+									<option value="54">책ㆍ시나리오 작성</option>
+									<option value="55">논문</option>
+									<option value="56">교정ㆍ교육 첨삭</option>
+									<option value="57">기타</option>
+
+									<option value="61">사업계획서 투자제안서</option>
+									<option value="62">인사ㆍ노무</option>
+									<option value="63">창업컨설팅</option>
+									<option value="64">법률법무</option>
+									<option value="65">업무지원ㆍcs</option>
+
+									<option value="71">인쇄</option>
+									<option value="72">간판</option>
+									<option value="73">기념품제작</option>
+									<option value="74">모형제작</option>
+									<option value="75">시스템제작</option>
+									<option value="76">인테리어시공</option>
+									<option value="77">패키지제작</option>
+							</select></td>
 						</tr>
 						<tr>
-							<!-- <td style="width: 250px; height: 80px;">*서비스 지역</td>
-							<td style="width: 400px;"><select name="items"
+							<td style="width: 250px; height: 80px;">*서비스 지역</td>
+							<td style="width: 400px;"><select name="sArea"
 								style="width: 200px; float: left; margin-left: 30px; height: 30px;">
-									<option value='1'>서울</option>
-									<option value='2'>부산</option>
-									<option value='3'>대구</option>
-									<option value='4'>인천</option>
-									<option value='5'>광주</option>
-									<option value='6'>대전</option>
-									<option value='7'>울산</option>
-									<option value='8'>강원</option>
-									<option value='9'>경기</option>
-									<option value='10'>경남</option>
-									<option value='11'>경북</option>
-									<option value='12'>전남</option>
-									<option value='13'>전북</option>
-									<option value='14'>제주</option>
-									<option value='15'>충남</option>
-									<option value='16'>충북</option>
+									<option value='서울'>서울</option>
+									<option value='부산'>부산</option>
+									<option value='대구'>대구</option>
+									<option value='인천'>인천</option>
+									<option value='광주'>광주</option>
+									<option value='대전'>대전</option>
+									<option value='울산'>울산</option>
+									<option value='강원'>강원</option>
+									<option value='경기'>경기</option>
+									<option value='경남'>경남</option>
+									<option value='경북'>경북</option>
+									<option value='전남'>전남</option>
+									<option value='전북'>전북</option>
+									<option value='제주'>제주</option>
+									<option value='충남'>충남</option>
+									<option value='충북'>충북</option>
 
-							</select></td> -->
+							</select></td>
+
 						</tr>
 						<tr>
 							<td style="width: 250px; height: 80px;">*서비스 가격</td>
@@ -113,7 +182,8 @@
 						</tr>
 						<tr>
 							<td style="width: 250px; height: 80px;">*작업 기간</td>
-							<td style="width: 400px;"><input type="text" name="workingDate"
+							<td style="width: 400px;"><input type="text"
+								name="workingDate"
 								style="float: left; margin-left: 30px; height: 30px; width: 60px;">
 								<h3 class="won"
 									style="float: left; margin-left: 10px; margin-top: 7px;">일</h3>
@@ -124,14 +194,17 @@
 							<td style="width: 400px;">
 								<p
 									style="font-size: 8px; color: gray; margin-left: -259px; margin-top: 10px;">이미지는
-									jpg,gif,png 만 등록할수 있습니다.(이미지 용량 2MG이하)</p> <input type="file"
-								multiple-multiple name="sImg" value="파일첨부"
+									jpg,gif,png 만 등록할수 있습니다.(이미지 용량 2MG이하)</p> 
+									<input type="file" name="sImg" id="gdsImg" value="파일첨부"
 								style="float: left; margin-left: 30px; color: gray; font-size: 15px;">
+								<div class="select_img"><img src="" /></div>
+								
 								<p style="font-size: 11px; margin-right: 150px; color: gray;">(여러파일
 									첨부가능합니다.)</p>
 								<p
 									style="font-size: 8px; color: red; font-weight: bolder; margin-left: 10px; margin-right: 3px;">※이미지를
 									성격에 맞게 등록하셔야, 조회수와 함께 구매율이 많이 올름</p>
+								
 							</td>
 						</tr>
 						<tr>
@@ -140,7 +213,7 @@
 
 
 						</tr>
-						
+
 
 					</table>
 			</div>
@@ -151,7 +224,17 @@
 		</div>
 	</div>
 	</form>
-
+<script>
+ $("#gdsImg").change(function(){
+		   if(this.files && this.files[0]) {
+		    var reader = new FileReader;
+		    reader.onload = function(data) {
+		     $(".select_img img").attr("src", data.target.result).width(500);        
+		    }
+		    reader.readAsDataURL(this.files[0]);
+		   }
+		  });
+</script>
 	<hr>
 	<br>
 	<br>
@@ -162,6 +245,10 @@
 	<br>
 	<br>
 	<style>
+	.select_img img{
+				width:50px;
+				height:50px;	
+	}
 h3.won {
 	margin: 0;
 	padding: 0;

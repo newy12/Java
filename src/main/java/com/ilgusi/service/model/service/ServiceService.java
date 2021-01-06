@@ -16,5 +16,9 @@ public class ServiceService {
 		return dao.selectOneMember(join);
 	}
 
+		public int insertService(Join join) {	
+			return dao.insertService(join);
+		}
+
 	
 }

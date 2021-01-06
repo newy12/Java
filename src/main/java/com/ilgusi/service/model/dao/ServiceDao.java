@@ -16,5 +16,9 @@ public class ServiceDao {
 		return session.selectOne("service.selectOneMember",join);
 	}
 
+	public int insertService(Join join) {
+		return session.insert("service.insertService",join);
+	}
+
 	
 }
