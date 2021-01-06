@@ -76,7 +76,7 @@
             padding-bottom: 20px;
         }
 
-        .footer-bottom>div {
+        .footer-bottom div {
             margin: 5px auto;
             font-size: small;
         }
