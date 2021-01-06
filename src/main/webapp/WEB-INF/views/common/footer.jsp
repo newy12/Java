@@ -85,7 +85,6 @@
     </style>
 </head>
 
-<body>
     <footer class="dh-footer">
         <div class="footer-top-container">
             <div class="footer-top">
@@ -165,6 +164,5 @@
         </div>
     </footer>
 
-</body>
 
 </html>

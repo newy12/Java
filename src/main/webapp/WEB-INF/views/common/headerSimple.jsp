@@ -34,8 +34,6 @@
         }
     </style>
 </head>
-
-<body>
     <div class="header-container">
         <header>
             <div class="header-left">
@@ -43,6 +41,6 @@
             </div>
         </header>
     </div>
-</body>
+
 
 </html>

@@ -119,7 +119,6 @@
     </style>
 </head>
 
-<body>
     <div class="dh-header-container">
         <header class="dh-header">
             <div class="header-top">
@@ -155,6 +154,5 @@
             </div>
         </header>
     </div>
-</body>
 
 </html>
