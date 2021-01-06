@@ -84,7 +84,7 @@
 	
 	<websocket:handlers>
 		<websocket:mapping handler="startChat"
-			path="/chat.kh" />
+			path="/chat.do" />
 	</websocket:handlers> 
 	
 	

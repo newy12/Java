@@ -41,7 +41,7 @@ public class startChat extends TextWebSocketHandler {
 		if (type.equals("register")) {
 			chatMembers.put(data, session);
 			Set<String> keys = chatMembers.keySet();
-			String welcomeMsg = "<p class='text-center'> ------- [" + data + "] 입장 -------</p>";
+			String welcomeMsg = "<p class='text-center'> ------- [" + data + "] 님이 접속 -------</p>";
 			for (String key : keys) {
 				chatMembers.get(key).sendMessage(new TextMessage(welcomeMsg));
 			}
