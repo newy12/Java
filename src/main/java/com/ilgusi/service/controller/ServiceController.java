@@ -46,7 +46,6 @@ public class ServiceController {
 		model.addAttribute("loc","/");
 		return "common/msg";
 	}
-<<<<<<< HEAD
 	//프리랜서 마이페이지 이동
 	@RequestMapping("/freelancerMypage.do")
 		public String selectfreelancerMypage(int MNo, Model model)  {
@@ -77,9 +76,7 @@ public class ServiceController {
  			model.addAttribute("loc","/");
  			return "common/msg";
  			
- 	}
-=======
-	
+ 	}	
 	@RequestMapping("/serviceList.do")
 	public String serviceList() {
 		return "service/serviceList";
@@ -89,5 +86,4 @@ public class ServiceController {
 	public String serviceView() {
 		return "service/serviceView";
 	}
->>>>>>> 5a5d18f8bb6024054d25673bfd5205104be5121f
 }
