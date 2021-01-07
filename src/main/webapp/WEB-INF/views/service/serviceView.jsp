@@ -5,15 +5,18 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-	<script type="text/javascript" src="http://code.jquery.com/jquery-3.3.1.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+	<!--아이콘 부트스트랩-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src='https://kit.fontawesome.com/a076d05399.js'></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- 캐러셀 부트스트랩-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     
     
 	 <style>
@@ -30,17 +33,17 @@
 
         .contentWrap {
             width: 1200px;
+            height : 1200px;
             margin: 0 auto;
+            display: block;
         }
 
-        .breadcrumb {
+       .crumb {
             font-family: 'Arita-dotum-Medium';
-            background-color: transparent;
-        }
-
-        .breadcrumb * {
             color: dimgray;
             font-size: 10pt;
+            padding: 20px;
+
         }
 
         .carousel {
@@ -55,6 +58,7 @@
 
         .carousel-indicators li {
             width: 10px;
+            margin: 5px;
             border-radius: 10px;
         }
 
@@ -297,12 +301,7 @@
 <jsp:include page="/WEB-INF/views/common/header.jsp"/>
 	 <div class="contentWrap">
         <div class="crumb">
-            <ol class="breadcrumb">
-                <li><a href="#">홈 </a> </li>
-                <li> > <a href="#">디자인</a> </li>
-                <li><a href="#"></a></li>
-                <li></li>
-            </ol>
+            <div>홈 > 서비스 > 서비스 상세보기</div>
         </div>
         <div class="serviceContent">
             <div class="leftContent">
@@ -495,13 +494,6 @@
 
     </div>
 
-
-
-
-
-
-
-
     <script>
         $(function() {
             var tab = $(".tab");
@@ -534,11 +526,14 @@
             })
         });
     </script>
+    
+
+<footer>
+	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
+</footer>
 
 
 
-
-<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 </body>
 </html>
