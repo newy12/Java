@@ -181,7 +181,7 @@
 	<br>
 	영재
 	<a href="/introduceFrm.do">프리랜서소개글</a>
-	<a href="/serviceJoinFrm.do">서비스등록</a>
+	<a href="/serviceJoinFrm.do?MId=${loginMember.MId}">서비스등록</a>
 	<a href="/freelancerMypage.do?MNo=${loginMember.MNo}">프리랜서 마이페이지</a>
 	<br>
 	문정

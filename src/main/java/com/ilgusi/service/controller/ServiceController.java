@@ -1,25 +1,16 @@
 package com.ilgusi.service.controller;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.service.model.service.ServiceService;
 import com.ilgusi.service.model.vo.Join;
-import com.ilgusi.service.model.vo.ServiceFile;
-
-import common.FileNameOverlap;
+import com.ilgusi.service.model.vo.ServiceReview;
 
 @Controller
 public class ServiceController {
@@ -28,6 +19,7 @@ public class ServiceController {
 	@RequestMapping("/introduceFrm.do")
 	public String introduceFrm(String id, Model model) {
 		Join j = service.selectOneMember(id);
+		j.setReviewList(service.selectReviewList(id));
 		model.addAttribute("j",j);
 		return "freelancer/introduce";
 	}
@@ -36,7 +28,7 @@ public class ServiceController {
 		return "freelancer/servicejoin";
 	}
 	@RequestMapping("/serviceJoin.do")
-	public String serviceJoin(Join join, Model model, MultipartFile[] files, HttpServletRequest request) {
+	public String serviceJoin(Join join, Model model) {
 		int result = service.insertService(join);
 		if(result>0) {
 			model.addAttribute("msg","서비스등록완료");
