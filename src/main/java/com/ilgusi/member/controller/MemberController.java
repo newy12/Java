@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ilgusi.member.model.service.MemberService;
 import com.ilgusi.member.model.vo.Member;
@@ -91,5 +92,50 @@ public class MemberController {
 	@RequestMapping("/userTradeHistory.do")
 	public String userTradeHistory() {
 		return "member/userTradeHistory";
+	}
+	
+	//(문정)사용자 마이페이지-이메일, 폰번호 변경
+	@ResponseBody
+	@RequestMapping("/changeMypage.do")
+	public String changeMypage(String mId, String mPw, String data, String object, HttpServletRequest req) {
+		int result = service.changeMypage(mId, data, object);
+		if(result>0) {
+			Member m = service.loginMember(mId, mPw);
+			if (m != null) {
+				HttpSession session = req.getSession();
+				session.setAttribute("loginMember", m);
+			}
+		}
+		return "";
+	}
+	
+	//(문정)사용자 마이페이지-비밀번호 변경
+	@RequestMapping("/changePw.do")
+	public String changePw(String mId, String mPw, String data, String object, HttpServletRequest req) {
+		int result = service.changeMypage(mId, data, object);
+		if(result>0) {
+			Member m = service.loginMember(mId, data);
+			if (m != null) {
+				HttpSession session = req.getSession();
+				session.setAttribute("loginMember", m);
+			}
+		}
+		return "member/userMypage";
+	}
+
+	//(문정)사용자 마이페이지 - 회원탈퇴
+	@RequestMapping("/deleteMember.do")
+	public String deleteMember(String mId, String mPw, HttpServletRequest req, Model model) {
+		int result = service.deleteMember(mId,mPw);
+		if(result>0) {
+			HttpSession session = req.getSession();
+			session.setAttribute("loginMember", null);
+			model.addAttribute("msg", "탈퇴 되었습니다.");
+			model.addAttribute("loc", "/");
+		}else {
+			model.addAttribute("msg", "탈퇴 실패");
+			model.addAttribute("loc", "/member/userMypage");
+		}
+		return "common/msg";
 	}
 }
