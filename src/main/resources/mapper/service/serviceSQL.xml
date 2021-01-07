@@ -5,8 +5,7 @@
 		select
 		member.m_name as mName,
 		member.m_phone as mPhone,
-		member.m_email
-		as mEmail,
+		member.m_email as mEmail,
 		member.introduce as introduce,
 		service.s_area as sArea,
 		service.s_img as sImg,
@@ -47,5 +46,21 @@
 		from
 		service
 		where s_no=#{SNo}
+	</select>
+	<!-- 영재 프리랜서마이페이지 정보수정 -->
+	<update id="updateFreelancer" parameterType="m">
+		update member set
+			brand_name = #{brandName},
+			contact_time = #{contactTime},
+			introduce = #{introduce}
+		where m_id = #{MId}
+	</update>
+	<select id="freelancerOneMember" parameterType="_int" resultType="m">
+	select 
+	introduce as introduce,
+	brand_name as brandName,
+	contact_time as contactTime
+	from member where m_no = #{MNo}
+	
 	</select>
 </mapper>

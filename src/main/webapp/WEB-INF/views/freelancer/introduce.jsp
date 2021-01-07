@@ -14,7 +14,7 @@
       <div class="inner">
         <div class="title">
          <div class="title2"></div>
-         <p class="tt">${j.MName}</p>
+         <p class="tt">${loginMember.MName}</p>
          <p class="tt">★★★★★ ${j.RRate}.0/ n개의 평가</p>
          <form action="#">
          <button type="submit" style="float: right; margin-right: 50px; width: 200px; height: 40px; margin-top:20px;";>문의하기</button>

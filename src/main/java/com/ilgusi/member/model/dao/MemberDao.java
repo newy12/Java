@@ -39,4 +39,8 @@ public class MemberDao {
 		map.put("pw", mPw);
 		return session.delete("member.deleteMember", map);
 	}
+
+	public int registerMember(Member m) {
+		return session.insert("member.registerMember",m);
+	}
 }

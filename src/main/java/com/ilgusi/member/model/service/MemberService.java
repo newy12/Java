@@ -26,4 +26,7 @@ public class MemberService {
 		return dao.deleteMember(mId, mPw);
 	}
 
+	public int registerMember(Member m) {
+		return dao.registerMember(m);
+	}
 }

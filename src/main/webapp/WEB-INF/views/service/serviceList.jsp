@@ -6,11 +6,6 @@
 <meta charset="UTF-8">
 <title>19시 :: 일 구하고 시퍼_서비스</title>
 	<script type="text/javascript" src="http://code.jquery.com/jquery-3.3.1.js"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <style>
 	@font-face {
             font-family: 'Arita-dotum-Medium';
@@ -70,14 +65,12 @@
 
         }
 
-        .breadcrumb {
+        .crumb {
             font-family: 'Arita-dotum-Medium';
-            background-color: transparent;
-        }
-
-        .breadcrumb * {
             color: dimgray;
             font-size: 10pt;
+            padding: 20px;
+            
         }
 
         .selectBox {
@@ -171,14 +164,11 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 	
 		<div class="contentWrap">
+		
         <div class="crumb">
-            <ol class="breadcrumb">
-                <li><a href="#">홈 </a> </li>
-                <li><a href="#">디자인</a> </li>
-                <!-- <li><a href="#"></a></li>
-                <li></li> -->
-            </ol>
+            <div>홈 > 서비스 </div>
         </div>
+        
         <div class="sideNavi menu">
             <p class="naviTitle">디자인</p>
             <ul>
@@ -263,14 +253,9 @@
                             </div>
                         </td>
                     </tr>
-
-
                 </table>
-
             </div>
-
         </div>
-
     </div>
 		
 	
