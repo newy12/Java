@@ -35,4 +35,14 @@ public class ServiceController {
 		model.addAttribute("loc","/");
 		return "common/msg";
 	}
+	
+	@RequestMapping("/serviceList.do")
+	public String serviceList() {
+		return "service/serviceList";
+	}
+	
+	@RequestMapping("/serviceView.do")
+	public String serviceView() {
+		return "service/serviceView";
+	}
 }
