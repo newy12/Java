@@ -17,7 +17,23 @@
 	    contact_time contactTime
 		 from member where m_id = #{id} and m_pw = #{pw}
 	</select>
+
+	<update id="changeMypage" parameterType="HashMap">
+		update member set 
+		<choose>
+		    <when test="object == 'email'">m_email = #{data} </when>
+		    <when test="object == 'phone'">m_phone = #{data} </when>
+		    <when test="object == 'pw'">m_pw = #{data} </when>
+		</choose>
+		where m_id = #{id}
+	</update>
+	
+	<delete id="deleteMember" parameterType="HashMap">
+		delete from member where m_id = #{id} and m_pw = #{pw}
+	</delete>
+
 	<insert id="registerMember" parameterType="m">
 		insert into member values(member_SEQ.nextval,#{mId},#{mPw},#{mName},#{mEmail},#{mPhone},1,0,null,sysdate,null,null)
 	</insert>
+
 </mapper>

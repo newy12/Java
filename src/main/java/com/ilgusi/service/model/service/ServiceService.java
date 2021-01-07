@@ -20,5 +20,13 @@ public class ServiceService {
 			return dao.insertService(join);
 		}
 
+		public int updateFreelancer(Member m) {
+			return dao.updateFreelancer(m);
+		}
+
+		public Member selectOneMember(int MNo) {
+			return dao.selectOneMember(MNo);
+		}
+
 	
 }
