@@ -273,6 +273,8 @@ ul {
 	background-color: #FF8F3F;
 }
 
+
+
 .messages>p {
 	display: inline-block;
 	padding: 10px 15px;
@@ -340,7 +342,7 @@ textarea::-webkit-scrollbar-thumb {
 	background-color: #FF8F3F;
 }
 
-.submit {
+ .submit {
 	float: right;
 	border: none;
 	width: 15%;
