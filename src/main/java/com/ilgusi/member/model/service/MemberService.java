@@ -15,4 +15,8 @@ public class MemberService {
 	public Member loginMember(String id, String pw) {
 		return dao.loginMember(id,pw);
 	}
+
+	public int registerMember(Member m) {
+		return dao.registerMember(m);
+	}
 }

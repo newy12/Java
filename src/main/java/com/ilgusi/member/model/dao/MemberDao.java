@@ -20,4 +20,8 @@ public class MemberDao {
 		map.put("pw", pw);
 		return session.selectOne("member.loginMember",map);
 	}
+
+	public int registerMember(Member m) {
+		return session.insert("member.registerMember",m);
+	}
 }

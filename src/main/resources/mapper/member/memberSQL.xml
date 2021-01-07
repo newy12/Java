@@ -17,5 +17,7 @@
 	    contact_time contactTime
 		 from member where m_id = #{id} and m_pw = #{pw}
 	</select>
-
+	<insert id="registerMember" parameterType="m">
+		insert into member values(member_SEQ.nextval,#{mId},#{mPw},#{mName},#{mEmail},#{mPhone},1,0,null,sysdate,null,null)
+	</insert>
 </mapper>

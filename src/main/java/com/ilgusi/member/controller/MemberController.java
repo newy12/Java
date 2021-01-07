@@ -22,12 +22,31 @@ public class MemberController {
 		System.out.println("Member컨트롤러 생성 완료");
 	}
 
+	// (도현) 회원가입 페이지 이동
 	@RequestMapping("/join.do")
 	public String joinFrm() {
 		System.out.println("join.do 접속");
 		return "member/joinFrm";
 	}
 
+	// (도현) 회원가입 기능
+	@RequestMapping("/register.do")
+	public String register(Member m,Model model) {
+		System.out.println("register.do 접속");
+		System.out.println("아아ㅣ디: "+m.getMId());
+		int result = service.registerMember(m);
+		
+		if(result > 0) {
+			model.addAttribute("msg", "회원가입 성공! 로그인 해주세요!");
+			model.addAttribute("loc", "/");			
+		}else {
+			model.addAttribute("msg", "회원가입 실패!");
+			model.addAttribute("loc", "/join.do");			
+		}
+		return "common/msg";
+	}
+
+	// (도현) 로그인
 	@RequestMapping("/login.do")
 	public String login(HttpServletRequest req, String id, String pw, Model model) {
 		System.out.println("로그인 시도");
@@ -43,6 +62,7 @@ public class MemberController {
 		return "common/msg";
 	}
 
+	// (도현) 로그아웃
 	@RequestMapping("/logout.do")
 	public String login(HttpServletRequest req, Model model) {
 		System.out.println("로그아웃 시도");
@@ -54,20 +74,20 @@ public class MemberController {
 		model.addAttribute("loc", "/");
 		return "common/msg";
 	}
-	
-	//(문정)사용자 마이페이지 이동
+
+	// (문정)사용자 마이페이지 이동
 	@RequestMapping("/userMypage.do")
 	public String userMypage() {
 		return "member/userMypage";
 	}
-	
-	//(문정)사용자 마이페이지-찜한 리스트 이동
+
+	// (문정)사용자 마이페이지-찜한 리스트 이동
 	@RequestMapping("/userHeartList.do")
 	public String userHeartList() {
 		return "member/userHeartList";
 	}
-	
-	//(문정)사용자 마이페이지-거래내역
+
+	// (문정)사용자 마이페이지-거래내역
 	@RequestMapping("/userTradeHistory.do")
 	public String userTradeHistory() {
 		return "member/userTradeHistory";
