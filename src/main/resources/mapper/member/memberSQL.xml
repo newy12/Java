@@ -18,4 +18,17 @@
 		 from member where m_id = #{id} and m_pw = #{pw}
 	</select>
 
+	<update id="changeMypage" parameterType="HashMap">
+		update member set 
+		<choose>
+		    <when test="object == 'email'">m_email = #{data} </when>
+		    <when test="object == 'phone'">m_phone = #{data} </when>
+		    <when test="object == 'pw'">m_pw = #{data} </when>
+		</choose>
+		where m_id = #{id}
+	</update>
+	
+	<delete id="deleteMember" parameterType="HashMap">
+		delete from member where m_id = #{id} and m_pw = #{pw}
+	</delete>
 </mapper>
