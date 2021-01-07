@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="chat">
-<insert id="createChat" parameterType="com.ilgusi.chat.model.vo.ChatRoom">
-insert into chat values(chat_seq.nextval,#{sNo},#{userId},#{freeId})
-</insert>
+	<!-- 채팅방 생성 -->
+	<insert id="createChat"
+		parameterType="map">
+		insert into chat values(chat_seq.nextval,#{sNo},#{userId},#{freeId})
+	</insert>
+
+	<!-- 채팅방 번호 불러오기 -->
+	<select id="selectOneRoom"
+		parameterType="map" resultType="_int">
+		select 
+		c_no as cNo
+		from chat
+		where s_no=#{sNo} and user_id=#{userId}
+	</select>
+	
+	<!-- 보낸메세지 저장 -->
+	<insert id="insertChat" parameterType="map">
+	insert into chat_content values(chat_content_seq.nextval,#{cNo},#{myId},#{time},#{content},1)
+	</insert>
 </mapper>

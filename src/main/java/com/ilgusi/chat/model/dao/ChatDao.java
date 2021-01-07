@@ -1,13 +1,13 @@
 package com.ilgusi.chat.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.ilgusi.chat.model.vo.ChatRoom;
 import com.ilgusi.favorite.model.vo.Favorite;
 import com.ilgusi.service.model.vo.Service;
 
@@ -28,8 +28,19 @@ public class ChatDao {
 	}
 
 	// 채팅방 생성
-	public void createChat(ChatRoom room) {
+	public void createChat(HashMap<String, Object> room) {
 		session.insert("chat.createChat", room);
+	}
+
+	//채팅방 번호 불러오기
+	public int selectOneRoom(HashMap<String, Object> room) {
+		return session.selectOne("chat.selectOneRoom",room);
+	}
+
+	//보낸메세지 저장
+	public void insertChat(HashMap<String, Object> message) {
+		session.insert("chat.insertChat",message);
+		
 	}
 
 }
