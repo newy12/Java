@@ -217,7 +217,7 @@
                     <tr>
                         <td>
                             <div class="serviceBox">
-                                <img src="img/matildadjerf%20discovered%20by%20Alma%20Dahl%20on%20We%20Heart%20It.jpg"><br>
+                                <img src="img/test/matildadjerf%20discovered%20by%20Alma%20Dahl%20on%20We%20Heart%20It.jpg"><br>
                                 <span class="preName">하이샵</span><br>
                                 <p class="serviceCon">"로고디자인 전문" 평생사용하시는 로고로 깔끔하게 디자인해 드립니다.</p>
                                 <p class="price">80,000원~</p>
@@ -227,7 +227,7 @@
 
                         <td>
                             <div class="serviceBox">
-                                <img src="img/matildadjerf%20discovered%20by%20Alma%20Dahl%20on%20We%20Heart%20It.jpg"><br>
+                                <img src="img/test/matildadjerf%20discovered%20by%20Alma%20Dahl%20on%20We%20Heart%20It.jpg"><br>
                                 <span class="preName">하이샵</span><br>
                                 <p class="serviceCon">"로고디자인 전문" 평생사용하시는 로고로 깔끔하게 디자인해 드립니다.</p>
                                 <p class="price">80,000원~</p>
@@ -236,7 +236,7 @@
                         </td>
                         <td>
                             <div class="serviceBox">
-                                <img src="img/matildadjerf%20discovered%20by%20Alma%20Dahl%20on%20We%20Heart%20It.jpg"><br>
+                                <img src="img/test/matildadjerf%20discovered%20by%20Alma%20Dahl%20on%20We%20Heart%20It.jpg"><br>
                                 <span class="preName">하이샵</span><br>
                                 <p class="serviceCon">"로고디자인 전문" 평생사용하시는 로고로 깔끔하게 디자인해 드립니다.</p>
                                 <p class="price">80,000원~</p>
@@ -245,7 +245,7 @@
                         </td>
                         <td>
                             <div class="serviceBox">
-                                <img src="img/matildadjerf%20discovered%20by%20Alma%20Dahl%20on%20We%20Heart%20It.jpg"><br>
+                                <img src="img/test/matildadjerf%20discovered%20by%20Alma%20Dahl%20on%20We%20Heart%20It.jpg"><br>
                                 <span class="preName">하이샵</span><br>
                                 <p class="serviceCon">"로고디자인 전문" 평생사용하시는 로고로 깔끔하게 디자인해 드립니다.</p>
                                 <p class="price">80,000원~</p>

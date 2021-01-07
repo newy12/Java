@@ -294,6 +294,7 @@
 
 </head>
 <body>
+<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 	 <div class="contentWrap">
         <div class="crumb">
             <ol class="breadcrumb">
@@ -318,13 +319,13 @@
                     <!-- The slideshow -->
                     <div class="carousel-inner">
                         <div class="carousel-item active">
-                            <img src="img/testImg1.jpg" alt="test1">
+                            <img src="img/test/testImg1.jpg" alt="test1">
                         </div>
                         <div class="carousel-item">
-                            <img src="img/testImg2.jpg" alt="test2">
+                            <img src="img/test/testImg2.jpg" alt="test2">
                         </div>
                         <div class="carousel-item">
-                            <img src="img/testImg4.jpg" alt="test3">
+                            <img src="img/test/testImg4.jpg" alt="test3">
                         </div>
                     </div>
 
@@ -415,7 +416,7 @@
                                 <td>
                                     <div class="reviewBox">
                                         <div class="profile-img">
-                                            <img src="/img/icon_userProfile.svg" width="100px;">
+                                            <img src="/img/test/icon_userProfile.svg" width="100px;">
                                         </div>
                                         <div class="reviewCon">
                                             <p class="date">2020.12.29</p>
@@ -473,7 +474,7 @@
                 <br>
                 <div class="preIntro">
                     <div class="pre-profile">
-                        <img src="/img/icon_profile.svg" width="100px;">
+                        <img src="/img/test/icon_profile.svg" width="100px;">
                         <p class="brandName bold-font">브랜드 이름</p>
 
                         <button class="emptyBtn">[브랜드 이름]의 다른 서비스 보기</button>
@@ -493,6 +494,7 @@
 
 
     </div>
+
 
 
 
@@ -533,6 +535,10 @@
         });
     </script>
 
+
+
+
+<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 </body>
 </html>

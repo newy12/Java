@@ -65,18 +65,20 @@ public class ServiceController {
 	public String freelancerTradeHistory() {
 	return "freelancer/freelancerTradeHistory";
 }	//프리랜서 마이페이지 정보수정(소개글,연락가능시간,브랜드명 추가)
+	
+	
  	@RequestMapping("/updateFreelancer.do")
- 		public String updateFreelancer(Member m,Model model) {
- 			int result = service.updateFreelancer(m);
- 			if(result>0){
- 				model.addAttribute("msg","수정되었습니다.");
- 			}else {
- 				model.addAttribute("msg","수정실패하였습니다.");
- 			}
- 			model.addAttribute("loc","/");
- 			return "common/msg";
- 			
+	public String updateFreelancer(Member m,Model model) {
+		int result = service.updateFreelancer(m);
+		if(result>0){
+			model.addAttribute("msg","수정되었습니다.");
+		}else {
+			model.addAttribute("msg","수정실패하였습니다.");
+		}
+		model.addAttribute("loc","/");
+		return "common/msg";
  	}	
+ 	
 	@RequestMapping("/serviceList.do")
 	public String serviceList() {
 		return "service/serviceList";
