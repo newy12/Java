@@ -22,6 +22,13 @@ public class MemberController {
 		System.out.println("Member컨트롤러 생성 완료");
 	}
 
+	// (도현) 아이디/비번 찾기 페이지 이동
+	@RequestMapping("/forgot_pwd.do")
+	public String searchIdPwFrm() {
+		System.out.println("forgot_pwd.do 접속");
+		return "member/searchIdPw";
+	}
+
 	// (도현) 회원가입 페이지 이동
 	@RequestMapping("/join.do")
 	public String joinFrm() {
@@ -31,17 +38,17 @@ public class MemberController {
 
 	// (도현) 회원가입 기능
 	@RequestMapping("/register.do")
-	public String register(Member m,Model model) {
+	public String register(Member m, Model model) {
 		System.out.println("register.do 접속");
-		System.out.println("아아ㅣ디: "+m.getMId());
+		System.out.println("아아ㅣ디: " + m.getMId());
 		int result = service.registerMember(m);
-		
-		if(result > 0) {
+
+		if (result > 0) {
 			model.addAttribute("msg", "회원가입 성공! 로그인 해주세요!");
-			model.addAttribute("loc", "/");			
-		}else {
+			model.addAttribute("loc", "/");
+		} else {
 			model.addAttribute("msg", "회원가입 실패!");
-			model.addAttribute("loc", "/join.do");			
+			model.addAttribute("loc", "/join.do");
 		}
 		return "common/msg";
 	}
