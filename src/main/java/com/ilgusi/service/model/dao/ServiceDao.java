@@ -20,6 +20,15 @@ public class ServiceDao {
 		return session.insert("service.insertService",join);
 	}
 
+	public int updateFreelancer(Member m) {
+		return session.update("service.updateFreelancer",m);
+	}
+
+	public Member selectOneMember(int MNO) {
+		return session.selectOne("service.freelancerOneMember",MNO);
+	}
+
+
 	
 
 	
