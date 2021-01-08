@@ -1,5 +1,6 @@
 package com.ilgusi.service.model.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.service.model.vo.Join;
+import com.ilgusi.service.model.vo.Service;
 import com.ilgusi.service.model.vo.ServiceFile;
 import com.ilgusi.service.model.vo.ServiceReview;
 
@@ -17,22 +19,23 @@ public class ServiceDao {
 	private SqlSessionTemplate session;
 
 	public Join selectOneMember(String id) {
-		return session.selectOne("service.selectOneMember",id);
+		return session.selectOne("service.selectOneMember", id);
 	}
 
 	public int insertService(Join join) {
-		return session.insert("service.insertService",join);
+		return session.insert("service.insertService", join);
 	}
 
 	public int updateFreelancer(Member m) {
-		return session.update("service.updateFreelancer",m);
+		return session.update("service.updateFreelancer", m);
 	}
 
 	public Member selectOneMember(int MNO) {
-		return session.selectOne("service.freelancerOneMember",MNO);
+		return session.selectOne("service.freelancerOneMember", MNO);
 	}
+
 	public List<ServiceReview> selectReviewList(String id) {
-		List<ServiceReview> j = session.selectList("service.selectListReview",id);
+		List<ServiceReview> j = session.selectList("service.selectListReview", id);
 		return j;
 	}
 
@@ -45,12 +48,13 @@ public class ServiceDao {
 		serviceFile.setSNo(serviceNo);
 		serviceFile.setFilename(filename);
 		serviceFile.setFilepath(filepath);
-		return session.insert("service.insertServiceFile",serviceFile);
+		return session.insert("service.insertServiceFile", serviceFile);
 	}
 
+	// (소현)관리자-전체서비스불러오기
+	public ArrayList<Service> selectAllService() {
+		List<Service> list = session.selectList("service.selectService");
+		return (ArrayList<Service>) list;
+	}
 
-	
-
-	
 }
-

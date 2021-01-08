@@ -1,5 +1,6 @@
 package com.ilgusi.service.model.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,10 @@ public class ServiceService {
 			return j;
 		}
 
+		//(소현)관리자-전체서비스불러오기
+		public ArrayList<com.ilgusi.service.model.vo.Service> selectAllService() {
+			return dao.selectAllService();
+		}
 
 
 	

@@ -1,6 +1,8 @@
 package com.ilgusi.member.model.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,14 +32,14 @@ public class MemberDao {
 
 	// (도현) 아이디/비밀번호 찾기 기능
 	public Member searchIdPw(Member m) {
-		return session.selectOne("member.searchIdPw",m);
+		return session.selectOne("member.searchIdPw", m);
 	}
 
 	// (도현)비밀번호 찾기 후 - 비밀번호 변경
 	public int changePw(Member m) {
-		return session.update("member.changePw",m);
+		return session.update("member.changePw", m);
 	}
-	
+
 	// (문정)사용자 마이페이지-이메일, 폰번호, 비번 변경
 	@Transactional
 	public int changeMypage(String mId, String data, String object) {
@@ -54,5 +56,16 @@ public class MemberDao {
 		map.put("id", mId);
 		map.put("pw", mPw);
 		return session.delete("member.deleteMember", map);
+	}
+
+	// (소현)관리자-전체회원조회
+	public ArrayList<Member> manageMember() {
+		List<Member> list = session.selectList("member.selectAllMember");
+		return (ArrayList<Member>) list;
+	}
+
+	// (소현)회원별 서비스 이용횟수
+	public int countHistory(int mNo) {
+		return session.selectOne("member.countHistory", mNo);
 	}
 }

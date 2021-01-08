@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.service.model.service.ServiceService;
 import com.ilgusi.service.model.vo.Join;
+import com.ilgusi.service.model.vo.Service;
 import com.ilgusi.service.model.vo.ServiceFile;
 
 import common.FileNameOverlap;
@@ -126,4 +127,12 @@ public class ServiceController {
 	public String serviceView() {
 		return "service/serviceView";
 	}
+	
+	//(소현)관리자-전체서비스불러오기
+		@RequestMapping("/manageService.do")
+		public String selectAllService(Model model) {
+			ArrayList<Service> list =service.selectAllService();
+			model.addAttribute("serviceList",list);
+			return "admin/serviceList";
+		}
 }
