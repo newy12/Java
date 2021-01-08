@@ -68,10 +68,23 @@
 	<!-- 영재 프리랜서마이페이지 정보찾기 -->
 	<select id="freelancerOneMember" parameterType="_int" resultType="m">
 	select 
-		introduce as introduce,
-		brand_name as brandName,
-		contact_time as contactTime
+		m_id as mId,
+		m_name as mName,
+		m_email as mEmail,
+		m_phone as mPhone
 	from member where m_no = #{MNo}
-	
 	</select>
+	<!--영재 서비스고유번호 받기 -->
+	<select id="selectServiceNo" resultType="_int">
+	select 
+		max(s_no) 
+	from service 
+	</select>
+	<insert id="insertServiceFile" parameterType="sf">
+	insert into service_file values(SERVICE_FILE_SEQ.NEXTVAL,#{sNo},#{filename},#{filepath})
+	
+	
+	
+	</insert>
+	
 </mapper>

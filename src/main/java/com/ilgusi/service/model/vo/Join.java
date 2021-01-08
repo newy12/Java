@@ -19,7 +19,8 @@ public class Join {
 	private int workingCount;	//진행한 작업 수
 	private char deleteStatus;	//삭제 여부
 	private char adminApproval;	//승인 여부
-	private int mNo;          
+	private int mNo;  
+	private String mId;
 	private String mPw;
 	private String mName;
 	private String mEmail;
@@ -31,6 +32,7 @@ public class Join {
 	private String brandName;
 	private String contactTime;  //조인 나와라
 	private List<ServiceReview> reviewList;
+	private ArrayList<ServiceFile> fileList ;
 	//줄바꿈
 	public String getSContentBr() {
 		return sContent.replaceAll("\r\n", "<br>");

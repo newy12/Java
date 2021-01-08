@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.service.model.dao.ServiceDao;
 import com.ilgusi.service.model.vo.Join;
+import com.ilgusi.service.model.vo.ServiceFile;
 import com.ilgusi.service.model.vo.ServiceReview;
 
 @Service
@@ -19,8 +20,18 @@ public class ServiceService {
 		return dao.selectOneMember(id);
 	}
 
-		public int insertService(Join join) {	
-			return dao.insertService(join);
+		public int insertService(Join join) {
+			int result = dao.insertService(join);
+			if(result>0) {
+				int serviceNo = dao.selectServiceNo();
+				for(ServiceFile sf: join.getFileList()) {
+					result = dao.insertServiceFile(serviceNo,sf.getFilename(),sf.getFilepath());
+				}
+			}
+			
+			
+			
+			return result;
 		}
 
 		public int updateFreelancer(Member m) {

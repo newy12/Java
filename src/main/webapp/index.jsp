@@ -188,6 +188,7 @@
 	<a href="/requestList.do">의뢰게시판 리스트 </a> / <a href="/userMypage.do">사용자 마이페이지</a> / 
 	<a href="/requestWriteFrm.do">의뢰게시판 작성</a>
 	<img src="/upload/request/img.jpg">
+	<img src="resources/upload/service/logo5.png">
 	<br>
 	다솜
 	<a href="/noticeList.do">공지사항 게시판</a> / <a href="/serviceList.do">서비스리스트</a> / <a href="/serviceView.do">서비스 상세보기</a>
