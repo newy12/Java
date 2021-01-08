@@ -37,7 +37,7 @@
         border: 1px solid rgb(224, 224, 224);
     }
 
-    .container {
+    .container-box {
         margin-top: 20px;
         width: 800px;
         height: 1000px;
@@ -94,7 +94,7 @@
 }
 
 .array {
-    width: 100px;
+    width: 120px;
     height: 31px;
     float: right;
     margin-top: 7px;
@@ -102,7 +102,7 @@
     border: 1px solid rgb(204, 204, 204);
 }
 
-.container>div {
+.container-box>div {
     width: 225px;
     height: 270px;
     float: left;
@@ -170,7 +170,8 @@
 
 }
 .price{
-    float: right;
+	width:100%;
+    text-align:right;
     font-size: 17px;
     font-weight: bold;
     color: rgb(51, 51, 51);
@@ -212,15 +213,18 @@
 	     <div class="board-wrap">
 	        <div class="board-box">
 	            <span>찜한 서비스</span>
-	            <select name="array" class="array">
+	            <input type="text" style="display:none" value="${loginMember.MNo }" id="mNo">
+	            <input type="text" style="display:none" value="${order }" id="order">
+	            <select name="array" class="array" id="array-select">
 	                <option value="all">전체</option>
-	                <option value="title">가격순</option>
-	                <option value="content">최신순</option>
-	                <option value="content">찜한순</option>
+	                <option value="priceDown">가격낮은순</option>
+	                <option value="priceUp">가격높은순</option>
+	                <option value="new">서비스최신순</option>
 	            </select>
 	        </div>
 	
-	        <div class="container">
+	        <div class="container-box">
+	        <!-- 
 	            <div>
 	                <div>
 	                    <a href="#">
@@ -238,6 +242,36 @@
 	                    <div class="rate"><span>평점 5.0점</span><span>★★★★★</span></div>
 	                </a>
 	            </div>
+	          -->
+	            <!-- 여기부터 반복 -->
+	            <c:forEach items="${list }" var="s" varStatus="status">
+	            <div>
+	                <div>
+	                    <a href="#">
+	                        <div class="title-img">
+	                            <div class="back-img">
+	                            <img src="/img/icon/img.jpg" width="225x" height="133px">
+	                            </div>
+	                        </div>
+	                    </a>
+	                    <div class="title-img heart-btn">
+	                    	<img id="service1" src="/img/icon/heart_orange.png" width="31px" height="31px" onclick="heart_click(this)" value="fill">
+                            <input type="text" style="display:none" value="${s.SNo }" >
+                            <input type="text" style="display:none" value="${loginMember.MNo }">
+	                    	</div>
+	                </div>
+	                <div class="empty"></div>
+	                <div class="title">${brandList[status.index] }</div>
+	                <a href="#">
+	                    <div class="content">${s.SContent } </div>
+	                    <div class="price">${s.SPrice }원</div>
+	                    <div class="rate"><span>평점 </span><span>${s.SRate }</span><span>.0점</span><span>★★★★★</span>
+	                    </div>
+	                </a>
+	            </div>
+	            	
+	            </c:forEach>
+	            
 	        </div>
 	    </div>
 	</div>
@@ -248,15 +282,71 @@
 
     <script>
         function heart_click(obj){
+        	var sNo = $(obj).next().val();
+            var mNo = $(obj).next().next().val();
             if($(obj).attr('value') == "fill"){
-               $(obj).attr('src','/img/icon/heart_navy.png');
-                $(obj).attr('value', "empty");
+                $.ajax({
+                	url : "/deleteHeart.do",
+                	type : "get",
+                	data : {"sNo":sNo, "mNo":mNo},
+                	success : function(data){
+                		$(obj).attr('src','/img/icon/heart_navy.png');
+                        $(obj).attr('value', "empty");
+                	},
+                	error : function(){
+                		console.log("오류");
+                	}
+                });
             }else{
-               $(obj).attr('src','/img/icon/heart_orange.png');
-                $(obj).attr('value', "fill");
+            	$.ajax({
+            		url : "/insertHeart.do",
+            		type : "get",
+            		data : {"sNo":sNo, "mNo":mNo},
+            		success : function(data){
+            			$(obj).attr('src','/img/icon/heart_orange.png');
+                        $(obj).attr('value', "fill");
+            		},
+            		error : function(){
+            			console.log('오류');
+            		}
+            	});
+               
             }
 
         }
+        
+        $(document).ready(function(){
+        	$('.rate').each(function(index){
+       			var rate = $('.rate').eq(index).children().eq(1).html();
+       			var rateText = "";
+       			for(var i =5; i>0; i--){
+      	   			 if(i>rate){
+      	   				 rateText = rateText + "☆";
+      	   			 }else{
+      	   				 rateText = rateText + "★"; 
+      	   			 }
+      	   		 } 
+       			$('.rate').eq(index).children().eq(3).html(rateText);
+       		 });
+        	
+        	var order = $("#order").val();
+	        	if(order == "priceDown"){
+	        		$("#array-select").val("priceDown").prop("selected", true);
+	        	}else if(order == "priceUp"){
+	        		$("#array-select").val("priceUp").prop("selected", true);
+	        	}else if(order == "new"){
+	        		$("#array-select").val("new").prop("selected", true);
+	        	}else{
+	        		$("#array-select").val("all").prop("selected", true);
+	        	}
+        });
+        
+        $("#array-select").change(function(){
+        	var order = $("#array-select").val();
+        	var mNo = $("#mNo").val();
+        	location.href = "/userHeartList.do?mNo="+mNo+"&order="+order;
+        	console.log(order+"/"+mNo);
+        });
     </script>
 </body>
 </html>
