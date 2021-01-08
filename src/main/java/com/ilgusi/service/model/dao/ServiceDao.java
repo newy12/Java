@@ -1,11 +1,15 @@
 package com.ilgusi.service.model.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.service.model.vo.Join;
+import com.ilgusi.service.model.vo.ServiceReview;
 
 @Repository
 public class ServiceDao {
@@ -26,6 +30,10 @@ public class ServiceDao {
 
 	public Member selectOneMember(int MNO) {
 		return session.selectOne("service.freelancerOneMember",MNO);
+	}
+	public List<ServiceReview> selectReviewList(String id) {
+		List<ServiceReview> j = session.selectList("service.selectListReview",id);
+		return j;
 	}
 
 

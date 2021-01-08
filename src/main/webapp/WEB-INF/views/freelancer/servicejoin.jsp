@@ -64,6 +64,12 @@
 				<form action="/serviceJoin.do" method="post" autocomplete="off" enctype="multipart/form-data">
 					<table border="1" style="border-collapse: collapse">
 						<tr>
+						<td style="width: 250px; height: 80px;">*작성자</td>
+						<td style="width: 800px; "><input type="text" name="mId" value="${loginMember.MId}" style="width: 90%; height: 50px;" readonly>
+							</td>
+						</tr>
+						<tr>
+						
 							<td style="width: 250px; height: 80px;">*제목</td>
 							<td style="width: 800px;"><input type="text" name="sTitle"
 								placeholder="내용을 입력하세요" style="width: 90%; height: 50px;">
@@ -195,9 +201,9 @@
 								<p
 									style="font-size: 8px; color: gray; margin-left: -259px; margin-top: 10px;">이미지는
 									jpg,gif,png 만 등록할수 있습니다.(이미지 용량 2MG이하)</p> 
-									<input type="file" multiple name="sImg" id="gdsImg" value="파일첨부"
+									<input type="file" multiple name="ssImg" id="gdsImg" value="파일첨부"
 								style="float: left; margin-left: 30px; color: gray; font-size: 15px;">
-								<div class="select_img"><img src="" style="width:50px; height:50px"/></div>
+								<div class="select_img"><img src="" alt="썸네일사진" style="width:50px; height:50px;" /></div>
 								
 								<p style="font-size: 11px; margin-right: 150px; color: gray;">(여러파일
 									첨부가능합니다.)</p>
@@ -263,7 +269,7 @@ div.toptext {
 
 div.bottom {
 	width: 100%;
-	height: 1000px;
+	height: 1100px;
 	border: 1px solid gray;
 	text-align: center;
 }

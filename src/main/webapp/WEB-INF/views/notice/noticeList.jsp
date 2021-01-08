@@ -9,6 +9,7 @@
 <style>
 	.page-wrap {
             width: 911px;
+            height : 1000px;
             margin: 0 auto;
             margin-top: 45px;
         }
@@ -69,9 +70,13 @@
             font-weight: bold;
         }
 
-        .btn-custom:hover {
-            background-color: #30539c;
-            border: 1px solid black;
+        .btn-custom:hover,
+        .btn-search:hover {
+            border: 2px solid rgb(49, 76, 131);
+            background-color: transparent;
+            color: rgb(49, 76, 131);
+            font-weight: bold;
+
         }
 
         .board-box {
@@ -90,8 +95,17 @@
         }
 
         .table {
-            text-align: center;
+            text-align: left;
         }
+        .table-title{
+        	text-decoration: none;
+        	color: #282828;
+        }
+         .table-title:hover{
+        	text-decoration: none;
+        	color: #282828;
+        }
+        
 
 </style>
 
@@ -123,13 +137,24 @@
             </div>
             <br>
             <br>
-            <table class="table">
+            <table class="table table-hover">
                 <tr style="background-color: rgba(224, 224, 224, 0.5);">
                     <th style="width: 100px;">순서</th>
                     <th>제목</th>
-                    <th style="width: 100px;">진행상태</th>
+                    <th>작성자</th>
                     <th style="width: 200px;">작성일</th>
                 </tr>
+                <c:forEach items="${list }" var="n">
+                
+                	<tr>
+                		<td>${n.NNo } </td>
+                		<td><a href="/noticeView.do?nNo=${n.NNo }" class = "table-title">${n.NTitle } </a> </td>
+                		<td>일.구.시 </td>
+                		<td> ${n.writeDate } </td>
+                		
+                	</tr>
+                </c:forEach>
+                
             </table>
             <div>
                 <button class="btn-custom" onclick="location.href='/noticeWriteFrm.do'">글쓰기</button>

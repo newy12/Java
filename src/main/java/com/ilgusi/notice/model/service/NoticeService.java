@@ -1,12 +1,20 @@
 package com.ilgusi.notice.model.service;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ilgusi.notice.model.dao.NoticeDao;
+import com.ilgusi.notice.model.vo.Notice;
 
 @Service
 public class NoticeService {
 	@Autowired
 	private NoticeDao dao;
+
+	public ArrayList<Notice> selectNoticeList() {
+		ArrayList<Notice> list = dao.selectNoticeList();
+		return list;
+	}
 }

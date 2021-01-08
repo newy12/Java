@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+          <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -86,15 +87,15 @@
          <p>실제 구매한 이용자들이 남긴 평가입니다.</p>
          <br>
          <hr>
-         <%-- <div class="middle2list">
+         <div class="middle2list">
            <br><br><br>
-           <p>★${j.RRate}.0 / 2020-12-29 / 김**</p>
+           <p>★${j.RRate}.0 / ${j.WriteDate} / ${j.MId}</p>
            <br><br>
-           <p>얼음이 있을 뿐이다 그들에게 생명을 불어 넣는 것은 따뜻한 봄바람이다 풀밭에 속잎나고 가지에 싹이 트고 꽃 피고 새 우는 봄날의 천지는 얼마나 기쁘며 얼마나 
-             아름다우냐? 이것을 얼음 속에서 불러 내는 것이 따뜻한</p>
+           <p>${j.RContent}</p>
              <br><br><br><br><br><br><br><br>
              <hr>
          </div>
+         <%-- 
          <div class="middle2list">
           <br><br><br>
           <p>★5.0 / 2020-12-29 / 김**</p>

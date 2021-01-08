@@ -121,7 +121,7 @@
     <div class="page-wrap">
         <div class="profile-box">
             <div><img src="/img/icon/mypage_person.png" style="width: 147px; height: 147px"></div>
-            <div style="margin-top: 10px;">김영재님</div>
+            <div style="margin-top: 10px;">${loginMember.MName }</div>
             <div style="margin-top: 5px;"><button class="switch">사용자로 전환</button></div>
             <p>MY PAGE</p>
             <hr>
@@ -142,7 +142,7 @@
                 </div>
                 <div class="form-group">
                     <label for="name-label">프리랜서명</label><br>
-                    <input type="text" class="form-box" id="name-label" value="${loginMember.MNo}" name="mName" readonly>
+                    <input type="text" class="form-box" id="name-label" value="${loginMember.MName}" name="mName" readonly>
                 </div>
                 <div class="form-group">
                     <label for="email-label">이메일</label><br>
