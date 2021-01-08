@@ -17,4 +17,8 @@ public class NoticeService {
 		ArrayList<Notice> list = dao.selectNoticeList();
 		return list;
 	}
+
+	public int insertNotice(Notice n) {
+		return dao.insertNotice(n);
+	}
 }
