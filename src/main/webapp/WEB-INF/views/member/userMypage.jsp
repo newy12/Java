@@ -197,7 +197,7 @@
 	}
 	#modal_pwChange>div>div>span{
 		width:170px;
-		display:inline-block;;
+		display:inline-block;
 	}
 
 	#modal_pwChange .modal_layer {
@@ -232,7 +232,7 @@
             <hr>
             <ul class="menu">
                 <li><img src="/img/icon/circle_navy.png" style="display: inline;"><a href="#" style="margin-left: 5px; font-weight: bold; ">나의 프로필</a></li>
-                <li><img src="/img/icon/circle_navy.png"><a href="/userHeartList.do">찜한 내역</a></li>
+                <li><img src="/img/icon/circle_navy.png"><a href="/userHeartList.do?mNo=${loginMember.MNo }&order=all">찜한 내역</a></li>
                 <li><img src="/img/icon/circle_navy.png"><a href="/userTradeHistory.do">거래 내역</a></li>
             </ul>
         </div>
@@ -306,12 +306,13 @@
 	        </div>
 	        <div>
 	        	<span style="color:#314C83">변경할 비밀번호 입력 </span>
+	        	<input type="text" style="display:none;" id="reg-check" value="false">
 	        	<input type="password" class="form-box pw2" id="pw-check1" readonly>
 	        	<div style="height:15px;"><div class="notice-text"></div></div>
 	        </div>
 	        <div>
 	        	<span style="color:#314C83">변경할 비밀번호 다시 입력 </span>
-	        	<input type="password" class="form-box pw2" id="pw-check2" name="false" readonly>
+	        	<input type="password" class="form-box pw2" id="pw-check2"readonly>
 	        	<div style="height:15px;"><div class="notice-text"></div></div>
 	        </div>
 	        <div>
@@ -403,7 +404,10 @@
 		var mPw = $('#pw-label').val();
  		var pwCheck1 = $("#pw-check1").val();
  		var pwCheck2 = $("#pw-check2").val();
- 		if(pwCheck1 == pwCheck2 &&  pwCheck2 != ''){
+ 		var regCheck = $("#reg-check").val();
+ 		console.log(regCheck);
+ 		
+ 		if(pwCheck1 == pwCheck2 &&  pwCheck2 != '' && regCheck == 'true' ){
  			alert('비밀번호가 변경되었습니다.');
  			location.href="/changePw.do?mId="+mId+"&mPw="+mPw+"&data="+pwCheck2+"&object=pw";
  		}else{
@@ -426,9 +430,12 @@
  		var pwCheck1 = $("#pw-check1").val();
  		var reg = /^(?=.*?[A-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{4,}$/.test(pwCheck1);
  		if(reg){
+ 			$('#reg-check').val('true');
  			$('#pw-check1').next().children().css({'color':'#008000'}).html('조건을 만족하였습니다').delay(1000).fadeOut(1000);
  		}else if(!reg && pwCheck1 != ''){
+ 			$('#reg-check').val('false');
  			$('#pw-check1').next().children().css({'color':'red'}).html('비밀번호 조건을 만족해주세요').show();
+ 			
  		}
  	});
  	$("#pw-check2").keyup(function(){
@@ -436,7 +443,6 @@
  		var pwCheck2 = $("#pw-check2").val();
  		if(pwCheck1 == pwCheck2 && pwCheck2 != ''){
  			$('#pw-check2').next().children().css({'color':'#008000'}).html('일치합니다').fadeOut(1000);
- 			$('#pw-check2').attr('name','true');
  		}else if(pwCheck1 != pwCheck2 && pwCheck2 != ''){
  			$('#pw-check2').next().children().css({'color':'red'}).html('일치하지 않습니다').show();
  		}
