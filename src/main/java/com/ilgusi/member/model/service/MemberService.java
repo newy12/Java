@@ -64,14 +64,5 @@ public class MemberService {
 		return dao.deleteMember(mId, mPw);
 	}
 
-	// (소현)관리자-전체회원조회
-	public ArrayList<Member> manageMember() {
-		return dao.manageMember();
-	}
-
-	// (소현)회원별 서비스 이용횟수
-	public int countHistory(int mNo) {
-		return dao.countHistory(mNo);
-	}
 
 }

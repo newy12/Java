@@ -128,11 +128,4 @@ public class ServiceController {
 		return "service/serviceView";
 	}
 	
-	//(소현)관리자-전체서비스불러오기
-		@RequestMapping("/manageService.do")
-		public String selectAllService(Model model) {
-			ArrayList<Service> list =service.selectAllService();
-			model.addAttribute("serviceList",list);
-			return "admin/serviceList";
-		}
 }

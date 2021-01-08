@@ -51,10 +51,6 @@ public class ServiceDao {
 		return session.insert("service.insertServiceFile", serviceFile);
 	}
 
-	// (소현)관리자-전체서비스불러오기
-	public ArrayList<Service> selectAllService() {
-		List<Service> list = session.selectList("service.selectService");
-		return (ArrayList<Service>) list;
-	}
+
 
 }

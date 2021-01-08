@@ -58,14 +58,4 @@ public class MemberDao {
 		return session.delete("member.deleteMember", map);
 	}
 
-	// (소현)관리자-전체회원조회
-	public ArrayList<Member> manageMember() {
-		List<Member> list = session.selectList("member.selectAllMember");
-		return (ArrayList<Member>) list;
-	}
-
-	// (소현)회원별 서비스 이용횟수
-	public int countHistory(int mNo) {
-		return session.selectOne("member.countHistory", mNo);
-	}
 }
