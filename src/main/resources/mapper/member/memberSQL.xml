@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="member">
+	<!-- 도현 -->
 	<select id="loginMember" parameterType="HashMap" resultType="m">
 		select
 		m_no mNo,  
@@ -17,7 +18,20 @@
 	    contact_time contactTime
 		 from member where m_id = #{id} and m_pw = #{pw}
 	</select>
-
+	
+	<select id="searchIdPw" parameterType="m" resultType="m">
+		select 
+		m_id mId,
+		m_pw mPw
+		from member 
+		where (m_name = #{mName} and m_phone=#{mPhone}) or (m_id = #{mId} and m_phone=#{mPhone})
+	</select>
+	
+	<update id="changePw" parameterType="m">
+		update member set m_pw = #{mPw} where m_id = #{mId}
+	</update>
+	
+	<!-- 문정 -->
 	<update id="changeMypage" parameterType="HashMap">
 		update member set 
 		<choose>

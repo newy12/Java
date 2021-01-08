@@ -233,6 +233,7 @@
             }));
             $(".pw-form #pw1").on("blur", function () {
                 blurEvt($(this), $("#pw1_validation"));
+                blurEvt($(".pw-form #pw2"), $("#pw2_validation"));
             });
             //pw 재확인
             $(".pw-form #pw2").on("keyup", (function (e) {

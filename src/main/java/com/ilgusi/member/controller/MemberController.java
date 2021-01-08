@@ -30,6 +30,65 @@ public class MemberController {
 		return "member/searchIdPw";
 	}
 
+	// (도현) 아이디 찾기 기능
+	@RequestMapping("/searchId.do")
+	public String searchId(Member m, Model model) {
+		System.out.println("searchId.do 접속");
+		System.out.println("m: " + m.getMName() + " p:" + m.getMPhone());
+		Member result = service.searchIdPw(m);
+		System.out.println("result: " + result);
+
+		if (result == null) {
+			model.addAttribute("msg", "못찾음");
+			model.addAttribute("loc", "/forgot_pwd.do");
+		} else if (m.getMName() != null) {
+			model.addAttribute("msg", "아이디: " + result.getMId());
+			model.addAttribute("loc", "/forgot_pwd.do");
+		}
+		return "common/msg";
+	}
+
+	// (도현) 비번 찾기 페이지에서 클릭
+	@RequestMapping("/searchPw.do")
+	public String searchPw(HttpServletRequest req, Member m, Model model) {
+		System.out.println("searchPw.do 접속");
+		System.out.println("m: " + m.getMId() + " p:" + m.getMPhone());
+		
+		Member result = service.searchIdPw(m);
+		System.out.println("result: " + result);
+
+		HttpSession session = req.getSession();
+		if (result == null) {
+			model.addAttribute("msg", "못찾음");
+			model.addAttribute("exit", true);
+			return "common/msg2";
+		} else {
+			session.setAttribute("searchPwObj", result);
+			return "member/searchPw";
+		}
+	}
+
+	// (도현) 비번 찾기 기능 (비번 변경)
+	@RequestMapping("/searchChangePw.do")
+	public String searchPw(HttpServletRequest req, String mPw, Model model) {
+		System.out.println("searchId.do 접속");
+		HttpSession session = req.getSession();
+		Member m = (Member) session.getAttribute("searchPwObj");
+		m.setMPw(mPw);
+		int result = service.changePw(m);
+		System.out.println("result: " + result);
+
+		if (result > 0) {
+			model.addAttribute("msg", "변경 완료.");
+			model.addAttribute("exit", true);
+			session.setAttribute("searchPwObj", null);
+		} else {
+			model.addAttribute("msg", "변경 실패.");
+			model.addAttribute("exit", true);
+		}
+		return "common/msg2";
+	}
+
 	// (도현) 회원가입 페이지 이동
 	@RequestMapping("/join.do")
 	public String joinFrm() {
@@ -100,13 +159,13 @@ public class MemberController {
 	public String userTradeHistory() {
 		return "member/userTradeHistory";
 	}
-	
-	//(문정)사용자 마이페이지-이메일, 폰번호 변경
+
+	// (문정)사용자 마이페이지-이메일, 폰번호 변경
 	@ResponseBody
 	@RequestMapping("/changeMypage.do")
 	public String changeMypage(String mId, String mPw, String data, String object, HttpServletRequest req) {
 		int result = service.changeMypage(mId, data, object);
-		if(result>0) {
+		if (result > 0) {
 			Member m = service.loginMember(mId, mPw);
 			if (m != null) {
 				HttpSession session = req.getSession();
@@ -115,12 +174,12 @@ public class MemberController {
 		}
 		return "";
 	}
-	
-	//(문정)사용자 마이페이지-비밀번호 변경
+
+	// (문정)사용자 마이페이지-비밀번호 변경
 	@RequestMapping("/changePw.do")
 	public String changePw(String mId, String mPw, String data, String object, HttpServletRequest req) {
 		int result = service.changeMypage(mId, data, object);
-		if(result>0) {
+		if (result > 0) {
 			Member m = service.loginMember(mId, data);
 			if (m != null) {
 				HttpSession session = req.getSession();
@@ -130,16 +189,16 @@ public class MemberController {
 		return "member/userMypage";
 	}
 
-	//(문정)사용자 마이페이지 - 회원탈퇴
+	// (문정)사용자 마이페이지 - 회원탈퇴
 	@RequestMapping("/deleteMember.do")
 	public String deleteMember(String mId, String mPw, HttpServletRequest req, Model model) {
-		int result = service.deleteMember(mId,mPw);
-		if(result>0) {
+		int result = service.deleteMember(mId, mPw);
+		if (result > 0) {
 			HttpSession session = req.getSession();
 			session.setAttribute("loginMember", null);
 			model.addAttribute("msg", "탈퇴 되었습니다.");
 			model.addAttribute("loc", "/");
-		}else {
+		} else {
 			model.addAttribute("msg", "탈퇴 실패");
 			model.addAttribute("loc", "/member/userMypage");
 		}
