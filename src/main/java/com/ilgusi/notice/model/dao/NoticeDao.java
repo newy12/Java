@@ -18,4 +18,8 @@ public class NoticeDao {
 		List<Notice> list = session.selectList("notice.noticeList");
 		return (ArrayList<Notice>)list;
 	}
+
+	public int insertNotice(Notice n) {
+		return session.insert("notice.insertNotice",n);
+	}
 }

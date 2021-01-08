@@ -21,6 +21,7 @@
 		<typeAlias type="com.ilgusi.service.model.vo.ServicePay" alias="pay"/>
 		<typeAlias type="com.ilgusi.service.model.vo.ServiceReview" alias="review"/>
 		<typeAlias type="com.ilgusi.service.model.vo.ServiceTrade" alias="trade"/>
+		<typeAlias type="com.ilgusi.service.model.vo.ServiceFile" alias="sf"/>
 		
 	</typeAliases>
 </configuration>

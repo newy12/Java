@@ -152,9 +152,8 @@
       
                 <div class="form-group">
                     <label for="tel-label">연락처</label><br>
-                    <input type="tel" class="form-box tel" id="tel-label" value="${loginMember.MPhone }" name="mPhone"  readonly> - 
-                    <input type="tel" class="form-box tel"  value="0100" readonly> - 
-                    <input type="tel" class="form-box tel"  value="0101" readonly>
+                    <input type="tel" class="form-box tel" id="tel-label" style="width:300px;" value="${loginMember.MPhone}" name="mPhone"  readonly> 
+                
                 </div>
                 
                 	<label for="tel-label">브랜드 명</label><br>
@@ -163,7 +162,7 @@
                 	<input type="text" placeholder="ex)1시간 내외" name="contactTime" value="${m.contactTime}"><br><br>
                		 <label for="tel-label">소개</label><br>
               <%-- <textarea name="introduce" cols="82" rows="7" placeholder="50자내외" value="${m.introduce}"></textarea> --%>
-                	<input type="text" style="width:635px ; height:325px;" placeholder="ex)100자 내로 자신을 소개하세요~" name="introduce" value="${m.introduce}"><br><br>
+                	<input type="text" style="width:635px ; height:325px;" name="introduce" value="${m.introduce}"><br><br>
 
             </div>
             <br><br><br><br><br><br><br><br><br><br>
