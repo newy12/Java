@@ -162,7 +162,7 @@
 						<input type="text" name="id" id="id" placeholder="아이디를 입력해주세요"><br>
 						<input type="password" name="pw" id="pw" placeholder="비밀번호를 입력해주세요."><br>
 						<input type="submit" value="로그인">
-						<a href="#">아이디·비밀번호 찾기</a>
+						<a href="/forgot_pwd.do">아이디·비밀번호 찾기</a>
 					</form>
 				</div>
 			</div>
