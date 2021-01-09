@@ -22,7 +22,7 @@ public class MemberController {
 		super();
 		System.out.println("Member컨트롤러 생성 완료");
 	}
-
+	
 	// (도현) 아이디/비번 찾기 페이지 이동
 	@RequestMapping("/forgot_pwd.do")
 	public String searchIdPwFrm() {
@@ -119,12 +119,14 @@ public class MemberController {
 		System.out.println("로그인 시도");
 		System.out.println("id" + id + " pw:" + pw);
 		Member m = service.loginMember(id, pw);
-		System.out.println("이름 " + m.getMName());
+		
 		if (m != null) {
 			HttpSession session = req.getSession();
 			session.setAttribute("loginMember", m);
+			model.addAttribute("msg", "로그인 성공");
+		}else {
+			model.addAttribute("msg", "로그인 실패");
 		}
-		model.addAttribute("msg", "로그인 성공");
 		model.addAttribute("loc", "/");
 		return "common/msg";
 	}

@@ -13,6 +13,7 @@
 		<typeAlias type="com.ilgusi.notice.model.vo.Notice" alias="n"/>
 		<typeAlias type="com.ilgusi.question.model.vo.Question" alias="q"/>
 		<typeAlias type="com.ilgusi.request.model.vo.Request" alias="req"/>
+		<typeAlias type="com.ilgusi.category.model.vo.Category" alias="cate"/>
 		
 		<!-- 서비스 관련 -->
 		<typeAlias type="com.ilgusi.service.model.vo.Join" alias="j"/>
