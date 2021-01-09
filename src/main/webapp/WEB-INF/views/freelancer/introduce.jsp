@@ -15,8 +15,9 @@
       <div class="inner">
         <div class="title">
          <div class="title2"></div>
-         <p class="tt">${loginMember.MName}</p>
-         <p class="tt">★★★★★ ${j.RRate}.0/ n개의 평가</p>
+         <p class="tt">${j.brandName}<br>
+         				 ${j.MName}</p>
+         <p class="tt">★★★★★.0/ n개의 평가</p>
          <form action="#">
          <button type="submit" style="float: right; margin-right: 50px; width: 200px; height: 40px; margin-top:20px;";>문의하기</button>
         </form>     
@@ -45,7 +46,7 @@
             <p>총 작업 수&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              ${j.workingCount}개</p>
+              작업수개</p>
               <br><br>
             <p>만족도&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -63,17 +64,17 @@
                 <p>서비스 지역&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   &nbsp;&nbsp;&nbsp;&nbsp;
-                 ${j.SArea}</p>
+                 지역</p>
                  <br><br>
                  <p>연락처&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   &nbsp;&nbsp;
-                 ${j.MPhone}</p>
+                 폰번</p>
                  <br><br>
                  <p>이메일&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   &nbsp;&nbsp;
                  
-                 ${j.MEmail}</p>
+                 이멜</p>
           </div>
           </div>
         </div>
@@ -82,16 +83,16 @@
         <h2>평가</h2>
       </div>
         <br>
-         <p>★★★★★ ${j.RRate}.0/ n개의 평가</p>
+         <p>★★★★★ 5.0/ n개의 평가</p>
          <br><br>
          <p>실제 구매한 이용자들이 남긴 평가입니다.</p>
          <br>
          <hr>
          <div class="middle2list">
            <br><br><br>
-           <p>★${j.RRate}.0 / ${j.WriteDate} / ${j.MId}</p>
+           <p>★5.0 / 날짜기입/ 아이디기입</p>
            <br><br>
-           <p>${j.RContent}</p>
+           <p>내용기입</p>
              <br><br><br><br><br><br><br><br>
              <hr>
          </div>
@@ -131,7 +132,7 @@
         <h2>서비스(n개)</h2>
       </div>
       <div class="serviceadd">
-      		${j.SImg}
+      		이미지넣기
       </div>
       </div> 
       <div class="middle4">

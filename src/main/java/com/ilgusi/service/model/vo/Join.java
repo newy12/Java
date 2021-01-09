@@ -7,35 +7,29 @@ import lombok.Data;
 
 @Data
 public class Join {
-	private String sTitle;		//서비스 제목
-	private int sPrice;			//서비스 가격
-	private String sContent;	//서비스 내용
-	private String sArea;		//서비스 지역
-	private String sImg;		//섬네일 이미지
-	private int sRate;			//서비스 평점
-	private int mainCategory;	//메인카테고리 번호
-	private int subCategory;	//서브카테고리 번호
-	private int workingDate;	//예상 작업일
-	private int workingCount;	//진행한 작업 수
-	private char deleteStatus;	//삭제 여부
-	private char adminApproval;	//승인 여부
-	private int mNo;  
 	private String mId;
-	private String mPw;
+	private String sTitle;
+	private int sPrice;
+	private String sContent;
+	private String sArea;
+	private int mainCategory;
+	private int subCategory;
+	private int workingDate;
+	private int mNo;  
+	private int sRate;
 	private String mName;
 	private String mEmail;
 	private String mPhone;
-	private int mGrade;
-	private int warningCount;
-	private String introduce;
+	private String introduce;  
 	private String enrollDate;
-	private String brandName;
-	private String contactTime;  //조인 나와라
-	private List<ServiceReview> reviewList;
-	private ArrayList<ServiceFile> fileList ;
+	private String brandName;  //브랜드명
+	private String contactTime;//연락가능시간
+	private List<Service> serviceList;		 //list로 해준것은 introduce.jsp에서 <for each list로 받아야한다.
+	private List<ServiceReview> reviewList;  //list로 해준것은 introduce.jsp에서 <for each list로 받아야한다. 
+	private ArrayList<ServiceFile> fileList ; //list로 해준것은 introduce.jsp에서 <for each list로 받아야한다.
+	private String sImg;
+	//
 	//줄바꿈
-	public String getSContentBr() {
-		return sContent.replaceAll("\r\n", "<br>");
-	}
+	
 	
 }

@@ -17,8 +17,8 @@ public class ServiceService {
 	@Autowired
 	private ServiceDao dao;
 
-		public Join selectOneMember(String id) {
-		return dao.selectOneMember(id);
+		public Join selectOneMember(String mId) {
+		return dao.selectOneMember(mId);
 	}
 
 		public int insertService(Join join) {
@@ -43,12 +43,13 @@ public class ServiceService {
 			return dao.selectOneMember(MNo);
 		}
 
-		public List<ServiceReview> selectReviewList(String id) {
-			List<ServiceReview> j = dao.selectReviewList(id);
+		public List<ServiceReview> selectReviewList(String mId) {
+			List<ServiceReview> j = dao.selectReviewList(mId);
 			return j;
 		}
 
-
-
-	
+		public List<com.ilgusi.service.model.vo.Service> serviceList(String mId) {
+			List<com.ilgusi.service.model.vo.Service> j = dao.serviceList(mId); 
+			return j;
+		}
 }

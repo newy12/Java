@@ -1,19 +1,17 @@
 package com.ilgusi.service.controller;
 
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.service.model.service.ServiceService;
 import com.ilgusi.service.model.vo.Join;
@@ -28,9 +26,10 @@ public class ServiceController {
 	private ServiceService service;
 
 	@RequestMapping("/introduceFrm.do")
-	public String introduceFrm(String id, Model model) {
-		Join j = service.selectOneMember(id);
-		j.setReviewList(service.selectReviewList(id));
+	public String introduceFrm(String mId, Model model) {
+		Join j = service.selectOneMember(mId);
+		j.setServiceList(service.serviceList(mId));
+		j.setReviewList(service.selectReviewList(mId));
 		model.addAttribute("j", j);
 		return "freelancer/introduce";
 	}
@@ -104,8 +103,8 @@ public class ServiceController {
 	@RequestMapping("/freelancerTradeHistory.do")
 	public String freelancerTradeHistory() {
 		return "freelancer/freelancerTradeHistory";
-	} // 프리랜서 마이페이지 정보수정(소개글,연락가능시간,브랜드명 추가)
-
+	}
+	// 프리랜서 마이페이지 정보수정(소개글,연락가능시간,브랜드명 추가)
 	@RequestMapping("/updateFreelancer.do")
 	public String updateFreelancer(Member m, Model model) {
 		int result = service.updateFreelancer(m);

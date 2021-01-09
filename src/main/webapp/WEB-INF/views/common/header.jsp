@@ -24,6 +24,9 @@
     <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
     <link rel="manifest" href="/site.webmanifest">
+
+    <!-- loginFrm -->
+    <link rel="stylesheet" href="/css/member/loginFrm.css">
     <title>Insert title here</title>
 
     <style>
@@ -86,6 +89,8 @@
         }
 
         .dh-header .header-bottom>.nav>ul {
+            margin: 0;
+            padding: 0;
             width: 100%;
             height: 100%;
             list-style: none;
@@ -95,17 +100,53 @@
             float: left;
         }
 
+
         .dh-header .header-bottom>.nav>ul>li>a {
             display: block;
             text-decoration: none;
             color: black;
             font-size: large;
-            padding: 16px 30px;
+            padding: 16px 35px;
         }
 
-        .dh-header .header-bottom>.nav>ul>li>a:hover {
+        .dh-header .header-bottom>.nav>ul>li>a:hover,
+        .dh-header .header-bottom>.nav>ul>li:hover>a {
             border-bottom: 4px solid #314C83;
+            color: black;      
+        }
+
+        .dh-header .header-bottom>.nav>ul ul {
+            display: none;
+            position: absolute;
+            border: 1px solid lightgray;
+            border-top-color: gray;
+            box-shadow: 1px 1px 6px 0px lightgray;
+            background-color: white;
+            list-style: none;
+            padding: 0;
+        }
+
+        .dh-header .header-bottom>.nav>ul ul>li {
+
+        }
+
+        .dh-header .header-bottom>.nav>ul ul>li>a {
+            display: block;
+            text-decoration: none;
             color: black;
+            font-size: medium;
+            padding: 0 35px;
+            margin-top: 20px;
+        }
+        .dh-header .header-bottom>.nav>ul ul>li>a:last-child{
+            margin-bottom: 20px;
+        }
+        .dh-header .header-bottom>.nav>ul ul>li>a:hover{
+            text-decoration: underline;
+        }
+
+        .dh-header .header-bottom>.nav>ul>li:hover ul {
+            display: block;
         }
 
         .header-menu span {
@@ -119,6 +160,142 @@
     </style>
 </head>
 
+<script>
+    $(document).ready(function () {
+        //카테고리 목록 불러오는거
+        $.ajax({
+            url: '/categoryAjax.do',
+            dataType: 'json',
+            success: function (data) {
+                let $navUl = $(".nav>ul");
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i].cDivision == 'm') {
+                        $navUl.append("<li><a href='#'>" + data[i].cName + "</a> <ul></ul></li>")
+                    }
+                    if (data[i].cDivision == 's') {
+                        $(".nav>ul>li:eq(" + (parseInt(data[i].cNo / 10) - 1) + ")>ul").append(
+                            "<li><a href='#'>" + data[i].cName + "</a></li>")
+                        // console.log(data[i]);
+                    }
+                }
+            }
+        })
+        //헤더의 로그인 버튼 누르면 로그인 창 show
+        $(".header-menu #login").on("click", function () {
+            $(".background-screen").show();
+            $(".login-form-container").show();
+        });
+        // 뒷 배경 누르면 ,로그인 창, 뒷 배경 Hide
+        $(".background-screen").on("click", function () {
+            $(".background-screen").hide();
+            $(".login-form-container").hide();
+        });
+        // 로그인 창 x버튼 누르면 ,로그인 창, 뒷 배경 Hide
+        $(".login-form-close").on("click", function () {
+            $(".background-screen").hide();
+            $(".login-form-container").hide();
+        });
+        //submit 버튼 비활성화
+        $("#btnLogin").prop("disabled", true);
+
+        function blurEvt($inputTarget, $validationTarget) {
+            if ($inputTarget.val() != '')
+                $inputTarget.trigger("keyup");
+            else {
+                $inputTarget.removeAttr("style");
+                $validationTarget.hide();
+            }
+        }
+        let idAllowed = false;
+        //id 정규식
+        $("#id").on("keyup", (function (e) {
+            // m_id             VARCHAR2(20)
+            let regExp = /^\w{3,20}$/;
+            if (regExp.exec($(this).val())) {
+                console.log("조건 통과함: " + $(this).val())
+                $("#id_validation").hide();
+                $(this).removeAttr("style");
+                idAllowed = true;
+            } else {
+                $("#id_validation").show();
+                $(this).css("border-color", "red");
+                idAllowed = false;
+            }
+            checkAllValidation();
+        }));
+        $("#id").on("blur", function () {
+            blurEvt($(this), $("#id_validation"));
+        });
+        let pwAllowed = false;
+        //pw 정규식
+        $("#pw").on("keyup", (function (e) {
+            let regExp = /^[a-zA-z0-9_!@#$%^]{4,}$/;
+            if (regExp.exec($(this).val())) {
+                console.log("비번조건 통과함: " + $(this).val())
+                $("#pw1_validation").hide();
+                $(this).removeAttr("style");
+                pwAllowed = true;
+            } else {
+                $("#pw1_validation").show();
+                $(this).css("border-color", "red");
+                pwAllowed = false;
+            }
+            checkAllValidation();
+        }));
+        $("#pw").on("blur", function () {
+            blurEvt($(this), $("#pw1_validation"));
+        });
+
+        //모든 유효성 검사가 완료되었을 시 버튼 클릭 가능하게 바꿈.
+        function checkAllValidation() {
+            if ($("#id").val() == '' || $("#pw").val() == '') {
+                $("#btnLogin").prop("disabled", true);
+                $("#btnLogin").removeAttr("style");
+                console.log("if");
+            } else if (idAllowed == false || pwAllowed == false) {
+                $("#btnLogin").prop("disabled", true);
+                $("#btnLogin").removeAttr("style");
+                console.log("elseif");
+            } else {
+                $("#btnLogin").prop("disabled", false);
+                $("#btnLogin").css("background-color", "#314C83");
+                $("#btnLogin").css("color", "white");
+                $("#btnLogin").css("cursor", "pointer");
+
+                console.log("else");
+            }
+
+        }
+        
+    });
+</script>
+<div class="background-screen"></div>
+<div class="login-form-container">
+    <div class="login-form-close">
+        <span>x</span>
+    </div>
+    <div class="login-form">
+        <div class="login-form-top">
+            <img src="/img/logo/logo_white.png" alt="">
+        </div>
+        <div class="login-form-center">
+            <div class="login-title">
+                <span>로그인</span>
+            </div>
+            <div class="login-inputs">
+                <form action="/login.do" method="post">
+                    <input type="text" name="id" id="id" placeholder="아이디를 입력해주세요"><br>
+                    <input type="password" name="pw" id="pw" placeholder="비밀번호를 입력해주세요."><br>
+                    <input type="submit" id="btnLogin" value="로그인">
+                    <a href="/forgot_pwd.do">아이디·비밀번호 찾기</a>
+                </form>
+            </div>
+        </div>
+        <div class="login-form-bottom">
+            <a href="/join.do">회원가입 하기</a>
+        </div>
+    </div>
+</div>
 <div class="dh-header-container">
     <header class="dh-header">
         <div class="header-top">
@@ -148,13 +325,6 @@
         <div class="header-bottom">
             <div class="nav">
                 <ul>
-                    <li><a href="#">디자인</a></li>
-                    <li><a href="#">IT프로그래밍</a></li>
-                    <li><a href="#">영상사진음향</a></li>
-                    <li><a href="#">레슨실무교육</a></li>
-                    <li><a href="#">문서글쓰기</a></li>
-                    <li><a href="#">비즈니스 컨설팅</a></li>
-                    <li><a href="#">주문제작</a></li>
                 </ul>
             </div>
         </div>
