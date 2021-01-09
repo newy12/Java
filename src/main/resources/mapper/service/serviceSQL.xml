@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="service">
+<<<<<<< HEAD
 	<select id="selectOneMember" parameterType="String" resultType="j">
 <!-- 프리랜서 소개글 불러오기 쿼리 -->
 	select
@@ -63,12 +64,45 @@
 		<!-- 서비스 등록 쿼리 -->
 		<insert id="insertService" parameterType="j">
 		insert into service 
+=======
+	<select id="selectOneMember" parameterType="String"
+		resultType="j">
+		<!-- 프리랜서 소개글 불러오기 쿼리 -->
+		select
+		member.m_name as mName,
+		member.m_phone as mPhone,
+		member.m_email
+		as mEmail,
+		member.introduce as introduce,
+		service.s_area as sArea,
+		service.s_img as sImg,
+		service_review.r_content as rContent,
+		service_review.write_date as writeDate
+		from
+		member inner join
+		service on
+		member.m_id = service.m_id left outer join
+		service_review on
+		member.m_id = service_review.m_id
+		where member.m_id = #{id}
+	</select>
+	<!-- 소개글 중 리뷰 리스트 불러오기 쿼리 -->
+	<select id="selectListReview" parameterType="String"
+		resultType="j">
+		select * from (select s_no from service
+		where service.m_id = #{id}) temp,
+		service_review
+		where service_review.s_no = temp.s_no
+	</select>
+	<!-- 서비스 등록 쿼리 -->
+	<insert id="insertService" parameterType="j">
+		insert into service
+>>>>>>> 6e68c3b6613a9ab49c0a9d98131d34d6a7ee6378
 		values
 		(service_seq.nextval,#{mId},#{sTitle},#{sPrice},#{sContent},#{sArea},#{sImg},#{sRate},#{mainCategory},#{subCategory},#{workingDate},0,to_char(sysdate,'yyyy-mm-dd'),'y','y')
-		</insert>
-	<!-- (소현)serviceNo로 service 불러오기 -->
-	<select id="selectOneService" parameterType="_int"
-		resultType="s">
+	</insert>
+	<!-- (소현)서비스불러오기,동적쿼리-sNo로 service 불러오기 -->
+	<select id="selectService" parameterType="_int" resultType="s">
 		select
 		s_no as sNo,
 		m_id as mId,
@@ -84,44 +118,62 @@
 		sub_category as subCategory,
 		working_date as workingDate,
 		working_count as workingCount,
+<<<<<<< HEAD
 		write_date as writeDate,
 		delete_status as deleteStatus,
 		admin_approval as adminApproval
+=======
+		write_date
+		as writeDate,
+		delete_status as
+		deleteStatus,
+		admin_approval as
+		adminApproval
+>>>>>>> 6e68c3b6613a9ab49c0a9d98131d34d6a7ee6378
 		from
 		service
-		where s_no=#{SNo}
+		<if test="value !=null">
+			where s_no=#{_parameter}
+		</if>
 	</select>
 	<!-- 영재 프리랜서마이페이지 정보수정 -->
 	<update id="updateFreelancer" parameterType="m">
 		update member set
-			brand_name = #{brandName},
-			contact_time = #{contactTime},
-			introduce = #{introduce}
+		brand_name = #{brandName},
+		contact_time = #{contactTime},
+		introduce = #{introduce}
 		where m_id = #{MId}
 	</update>
 	<!-- 영재 프리랜서마이페이지 정보찾기 -->
-	<select id="freelancerOneMember" parameterType="_int" resultType="m">
-	select 
+	<select id="freelancerOneMember" parameterType="_int"
+		resultType="m">
+		select
 		m_id as mId,
 		m_name as mName,
 		m_email as mEmail,
+<<<<<<< HEAD
 		m_phone as mPhone,
 		brand_name as brandName,
 		contact_time as contactTime,
 		introduce as introduce
 	from member where m_no = #{MNo}
+=======
+		m_phone as mPhone
+		from member where m_no = #{MNo}
+>>>>>>> 6e68c3b6613a9ab49c0a9d98131d34d6a7ee6378
 	</select>
 	<!--영재 서비스고유번호 받기 -->
 	<select id="selectServiceNo" resultType="_int">
-	select 
-		max(s_no) 
-	from service 
+		select
+		max(s_no)
+		from service
 	</select>
 	<insert id="insertServiceFile" parameterType="sf">
-	insert into service_file values(SERVICE_FILE_SEQ.NEXTVAL,#{sNo},#{filename},#{filepath})
-	
-	
-	
+		insert into service_file
+		values(SERVICE_FILE_SEQ.NEXTVAL,#{sNo},#{filename},#{filepath})
+
+
+
 	</insert>
-	
+
 </mapper>

@@ -1,6 +1,7 @@
 package com.ilgusi.member.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -13,8 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ilgusi.member.model.service.MemberService;
 import com.ilgusi.member.model.vo.Member;
-import com.ilgusi.service.model.vo.Join;
-import com.ilgusi.service.model.vo.Service;
 
 @Controller
 public class MemberController {
@@ -56,7 +55,7 @@ public class MemberController {
 	public String searchPw(HttpServletRequest req, Member m, Model model) {
 		System.out.println("searchPw.do 접속");
 		System.out.println("m: " + m.getMId() + " p:" + m.getMPhone());
-		
+
 		Member result = service.searchIdPw(m);
 		System.out.println("result: " + result);
 
@@ -201,6 +200,5 @@ public class MemberController {
 		}
 		return "common/msg";
 	}
-	
 
 }

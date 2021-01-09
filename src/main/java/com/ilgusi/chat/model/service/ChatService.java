@@ -20,8 +20,8 @@ public class ChatService {
 	}
 
 	// 찜한 서비스 정보 불러오기
-	public com.ilgusi.service.model.vo.Service selectOneService(int serviceNo) {
-		return dao.selectOneService(serviceNo);
+	public ArrayList<com.ilgusi.service.model.vo.Service> selectService(int sNo) {
+		return dao.selectService(sNo);
 	}
 
 	// 채팅방 생성

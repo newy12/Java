@@ -33,7 +33,7 @@
 										<p id="preview">제공자: ${f.MId }</p>
 										<p id="preview">가격: ${f.SPrice } 평점: ${f.SRate }</p>
 										<span class="start-chat"><a
-											href="/startChat.do?serviceNo=${f.SNo }&myId=${sessionScope.loginMember.MId }&yourId=${f.MId}"><u>
+											href="/startChat.do?sNo=${f.SNo }&myId=${sessionScope.loginMember.MId }&yourId=${f.MId}"><u>
 													문의하기</u></a></span>
 													<!-- 문의하기 버튼 누르면 사라지게 -->
 									</div>
