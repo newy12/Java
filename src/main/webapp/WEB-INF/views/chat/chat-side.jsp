@@ -426,7 +426,7 @@ textarea::-webkit-scrollbar-thumb {
 			<ul>
 				<li><a href="/chatList.do?"><img
 						src="/img/icon/chat_white.png" width="45px;"><br>문의</a></li>
-				<li><a href="/heartList.do?memberNo=${loginMember.MNo}"><img
+				<li><a href="/heartList.do?mNo=${loginMember.MNo}&order=new"><img
 						src="/img/icon/heart_white.png" width="40px;"><br>찜</a></li>
 				<!-- 고객일때 -->
 				<!-- 프리랜서일때 <li>서비스</li>-->

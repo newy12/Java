@@ -126,5 +126,26 @@
 
 
 	</insert>
+	
+	<!-- (소현)관리자-서비스 승인 -->
+	<update parameterType="_int" id="acceptService">
+		update service set admin_approval='y', write_date=to_char(sysdate,'yy-mm-dd') 
+		where s_no=#{_parameter} 
+	</update>
+
+	<!-- (소현)관리자-서비스 삭제 -->
+	<update parameterType="_int" id="deleteService">
+		update service set delete_status='y' where s_no=#{_parameter} 
+	</update>
+
+	<!-- (소현)관리자-작업내역 조회 -->
+	<select resultType="trade" parameterType="_int" id="tradeHistory">
+		select * from service_trade where s_no=#{_parameter} 
+	</select>
+
+	<!-- (소현)관리자-이용내역 조회 -->
+	<select resultType="trade" parameterType="_int" id="userHistory">
+		select * from service_trade where m_no=#{_parameter} 
+	</select>
 
 </mapper>
