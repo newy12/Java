@@ -5,6 +5,7 @@ import java.util.List;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.service.model.vo.Join;
@@ -16,8 +17,8 @@ public class ServiceDao {
 	@Autowired
 	private SqlSessionTemplate session;
 
-	public Join selectOneMember(String id) {
-		return session.selectOne("service.selectOneMember",id);
+	public Join selectOneMember(String mId) {
+		return session.selectOne("service.selectOneMember",mId);
 	}
 
 	public int insertService(Join join) {
@@ -28,11 +29,11 @@ public class ServiceDao {
 		return session.update("service.updateFreelancer",m);
 	}
 
-	public Member selectOneMember(int MNO) {
+	public Member selectOneMember(int MNO) { //프리랜서 한명의 개인페이지 가져오는거
 		return session.selectOne("service.freelancerOneMember",MNO);
 	}
-	public List<ServiceReview> selectReviewList(String id) {
-		List<ServiceReview> j = session.selectList("service.selectListReview",id);
+	public List<ServiceReview> selectReviewList(String mId) {
+		List<ServiceReview> j = session.selectList("service.selectListReview",mId);
 		return j;
 	}
 
@@ -46,6 +47,10 @@ public class ServiceDao {
 		serviceFile.setFilename(filename);
 		serviceFile.setFilepath(filepath);
 		return session.insert("service.insertServiceFile",serviceFile);
+	}
+	public List<com.ilgusi.service.model.vo.Service> serviceList(String mId) {
+		List<com.ilgusi.service.model.vo.Service> j = session.selectList("service.selectServiceList",mId);
+		return j;
 	}
 
 

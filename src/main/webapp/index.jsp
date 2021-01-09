@@ -180,7 +180,7 @@
 		onClick="window.open(this.href, '', 'width=530, height=630, left=1000, scrollbars=no,location=no, resizable=no'); return false;">채팅하기</a>
 	<br>
 	영재
-	<a href="/introduceFrm.do">프리랜서소개글</a>
+	<a href="/introduceFrm.do?mId=newy10">프리랜서소개글</a>
 	<a href="/serviceJoinFrm.do?MId=${loginMember.MId}">서비스등록</a>
 	<a href="/freelancerMypage.do?MNo=${loginMember.MNo}">프리랜서 마이페이지</a>
 	<br>
