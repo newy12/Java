@@ -233,7 +233,7 @@
             <ul class="menu">
                 <li><img src="/img/icon/circle_navy.png" style="display: inline;"><a href="#" style="margin-left: 5px; font-weight: bold; ">나의 프로필</a></li>
                 <li><img src="/img/icon/circle_navy.png"><a href="/userHeartList.do?mNo=${loginMember.MNo }&order=all">찜한 내역</a></li>
-                <li><img src="/img/icon/circle_navy.png"><a href="/userTradeHistory.do">거래 내역</a></li>
+                <li><img src="/img/icon/circle_navy.png"><a href="/userTradeHistory.do?mNo=${loginMember.MNo }">거래 내역</a></li>
             </ul>
         </div>
         

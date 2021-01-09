@@ -9,7 +9,6 @@
 <style>
     .page-wrap {
         width: 1104px;
-        height:1100px;
         margin: 0 auto;
         margin-top:50px;
     }
@@ -184,14 +183,21 @@
         font-weight: bold;
         margin-top: 20px;
         margin-left:4px;
+        color: white;
+        background-color:  rgb(49, 76, 131);
+        border: 1px solid rgb(49, 76, 131);
+    }
+    .review-btn:hover{
         color: rgb(49, 76, 131);
         background-color: white;
         border: 1px solid rgb(49, 76, 131);
     }
-    .review-btn:hover{
-        color: white;
-        background-color:  rgb(49, 76, 131);
-        border: 1px solid rgb(49, 76, 131);
+    .noTrade{
+    	text-align: center;
+    	line-height: 185px;
+    	color :rgb(224, 224, 224);
+    	font-size:20px;
+    	font-weight: bold; 
     }
 </style>
 </head>
@@ -202,13 +208,13 @@
     <div class="page-wrap">
         <div class="profile-box">
             <div><img src="/img/icon/mypage_person.png" style="width: 147px; height: 147px"></div>
-            <div style="margin-top: 10px;">낑짱꽁님</div>
+            <div style="margin-top: 10px;">${loginMember.MId }님</div>
             <div style="margin-top: 5px;"><button class="switch">프리랜서로 전환</button></div>
             <p>MY PAGE</p>
             <hr>
             <ul class="menu">
-                <li><img src="/img/icon/circle_navy.png"><a href="/userMypage.do">나의 프로필</a></li>
-                <li><img src="/img/icon/circle_navy.png"><a href="/userHeartList.do">찜한 내역</a></li>
+                <li><img src="/img/icon/circle_navy.png"><a href="/userMypage.do?MNo=${loginMember.MNo}">나의 프로필</a></li>
+                <li><img src="/img/icon/circle_navy.png"><a href="/userHeartList.do?mNo=${loginMember.MNo }&order=all">찜한 내역</a></li>
                 <li><img src="/img/icon/circle_navy.png" style="display: inline;"><a href="#"  style="margin-left: 5px; font-weight: bold; ">거래 내역</a></li>
             </ul>
         </div>
@@ -228,38 +234,74 @@
                 </div>
 
                 <!--여기부터 반복됨/ 여기서부터 for문 돌리면 될 듯-->
-                <div class="content-box">
-                    <div>
-                        <div style="color: rgb(51, 51, 51);font-size: 15px;">거래 번호</div>
-                        <div style="color: rgb(51, 51, 51);font-size: 15px;margin-top: 5px;font-weight: bold;">101010</div>
-                        <div style="color: rgb(51, 51, 51);font-size: 15px;margin-top: 20px;">거래 금액</div>
-                        <div style="color: rgb(255, 143, 63);font-size: 20px;margin-top: 5px;font-weight: bold;">000,000,000원</div>
-                    </div>
-                    <div>
-                        <div>
-                            <div><a href="#"><img src="/img/icon/img.jpg" width="175px" height="103px"></a></div>
-                            <div>
-                                사용자 ID
-                                <div>
-                                    <div><a href="#">abasdc1234</a></div>
-                                    <div><a href="#"><img src="/img/icon/home.png"></a></div>
-                                    <div><a href="#"><img src="/img/icon/message.png"></a></div>
-                                </div>
-                            </div>
-                            <div><a href="#">어쩌구어쩌구어쩌구어쩌구어쩌구어쩌구어쩌구어쩌구어쩌구어쩌구어쩌구어쩌구어쩌구어쩌구어쩌구어쩌구어쩌구어쩌구어쩌구</a></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div style="color: rgb(255, 143, 63);font-size: 20px;margin-top: 5px;font-weight: bold;">결제 완료</div>
-                        <div style="color: rgb(51, 51, 51);font-size: 15px;">20210106 02:58</div>
-                        <div style="color: rgb(51, 51, 51);font-size: 15px;margin-top: 20px;">예상 마감일</div>
-                        <div style="color: rgb(51, 51, 51);font-size: 15px;margin-top: 5px;font-weight: bold;">2021-01-08</div>
-                    </div>
-                    <div>
-                        아직 후기를 <br>작성할 수 없습니다
-                    </div>
-                </div>
-
+                <c:if test="${tradeList.size() == 0 }">
+                	<div class="content-box noTrade">
+                		진행한 거래가 없습니다
+                	</div>
+                </c:if>
+                <c:if test="${tradeList.size() != 0 }">
+				<c:forEach items="${tradeList }" var="t" varStatus="status">
+					<div class="content-box">
+	                    <div>
+	                        <div style="color: rgb(51, 51, 51);font-size: 15px;">거래 번호</div>
+	                        <div style="color: rgb(51, 51, 51);font-size: 15px;margin-top: 5px;font-weight: bold;"><a href="#">${t.TNo }</a></div>
+	                        <div style="color: rgb(51, 51, 51);font-size: 15px;margin-top: 20px;">거래 금액</div>
+	                        <div style="color: rgb(255, 143, 63);font-size: 20px;margin-top: 5px;font-weight: bold;">${t.TPrice }원</div>
+	                    </div>
+	                    <div>
+	                        <div>
+	                            <div><a href="#"><img src="/img/icon/img.jpg" width="175px" height="103px"></a></div>
+	                            <div style="color:#8a8a8a;">
+	                                사용자 ID
+	                                <div>
+	                                    <div><a href="#">${serviceList[status.index].MId }</a></div>
+	                                    <div><a href="#"><img src="/img/icon/home.png"></a></div>
+	                                    <div><a href="#"><img src="/img/icon/message.png"></a></div>
+	                                </div>
+	                            </div>
+	                            <div><a href="#">${serviceList[status.index].SContent }</a></div>
+	                        </div>
+	                    </div>
+	                    <div>
+	                    	<c:choose>
+	                    		<c:when test="${t.TStatus == 0 }">
+	                    			<div style="color: rgb(255, 143, 63);font-size: 20px;margin-top: 5px;font-weight: bold;">결제 전</div>
+			                        <div style="color: rgb(51, 51, 51);font-size: 15px;"></div>
+			                        <div style="color: rgb(51, 51, 51);font-size: 15px;margin-top: 20px;">예상 마감일</div>
+			                        <div style="color: rgb(51, 51, 51);font-size: 15px;margin-top: 5px;font-weight: bold;">${t.endDate }</div>
+	                    		</c:when>
+	                    		<c:when test="${t.TStatus == 1 }">
+	                    			<div style="color: rgb(255, 143, 63);font-size: 20px;margin-top: 5px;font-weight: bold;">결제 완료</div>
+			                        <div style="color: rgb(51, 51, 51);font-size: 15px;">${payDate[status.index] }</div>
+			                        <div style="color: rgb(51, 51, 51);font-size: 15px;margin-top: 20px;">예상 마감일</div>
+			                        <div style="color: rgb(51, 51, 51);font-size: 15px;margin-top: 5px;font-weight: bold;">${t.endDate }</div>
+	                    		</c:when>
+	                    		<c:when test="${t.TStatus == 2 }">
+	                    			<div style="color: rgb(224, 224, 224);font-size: 20px;margin-top: 5px;font-weight: bold;">작업 완료</div>
+			                        <div style="color: rgb(51, 51, 51);font-size: 15px;">${payDate[status.index] }</div>
+			                        <div style="color: rgb(51, 51, 51);font-size: 15px;margin-top: 20px;">작업 종료일</div>
+			                        <div style="color: rgb(51, 51, 51);font-size: 15px;margin-top: 5px;font-weight: bold;">${t.endDate }</div>
+	                    		</c:when>
+	                    	</c:choose>
+	                        
+	                    </div>
+	                    <div>
+	                    <c:choose>
+	                    	<c:when test="${t.TStatus == 2 }">
+	                    		<button class="review-btn">후기 작성하기</button>
+	                    	</c:when>
+	                    	<c:otherwise>
+	                    		 아직 후기를 <br>작성할 수 없습니다
+	                    	</c:otherwise>
+	                    </c:choose>
+	                       
+	                    </div>
+	                </div>
+                </c:forEach>
+                </c:if>
+	            
+                
+<!-- 
                 <div class="content-box">
                     <div>
                         <div style="color: rgb(51, 51, 51);font-size: 15px;">거래 번호</div>
@@ -291,14 +333,20 @@
                         <button class="review-btn">후기 작성하기</button>
                     </div>
                 </div>
-
+ -->
 
             </div>
         </div>
 	</div>
 	<br><br><br>
     <jsp:include page="/WEB-INF/views/common/footer.jsp" />
-
+	
+	<script>
+		$(document).ready(function(){
+			var containerHeight = $(".container-box").height();
+			$(".page-wrap").height(containerHeight+400);
+		});
+	</script>
 
 </body>
 </html>

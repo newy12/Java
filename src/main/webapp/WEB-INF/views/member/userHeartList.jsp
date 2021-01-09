@@ -9,7 +9,6 @@
 <style>
     .page-wrap {
         width: 1104px;
-        height:1000px;
         margin: 0 auto;
         margin-top:50px;
     }
@@ -190,6 +189,14 @@
     font-size: 17px;
     color: rgb(241, 196, 15);
 }
+.noList{
+    margin-top: 5px;
+    text-align: center;
+   	line-height: 185px;
+   	color :rgb(224, 224, 224);
+   	font-size:20px;
+   	font-weight: bold; 
+}
 </style>
 </head>
 <body>
@@ -199,14 +206,14 @@
     <div class="page-wrap">
         <div class="profile-box">
             <div><img src="/img/icon/mypage_person.png" style="width: 147px; height: 147px"></div>
-            <div style="margin-top: 10px;">낑짱꽁님</div>
+            <div style="margin-top: 10px;">${loginMember.MId }님</div>
             <div style="margin-top: 5px;"><button class="switch">프리랜서로 전환</button></div>
             <p>MY PAGE</p>
             <hr>
             <ul class="menu">
-                <li><img src="/img/icon/circle_navy.png" ><a href="/userMypage.do">나의 프로필</a></li>
+                <li><img src="/img/icon/circle_navy.png" ><a href="/userMypage.do?MNo=${loginMember.MNo}">나의 프로필</a></li>
                 <li><img src="/img/icon/circle_navy.png" style="display: inline;"><a href="#" style="margin-left: 5px; font-weight: bold; ">찜한 내역</a></li>
-                <li><img src="/img/icon/circle_navy.png"><a href="/userTradeHistory.do">거래 내역</a></li>
+                <li><img src="/img/icon/circle_navy.png"><a href="/userTradeHistory.do?mNo=${loginMember.MNo }">거래 내역</a></li>
             </ul>
         </div>
         
@@ -224,6 +231,42 @@
 	        </div>
 	
 	        <div class="container-box">
+			<c:choose>
+				<c:when test="${list.size() == 0}">
+					<div class="noList" style="width:800px">찜한 서비스가 없습니다</div>
+				</c:when>
+				<c:otherwise>
+					<!-- 여기부터 반복 -->
+		            <c:forEach items="${list }" var="s" varStatus="status">
+		            <div>
+		                <div>
+		                    <a href="#">
+		                        <div class="title-img">
+		                            <div class="back-img">
+		                            	<img src="/img/icon/img.jpg" width="225x" height="133px">
+		                            </div>
+		                        </div>
+		                    </a>
+		                    <div class="title-img heart-btn">
+		                    	<img id="service1" src="/img/icon/heart_orange.png" width="31px" height="31px" onclick="heart_click(this)" value="fill">
+	                            <input type="text" style="display:none" value="${s.SNo }" >
+	                            <input type="text" style="display:none" value="${loginMember.MNo }">
+		                    	</div>
+		                </div>
+		                <div class="empty"></div>
+		                <div class="title">${brandList[status.index] }</div>
+		                <a href="#" id="serviceContent">
+		                    <div class="content">${s.SContent } </div>
+		                    <div class="price">${s.SPrice }원</div>
+		                    <div class="rate"><span>평점 </span><span>${s.SRate }</span><span>.0점</span><span>★★★★★</span>
+		                    </div>
+		                </a>
+		            </div>
+		            </c:forEach>
+				</c:otherwise>
+			</c:choose>
+	            
+	            
 	        <!-- 
 	            <div>
 	                <div>
@@ -243,35 +286,8 @@
 	                </a>
 	            </div>
 	          -->
-	            <!-- 여기부터 반복 -->
-	            <c:forEach items="${list }" var="s" varStatus="status">
-	            <div>
-	                <div>
-	                    <a href="#">
-	                        <div class="title-img">
-	                            <div class="back-img">
-	                            <img src="/img/icon/img.jpg" width="225x" height="133px">
-	                            </div>
-	                        </div>
-	                    </a>
-	                    <div class="title-img heart-btn">
-	                    	<img id="service1" src="/img/icon/heart_orange.png" width="31px" height="31px" onclick="heart_click(this)" value="fill">
-                            <input type="text" style="display:none" value="${s.SNo }" >
-                            <input type="text" style="display:none" value="${loginMember.MNo }">
-	                    	</div>
-	                </div>
-	                <div class="empty"></div>
-	                <div class="title">${brandList[status.index] }</div>
-	                <a href="#">
-	                    <div class="content">${s.SContent } </div>
-	                    <div class="price">${s.SPrice }원</div>
-	                    <div class="rate"><span>평점 </span><span>${s.SRate }</span><span>.0점</span><span>★★★★★</span>
-	                    </div>
-	                </a>
-	            </div>
-	            	
-	            </c:forEach>
-	            
+	          
+	          
 	        </div>
 	    </div>
 	</div>
@@ -339,6 +355,10 @@
 	        	}else{
 	        		$("#array-select").val("all").prop("selected", true);
 	        	}
+	        	
+	        	//높이 동적으로 늘려줌
+	        	var containerHeight = $(".container-box").height();
+				$(".page-wrap").height(containerHeight+400);
         });
         
         $("#array-select").change(function(){
