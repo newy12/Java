@@ -58,23 +58,9 @@
       from service
       where m_id = #{mId}
 		</select>
-<<<<<<< HEAD
-	<!-- 소개글 중 리뷰 리스트 불러오기 쿼리 -->
-	<select id="selectListReview" parameterType="String"
-		resultType="j">
-		select * from (select s_no from service
-		where service.m_id = #{id}) temp,
-		service_review
-		where service_review.s_no = temp.s_no
-	</select>
-	<!-- 서비스 등록 쿼리 -->
-	<insert id="insertService" parameterType="j">
-		insert into service
-=======
 		<!-- 서비스 등록 쿼리 -->
 		<insert id="insertService" parameterType="j">
 		insert into service 
->>>>>>> 42a3c99ba3f130401b92bbbb12f21b51181ca973
 		values
 		(service_seq.nextval,#{mId},#{sTitle},#{sPrice},#{sContent},#{sArea},#{sImg},#{sRate},#{mainCategory},#{subCategory},#{workingDate},0,to_char(sysdate,'yyyy-mm-dd'),'y','y')
 	</insert>
@@ -98,15 +84,12 @@
 		write_date as writeDate,
 		delete_status as deleteStatus,
 		admin_approval as adminApproval
-<<<<<<< HEAD
 		write_date
 		as writeDate,
 		delete_status as
 		deleteStatus,
 		admin_approval as
 		adminApproval
-=======
->>>>>>> 42a3c99ba3f130401b92bbbb12f21b51181ca973
 		from
 		service
 		<if test="value !=null">
@@ -132,11 +115,6 @@
 		contact_time as contactTime,
 		introduce as introduce
 	from member where m_no = #{MNo}
-<<<<<<< HEAD
-		m_phone as mPhone
-		from member where m_no = #{MNo}
-=======
->>>>>>> 42a3c99ba3f130401b92bbbb12f21b51181ca973
 	</select>
 	<!--영재 서비스고유번호 받기 -->
 	<select id="selectServiceNo" resultType="_int">
