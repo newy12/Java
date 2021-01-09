@@ -23,8 +23,9 @@ public class ChatDao {
 	}
 
 	// 서비스 정보 불러오기
-	public Service selectOneService(int serviceNo) {
-		return session.selectOne("service.selectOneService", serviceNo);
+	public ArrayList<Service> selectService(int sNo) {
+		List<Service> list=session.selectList("service.selectService", sNo);
+		return (ArrayList<Service>)list;
 	}
 
 	// 채팅방 생성

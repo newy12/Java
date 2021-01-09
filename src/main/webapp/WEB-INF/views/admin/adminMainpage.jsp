@@ -68,7 +68,7 @@
 </head>
 <body>
 	<div class="header">
-        <img src="/img/logo_white.png">
+        <img src="/img/logo_white.png" onclick="location='/'">
         <div class="name">관리자</div>
     </div>
     <div class="sideNavi">

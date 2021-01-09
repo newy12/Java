@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ilgusi.chat.model.service.ChatService;
-import com.ilgusi.chat.model.vo.ChatContent;
 import com.ilgusi.favorite.model.vo.Favorite;
 import com.ilgusi.service.model.vo.Service;
 
@@ -28,13 +28,14 @@ public class ChatController {
 
 	// 채팅 시작
 	@RequestMapping("/startChat.do")
-	public String startChat(Model model, int serviceNo, String myId, String yourId) {
+	public String startChat(Model model, int sNo, String myId, String yourId) {
 		// 문의하려는 서비스정보 가져오기
-		Service oneService = service.selectOneService(serviceNo);
+		ArrayList<Service> serviceList = service.selectService(sNo);
+		Service oneService=serviceList.get(0);
 
 		// 채팅방 생성
 		HashMap<String, Object> room=new HashMap<String, Object>();
-		room.put("sNo",serviceNo);
+		room.put("sNo",sNo);
 		room.put("userId",myId);
 		room.put("freeId",yourId);
 		service.createChat(room);
@@ -50,6 +51,7 @@ public class ChatController {
 	
 	//채팅내용 db저장
 	@RequestMapping("/insertChat.do")
+	@ResponseBody
 	public void insertChat(int cNo, String myId,String time,String content) {
 		HashMap<String, Object> message=new HashMap<String, Object>();
 		message.put("cNo", cNo);

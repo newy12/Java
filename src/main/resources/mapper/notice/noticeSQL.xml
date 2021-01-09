@@ -10,8 +10,13 @@
 	  		filename,
 	  		filepath,
 	  		write_date as writeDate
-	  	from notice
+	  	from notice order by 1 desc
   </select>
+  
+  <insert id="insertNotice" parameterType="n">
+  	insert into notice values(notice_seq.nextval,#{nTitle},#{nContent},#{filename},#{filepath},to_char(sysdate,'yyyy-mm-dd'))
+  
+  </insert>
   	
  
   

@@ -1,11 +1,12 @@
 package com.ilgusi.member.model.service;
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ilgusi.member.model.dao.MemberDao;
 import com.ilgusi.member.model.vo.Member;
-import com.ilgusi.service.model.vo.Join;
 
 import common.SHA256Util;
 
@@ -31,7 +32,7 @@ public class MemberService {
 	public Member loginMember(String id, String pw) {
 		// 비번 암호화
 //		pw = encPw(pw);
-		
+
 		return dao.loginMember(id, pw);
 	}
 
@@ -39,7 +40,7 @@ public class MemberService {
 	public int registerMember(Member m) {
 		// 비번 암호화
 //		m.setMPw(encPw(m.getMPw()));
-		
+
 		return dao.registerMember(m);
 	}
 
@@ -62,5 +63,6 @@ public class MemberService {
 	public int deleteMember(String mId, String mPw) {
 		return dao.deleteMember(mId, mPw);
 	}
+
 
 }

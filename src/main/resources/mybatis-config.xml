@@ -14,6 +14,7 @@
 		<typeAlias type="com.ilgusi.question.model.vo.Question" alias="q"/>
 		<typeAlias type="com.ilgusi.request.model.vo.Request" alias="req"/>
 		<typeAlias type="com.ilgusi.category.model.vo.Category" alias="cate"/>
+		<typeAlias type="com.ilgusi.favorite.model.vo.FavoriteOrder" alias="fo"/>
 		
 		<!-- 서비스 관련 -->
 		<typeAlias type="com.ilgusi.service.model.vo.Join" alias="j"/>

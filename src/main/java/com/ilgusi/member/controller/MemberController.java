@@ -1,5 +1,8 @@
 package com.ilgusi.member.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -11,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ilgusi.member.model.service.MemberService;
 import com.ilgusi.member.model.vo.Member;
-import com.ilgusi.service.model.vo.Join;
 
 @Controller
 public class MemberController {
@@ -53,7 +55,7 @@ public class MemberController {
 	public String searchPw(HttpServletRequest req, Member m, Model model) {
 		System.out.println("searchPw.do 접속");
 		System.out.println("m: " + m.getMId() + " p:" + m.getMPhone());
-		
+
 		Member result = service.searchIdPw(m);
 		System.out.println("result: " + result);
 
@@ -150,12 +152,6 @@ public class MemberController {
 		return "member/userMypage";
 	}
 
-	// (문정)사용자 마이페이지-찜한 리스트 이동
-	@RequestMapping("/userHeartList.do")
-	public String userHeartList() {
-		return "member/userHeartList";
-	}
-
 	// (문정)사용자 마이페이지-거래내역
 	@RequestMapping("/userTradeHistory.do")
 	public String userTradeHistory() {
@@ -206,4 +202,5 @@ public class MemberController {
 		}
 		return "common/msg";
 	}
+
 }
