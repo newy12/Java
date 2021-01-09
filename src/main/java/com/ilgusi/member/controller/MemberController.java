@@ -150,12 +150,6 @@ public class MemberController {
 		return "member/userMypage";
 	}
 
-	// (문정)사용자 마이페이지-거래내역
-	@RequestMapping("/userTradeHistory.do")
-	public String userTradeHistory() {
-		return "member/userTradeHistory";
-	}
-
 	// (문정)사용자 마이페이지-이메일, 폰번호 변경
 	@ResponseBody
 	@RequestMapping("/changeMypage.do")
