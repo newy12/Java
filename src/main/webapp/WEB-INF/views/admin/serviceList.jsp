@@ -6,149 +6,221 @@
 <head>
 <meta charset="UTF-8">
 <title>19시(관리자) :: 서비스관리</title>
+<script src="https://code.jquery.com/jquery-3.5.1.js"
+	integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+	crossorigin="anonymous"></script>
 
 <style>
-@font-face {
-	font-family: 'Arita-dotum-Medium';
-	src:
-		url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Arita-dotum-Medium.woff')
-		format('woff');
-	font-weight: normal;
-	font-style: normal;
+th, td {
+	padding: 5px;
 }
 
-* {
-	font-family: 'Arita-dotum-Medium';
-}
-
-.header {
-	margin: 0 auto;
-	width: 1200px;
-	height: 100px;
-}
-
-.header>img {
-	width: 200px;
-	float: left;
-}
-
-.name {
-	float: right;
-	margin-right: 50px;
-}
-
-.sideNavi {
-	height: 800px;
-	width: 200px;
-	background-color: #314C83;
-	border-top-left-radius: 15px;
-	padding-top: 20px;
-	float: left;
-}
-
-.sideNavi>ul {
-	margin: 0;
-	padding: 0;
+.serviceNavi ul {
 	list-style-type: none;
+	overflow: hidden;
+	padding: 0px;
+	margin: 0px;
 }
 
-.sideNavi li {
-	margin: 0;
-}
-
-.sideNavi>ul>li>a {
-	margin-left: 40px;
-	padding: 10px;
-	display: block;
-	height: 30px;
-	line-height: 30px;
-	text-decoration: none;
-	color: white;
-}
-
-.navi-link:hover {
-	background-color: #304582;
-}
-
-.adminContent {
+.tab {
 	float: left;
+	width: 150px;
+	height: 60px;
+	text-align: center;
+	line-height: 60px;
+	color: white;
+	background-color: #314C83;
+	font-weight: bold;
+	box-sizing: border-box;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border: 2px solid #314C83;
+	border-bottom: none;
+}
+
+.adminContent div {
+	margin: 30px;
+	text-align: left;
+	display: none;
+}
+
+.select {
+	color: #314C83;
+	background-color: white;
+	font-weight: bold;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
 }
 </style>
-
 </head>
 <body>
-	<div class="header">
-		<img src="/img/logo/logo_white.png" onclick="location='/'">
-		<div class="name">관리자</div>
-	</div>
-	<div class="sideNavi">
+	<jsp:include page="/WEB-INF/views/admin/adminMainpage.jsp" />
+
+	<div class="serviceNavi">
 		<ul>
-			<li class="navi-link"><a href="/manageMember.do">MEMBER</a></li>
-			<li class="navi-link"><a href="/manageService.do">SERVICE</a></li>
-			<li class="navi-link"><a href="">NOTICE</a></li>
-			<li class="navi-link"><a href="">FAQ</a></li>
+			<li class="tab">미등록서비스</li>
+			<li class="tab">등록서비스</li>
 		</ul>
 	</div>
-
 	<div class="adminContent">
-		<h1>서비스 관리</h1>
-
-		<table border=1>
-			<tr>
-				<th>서비스번호</th>
-				<th>아이디</th>
-				<th>카테고리</th>
-				<th>서비스명</th>
-				<th>등록일</th>
-				<th>승인여부</th>
-				<th>처리</th>
-			</tr>
-			<c:forEach items="${serviceList }" var="s">
+		<div>
+			<h1>미등록 서비스 관리</h1>
+			<table border=1 id="waiting">
 				<tr>
-					<td>${s.SNo }</td>
-					<td>${s.MId }</td>
-					<td>메인:${ s.mainCategory}서브:${s.subCategory }</td>
-					<td><a href=#>${s.STitle }</a></td>
-					<td>${s.writeDate }</td>
-					<td>${s.adminApproval }</td>
-					<td>
-						<!-- 아직 승인안된 서비스  --> <c:if
-							test="${s.adminApproval eq 'n'.charAt(0)}">
-							<button id="accept" onclick="acceptService(${s.SNo});">승인</button>
-							<button id="reject" onclick="rejectService(${s.SNo});">거절</button>
-						</c:if> <!-- 승인된 서비스 --> <c:if test="${s.adminApproval eq 'y'.charAt(0)}">
-							<button id="delete" onclick="deleteService(${s.SNo});">삭제</button>
-						</c:if>
-					</td>
+					<th colspan='7'>승인 대기 중 서비스</th>
 				</tr>
-			</c:forEach>
-		</table>
+				<tr>
+					<th>등록일</th>
+					<th>서비스번호</th>
+					<th>아이디</th>
+					<th>카테고리</th>
+					<th>서비스명</th>
+					<th>처리</th>
+				</tr>
+				<c:forEach items="${serviceList }" var="s">
+					<c:if test="${s.adminApproval eq 'n'.charAt(0)}">
+						<tr>
+							<td>${s.writeDate }</td>
+							<td>${s.SNo }</td>
+							<td>${s.MId }<c:if test="${s.MId eq null}">탈퇴한회원</c:if></td>
+							<td>메인:${ s.mainCategory}서브:${s.subCategory }</td>
+							<td><a href=#>${s.STitle }</a></td>
+							<td>
+								<button id="acceptBtn" onclick="acceptService(${s.SNo});">승인</button>
+								<button id="reject">
+									<a href="/rejectFrm.do?sNo=${s.SNo }"
+										onClick="window.open(this.href, '', 'width=800, height=400, left=1000, scrollbars=no,location=no, resizable=no'); return false;">거절</a>
+								</button>
+							</td>
+						</tr>
+					</c:if>
+				</c:forEach>
+			</table>
+
+			<table border=1 id="deleted">
+				<tr>
+					<th colspan='7'>거절/삭제된 서비스</th>
+				</tr>
+				<tr>
+					<th>등록일</th>
+					<th>서비스번호</th>
+					<th>아이디</th>
+					<th>카테고리</th>
+					<th>서비스명</th>
+					<th>작업수</th>
+				</tr>
+				<c:forEach items="${serviceList }" var="s">
+					<c:if test="${s.deleteStatus eq 'y'.charAt(0)}">
+						<tr>
+							<td>${s.writeDate }</td>
+							<td>${s.SNo }</td>
+							<td>${s.MId }<c:if test="${s.MId eq null}">탈퇴한회원</c:if></td>
+							<td>메인:${ s.mainCategory}서브:${s.subCategory }</td>
+							<td><a href=#>${s.STitle }</a></td>
+							<td><a href="">${s.workingCount }</a></td>
+
+						</tr>
+					</c:if>
+				</c:forEach>
+			</table>
+		</div>
+
+		<div>
+			<h1>등록 서비스 관리</h1>
+			<table border=1 id="approved">
+				<tr>
+					<th colspan='7'>승인된 서비스</th>
+				</tr>
+				<tr>
+					<th>등록일</th>
+					<th>서비스번호</th>
+					<th>아이디</th>
+					<th>카테고리</th>
+					<th>서비스명</th>
+					<th>작업수</th>
+					<th>처리</th>
+				</tr>
+				<c:forEach items="${serviceList }" var="s">
+					<c:if test="${s.adminApproval eq 'y'.charAt(0)}">
+						<c:if test="${s.deleteStatus eq 'n'.charAt(0)}">
+							<tr>
+								<td>${s.writeDate }</td>
+								<td>${s.SNo }</td>
+								<td>${s.MId }<c:if test="${s.MId eq null}">탈퇴한회원</c:if></td>
+								<td>메인:${ s.mainCategory}서브:${s.subCategory }</td>
+								<td><a href=#>${s.STitle }</a></td>
+								<td><a href="/workingHistory.do?sNo=${s.SNo }"
+									onClick="window.open(this.href, '', 'width=800, height=400, left=1000, scrollbars=no,location=no, resizable=no'); return false;">${s.workingCount }</a></td>
+								<td>
+									<button id="delete" onclick="deleteService(${s.SNo});">삭제</button>
+								</td>
+							</tr>
+						</c:if>
+					</c:if>
+				</c:forEach>
+			</table>
+		</div>
+
 	</div>
 	<script>
+	
+	$(function() {
+        $(".adminContent>div").eq(0).show();
+        $(".tab").eq(0).addClass("select");
+     });
+	
+	 $(".tab").click(function() {
+         var tabIdx = $(this).index();
+         var content = $(".adminContent");
+         for (var i = 0; i <= tabIdx; i++) {
+            $(".adminContent>div").css("display", "none");
+            $(".tab").removeClass("select");
+         }
+         $(".adminContent>div").eq(tabIdx).css("display", "block");
+         $(".tab").eq(tabIdx).addClass("select");
+
+      });
+	
+	
 	
 		function acceptService(sNo){
 			$.ajax({
 				url : "/acceptService.do",
 				type : "post",
-				dataType:"json",
 				data : {
 					sNo : sNo,
 				},
-				success : function(response) {
-					if(response.status!=0){
-	
-				}
-			}
+				success : function(data) {
+					console.log("승인 성공!");
+					location.reload();
+			},
+			  error : function(){
+                  console.log("승인 실패!");
+               }
 			});
 		}
-		
-		function rejectService(sNo){
-			
-		}
+	
 		
 		function deleteService(sNo){
-			
-		}
+			check=confirm("서비스를 삭제합니다")
+			if(check){
+			$.ajax({
+				url : "/deleteService.do",
+				type : "post",
+				data : {
+					sNo : sNo,
+				},
+				success : function(data) {
+					console.log("삭제 성공!");
+					location.reload();
+			},
+			  error : function(){
+                  console.log("삭제 실패!");
+               }
+			});
+		}}
+		
+		
 		
 	</script>
 </body>
