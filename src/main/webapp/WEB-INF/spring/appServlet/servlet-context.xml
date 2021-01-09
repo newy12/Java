@@ -96,6 +96,7 @@
 	<context:component-scan base-package="com.ilgusi.question" />
 	<context:component-scan base-package="com.ilgusi.request" />
 	<context:component-scan base-package="com.ilgusi.service" />
+	<context:component-scan base-package="com.ilgusi.category" />
 
 	
 	

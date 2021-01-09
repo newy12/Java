@@ -69,7 +69,8 @@
             border: 1px solid lightgray;
         }
 
-        .search-contents input[type=submit] {
+        .search-contents input[type=submit],
+        .search-contents input[type=button] {
             margin-top: 20px;
             background-color: #314C83;
             color: white;
@@ -89,7 +90,7 @@
                 $("#mPhoneHidden").val($("#mPhone2").val());
                 let left = Math.ceil((window.screen.width-400)/2);
                 let top = Math.ceil((window.screen.height-350)/2);
-                window.open('', 'popup', 'width=400px, height=350px, left='+left+', top='+top)
+                window.open('', 'popup', 'width=500px, height=350px, left='+left+', top='+top)
                 $("#pop-form").submit();
             });
         });

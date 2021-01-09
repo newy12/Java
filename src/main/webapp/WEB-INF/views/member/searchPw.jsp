@@ -11,7 +11,7 @@
         integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
     <style>
         section {
-            width: 370px;
+            width: 480px;
             height: 320px;
         }
 
@@ -41,9 +41,13 @@
             border: 1px solid lightgray;
         }
 
+        input:not([type=submit]):focus {
+            border: 1px solid #314C83;
+        }
+
         input[type=submit] {
             border: none;
-            background-color: #314C83;
+            background-color: lightgray;
             color: white;
             font-weight: bold;
         }
@@ -62,7 +66,8 @@
 <body>
     <script>
         $(document).ready(function () {
-
+            //submit 버튼 비활성화
+            $("input:submit").prop("disabled", true);
             function blurEvt($inputTarget, $validationTarget) {
                 if ($inputTarget.val() != '')
                     $inputTarget.trigger("keyup");
@@ -82,7 +87,7 @@
                     $("#pw1_validation").show();
                     $(this).css("border-color", "red");
                 }
-
+                checkAllValidation();
             }));
             $("#pw1").on("blur", function () {
                 blurEvt($(this), $("#pw1_validation"));
@@ -98,11 +103,32 @@
                     $("#pw2_validation").show();
                     $(this).css("border-color", "red");
                 }
-
+                checkAllValidation();
             }));
             $("#pw2").on("blur", function () {
                 blurEvt($(this), $("#pw2_validation"));
             });
+            //모든 유효성 검사가 완료되었을 시 버튼 클릭 가능하게 바꿈.
+            function checkAllValidation() {
+                if ($("#pw1").val() == '' || $("#pw2").val() == '') {
+                    $("input:submit").prop("disabled", true);
+                    $("input:submit").removeAttr("style");
+                    console.log("if");
+                } else if ($("#pw1_validation").css("display") == "block" ||
+                    $("#pw2_validation").css("display") == "block") {
+                    $("input:submit").prop("disabled", true);
+                    $("input:submit").removeAttr("style");
+                    console.log("elseif");
+                } else {
+                    $("input:submit").prop("disabled", false);
+                    $("input:submit").css("background-color", "#314C83");
+                    $("input:submit").css("color", "white");
+                    $("input:submit").css("cursor", "pointer");
+
+                    console.log("else");
+                }
+
+            }
         });
     </script>
     <section>
