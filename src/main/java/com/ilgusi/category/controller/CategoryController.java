@@ -34,8 +34,6 @@ public class CategoryController {
 	public String categoryAjax(HttpServletResponse resp) {
 		System.out.println("아작스");
 		
-		resp.setCharacterEncoding("");
-		
 		Gson gson = new Gson();
 		
 		List<Category> list = service.selectCategoryList();

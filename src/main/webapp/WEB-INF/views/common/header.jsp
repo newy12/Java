@@ -162,7 +162,24 @@
 
 <script>
     $(document).ready(function () {
-
+        //카테고리 목록 불러오는거
+        $.ajax({
+            url: '/categoryAjax.do',
+            dataType: 'json',
+            success: function (data) {
+                let $navUl = $(".nav>ul");
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i].cDivision == 'm') {
+                        $navUl.append("<li><a href='#'>" + data[i].cName + "</a> <ul></ul></li>")
+                    }
+                    if (data[i].cDivision == 's') {
+                        $(".nav>ul>li:eq(" + (parseInt(data[i].cNo / 10) - 1) + ")>ul").append(
+                            "<li><a href='#'>" + data[i].cName + "</a></li>")
+                        // console.log(data[i]);
+                    }
+                }
+            }
+        })
         //헤더의 로그인 버튼 누르면 로그인 창 show
         $(".header-menu #login").on("click", function () {
             $(".background-screen").show();
@@ -249,24 +266,7 @@
             }
 
         }
-        //카테고리 목록 불러오는거
-        $.ajax({
-            url: '/categoryAjax.do',
-            dataType: 'json',
-            success: function (data) {
-                let $navUl = $(".nav>ul");
-                for (let i = 0; i < data.length; i++) {
-                    if (data[i].cDivision == 'm') {
-                        $navUl.append("<li><a href='#'>" + data[i].cName + "</a> <ul></ul></li>")
-                    }
-                    if (data[i].cDivision == 's') {
-                        $(".nav>ul>li:eq(" + (parseInt(data[i].cNo / 10) - 1) + ")>ul").append(
-                            "<li><a href='#'>" + data[i].cName + "</a></li>")
-                        console.log(data[i]);
-                    }
-                }
-            }
-        })
+        
     });
 </script>
 <div class="background-screen"></div>
