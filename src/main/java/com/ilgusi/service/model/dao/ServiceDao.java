@@ -32,8 +32,12 @@ public class ServiceDao {
 	public Member selectOneMember(int MNO) { //프리랜서 한명의 개인페이지 가져오는거
 		return session.selectOne("service.freelancerOneMember",MNO);
 	}
-	public List<ServiceReview> selectReviewList(String mId,int start,int end,String pageNavi) {
-		List<ServiceReview> j = session.selectList("service.selectListReview",mId);
+	public List<ServiceReview> selectReviewList(String mId,int start,int end) {
+		Join join = new Join();
+		join.setMId(mId);
+		join.setMainCategory(start);
+		join.setSubCategory(end);
+		List<ServiceReview> j = session.selectList("service.selectListReview",join);
 		return j;
 	}
 

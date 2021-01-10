@@ -28,10 +28,13 @@ public class ServiceController {
 	private ServiceService service;
 
 	@RequestMapping("/introduceFrm.do")
-	public String introduceFrm(String mId, Model model,int reqPage) {
+	public String introduceFrm(String mId,int reqPage, Model model) {
+	System.out.println("ㅇㅇ"+reqPage);
 		Join j = service.selectOneMember(mId);
+		Join join = service.selectReviewList(mId, reqPage);
 		j.setServiceList(service.serviceList(mId));
-		j.setReviewList(service.selectReviewList(mId,reqPage));
+		j.setReviewList(join.getReviewList());
+		model.addAttribute("pageNavi",join.getPageNavi());
 		model.addAttribute("j", j);
 		return "freelancer/introduce";
 	}

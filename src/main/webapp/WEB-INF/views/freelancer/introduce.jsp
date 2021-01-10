@@ -110,21 +110,7 @@
 					<h2>서비스(n개)</h2>
 				</div>
 				<div class="serviceadd">이미지넣기</div>
-			</div>
-			<div class="middle4">
-				<h2>전문분야 및 상세 분야</h2>
-				<br> <br>
-				<p>마케팅</p>
-				<br> <br>
-				<h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;포털마케팅</h5>
-			</div>
-			<div class="middle4">
-				<h2>보유 기술</h2>
-				<br> <br>
-				<h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;검색최적화
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;웹사이트
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;쇼핑몰 마케팅</h5>
-			</div>
+			</div>	
 		</div>
 	</div>
 	<a id="topBtn" href="#"
