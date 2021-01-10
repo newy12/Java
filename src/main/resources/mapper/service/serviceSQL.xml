@@ -12,10 +12,16 @@
       from
       member
       where m_id =#{mId}
-		</select>
+      </select>
+      <select id="selectTotalCount" resultType="_int">
+      select
+       count(*) cnt
+        from service_review
+      </select>
+		
 		<!-- 소개글 중 리뷰 리스트 불러오기 쿼리 -->
-		<select id="selectListReview" parameterType="String" resultType="j">
-		select r_no as rNo,
+		<select id="selectListReview" parameterType="String" resultType="review">
+		 select rownum rnum, s.* from (select r_no as rNo,
          t_no as tNo,
          service_review.s_no as sNo,
          m_id as mId,
@@ -25,9 +31,21 @@
        from (select s_no from service
       where service.m_id = #{mId}) temp,
       service_review
-      where service_review.s_no = temp.s_no
+      where service_review.s_no = temp.s_no) s
+           <!--  select r_no as rNo, 원래있던코드 페이징전
+         t_no as tNo,
+         service_review.s_no as sNo,
+         m_id as mId,
+         r_content as rContent,
+         r_rate as rRate,
+         write_date as writeDate
+       from (select s_no from service
+      where service.m_id = #{mId}) temp,
+      service_review
+      where service_review.s_no = temp.s_no -->
 		</select>
-		<select id="selectServiceList" parameterType="String" resultType="j">
+		<!-- 서비스 전체 출력 리스트 -->
+		<select id="selectServiceList" parameterType="String" resultType="s">
 		select 
 			s_no as sNo,
 			m_id as mId,
