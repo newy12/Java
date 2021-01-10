@@ -20,18 +20,19 @@
       </select>
 		
 		<!-- 소개글 중 리뷰 리스트 불러오기 쿼리 -->
-		<select id="selectListReview" parameterType="String" resultType="review">
-		 select rownum rnum, s.* from (select r_no as rNo,
+		<select id="selectListReview" parameterType="j" resultType="review">
+		 select * from (select rownum rnum, s.* 
+		 from (select r_no as rNo,
          t_no as tNo,
          service_review.s_no as sNo,
          m_id as mId,
          r_content as rContent,
          r_rate as rRate,
          write_date as writeDate
-       from (select s_no from service
-      where service.m_id = #{mId}) temp,
+       from (select s_no from service where service.m_id = #{mId}) temp,
       service_review
-      where service_review.s_no = temp.s_no) s
+      where service_review.s_no = temp.s_no) s) 
+      where rnum BETWEEN #{mainCategory} and #{subCategory}
            <!--  select r_no as rNo, 원래있던코드 페이징전
          t_no as tNo,
          service_review.s_no as sNo,
