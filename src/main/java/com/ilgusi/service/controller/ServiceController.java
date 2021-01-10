@@ -44,7 +44,7 @@ public class ServiceController {
 	@RequestMapping("/serviceJoin.do")
 	public String serviceJoin(Join join, Model model, MultipartFile[] ssImg, HttpServletRequest request) {
 		String root = request.getSession().getServletContext().getRealPath("/");
-		String path = root + "resources/upload/service/";
+		String path = root + "/upload/service/";
 		System.out.println("경로는 : " + path);
 		System.out.println("값러ㅏㅇㄴ러ㅏ : " + request.getParameter("sContent"));
 		ArrayList<ServiceFile> fileList = new ArrayList<ServiceFile>();
