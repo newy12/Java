@@ -83,15 +83,14 @@
 		working_count as workingCount,
 		write_date as writeDate,
 		delete_status as deleteStatus,
-		admin_approval as adminApproval
+		admin_approval as adminApproval,
 		write_date
 		as writeDate,
 		delete_status as
 		deleteStatus,
 		admin_approval as
 		adminApproval
-		from
-		service
+		from service
 		<if test="value !=null">
 			where s_no=#{_parameter}
 		</if>

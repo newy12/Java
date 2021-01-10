@@ -5,9 +5,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
-<script type="text/javascript"
-	src="http://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"
+	integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+	crossorigin="anonymous"></script>
 
 <style>
 div {
@@ -29,9 +29,7 @@ ul {
 	/*width: 100%;*/
 	min-width: 500px;
 	max-width: 500px;
-	height: 100vh;
-	min-height: 600px;
-	max-height: 600px;
+	height: 600px;
 }
 
 /*---------------------- side css 시작 -------------------------*/
@@ -39,7 +37,7 @@ ul {
 	overflow: hidden;
 	float: left;
 	width: 25%;
-	height: 100%;
+	height: 600px;
 	background: #2c3e50;
 	color: #f5f5f5;
 	position: relative;
@@ -129,7 +127,7 @@ ul {
 	overflow: hidden;
 	float: left;
 	width: 75%;
-	height: 100%;
+	height: 600px;
 }
 
 .content-list, .content-heart {
@@ -369,7 +367,7 @@ textarea::-webkit-scrollbar-thumb {
 	text-align: center;
 }
 
-.empty-page a {
+#empty-content a {
 	color: gray;
 }
 
@@ -424,9 +422,9 @@ textarea::-webkit-scrollbar-thumb {
 		</div>
 		<div id="side-menu">
 			<ul>
-				<li><a href="/chatList.do?"><img
+				<li><a href="/chatList.do?mId=${loginMember.MId}"><img
 						src="/img/icon/chat_white.png" width="45px;"><br>문의</a></li>
-				<li><a href="/heartList.do?mNo=${loginMember.MNo}&order=new"><img
+				<li><a href="/chatHeartList.do?mNo=${loginMember.MNo}"><img
 						src="/img/icon/heart_white.png" width="40px;"><br>찜</a></li>
 				<!-- 고객일때 -->
 				<!-- 프리랜서일때 <li>서비스</li>-->

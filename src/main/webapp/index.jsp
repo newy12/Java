@@ -11,7 +11,7 @@
 	<link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
 	<link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
-	<link rel="manifest" href="/site.webmanifest">
+	
 
 
 </head>
@@ -23,8 +23,8 @@
 	<hr>
 	<h3>본인 페이지 테스트</h3>
 	소현
-	<a href="/chatList.do"
-		onClick="window.open(this.href, '', 'width=530, height=630, left=1000, scrollbars=no,location=no, resizable=no'); return false;">채팅하기</a>
+	<a href="/chatList.do?mId=${loginMember.MId}"
+		onClick="window.open(this.href, '', 'width=530, height=630, left=1000,location=no,scrollbars=no,location=no, resizable=no'); return false;">채팅하기</a>
 	<a href="/manageMember.do">관리자-회원관리</a>
 	<a href="/manageService.do">관리자-서비스관리</a>
 	<br> 영재
