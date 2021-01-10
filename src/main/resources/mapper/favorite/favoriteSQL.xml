@@ -3,11 +3,11 @@
 <mapper namespace="favorite">
 
 	<!-- (소현) 채팅창에서 찜한 목록 불러오기 -->
-	<select id="selectAllFavorite" parameterType="_int"
-		resultType="s">
+	<select id="chatHeartList" parameterType="_int"
+		resultType="com.ilgusi.service.model.vo.ServiceBrandname">
 		select
 		s_no as sNo,
-		m_id as mId,
+		s.m_id as mId,
 		s_title as sTitle,
 		s_price as
 		sPrice,
@@ -15,10 +15,13 @@
 		s_img as sImg,
 		s_rate as sRate,
 		main_category as mainCategory,
-		working_count as workingCount
+		working_count as workingCount,
+		brand_name as brandName
 		from
-		service
-		where s_no=
+		service s,member m
+		where
+		m.m_id=s.m_id and 
+		s_no in
 		(select
 		s_no as sNo
 		from favorite

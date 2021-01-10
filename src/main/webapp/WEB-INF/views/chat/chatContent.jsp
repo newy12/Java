@@ -5,8 +5,9 @@
 <head>
 <meta charset="UTF-8">
 <title>19시 :: 문의하기</title>
-<script type="text/javascript" src="/js/jquery-3.3.1.js" />
-
+<script src="https://code.jquery.com/jquery-3.5.1.js"
+	integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+	crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -18,6 +19,7 @@
 		<!------------------------ [chat-side]------------------------------------->
 
 		<!------------------------ content 시작 ------------------------------------->
+
 		<div class="content">
 
 			<!-- 문의내용-->
@@ -26,7 +28,7 @@
 				<div id="chat-profile">
 					<span>${yourId } - ${service.STitle}</span>
 					<div id="option-box">
-						<a href="">대화 나가기</a><br> <a href="/quotationFrm.do">견적서
+						<a href="/deleteChat.do?cNo=${roomNo}&mId=${sessionScope.loginMember.MId}">대화 나가기</a><br> <a href="/quotationFrm.do">견적서
 							작성</a>
 					</div>
 				</div>
@@ -44,7 +46,8 @@
 				<div id="message-input">
 					<div class="wrap">
 						<textarea class="message"></textarea>
-						<button class="submit" onclick="sendMsg();">전송</button>
+						<button class="submit"
+							onclick="sendMsg('${sessionScope.loginMember.MId}');">전송</button>
 					</div>
 				</div>
 
@@ -59,10 +62,7 @@
 
 	<script>
 
-		function sendMsg() {
-
-			console.log("보내기!");
-
+		function sendMsg(myId) {
 			// 현재 시간 구하기
 			var date = new Date();
 			var year = date.getFullYear();
@@ -71,49 +71,67 @@
 			var hour = date.getHours();
 			var minute = date.getMinutes();
 			var ampm;
-			if (hour < 13) {
+			if (hour < 12) {
 				ampm = "오전 ";
-				hour = "0" + hour;
-				if (hour == 12) {
-					ampm = "오후 ";
-					hour = hour;
+				if (hour < 10) {
+					hour = "0" + hour;
 				}
 			} else {
 				ampm = "오후 ";
-				hour = "0" + (hour - 12);
+				if (hour > 12) {
+					hour = hour - 12;
+					if (hour < 10) {
+						hour = "0" + hour;
+					}
+				}
 			}
 
 			var roomNo = ${roomNo}; //방번호
-			var myId = ${sessionScope.loginMember.MId}; //보낸사람 아이디
-			var time = year + month + day + ampm + hour + mimute; //보낸 시간
+			roomNo = Number(roomNo);
+			var time = date; //보낸 시간
 			var content = $(".message").val(); //메세지 내용
 
-			if (content != '') {
+			console.log("방번호: " + roomNo);
+			console.log("보내는사람: " + myId);
+			console.log("내용: " + content);
+			console.log("년: " + year);
+			console.log("월: " + month);
+			console.log("일: " + day);
+			console.log("시간: " + ampm + hour);
+			console.log("분: " + minute);
+
+			if (content != "") {
 				$.ajax({
 					url : "/insertChat.do",
 					type : "post",
-					dataType:"json",
+					async : false,
 					data : {
 						roomNo : roomNo,
 						myId : myId,
 						time : time,
 						content : content
 					},
-					success : function(response) {
-						if(response.status!=0){
+					success : function(data) {
 						$(".messages").append(
 								"<p class='sent'>" + content
 										+ "<br><span class='chat-time'>" + ampm
 										+ hour + ":" + minute + "</span></p>");
 
 						$(".message").val('');
-						$(".messages").scrollTop($(".messages")[0].scrollHeight);
+						$(".messages")
+								.scrollTop($(".messages")[0].scrollHeight);
 					}
-				}
 				});
 
 			}
 		}
+		
+		/* // 엔터 누르면 전송 
+		$(".message").keyup(function(e) {
+			if (e.keyCode == 13)
+				sendMsg();
+		}); */
+		
 	</script>
 
 </body>
