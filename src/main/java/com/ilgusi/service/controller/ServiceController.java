@@ -1,11 +1,12 @@
 package com.ilgusi.service.controller;
 
-
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,7 @@ import com.ilgusi.service.model.service.ServiceService;
 import com.ilgusi.service.model.vo.Join;
 import com.ilgusi.service.model.vo.Service;
 import com.ilgusi.service.model.vo.ServiceFile;
+import com.ilgusi.service.model.vo.ServiceReview;
 
 import common.FileNameOverlap;
 
@@ -26,10 +28,10 @@ public class ServiceController {
 	private ServiceService service;
 
 	@RequestMapping("/introduceFrm.do")
-	public String introduceFrm(String mId, Model model) {
+	public String introduceFrm(String mId, Model model,int reqPage) {
 		Join j = service.selectOneMember(mId);
 		j.setServiceList(service.serviceList(mId));
-		j.setReviewList(service.selectReviewList(mId));
+		j.setReviewList(service.selectReviewList(mId,reqPage));
 		model.addAttribute("j", j);
 		return "freelancer/introduce";
 	}
@@ -42,11 +44,11 @@ public class ServiceController {
 	@RequestMapping("/serviceJoin.do")
 	public String serviceJoin(Join join, Model model, MultipartFile[] ssImg, HttpServletRequest request) {
 		String root = request.getSession().getServletContext().getRealPath("/");
-		String path = root + "resources/upload/service/";
+		String path = root + "/upload/service/";
 		System.out.println("경로는 : " + path);
 		System.out.println("값러ㅏㅇㄴ러ㅏ : " + request.getParameter("sContent"));
 		ArrayList<ServiceFile> fileList = new ArrayList<ServiceFile>();
-		
+
 		for (MultipartFile file : ssImg) { // 파일이 여러개라 반복문으로 처리
 			String filename = file.getOriginalFilename();
 			String filepath = new FileNameOverlap().rename(path, filename);
@@ -70,14 +72,13 @@ public class ServiceController {
 				e.printStackTrace();
 			}
 		}
-	      
-	      join.setFileList(fileList);
-	      join.setSImg(fileList.get(0).getFilepath());
+		join.setFileList(fileList);
+		join.setSImg(fileList.get(0).getFilepath());
 		int result = service.insertService(join);
-	if(result>0) {
-		model.addAttribute("msg","서비스등록완료");
-		}else {
-			model.addAttribute("msg","서비스등록실패");
+		if (result > 0) {
+			model.addAttribute("msg", "서비스등록완료");
+		} else {
+			model.addAttribute("msg", "서비스등록실패");
 		}
 		model.addAttribute("loc", "/");
 		return "common/msg";
@@ -104,6 +105,7 @@ public class ServiceController {
 	public String freelancerTradeHistory() {
 		return "freelancer/freelancerTradeHistory";
 	}
+
 	// 프리랜서 마이페이지 정보수정(소개글,연락가능시간,브랜드명 추가)
 	@RequestMapping("/updateFreelancer.do")
 	public String updateFreelancer(Member m, Model model) {
@@ -126,5 +128,5 @@ public class ServiceController {
 	public String serviceView() {
 		return "service/serviceView";
 	}
-	
+
 }

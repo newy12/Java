@@ -43,8 +43,39 @@ public class ServiceService {
 			return dao.selectOneMember(MNo);
 		}
 
-		public List<ServiceReview> selectReviewList(String mId) {
-			List<ServiceReview> j = dao.selectReviewList(mId);
+		public List<ServiceReview> selectReviewList(String mId,int reqPage) {
+			int numPerPage = 4;
+			int end = reqPage * numPerPage;
+			int start = end - numPerPage + 1;
+			
+			int totalCount = dao.totalCount();
+			int totalPage = 0;
+			if(totalCount%numPerPage ==0) {
+				totalPage = totalCount/numPerPage;
+			}else {
+				totalPage = totalCount/numPerPage+1;
+			}
+			int pageNaviSize = 5;
+			int pageNo = ((reqPage-1)/pageNaviSize)*pageNaviSize + 1;
+			String pageNavi = "";
+			if(pageNo != 1) {
+				pageNavi += "<a href='/introduceFrm.do?reqPage="+(pageNo-1)+"'>[이전]</a>";
+			}
+			for(int i=0;i<pageNaviSize;i++) {
+				if(pageNo != reqPage) {
+					pageNavi += "<a href='/introduceFrm.do?reqPage="+pageNo+"'>"+pageNo+"</a>";
+				}else {
+					pageNavi += "<span class='selectedPage'>"+pageNo+"</span>";
+				}
+				pageNo++;
+				if(pageNo > totalPage) {
+					break;
+				}
+			}
+			if(pageNo <= totalPage) {
+				pageNavi += "<a href='/introduceFrm.do?reqPage="+pageNo+"'>[다음]</a>";
+			}
+			List<ServiceReview> j = dao.selectReviewList(mId,start,end,pageNavi);
 			return j;
 		}
 

@@ -11,6 +11,7 @@ public class ServiceReview {
 	private String rContent;	//리뷰내용
 	private int rRate;			//점수
 	private String writeDate;	//작성날짜
+	private int rNum;
 	
 	//줄바꿈
 	public String getRContentBr() {
