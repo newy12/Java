@@ -32,13 +32,13 @@
 
         .dh-footer .footer-top>.footer-left {
             float: left;
-            overflow: hidden;
+             overflow: hidden; 
             margin-right: 180px;
         }
 
         .dh-footer .footer-top>.footer-right {
             float: left;
-            overflow: hidden;
+             overflow: hidden; 
         }
 
         .dh-footer .footer-top>.footer-right>ul:nth-child(3)>li>span {

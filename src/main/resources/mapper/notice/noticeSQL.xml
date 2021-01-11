@@ -29,5 +29,8 @@
  	from notice where n_no =#{_parameter}
  </select>
 
+<delete id="deleteNotice" parameterType="_int">
+	delete from notice where n_no = #{_parameter}
+</delete>
   
 </mapper>

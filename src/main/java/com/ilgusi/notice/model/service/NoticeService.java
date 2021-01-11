@@ -25,4 +25,8 @@ public class NoticeService {
 	public Notice selectNoticeView(int nNo) {
 		return dao.selectNoticeView(nNo);
 	}
+
+	public int deleteNotice(int nNo) {
+		return dao.deleteNotice(nNo);
+	}
 }
