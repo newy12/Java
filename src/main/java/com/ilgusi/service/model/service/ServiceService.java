@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ilgusi.category.model.vo.Category;
 import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.service.model.dao.ServiceDao;
 import com.ilgusi.service.model.vo.Join;
@@ -86,4 +87,20 @@ public class ServiceService {
 			List<com.ilgusi.service.model.vo.Service> j = dao.serviceList(mId); 
 			return j;
 		}
+
+		/*
+		 * public ArrayList<Category> selectCategory(int cNO) { return
+		 * dao.selectCategory(cNO); }
+		 */
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 }

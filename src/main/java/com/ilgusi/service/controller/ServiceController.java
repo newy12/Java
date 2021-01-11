@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.ilgusi.category.model.vo.Category;
 import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.service.model.service.ServiceService;
 import com.ilgusi.service.model.vo.Join;
@@ -131,5 +133,36 @@ public class ServiceController {
 	public String serviceView() {
 		return "service/serviceView";
 	}
+	
+	/*
+	 * @RequestMapping("/serviceListTest.do") public String serviceListTest(int cNo,
+	 * Model model) { ArrayList<Service> list = service.selectServiceList();
+	 * model.addAttribute("list", list); return "service/serviceList"; }
+	 */
 
+	/*
+	 * //서비스 리스트 메뉴 불러오기
+	 * 
+	 * @RequestMapping("/serviceListTest.do") public String serviceListTest(int cNO)
+	 * { ArrayList<Category> list = service.selectCategory(cNO); return ""; }
+	 */
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

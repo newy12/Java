@@ -33,14 +33,11 @@ public class CategoryController {
 	@ResponseBody
 	public String categoryAjax(HttpServletResponse resp) {
 		System.out.println("아작스");
-		
 		Gson gson = new Gson();
-		
 		List<Category> list = service.selectCategoryList();
-		
 		String json = gson.toJson(list);
-		
 		return json;
 	}
+	
 	
 }

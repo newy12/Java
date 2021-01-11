@@ -80,11 +80,19 @@
             border-top: 2px solid rgb(49, 76, 131);
         }
         
+        .noticeContent{
+        	height: 500px;
+        }
+        
     </style>
 
 
 </head>
 <body>
+	<div class="header">
+		<%@ include file="/WEB-INF/views/common/header.jsp"%>
+	</div>
+
 	 <div class="page-wrap">
         <div class="text-box">
             <div>홈 > 게시판 > 공지사항</div>
@@ -96,16 +104,29 @@
             <table class="table write-box">
                 <tr style="background-color: rgba(224, 224, 224, 0.5);">
                     <th style="width: 100px;" > 제목 </th>
-                    <td> 내용내용</td>
+                    <td> ${n.NTitle }</td>
                 </tr>
                 <tr style="background-color: rgba(224, 224, 224, 0.5);" >
                     <th style="height: 40px;"> 첨부파일 </th>
-                    <td> 첨부파일 없음 </td>
+                    <td> 
+					
+							<c:if test="${n.filename != null}">
+								<p> ${n.filename } </p>
+							</c:if> 
+							<c:if test="${n.filename == null }">
+								<p> 첨부파일 없음 </p>
+							</c:if>
+						
+                    </td>
                 </tr>
                 <tr>
-                   <th>내용</th>
+                   <th class="noticeContent" >내용</th>
                    <td>
-                       
+                   		<c:if test="${n.filename != null }">
+                   		<img src="/upload/notice/${n.filename }">
+                   		
+                   		</c:if>
+                      <p> ${n.NContent } </p>
                    </td>
                     
                     
@@ -120,7 +141,9 @@
         </div>
     </div>
 
-
+	 <footer>
+    	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
+    </footer>
 
 </body>
 </html>
