@@ -21,4 +21,8 @@ public class NoticeService {
 	public int insertNotice(Notice n) {
 		return dao.insertNotice(n);
 	}
+
+	public Notice selectNoticeView(int nNo) {
+		return dao.selectNoticeView(nNo);
+	}
 }

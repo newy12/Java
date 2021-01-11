@@ -22,4 +22,8 @@ public class NoticeDao {
 	public int insertNotice(Notice n) {
 		return session.insert("notice.insertNotice",n);
 	}
+
+	public Notice selectNoticeView(int nNo) {
+		return session.selectOne("notice.noticeView",nNo);
+	}
 }

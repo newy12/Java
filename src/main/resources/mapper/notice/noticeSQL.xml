@@ -18,6 +18,16 @@
   
   </insert>
   	
- 
+ <select id="noticeView" parameterType="_int" resultType="n">
+ 	select 
+ 		n_no as nNo,
+	  		n_title as nTitle,
+	  		n_content as nContent,
+	  		filename,
+	  		filepath,
+	  		write_date as writeDate
+ 	from notice where n_no =#{_parameter}
+ </select>
+
   
 </mapper>

@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.ilgusi.category.model.vo.Category;
 import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.service.model.service.ServiceService;
 import com.ilgusi.service.model.vo.Join;
@@ -132,6 +134,7 @@ public class ServiceController {
 		return "service/serviceView";
 	}
 
+
 	//(문정)사용자 마이페이지 - 거래후기 쓰기
 	@RequestMapping("tradeReviewWrite")
 	public String tradeReviewWrtie(int mNo, int tNo, int sNo, String mId, String sImg, String sContent, Model model) {
@@ -161,4 +164,18 @@ public class ServiceController {
 		}
 		return "/member/reviewDone";
 	}
+
+	
+	/*
+	 * @RequestMapping("/serviceListTest.do") public String serviceListTest(int cNo,
+	 * Model model) { ArrayList<Service> list = service.selectServiceList();
+	 * model.addAttribute("list", list); return "service/serviceList"; }
+	 */
+
+	/*
+	 * //서비스 리스트 메뉴 불러오기
+	 * 
+	 * @RequestMapping("/serviceListTest.do") public String serviceListTest(int cNO)
+	 * { ArrayList<Category> list = service.selectCategory(cNO); return ""; }
+	 */
 }

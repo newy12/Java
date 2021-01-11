@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
+import com.ilgusi.category.model.vo.Category;
 import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.service.model.vo.Join;
 import com.ilgusi.service.model.vo.ServiceFile;
@@ -58,10 +59,19 @@ public class ServiceDao {
 	}
 	public int totalCount() {	
 		return session.selectOne("service.selectTotalCount");
+		
 	}
 	
+
 	//(문정) 마이페이지 - 서비스 후기 등록
 	public int serviceReviewInsert(ServiceReview sr) {
 		return session.insert("review.serviceReviewInsert", sr);
 	}
+
+	
+	/*
+	 * public ArrayList<Category> selectCategory(int cNO) { List<Category> list =
+	 * session.selectList("") return null; }
+	 */
+
 }

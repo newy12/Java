@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ilgusi.category.model.vo.Category;
 import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.service.model.dao.ServiceDao;
 import com.ilgusi.service.model.vo.Join;
@@ -87,8 +88,15 @@ public class ServiceService {
 			return j;
 		}
 
+
 		//(문정) 마이페이지 - 서비스 후기 등록
 		public int serviceReviewInsert(ServiceReview sr) {
 			return dao.serviceReviewInsert(sr);
 		}
+
+		/*
+		 * public ArrayList<Category> selectCategory(int cNO) { return
+		 * dao.selectCategory(cNO); }
+		 */
+
 }

@@ -81,8 +81,15 @@ public class NoticeController {
 	
 	//공지사항 내용 보기
 	@RequestMapping("/noticeView.do")
-	public String noticeView () {
-		return "";
+	public String noticeView (int nNo, Model model, Notice n) {
+		n.setNNo(nNo);
+		n = service.selectNoticeView(nNo);
+		model.addAttribute("n", n);
+		if(n == null) {
+			System.out.println("null");
+		}else
+			System.out.println(n.getNTitle());
+		return "notice/noticeView";
 	}
 	
 }
