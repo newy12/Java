@@ -19,14 +19,12 @@ public class ServiceTradeController {
 	// (문정)사용자 마이페이지-거래내역 불러오기
 	@RequestMapping("/userTradeHistory.do")
 	public String userHeartList(int mNo, Model model) {
-		System.out.println("회원 번호 : " + mNo);
 		ArrayList<ServiceTrade> tradeList = service.selectTradeList(mNo); //거래내역 불러옴
 		ArrayList<Service> serviceList = service.selectServiceList(mNo);  //거래에 해당하는 서비스 불러옴
 		ArrayList<String> payDate = service.selectPayDateList(mNo);       //결제 날짜 불러옴
 		model.addAttribute("tradeList", tradeList);
 		model.addAttribute("serviceList",serviceList);
 		model.addAttribute("payDate",payDate);
-		System.out.println(tradeList.size()+"/"+serviceList.size()+"/"+payDate.size());
 		return "member/userTradeHistory";
 	}
 }

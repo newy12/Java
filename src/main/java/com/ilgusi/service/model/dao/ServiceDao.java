@@ -59,4 +59,9 @@ public class ServiceDao {
 	public int totalCount() {	
 		return session.selectOne("service.selectTotalCount");
 	}
+	
+	//(문정) 마이페이지 - 서비스 후기 등록
+	public int serviceReviewInsert(ServiceReview sr) {
+		return session.insert("review.serviceReviewInsert", sr);
+	}
 }
