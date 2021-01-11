@@ -62,9 +62,16 @@ public class ServiceDao {
 		
 	}
 	
+
+	//(문정) 마이페이지 - 서비스 후기 등록
+	public int serviceReviewInsert(ServiceReview sr) {
+		return session.insert("review.serviceReviewInsert", sr);
+	}
+
 	
 	/*
 	 * public ArrayList<Category> selectCategory(int cNO) { List<Category> list =
 	 * session.selectList("") return null; }
 	 */
+
 }

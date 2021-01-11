@@ -88,19 +88,15 @@ public class ServiceService {
 			return j;
 		}
 
+
+		//(문정) 마이페이지 - 서비스 후기 등록
+		public int serviceReviewInsert(ServiceReview sr) {
+			return dao.serviceReviewInsert(sr);
+		}
+
 		/*
 		 * public ArrayList<Category> selectCategory(int cNO) { return
 		 * dao.selectCategory(cNO); }
 		 */
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
 }

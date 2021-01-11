@@ -288,6 +288,12 @@
 	                    <div>
 	                    <c:choose>
 	                    	<c:when test="${t.TStatus == 2 }">
+	                    		<input type="text" style="display:none" value="${loginMember.MNo }">
+	                    		<input type="text" style="display:none" value="${serviceList[status.index].SContent }">
+	                    		<input type="text" style="display:none" value="${serviceList[status.index].SImg }">
+	                    		<input type="text" style="display:none" value="${t.TNo }">
+	                    		<input type="text" style="display:none" value="${t.SNo }">
+	                    		<input type="text" style="display:none" value="${loginMember.MId }">
 	                    		<button class="review-btn">후기 작성하기</button>
 	                    	</c:when>
 	                    	<c:otherwise>
@@ -345,6 +351,21 @@
 		$(document).ready(function(){
 			var containerHeight = $(".container-box").height();
 			$(".page-wrap").height(containerHeight+400);
+		});
+		
+		$(".review-btn").click(function(){
+			// 팝업을 가운데 위치시키기 위해 아래와 같이 값 구하기
+		    var _left = Math.ceil(( window.screen.width - 473 )/2);
+		    var _top = Math.ceil(( window.screen.width - 510 )/2); 
+			
+			var mId = $(this).prev().val();
+			var sNo = $(this).prev().prev().val();
+			var tNo = $(this).prev().prev().prev().val();
+			var sImg = $(this).prev().prev().prev().prev().val();
+			var sContent = $(this).prev().prev().prev().prev().prev().val();
+			var mNo = $(this).prev().prev().prev().prev().prev().prev().val();
+			window.open('/tradeReviewWrite.do?mNo='+mNo+'&tNo='+tNo+'&sNo='+sNo+'&mId='+mId+'&sImg='+sImg+'&sContent='+sContent,'거래후기 작성', 'width=473, height=510, left='+ _left + ', top='+ _top+', scrollbars=no,location=no, resizable=no');
+			return false;
 		});
 	</script>
 

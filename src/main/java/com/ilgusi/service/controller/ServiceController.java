@@ -133,6 +133,38 @@ public class ServiceController {
 	public String serviceView() {
 		return "service/serviceView";
 	}
+
+
+	//(문정)사용자 마이페이지 - 거래후기 쓰기
+	@RequestMapping("tradeReviewWrite")
+	public String tradeReviewWrtie(int mNo, int tNo, int sNo, String mId, String sImg, String sContent, Model model) {
+		model.addAttribute("mNo", mNo);
+		model.addAttribute("tNo", tNo);
+		model.addAttribute("sNo", sNo);
+		model.addAttribute("mId", mId);
+		model.addAttribute("sImg", sImg);
+		model.addAttribute("sContent", sContent);
+		return "member/tradeReviewWrite";
+	}
+	
+	//(문정) 마이페이지 - 서비스 후기 등록
+	@RequestMapping("/serviceReviewInsert.do")
+	public String serviceReviewInsert(int mNo, int tNo, int sNo, String mId, int rate, String content, Model model) {
+		ServiceReview sr = new ServiceReview();
+		sr.setTNo(tNo);
+		sr.setSNo(sNo);
+		sr.setMId(mId);
+		sr.setRRate(rate);
+		sr.setRContent(content);
+		int result = service.serviceReviewInsert(sr);
+		if(result>0) {
+			System.out.println("등록 성공");
+		}else {
+			System.out.println("등록 실패");
+		}
+		return "/member/reviewDone";
+	}
+
 	
 	/*
 	 * @RequestMapping("/serviceListTest.do") public String serviceListTest(int cNo,
@@ -146,23 +178,4 @@ public class ServiceController {
 	 * @RequestMapping("/serviceListTest.do") public String serviceListTest(int cNO)
 	 * { ArrayList<Category> list = service.selectCategory(cNO); return ""; }
 	 */
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

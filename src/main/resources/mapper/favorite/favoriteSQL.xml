@@ -56,7 +56,7 @@
 		 	order by s_price desc
 		</when>
 		<when test='order == "new"'>
-			order by write_date desc
+			order by s_no desc
 		</when>
 		<otherwise>
 			order by m_id
@@ -75,7 +75,7 @@
 			 	order by s_price desc
 			</when>
 			<when test='order == "new"'>
-				order by write_date desc
+				order by s_no desc
 			</when>
 			<otherwise>
 				order by m_id
