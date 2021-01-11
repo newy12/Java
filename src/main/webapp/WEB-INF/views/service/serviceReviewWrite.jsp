@@ -114,7 +114,6 @@
 			<textarea rows="8" cols="60" id="review" maxlength="300"></textarea>
 		</div>
 		<div class="btn-wrap">
-			<input type="text" style="display:none" value="${mNo}" id="mNo">
 			<input type="text" style="display:none" value="${tNo}" id="tNo">
 			<input type="text" style="display:none" value="${sNo}" id="sNo">
 			<input type="text" style="display:none" value="${mId}" id="mId">
@@ -153,14 +152,12 @@
 		
 		$("#confirm_btn").click(function(){
 			var rateTxt = $("#rate").html().split("/");
-			var mNo = $("#mNo").val();
 			var tNo = $("#tNo").val();
 			var sNo = $("#sNo").val();
 			var mId = $("#mId").val();
 			var rate = rateTxt[0];
 			var content = $("#review").val();
-			location.href="/serviceReviewInsert.do?mNo="+mNo+"&tNo="+tNo+"&sNo="+sNo+"&mId="+mId+"&rate="+rate+"&content="+content;
-			
+			location.href="/serviceReviewInsert.do?tNo="+tNo+"&sNo="+sNo+"&mId="+mId+"&rRate="+rate+"&rContent="+content;
 		});
 	</script>
 </body>

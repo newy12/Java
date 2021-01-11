@@ -67,6 +67,31 @@ public class ServiceDao {
 	public int serviceReviewInsert(ServiceReview sr) {
 		return session.insert("review.serviceReviewInsert", sr);
 	}
+	
+	//(문정) 마이페이지에서 후기 등록하면 tStatus 바꿔줌(리뷰 작성완료로 : 3)
+	public int serviceReviewSuccess(int tNo) {
+		return session.update("review.serviceReviewSuccess", tNo);
+	}
+	
+	//(문정) 마이페이지 - 거래 후기 작성한거 확인
+	public ServiceReview serviceReviewView(ServiceReview data) {
+		return session.selectOne("review.serviceReviewView", data);
+	}
+	
+	//(문정) 거래 후기 수정
+	public int serviceReviewUpdate(ServiceReview review) {
+		return session.update("review.serviceReviewUpdate",review);
+	}
+	
+	//(문정) 거래 삭제
+	public int serviceReviewDelete(int rNo) {
+		return session.delete("review.serviceReviewDelete", rNo);
+	}
+	
+	//(문정) 거래 삭제했을때 tStatus 수정
+	public int serviceTradeStatusUpdate(int tNo) {
+		return session.update("review.serviceTradeStatusUpdate",tNo);
+	}
 
 	
 	/*

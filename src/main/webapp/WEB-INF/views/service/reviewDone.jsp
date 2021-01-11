@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>등록 확인</title>
 <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.js"
         integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
@@ -18,8 +18,8 @@
 		margin-top:150px;
 	}
 	#cancel-btn{
-		width:200px;
-		height:100px;
+		width:100px;
+		height:50px;
 		border-radius:10px;
 		background-color: #801f1f;
 		font-size:20px;
@@ -32,11 +32,13 @@
 	}
 </style>
 <body>
-<h2>리뷰가 등록되었습니다</h2>
+<h2>${msg }</h2>
 <button id="cancel-btn">창 닫기</button>
 <script>
 	$("#cancel-btn").click(function(){
-		window.close();
+		//현재 창 닫고 부모 창 새로고침
+		opener.document.location.reload();
+		self.close();
 	});
 </script>
 </body>

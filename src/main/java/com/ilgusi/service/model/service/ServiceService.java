@@ -94,6 +94,31 @@ public class ServiceService {
 			return dao.serviceReviewInsert(sr);
 		}
 
+		//(문정) 마이페이지에서 후기 등록하면 tStatus 바꿔줌(리뷰 작성완료로 : 3)
+		public int serviceReviewSuccess(int tNo) {
+			return dao.serviceReviewSuccess(tNo);
+		}
+
+		//(문정) 마이페이지 - 거래 후기 작성한거 확인
+		public ServiceReview serviceReviewView(ServiceReview data) {
+			return dao.serviceReviewView(data);
+		}
+
+		//(문정) 마이페이지 - 거래 후기 업데이트
+		public int serviceReviewUpdate(ServiceReview review) {
+			return dao.serviceReviewUpdate(review);
+		}
+
+		//(문정) 리뷰 삭제
+		public int serviceReviewDelete(int rNo) {
+			return dao.serviceReviewDelete(rNo);
+		}
+		
+		//(문정) 리뷰 삭제하면 tStatus 수정해줘야함
+		public int serviceTradeStatusUpdate(int tNo) {
+			return dao.serviceTradeStatusUpdate(tNo);
+		}
+
 		/*
 		 * public ArrayList<Category> selectCategory(int cNO) { return
 		 * dao.selectCategory(cNO); }
