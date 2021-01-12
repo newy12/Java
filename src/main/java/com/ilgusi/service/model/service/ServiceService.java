@@ -118,6 +118,14 @@ public class ServiceService {
 			return dao.serviceTradeStatusUpdate(tNo);
 		}
 
+		
+		//(다솜) 카테고리 리스트 불러오기
+		public ArrayList<Category> categoryList(int cNo) {
+			return dao.categoryList(cNo);
+		}
+
+		
+
 		/*
 		 * public ArrayList<Category> selectCategory(int cNO) { return
 		 * dao.selectCategory(cNO); }
