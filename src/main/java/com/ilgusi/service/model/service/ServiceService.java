@@ -42,7 +42,6 @@ public class ServiceService {
 		public Member selectOneMember(int MNo) {
 			return dao.selectOneMember(MNo);
 		}
-
 		public Join selectReviewList(String mId,int reqPage) {
 			int numPerPage = 4;
 			int end = reqPage * numPerPage;//1보내면 end=4
