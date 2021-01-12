@@ -5,6 +5,9 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.5.1.js"
+	integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+	crossorigin="anonymous"></script>
 <style>
 @font-face {
 	font-family: 'Arita-dotum-Medium';
@@ -73,6 +76,43 @@
 	margin-left:50px;
 	
 }
+.serviceNavi ul {
+	list-style-type: none;
+	overflow: hidden;
+	padding: 0px;
+	margin: 0px;
+}
+
+.tab {
+	float: left;
+	width: 150px;
+	height: 60px;
+	text-align: center;
+	line-height: 60px;
+	color: white;
+	background-color: #314C83;
+	font-weight: bold;
+	box-sizing: border-box;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border: 2px solid #314C83;
+	border-bottom: none;
+}
+
+.adminContent div {
+	margin: 30px;
+	text-align: left;
+	display: none;
+}
+
+.select {
+	color: #314C83;
+	background-color: white;
+	font-weight: bold;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+}
+
 </style>
 
 

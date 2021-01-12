@@ -1,11 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>19시 :: 문의하기</title>
+<script src="https://code.jquery.com/jquery-3.5.1.js"
+	integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+	crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -20,22 +23,23 @@
 		<div class="content">
 
 			<!-- chatlist가 not null -->
-			<c:if test="${not empty chatList }">
+			<c:if test="${not empty room }">
 				<!-- 문의 리스트 -->
 				<!-- 새로운 메세지 표시 span- color:orange 로 변경-->
 				<div class="content-list">
 					<div id="content-title">문의 리스트</div>
 					<div id="chat-list">
 						<ul>
-							<c:forEach items="${chatList }" var="c">
+							<c:forEach items="${room }" var="r">
 								<li class="list">
 									<div class="list-wrap">
 										<div class="new"></div>
 										<div id="chat-preview">
-											<p id="name">${c.freelancerId}<span id="time">오후
-													03:20</span>
+											<p><b id="name">${r.freeId}</b><span id="time">${r.lastTime}</span>
 											</p>
-											<p id="preview">안녕하세요! 번역 서비스 의뢰하려고 하는데요. 분야 상관 없나요?</p>
+											<p id="preview">${r.lastMsg }</p>
+											<input type="hidden" class="cNo" value="${r.cNo }">
+											<input type="hidden" class="sNo" value="${r.sNo }">
 										</div>
 									</div>
 								</li>
@@ -48,7 +52,7 @@
 
 
 			<!-- chatlist가 null -->
-			<c:if test="${empty chatList}">
+			<c:if test="${empty room}">
 				<div class="empty-page">
 					<div id="content-title">문의 리스트</div>
 					<div id="empty-content">
@@ -69,7 +73,19 @@
 
 	</div>
 	<!-- chat-wrap 끝-->
-
+	<script>
+		$(".list").click(function() {
+			var cNo = $(this).find(".cNo").val();
+			var sNo = $(this).find(".sNo").val();
+			cNo=Number(cNo);
+			sNo=Number(sNo);
+			var freeId = $(this).find("#name").html();
+			console.log(cNo);
+			console.log(sNo);
+			console.log(freeId);
+			location.href="/enterRoom.do?cNo="+cNo+"&sNo="+sNo+"&freeId="+freeId; 
+		});
+	</script>
 
 </body>
 </html>
