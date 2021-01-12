@@ -14,7 +14,10 @@
 	.text-box{
 		height : 332px;
         padding-left: 30px;
-		background-color: rgba(224, 224, 224, 0.5);
+        background-image: url(/img/icon/request_back.jpg);
+        overflow: hidden;
+        background-repeat: no-repeat;
+        background-size: 911px ;
 	}
     .text-box>div:first-child{
         height: 30px;
@@ -65,6 +68,21 @@
     }
     .table{
         text-align: center;
+        border-bottom: 1px solid rgb(230, 230, 230);
+    }
+    .table>th{
+    	text-align: center;
+    	
+    }
+     .pagination{
+    	justify-content: center;
+    }
+    
+    .pagination > li > a{
+    	color : black;
+    }
+    .target{
+    	color : white;
     }
 </style>
 </head>
@@ -92,7 +110,7 @@
         </div>
         
         <div class="board-box">
-            <p>총 &nbsp;&nbsp;</p><p style="color:rgb(255, 143, 63);font-size: 18px;">302건</p><p>의 의뢰글이 있습니다.</p>
+            <p>총 &nbsp;&nbsp;</p><p style="color:rgb(255, 143, 63);font-size: 18px;">${totalCount }건</p><p>의 의뢰글이 있습니다.</p>
             <div>
                 <select name="array" class="form-control subject">
                     <option value="new">최신순</option>
@@ -100,17 +118,38 @@
                     <option value="status">진행순</option>
                 </select>
             </div>
-            <table class="table">
+            <table class="table table-hover">
                 <tr style="background-color: rgba(224, 224, 224, 0.5);">
-                    <th style="width: 100px;">순서</th>
-                    <th>제목</th>
-                    <th style="width: 100px;">진행상태</th>
-                    <th style="width: 200px;">작성일</th>
+                    <th style="width: 100px;text-align: center">번호</th>
+                    <th style="text-align: center">제목</th>
+                    <th style="width: 100px;text-align: center">진행상태</th>
+                    <th style="width: 200px;text-align: center">작성일</th>
                 </tr>
+                <c:forEach items="${list }" var="r">
+               	<tr>
+               		<td>${r.reqNo } </td>
+               		<td><a href="/requestDetail.do?reqNo=${r.reqNo }" class = "table-title">${r.reqTitle } </a></td>
+               		<td>
+               		<c:choose>
+               			<c:when test="${r.reqStatus == 0 }">모집 중</c:when>
+               			<c:when test="${r.reqStatus == 1 }">진행 중</c:when>
+               			<c:when test="${r.reqStatus == 2 }">마감</c:when>
+               		</c:choose>
+               		</td>
+               		<td> ${r.writeDate } </td>
+               	</tr>
+                </c:forEach>
             </table>
             <div>
-            	<button class="btn-custom" onclick="location.href='/requestWriteFrm.do'">글쓰기</button>
+            	<c:if test="${loginMember.MId != null }">
+            		<button class="btn-custom" onclick="location.href='/requestWriteFrm.do'">글쓰기</button>
+            	</c:if>
             </div>
+            <br><br>
+            <div class="text-center" style="width:100%; margin:0 auto;">
+			<ul class="pagination" >${pageNavi }</ul>
+             </div>
+
             <div>
             </div>
         </div>
@@ -118,5 +157,12 @@
     
     <br><br><br>
     <jsp:include page="/WEB-INF/views/common/footer.jsp" />
+    
+    <script>
+    	$(document).ready(function(){
+    		var containerHeight = $(".board-box").height();
+			$(".page-wrap").height(containerHeight+1000);
+    	});
+    </script>
 </body>
 </html>

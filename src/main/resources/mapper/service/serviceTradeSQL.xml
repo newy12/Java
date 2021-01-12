@@ -14,6 +14,7 @@
 			end_date as endDate 
 		from service_trade where m_no = #{_parameter} order by t_status, t_no
 	</select>
+	
 	<!-- (문정)사용자 마이페이지-거래에 해당하는 서비스 불러오기  -->
 	<select id="selectServiceList"  parameterType="_int" resultType="s">
 		select  
@@ -27,13 +28,13 @@
 		left outer join 
 		(service) s on t.s_no=s.s_no
 	</select>
+	
 	<!-- (문정)사용자 마이페이지-결제시간 불러오기   -->
 	<select id="selectPayDateList"   parameterType="_int" resultType="string">
 		select p.p_date from (select * from service_trade t where m_no = #{_parameter} order by t_status ,  t_no) t
 		left OUTER join
 		(select * from service_pay where t_no in(select t_no from service_trade where m_no = #{_parameter})) p on p.t_no = t.t_no
 	</select>
-
 
 	<!-- (문정)사용자 마이페이지 거래 세부 내용 불러오기 -->
 	<select id="serviceTradeView" parameterType="_int" resultType="trade">
@@ -71,6 +72,7 @@
 	 service_trade
 	  where s_no in (select s_no from service where m_id = (select m_id from member where m_no = #{_parameter}))  order by t_status,t_no
 	</select>
+	
 	<select id="selectPayDateList2" parameterType="_int" resultType="string">
 	select p.p_date 
 	from
@@ -78,6 +80,7 @@
 left outer join 
 (select * from service_pay) p on t.t_no=p.t_no 
 	</select>
+	
 	<select id="selectServiceList2" parameterType="_int" resultType="s">
 	select s.* 
 	from 
@@ -86,15 +89,13 @@ left outer join
 (select * from service) s on t.s_no = s.s_no
 	</select>
 	
-	
-	
-	
 	<!-- (영재) 거래내역 t_status 변경 (1->2) -->
 	<update id="updateTStatus" parameterType="_int">
 		update service_trade set
 		t_status = 2 
 		where t_no = #{tNo}
 	</update>
+	
 	<!-- 사용자WarningDate 값 +1 변경 -->
 	<update id="updateWarningCount" parameterType="_int">
 		update member set 

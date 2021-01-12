@@ -18,7 +18,10 @@
 	.text-box{
 		height : 332px;
         padding-left: 30px;
-		background-color: rgba(224, 224, 224, 0.5);
+        background-image: url(/img/icon/request_back.jpg);
+        overflow: hidden;
+        background-repeat: no-repeat;
+        background-size: 911px ;
 	}
     .text-box>div:first-child{
         height: 30px;

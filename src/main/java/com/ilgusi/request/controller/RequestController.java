@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.ilgusi.request.model.service.RequestService;
 import com.ilgusi.request.model.vo.Request;
+import com.ilgusi.request.model.vo.RequestPageData;
 
 import common.FileNameOverlap;
 
@@ -26,7 +27,11 @@ public class RequestController {
 	
 	//(문정)의뢰게시판 리스트
 	@RequestMapping("/requestList.do")
-	public String requestList() {
+	public String requestList(int reqPage, Model model) {
+		RequestPageData rpd = service.selectRequestList(reqPage);
+		model.addAttribute("list", rpd.getList());
+		model.addAttribute("pageNavi", rpd.getPageNavi());
+		model.addAttribute("totalCount", rpd.getTotalCount());
 		return "request/requestList";
 	}
 	
@@ -45,22 +50,29 @@ public class RequestController {
 	    System.out.println("경로는 : "+path);
 	    
 	    //파일 이름 처리
+	    String filename = "";
+	    String filepath = "";
 	    MultipartFile file = mtfRequest.getFile("filename");
-	    String filename = file.getOriginalFilename();
-	    String filepath = new FileNameOverlap().rename(path, filename);
-	    
-	    byte[] bytes;
-		try {
-			bytes = file.getBytes();
-			File upFile = new File(path+filepath);
-		    FileOutputStream fos = new FileOutputStream(upFile);
-		    BufferedOutputStream bos = new BufferedOutputStream(fos);
-		    bos.write(bytes);
-		    bos.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
+	    if(file.isEmpty()) {
+	    	filename = null;
+	    	filepath = null;
+	    }else {
+	    	filename = file.getOriginalFilename();
+		    filepath = new FileNameOverlap().rename(path, filename);
+		    
+		    byte[] bytes;
+			try {
+				bytes = file.getBytes();
+				File upFile = new File(path+filepath);
+			    FileOutputStream fos = new FileOutputStream(upFile);
+			    BufferedOutputStream bos = new BufferedOutputStream(fos);
+			    bos.write(bytes);
+			    bos.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	    }
+
 		Request req = new Request();
 		req.setFilename(filename);
 		req.setFilepath(filepath);
@@ -75,5 +87,14 @@ public class RequestController {
 	      }
 	      model.addAttribute("loc","/");
 	      return "common/msg";
+	}
+	
+	//(문정) 의뢰게시판 상세보기
+	@RequestMapping("/requestDetail.do")
+	public String requestDetail(int reqNo, Model model) {
+		System.out.println("들어완싸"+reqNo);
+		Request req = service.selectOneRequest(reqNo);
+		model.addAttribute("req", req);
+		return "request/requestDetail";
 	}
 }
