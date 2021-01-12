@@ -139,14 +139,16 @@
             <table class="table write-box">
                 <tr style="background-color: rgba(224, 224, 224, 0.5);">
                     <th style="width: 100px;" > 제목 </th>
-                    <td> ${n.NTitle }</td>
+                    <td style="width: 570px;"> ${n.NTitle }</td>
+                    <th style="width: 100px;"> 작성일 </th>
+                    <td> ${n.writeDate } </td>
                 </tr>
                 <tr style="background-color: rgba(224, 224, 224, 0.5);" >
-                    <th style="height: 40px;"> 첨부파일 </th>
-                    <td> 
+                    <th style="height: 30px; line-height: 40px;" > 첨부파일 </th>
+                    <td colspan="3" style="line-height: 30px;"> 
 					
 							<c:if test="${n.filename != null}">
-								<p> ${n.filename } </p>
+								<p > ${n.filename } </p>
 							</c:if> 
 							<c:if test="${n.filename == null }">
 								<p> 첨부파일 없음 </p>
@@ -156,7 +158,7 @@
                 </tr>
                 <tr>
                    <th class="noticeContent" >내용</th>
-                   <td style="text-align: center;" >
+                   <td style="text-align: center;" colspan="3" >
                    		<c:if test="${n.filename != null }">
                    			<img src="/upload/notice/${n.filename }" width="500px;">
                    		</c:if>
@@ -170,8 +172,8 @@
             </div>
             <div class="btn-right">
             	<c:if test="${loginMember.MGrade == 0 }">
-            		<button class="btn btn-custom " onclick="location='/deleteNotice.do?nNo=${n.NNo}'">삭제하기</button>
-            		<button class="btn btn-custom " onclick="location='/updateNotice.do'">수정하기</button>
+            		<button class="btn btn-custom " onclick="location='/deleteNotic.do?nNo=${n.NNo}'">삭제하기</button>
+            		<button class="btn btn-custom " onclick="location='/updateNoticeFrm.do?nNo=${n.NNo}'">수정하기</button>
             	</c:if>
             </div>
            

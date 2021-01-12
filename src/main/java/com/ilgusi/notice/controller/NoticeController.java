@@ -45,30 +45,43 @@ public class NoticeController {
 		String root = request.getSession().getServletContext().getRealPath("/");
 		String path = root+"upload/notice/";
 		System.out.println("파일 경로 : " + path);
+		String filename = "";
+		String filepath = "";
 		
 		MultipartFile file = mRequest.getFile("filename");
-		String filename = file.getOriginalFilename();
-		String filepath = new FileNameOverlap().rename(path, filename);
 		
-		byte[] bytes;
-		try {
-			bytes = file.getBytes();
-			File upFile = new File(path+filepath);
-			FileOutputStream fos = new FileOutputStream(upFile);
-			BufferedOutputStream bos = new BufferedOutputStream(fos);
-			bos.write(bytes);
-			bos.close();
+		if(!file.isEmpty()) {
+			System.out.println("파일이 있음");
+			filename = file.getOriginalFilename();
+			filepath = new FileNameOverlap().rename(path, filename);
 			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			byte[] bytes;
+			try {
+				bytes = file.getBytes();
+				File upFile = new File(path+filepath);
+				FileOutputStream fos = new FileOutputStream(upFile);
+				BufferedOutputStream bos = new BufferedOutputStream(fos);
+				bos.write(bytes);
+				bos.close();
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}else {
+			System.out.println("파일이 없음 ");
+			filename = null;
+			filepath = null;
 		}
 		
+
 		Notice n= new Notice();
 		n.setFilename(filename);
 		n.setFilepath(filepath);
 		n.setNTitle(request.getParameter("nTitle"));
 		n.setNContent(request.getParameter("nContent"));
+		
 		int result = service.insertNotice(n);
 		if(result > 0 ) {
 			model.addAttribute("msg","등록되었습니다.");
@@ -86,13 +99,13 @@ public class NoticeController {
 		n = service.selectNoticeView(nNo);
 		model.addAttribute("n", n);
 		if(n == null) {
-			System.out.println("null");
+			System.out.println("NoticeView :  n = null");
 		}
 		return "notice/noticeView";
 	}
 	
 	//공지사항 삭제 
-	@RequestMapping("deleteNotice.do")
+	@RequestMapping("/deleteNotice.do")
 	public String deleteNotice(int nNo, Model model) {
 		int result = service.deleteNotice(nNo);
 		if(result > 0 ) {
@@ -104,14 +117,73 @@ public class NoticeController {
 		return "common/msg";
 	}
 	
-	//공지사항 수정 
-	@RequestMapping("updateNotice.do")
-	public String updateNotice(int nNo, Model model) {
+	//공지사항 수정 페이지로 이동
+	@RequestMapping("/updateNoticeFrm.do")
+	public String updateNoticeFrm (int nNo, Model model, Notice n) {
+		n.setNNo(nNo);
+		n = service.selectNoticeView(nNo);
+		model.addAttribute("n", n);
 		
-		
-		return "";
+		if(n == null) {
+			System.out.println("UpdateNotice :  n = null");
+		}
+		return "notice/noticeUpdateFrm";
 	}
 	
+	
+	// 공지사항 수정
+	@RequestMapping("/updateNotice.do")
+	public String updateNotice(int nNo, MultipartHttpServletRequest mRequest, Model model,HttpServletRequest request) {
+		
+		String root = request.getSession().getServletContext().getRealPath("/");
+		String path = root+"upload/notice/";
+		System.out.println("파일 경로 : " + path);
+		String filename = "";
+		String filepath = "";
+		MultipartFile file = mRequest.getFile("filename");
+
+		if(!file.isEmpty()) {
+			System.out.println("파일이 있음");
+			filename = file.getOriginalFilename();
+			filepath = new FileNameOverlap().rename(path, filename);		
+			byte[] bytes;
+			try {
+				bytes = file.getBytes();
+				File upFile = new File(path+filepath);
+				FileOutputStream fos = new FileOutputStream(upFile);
+				BufferedOutputStream bos = new BufferedOutputStream(fos);
+				bos.write(bytes);
+				bos.close();				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}else {
+			System.out.println("파일이 없음 ");
+			filename = null;
+			filepath = null;
+		}
+
+		Notice n= new Notice();
+		n.setNNo(nNo);
+		n.setFilename(filename);
+		n.setFilepath(filepath);
+		n.setNTitle(request.getParameter("nTitle"));
+		n.setNContent(request.getParameter("nContent"));
+		System.out.println("filename:" + filename);
+		
+		int result = service.updateNotice(n);
+		System.out.println(result);
+		if(result > 0 ) {
+			model.addAttribute("msg","수정되었습니다.");
+		}else {
+			model.addAttribute("msg","수정실패.");
+		}
+		model.addAttribute("loc", "/noticeList.do");
+		
+		return "common/msg";
+	}
 }
 
 
