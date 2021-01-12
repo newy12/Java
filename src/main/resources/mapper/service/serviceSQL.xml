@@ -148,7 +148,13 @@
 
 	<!-- (소현)관리자-서비스 승인 -->
 	<update parameterType="_int" id="acceptService">
-		update service set admin_approval='y', write_date=to_char(sysdate,'yy-mm-dd') 
+		update service set admin_approval='y', write_date=to_char(sysdate,'yyyy-mm-dd') 
+		where s_no=#{_parameter} 
+	</update>
+	
+	<!-- (소현)관리자-서비스 거절 -->
+	<update parameterType="_int" id="rejectService">
+		update service set admin_approval='n'
 		where s_no=#{_parameter} 
 	</update>
 

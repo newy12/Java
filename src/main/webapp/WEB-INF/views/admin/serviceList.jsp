@@ -11,46 +11,7 @@
 	crossorigin="anonymous"></script>
 
 <style>
-th, td {
-	padding: 5px;
-}
 
-.serviceNavi ul {
-	list-style-type: none;
-	overflow: hidden;
-	padding: 0px;
-	margin: 0px;
-}
-
-.tab {
-	float: left;
-	width: 150px;
-	height: 60px;
-	text-align: center;
-	line-height: 60px;
-	color: white;
-	background-color: #314C83;
-	font-weight: bold;
-	box-sizing: border-box;
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
-	border: 2px solid #314C83;
-	border-bottom: none;
-}
-
-.adminContent div {
-	margin: 30px;
-	text-align: left;
-	display: none;
-}
-
-.select {
-	color: #314C83;
-	background-color: white;
-	font-weight: bold;
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
-}
 </style>
 </head>
 <body>
@@ -79,6 +40,7 @@ th, td {
 				</tr>
 				<c:forEach items="${serviceList }" var="s">
 					<c:if test="${s.adminApproval eq 'n'.charAt(0)}">
+					<c:if test="${s.SNo ne 0 }">
 						<tr>
 							<td>${s.writeDate }</td>
 							<td>${s.SNo }</td>
@@ -93,6 +55,7 @@ th, td {
 								</button>
 							</td>
 						</tr>
+						</c:if>
 					</c:if>
 				</c:forEach>
 			</table>
@@ -108,6 +71,7 @@ th, td {
 					<th>카테고리</th>
 					<th>서비스명</th>
 					<th>작업수</th>
+					<th>상태</th>
 				</tr>
 				<c:forEach items="${serviceList }" var="s">
 					<c:if test="${s.deleteStatus eq 'y'.charAt(0)}">
@@ -118,7 +82,12 @@ th, td {
 							<td>메인:${ s.mainCategory}서브:${s.subCategory }</td>
 							<td><a href=#>${s.STitle }</a></td>
 							<td><a href="">${s.workingCount }</a></td>
-
+							<td>
+							<!-- 승인 n&삭제y -> 거절 -->
+							<c:if test="${s.adminApproval eq 'n'.charAt(0)}">거절</c:if>
+							<!-- 승인 y&삭제y -> 삭제 -->
+							<c:if test="${s.adminApproval eq 'y'.charAt(0)}">삭제</c:if>
+							</td>
 						</tr>
 					</c:if>
 				</c:forEach>
@@ -181,8 +150,6 @@ th, td {
 
       });
 	
-	
-	
 		function acceptService(sNo){
 			$.ajax({
 				url : "/acceptService.do",
@@ -199,7 +166,6 @@ th, td {
                }
 			});
 		}
-	
 		
 		function deleteService(sNo){
 			check=confirm("서비스를 삭제합니다")
@@ -219,8 +185,6 @@ th, td {
                }
 			});
 		}}
-		
-		
 		
 	</script>
 </body>

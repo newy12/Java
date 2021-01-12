@@ -199,6 +199,17 @@
     	font-size:20px;
     	font-weight: bold; 
     }
+    .reviewCheck-btn{
+    	width: 100px;
+        height: 26px;
+        font-size:13px;
+        font-weight: bold;
+        margin-top: 20px;
+        margin-left:4px;
+        color: rgb(49, 76, 131);
+        background-color: white;
+        border: 1px solid rgb(49, 76, 131);
+    }
 </style>
 </head>
 <body>
@@ -276,7 +287,7 @@
 			                        <div style="color: rgb(51, 51, 51);font-size: 15px;margin-top: 20px;">예상 마감일</div>
 			                        <div style="color: rgb(51, 51, 51);font-size: 15px;margin-top: 5px;font-weight: bold;">${t.endDate }</div>
 	                    		</c:when>
-	                    		<c:when test="${t.TStatus == 2 }">
+	                    		<c:when test="${t.TStatus == 2 || t.TStatus == 3}">
 	                    			<div style="color: rgb(224, 224, 224);font-size: 20px;margin-top: 5px;font-weight: bold;">작업 완료</div>
 			                        <div style="color: rgb(51, 51, 51);font-size: 15px;">${payDate[status.index] }</div>
 			                        <div style="color: rgb(51, 51, 51);font-size: 15px;margin-top: 20px;">작업 종료일</div>
@@ -288,53 +299,27 @@
 	                    <div>
 	                    <c:choose>
 	                    	<c:when test="${t.TStatus == 2 }">
+	                    		<input type="text" style="display:none" value="${serviceList[status.index].SContent }">
+	                    		<input type="text" style="display:none" value="${serviceList[status.index].SImg }">
+	                    		<input type="text" style="display:none" value="${t.TNo }">
+	                    		<input type="text" style="display:none" value="${t.SNo }">
+	                    		<input type="text" style="display:none" value="${loginMember.MId }">
 	                    		<button class="review-btn">후기 작성하기</button>
+	                    	</c:when>
+	                    	<c:when test="${t.TStatus == 3 }">
+	                    		<input type="text" style="display:none" value="${t.TNo }">
+	                    		<input type="text" style="display:none" value="${t.SNo }">
+	                    		<input type="text" style="display:none" value="${loginMember.MId }">
+	                    		<button class="reviewCheck-btn">후기 확인하기</button>
 	                    	</c:when>
 	                    	<c:otherwise>
 	                    		 아직 후기를 <br>작성할 수 없습니다
 	                    	</c:otherwise>
 	                    </c:choose>
-	                       
 	                    </div>
 	                </div>
                 </c:forEach>
                 </c:if>
-	            
-                
-<!-- 
-                <div class="content-box">
-                    <div>
-                        <div style="color: rgb(51, 51, 51);font-size: 15px;">거래 번호</div>
-                        <div style="color: rgb(51, 51, 51);font-size: 15px;margin-top: 5px;font-weight: bold;">101010</div>
-                        <div style="color: rgb(51, 51, 51);font-size: 15px;margin-top: 20px;">거래 금액</div>
-                        <div style="color: rgb(255, 143, 63);font-size: 20px;margin-top: 5px;font-weight: bold;">000,000,000원</div>
-                    </div>
-                    <div>
-                        <div>
-                            <div><a href="#"><img src="/img/icon/img.jpg" width="175px" height="103px"></a></div>
-                            <div>
-                                사용자 ID
-                                <div>
-                                    <div><a href="#">abc1234</a></div>
-                                    <div><a href="#"><img src="/img/icon/home.png"></a></div>
-                                    <div><a href="#"><img src="/img/icon/message.png"></a></div>
-                                </div>
-                            </div>
-                            <div><a href="#">어쩌구어쩌구어쩌구어쩌구어쩌구어쩌구어쩌구어쩌구어쩌구어쩌구어쩌구어쩌구어쩌구어쩌구어쩌구어쩌구어쩌구어쩌구어쩌구</a></div>
-                        </div>
-                    </div>
-                    <div>
-                        <div style="color: rgb(255, 143, 63);font-size: 20px;margin-top: 5px;font-weight: bold;">작업 완료</div>
-                        <div style="color: rgb(51, 51, 51);font-size: 15px;">20210106 02:58</div>
-                        <div style="color: rgb(51, 51, 51);font-size: 15px;margin-top: 20px;">마감일</div>
-                        <div style="color: rgb(51, 51, 51);font-size: 15px;margin-top: 5px;font-weight: bold;">2021-01-08</div>
-                    </div>
-                    <div>
-                        <button class="review-btn">후기 작성하기</button>
-                    </div>
-                </div>
- -->
-
             </div>
         </div>
 	</div>
@@ -345,6 +330,28 @@
 		$(document).ready(function(){
 			var containerHeight = $(".container-box").height();
 			$(".page-wrap").height(containerHeight+400);
+		});
+		
+		$(".review-btn").click(function(){
+			// 팝업을 가운데 위치시키기 위해 아래와 같이 값 구하기
+		    var _left = Math.ceil(( window.screen.width - 473 )/2);
+			
+			var mId = $(this).prev().val();
+			var sNo = $(this).prev().prev().val();
+			var tNo = $(this).prev().prev().prev().val();
+			var sImg = $(this).prev().prev().prev().prev().val();
+			var sContent = $(this).prev().prev().prev().prev().prev().val();
+			window.open('/serviceReviewWrite.do?tNo='+tNo+'&sNo='+sNo+'&mId='+mId+'&sImg='+sImg+'&sContent='+sContent,'거래후기 작성', 'width=473, height=510, left='+ _left + ', top=50, scrollbars=no,location=no, resizable=no');
+			return false;
+		});
+		
+		$(".reviewCheck-btn").click(function(){
+			var _left = Math.ceil(( window.screen.width - 473 )/2);
+		    var mId = $(this).prev().val();
+			var sNo = $(this).prev().prev().val();
+			var tNo = $(this).prev().prev().prev().val();
+		    window.open('/serviceReviewView.do?tNo='+tNo+'&sNo='+sNo+'&mId='+mId, '거래 후기 확인', 'width=473, height=480, left='+_left+', top=50, scrollbars=no, location=no, resizable=no');
+			return false;
 		});
 	</script>
 

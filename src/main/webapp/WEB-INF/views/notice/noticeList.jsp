@@ -157,7 +157,9 @@
                 
             </table>
             <div>
-                <button class="btn-custom" onclick="location.href='/noticeWriteFrm.do'">글쓰기</button>
+	            <c:if test="${loginMember.MGrade == 0 }">
+	            	<button class="btn-custom" onclick="location.href='/noticeWriteFrm.do'">글쓰기</button>
+	            </c:if>
             </div>
             <div>
             </div>

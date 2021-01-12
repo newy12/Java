@@ -5,6 +5,13 @@
 <head>
 <meta charset="UTF-8">
 <title>19시 :: 견적서</title>
+<!-- favicon -->
+<link rel="apple-touch-icon" sizes="180x180"
+	href="favicon_io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32"
+	href="favicon_io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16"
+	href="favicon_io/favicon-16x16.png">
 </head>
 <style>
 .q-wrap {
@@ -37,15 +44,15 @@ tr, th {
 			<table border="1">
 				<tr>
 					<th>서비스명</th>
-					<td>초고속 영한, 한영 번역해드립니다</td>
+					<td>${STitle }</td>
 				</tr>
 				<tr>
 					<th>제공자</th>
-					<td>제공자 아이디</td>
+					<td>${freeId }</td>
 				</tr>
 				<tr>
 					<th>의뢰인</th>
-					<td>의뢰인 아이디</td>
+					<td>${userId }</td>
 				</tr>
 				<tr>
 					<th>기간</th>
