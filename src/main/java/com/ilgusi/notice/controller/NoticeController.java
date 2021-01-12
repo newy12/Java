@@ -39,7 +39,7 @@ public class NoticeController {
 		return "notice/noticeWriteFrm";
 	}
 	
-	
+	//공지사항 등록
 	@RequestMapping("/insertNotice.do")
 	public String insertNotice(MultipartHttpServletRequest mRequest, Model model, HttpServletRequest request) {
 		String root = request.getSession().getServletContext().getRealPath("/");
@@ -81,8 +81,61 @@ public class NoticeController {
 	
 	//공지사항 내용 보기
 	@RequestMapping("/noticeView.do")
-	public String noticeView () {
+	public String noticeView (int nNo, Model model, Notice n) {
+		n.setNNo(nNo);
+		n = service.selectNoticeView(nNo);
+		model.addAttribute("n", n);
+		if(n == null) {
+			System.out.println("null");
+		}
+		return "notice/noticeView";
+	}
+	
+	//공지사항 삭제 
+	@RequestMapping("deleteNotice.do")
+	public String deleteNotice(int nNo, Model model) {
+		int result = service.deleteNotice(nNo);
+		if(result > 0 ) {
+			model.addAttribute("msg", "게시글을 삭제합니다.");
+		}else {
+			model.addAttribute("msg", "실패");
+		}
+		model.addAttribute("loc", "noticeList.do");
+		return "common/msg";
+	}
+	
+	//공지사항 수정 
+	@RequestMapping("updateNotice.do")
+	public String updateNotice(int nNo, Model model) {
+		
+		
 		return "";
 	}
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

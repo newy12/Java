@@ -8,7 +8,7 @@
  <style>
         .page-wrap {
             width: 911px;
-            height: 1000px;
+            height:1200px;
             margin: 0 auto;
             margin-top: 45px;
         }
@@ -36,17 +36,25 @@
 
         .board-box {
             height: 40px;
-            margin-top: 30px;
+           	margin-top: 30px;
+           	
+       		
         }
 
-        .board-box>div {
+        .btn-right {
             float: right;
-            margin-top: -13px;
+            margin-bottom: 100px;
+           
         }
-
+        .btn-left{
+        
+        	float: left;
+        }
+        
         .table {
             text-align: left;
             text-indent: 20px;
+            border-bottom: 2px solid rgb(49, 76, 131);
         }
 
         .btn-custom {
@@ -58,6 +66,23 @@
             border: 1px solid rgb(49, 76, 131);
             font-weight: bold;
         }
+        
+
+        
+        .btn-emp {
+            width: 120px;
+            height: 35px;
+            color: rgb(49, 76, 131);
+            border-radius: 5px;
+            background-color : transparent;
+            border: 2px solid rgb(49, 76, 131);
+            font-weight: bold;
+            display: block;
+            text-align: center;
+        	line-height: 35px;
+        }
+        
+        
         .btn-file{
             color: white;
             border-radius: 5px;
@@ -74,17 +99,35 @@
             background-color: transparent;
             color: rgb(49, 76, 131);
             font-weight: bold;
-
         }
+        
+        .btn-emp:hover{
+        	text-decoration: none;
+        	color: white;
+            background-color: rgb(49, 76, 131);
+            border: 1px solid rgb(49, 76, 131);
+        	
+        }
+        
+        
         .write-box{
             border-top: 2px solid rgb(49, 76, 131);
         }
+        
+        .noticeContent{
+        	height: 500px;
+        }
+
         
     </style>
 
 
 </head>
 <body>
+	<div class="header">
+		<%@ include file="/WEB-INF/views/common/header.jsp"%>
+	</div>
+
 	 <div class="page-wrap">
         <div class="text-box">
             <div>홈 > 게시판 > 공지사항</div>
@@ -96,31 +139,52 @@
             <table class="table write-box">
                 <tr style="background-color: rgba(224, 224, 224, 0.5);">
                     <th style="width: 100px;" > 제목 </th>
-                    <td> 내용내용</td>
+                    <td> ${n.NTitle }</td>
                 </tr>
                 <tr style="background-color: rgba(224, 224, 224, 0.5);" >
                     <th style="height: 40px;"> 첨부파일 </th>
-                    <td> 첨부파일 없음 </td>
+                    <td> 
+					
+							<c:if test="${n.filename != null}">
+								<p> ${n.filename } </p>
+							</c:if> 
+							<c:if test="${n.filename == null }">
+								<p> 첨부파일 없음 </p>
+							</c:if>
+						
+                    </td>
                 </tr>
                 <tr>
-                   <th>내용</th>
-                   <td>
-                       
-                   </td>
-                    
-                    
+                   <th class="noticeContent" >내용</th>
+                   <td style="text-align: center;" >
+                   		<c:if test="${n.filename != null }">
+                   			<img src="/upload/notice/${n.filename }" width="500px;">
+                   		</c:if>
+                      <p> ${n.NContent } </p>
+                   </td>     
                 </tr>
             </table>
-            <div>
-                <button class="btn btn-custom">목록으로</button>
+            
+            <div class="btn-left ">
+            	<a class="btn-emp" href="/noticeList.do">목록으로</a>
             </div>
-            <div>
-
+            <div class="btn-right">
+            	<c:if test="${loginMember.MGrade == 0 }">
+            		<button class="btn btn-custom " onclick="location='/deleteNotice.do?nNo=${n.NNo}'">삭제하기</button>
+            		<button class="btn btn-custom " onclick="location='/updateNotice.do'">수정하기</button>
+            	</c:if>
             </div>
+           
         </div>
     </div>
+    <br>
+    <br>
+    <br>
+    <br>
 
-
+	 <footer>
+    	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
+    </footer>
 
 </body>
 </html>

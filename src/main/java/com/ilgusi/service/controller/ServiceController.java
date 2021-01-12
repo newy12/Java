@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.ilgusi.category.model.vo.Category;
 import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.service.model.service.ServiceService;
 import com.ilgusi.service.model.vo.Join;
@@ -132,4 +134,72 @@ public class ServiceController {
 		return "service/serviceView";
 	}
 
+
+	//(문정)사용자 마이페이지 - 거래후기 쓰기
+	@RequestMapping("/serviceReviewWrite.do")
+	public String serviceReviewWrite( int tNo, int sNo, String mId, String sImg, String sContent, Model model) {
+		model.addAttribute("tNo", tNo);
+		model.addAttribute("sNo", sNo);
+		model.addAttribute("mId", mId);
+		model.addAttribute("sImg", sImg);
+		model.addAttribute("sContent", sContent);
+		return "service/serviceReviewWrite";
+	}
+	
+	//(문정) 마이페이지 - 서비스 후기 등록
+	@RequestMapping("/serviceReviewInsert.do")
+	public String serviceReviewInsert( ServiceReview data , Model model) {
+		int result = service.serviceReviewInsert(data);
+		if(result>0) {
+			result = service.serviceReviewSuccess(data.getTNo());
+			if(result>0) {
+				model.addAttribute("msg","리뷰를 등록하였습니다.");
+			}
+		}
+		return "/service/reviewDone";
+	}
+
+	//(문정) 마이페이지 - 거래 후기 작성한거 확인
+	@RequestMapping("/serviceReviewView.do")
+	public String serviceReviewView(ServiceReview data , Model model) {
+		ServiceReview sr = service.serviceReviewView(data);
+		model.addAttribute("review",sr);
+		return "/service/serviceReviewUpdate";
+	}
+	
+	//(문정) 서비스 리뷰 수정
+	@RequestMapping("/serviceReviewUpdate.do")
+	public String serviceReviewUpdate(ServiceReview review, Model model) {
+		int result = service.serviceReviewUpdate(review);
+		if(result>0) {
+			model.addAttribute("msg","리뷰를 수정하였습니다.");
+		}
+		return "/service/reviewDone";
+	}
+	
+	//(문정) 서비스 리뷰 삭제
+	@RequestMapping("/serviewReviewDelete.do")
+	public String serviewReviewDelete(int rNo, int tNo, Model model) {
+		int result = service.serviceReviewDelete(rNo);
+		if(result>0) {
+			result = service.serviceTradeStatusUpdate(tNo);
+			if(result>0) {
+				model.addAttribute("msg", "리뷰를 삭제했습니다.");
+			}
+		}
+		return "/service/reviewDone";
+	}
+	
+	/*
+	 * @RequestMapping("/serviceListTest.do") public String serviceListTest(int cNo,
+	 * Model model) { ArrayList<Service> list = service.selectServiceList();
+	 * model.addAttribute("list", list); return "service/serviceList"; }
+	 */
+
+	/*
+	 * //서비스 리스트 메뉴 불러오기
+	 * 
+	 * @RequestMapping("/serviceListTest.do") public String serviceListTest(int cNO)
+	 * { ArrayList<Category> list = service.selectCategory(cNO); return ""; }
+	 */
 }
