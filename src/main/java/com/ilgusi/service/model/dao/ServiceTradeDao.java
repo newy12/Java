@@ -32,4 +32,14 @@ public class ServiceTradeDao {
 		List<String> list = session.selectList("trade.selectPayDateList", mNo);
 		return (ArrayList<String>)list;
 	}
+
+	//(문정)사용자 마이페이지 - 거래 세부 내용 불러오기
+	public ServiceTrade serviceTradeView(int tNo) {
+		return session.selectOne("trade.serviceTradeView", tNo);
+	}
+	
+	//(문정)사용자 마이페이지 - 거래 세부 내용에 해당하는 서비스 내용 불러오기
+	public Service selectOneService(int sNo) {
+		return session.selectOne("trade.selectOneService", sNo);
+	}
 }

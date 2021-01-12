@@ -27,4 +27,18 @@ public class ServiceTradeController {
 		model.addAttribute("payDate",payDate);
 		return "member/userTradeHistory";
 	}
+	
+	//(문정)사용자 마이페이지 - 거래 세부 내용 불러오기
+	@RequestMapping("/serviceTradeView.do")
+	public String serviceTradeView(int tNo, Model model) {
+		ServiceTrade trade = service.serviceTradeView(tNo);
+		if(trade!= null) {
+			Service s = service.selectOneService(trade.getSNo());
+			if(s!=null) {
+				model.addAttribute("trade", trade);
+				model.addAttribute("service",s);
+			}
+		}
+		return "service/serviceTradeView";
+	}
 }

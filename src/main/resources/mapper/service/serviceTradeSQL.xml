@@ -36,5 +36,25 @@
 		(select * from service_pay where t_no in(select t_no from service_trade where m_no = #{_parameter})) p on p.t_no = t.t_no
 	</select>
 
+	<!-- (문정)사용자 마이페이지 거래 세부 내용 불러오기 -->
+	<select id="serviceTradeView" parameterType="_int" resultType="trade">
+		select 
+			t_no as tNo,
+			s_no as sNo,
+			t_price as tPrice,
+			start_date as startDate,
+			end_date as endDate 
+		from service_trade where t_no = #{_parameter} 
+	</select>
 	
+	<!-- (문정)사용자 마이페이지 거래 세부 내용에 해당하는 서비스 불러오기 -->
+	<select id="selectOneService" parameterType="_int" resultType="s">
+		select  
+			s.s_no as sNo,
+			s.m_id as mId,
+			s.s_title as sTitle,
+			s.s_content as sContent,
+			s.s_img as sImg 
+		from service s where s_no = #{_parameter} 
+	</select>
 </mapper>

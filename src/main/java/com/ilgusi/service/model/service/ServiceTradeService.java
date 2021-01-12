@@ -27,4 +27,14 @@ public class ServiceTradeService {
 	public ArrayList<String> selectPayDateList(int mNo) {
 		return dao.selectPayDateList(mNo);
 	}
+
+	//(문정)사용자 마이페이지 - 거래 세부 내용 불러오기
+	public ServiceTrade serviceTradeView(int tNo) {
+		return dao.serviceTradeView(tNo);
+	}
+	
+	//(문정)사용자 마이페이지 - 거래 세부 내용에 해당하는 서비스 불러오기
+	public com.ilgusi.service.model.vo.Service selectOneService(int sNo) {
+		return dao.selectOneService(sNo);
+	}
 }
