@@ -55,6 +55,7 @@
 			s_content as sContent,
 			s_area as sArea,
 			s_img as sImg,
+			s_rate as sRate,
 			working_date as workingDate,
 			working_count as workingCount,
 			write_date as writeDate
@@ -81,7 +82,7 @@
 		<insert id="insertService" parameterType="j">
 		insert into service 
 		values
-		(service_seq.nextval,#{mId},#{sTitle},#{sPrice},#{sContent},#{sArea},#{sImg},#{sRate},#{mainCategory},#{subCategory},#{workingDate},0,to_char(sysdate,'yyyy-mm-dd'),'y','y')
+		(service_seq.nextval,#{mId},#{sTitle},#{sPrice},#{sContent},#{sArea},#{sImg},#{sRate},#{mainCategory},#{subCategory},#{workingDate},0,to_char(sysdate,'yyyy-mm-dd'),'n','n')
 	</insert>
 	<!-- (소현)서비스불러오기,동적쿼리-sNo로 service 불러오기 -->
 	<select id="selectService" parameterType="_int" resultType="s">
@@ -147,7 +148,13 @@
 
 	<!-- (소현)관리자-서비스 승인 -->
 	<update parameterType="_int" id="acceptService">
-		update service set admin_approval='y', write_date=to_char(sysdate,'yy-mm-dd') 
+		update service set admin_approval='y', write_date=to_char(sysdate,'yyyy-mm-dd') 
+		where s_no=#{_parameter} 
+	</update>
+	
+	<!-- (소현)관리자-서비스 거절 -->
+	<update parameterType="_int" id="rejectService">
+		update service set admin_approval='n'
 		where s_no=#{_parameter} 
 	</update>
 

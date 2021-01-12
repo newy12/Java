@@ -26,4 +26,8 @@ public class NoticeDao {
 	public Notice selectNoticeView(int nNo) {
 		return session.selectOne("notice.noticeView",nNo);
 	}
+
+	public int deleteNotice(int nNo) {
+		return session.delete("notice.deleteNotice",nNo);
+	}
 }

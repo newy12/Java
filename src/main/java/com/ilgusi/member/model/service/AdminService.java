@@ -16,8 +16,8 @@ public class AdminService {
 	private AdminDao dao;
 
 	// (소현)관리자-전체회원조회
-	public ArrayList<Member> manageMember() {
-		return dao.manageMember();
+	public ArrayList<Member> selectAllMember() {
+		return dao.selectAllMember();
 	}
 
 	// (소현)회원별 서비스 이용횟수
@@ -53,6 +53,11 @@ public class AdminService {
 	// (소현)이용내역 조회
 	public ArrayList<ServiceTrade> useCount(int mNo) {
 		return dao.useCount(mNo);
+	}
+
+	//(소현)서비스 등록 거절
+	public void rejectService(int sNo) {
+		dao.rejectService(sNo);
 	}
 
 }

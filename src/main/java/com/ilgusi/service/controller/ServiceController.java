@@ -101,15 +101,16 @@ public class ServiceController {
 
 	// 프리랜서 마이페이지 -> 서비스 리스트 이동
 	@RequestMapping("/freelancerServiceList.do")
-	public String freelancerServiceList() {
+	public String freelancerServiceList(String mId,Model model) {
+		Join j = new Join();
+		System.out.println("mid : "+mId);
+		j.setServiceList(service.serviceList(mId));
+		model.addAttribute("j",j);
+		System.out.println("test"+j.getServiceList().size());
 		return "freelancer/freelancerServiceList";
 	}
 
-	// 프리랜서 마이페이지 -> 거래내역
-	@RequestMapping("/freelancerTradeHistory.do")
-	public String freelancerTradeHistory() {
-		return "freelancer/freelancerTradeHistory";
-	}
+
 
 	// 프리랜서 마이페이지 정보수정(소개글,연락가능시간,브랜드명 추가)
 	@RequestMapping("/updateFreelancer.do")
@@ -133,6 +134,62 @@ public class ServiceController {
 	public String serviceView() {
 		return "service/serviceView";
 	}
+
+
+	//(문정)사용자 마이페이지 - 거래후기 쓰기
+	@RequestMapping("/serviceReviewWrite.do")
+	public String serviceReviewWrite( int tNo, int sNo, String mId, String sImg, String sContent, Model model) {
+		model.addAttribute("tNo", tNo);
+		model.addAttribute("sNo", sNo);
+		model.addAttribute("mId", mId);
+		model.addAttribute("sImg", sImg);
+		model.addAttribute("sContent", sContent);
+		return "service/serviceReviewWrite";
+	}
+	
+	//(문정) 마이페이지 - 서비스 후기 등록
+	@RequestMapping("/serviceReviewInsert.do")
+	public String serviceReviewInsert( ServiceReview data , Model model) {
+		int result = service.serviceReviewInsert(data);
+		if(result>0) {
+			result = service.serviceReviewSuccess(data.getTNo());
+			if(result>0) {
+				model.addAttribute("msg","리뷰를 등록하였습니다.");
+			}
+		}
+		return "/service/reviewDone";
+	}
+
+	//(문정) 마이페이지 - 거래 후기 작성한거 확인
+	@RequestMapping("/serviceReviewView.do")
+	public String serviceReviewView(ServiceReview data , Model model) {
+		ServiceReview sr = service.serviceReviewView(data);
+		model.addAttribute("review",sr);
+		return "/service/serviceReviewUpdate";
+	}
+	
+	//(문정) 서비스 리뷰 수정
+	@RequestMapping("/serviceReviewUpdate.do")
+	public String serviceReviewUpdate(ServiceReview review, Model model) {
+		int result = service.serviceReviewUpdate(review);
+		if(result>0) {
+			model.addAttribute("msg","리뷰를 수정하였습니다.");
+		}
+		return "/service/reviewDone";
+	}
+	
+	//(문정) 서비스 리뷰 삭제
+	@RequestMapping("/serviewReviewDelete.do")
+	public String serviewReviewDelete(int rNo, int tNo, Model model) {
+		int result = service.serviceReviewDelete(rNo);
+		if(result>0) {
+			result = service.serviceTradeStatusUpdate(tNo);
+			if(result>0) {
+				model.addAttribute("msg", "리뷰를 삭제했습니다.");
+			}
+		}
+		return "/service/reviewDone";
+	}
 	
 	/*
 	 * @RequestMapping("/serviceListTest.do") public String serviceListTest(int cNo,
@@ -146,23 +203,4 @@ public class ServiceController {
 	 * @RequestMapping("/serviceListTest.do") public String serviceListTest(int cNO)
 	 * { ArrayList<Category> list = service.selectCategory(cNO); return ""; }
 	 */
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

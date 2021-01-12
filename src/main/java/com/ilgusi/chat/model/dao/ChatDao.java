@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ilgusi.chat.model.vo.Chat;
+import com.ilgusi.chat.model.vo.ChatContent;
 import com.ilgusi.favorite.model.vo.Favorite;
 import com.ilgusi.service.model.vo.Service;
 
@@ -34,14 +35,14 @@ public class ChatDao {
 		session.insert("chat.createChat", room);
 	}
 
-	// (소현)채팅방 불러오기
+	// (소현)아이디로 채팅방 불러오기
 	public ArrayList<Chat> selectRoomList(String mId) {
 		List<Chat> list = session.selectList("chat.roomList", mId);
 		return (ArrayList<Chat>) list;
 	}
 
-	// (소현)채팅방 번호 불러오기
-	public int selectOneRoom(HashMap<String, Object> room) {
+	// (소현)채팅방 불러오기
+	public Chat selectOneRoom(HashMap<String, Object> room) {
 		return session.selectOne("chat.selectOneRoom", room);
 	}
 
@@ -58,6 +59,12 @@ public class ChatDao {
 	// (소현)문의 시작한 서비스 찜리스트에서 삭제
 	public void deleteOneFavorite(Favorite oneFavorite) {
 		session.delete("favorite.deleteHeart", oneFavorite);
+	}
+
+	// (소현)해당 번호 채팅방에서 대화 불러오기
+	public ArrayList<ChatContent> chatContentList(int roomNo) {
+		List<ChatContent> list = session.selectList("chat.chatContent", roomNo);
+		return (ArrayList<ChatContent>) list;
 	}
 
 }

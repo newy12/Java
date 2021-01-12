@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.ilgusi.chat.model.dao.ChatDao;
 import com.ilgusi.chat.model.vo.Chat;
+import com.ilgusi.chat.model.vo.ChatContent;
 import com.ilgusi.favorite.model.vo.Favorite;
 
 @Service
@@ -30,12 +31,12 @@ public class ChatService {
 		dao.createChat(room);
 	}
 
-	// (소현)채팅방 번호 불러오기
-	public int selectOneRoom(HashMap<String, Object> room) {
+	// (소현)채팅방 불러오기
+	public Chat selectOneRoom(HashMap<String, Object> room) {
 		return dao.selectOneRoom(room);
 	}
 
-	// (소현)채팅방 불러오기
+	// (소현)아이디로 채팅방 불러오기
 	public ArrayList<Chat> selectRoomList(String mId) {
 		return dao.selectRoomList(mId);
 	}
@@ -54,6 +55,13 @@ public class ChatService {
 	public void deleteOneFavorite(Favorite oneFavorite) {
 		dao.deleteOneFavorite(oneFavorite);
 	}
+
+	//(소현)해당 번호 채팅방에서 대화 불러오기
+	public ArrayList<ChatContent> chatContentList(int roomNo) {
+		return dao.chatContentList(roomNo);
+	}
+
+	
 
 	
 

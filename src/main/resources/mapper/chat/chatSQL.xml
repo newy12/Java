@@ -7,12 +7,21 @@
 		values(chat_seq.nextval,#{sNo},#{userId},#{freeId})
 	</insert>
 
-	<!-- (소현)채팅방 번호 불러오기 -->
-	<select id="selectOneRoom" parameterType="map" resultType="_int">
+	<!-- (소현)채팅방 불러오기 -->
+	<select id="selectOneRoom" parameterType="map" resultType="c">
 		select
-		c_no as cNo
-		from chat
-		where s_no=#{sNo} and user_id=#{userId}
+		c_no as cNo,
+		user_id as userId,
+		freelancer_id as freelancerId,
+		s_no as sNo
+		from
+		chat
+		<if test="cNo==null">
+			where s_no=#{sNo} and user_id=#{userId}
+		</if>
+		<if test="cNo!=null">
+			where c_no=#{cNo}
+		</if>
 	</select>
 
 	<!-- (소현)채팅방 불러오기 -->
@@ -20,15 +29,39 @@
 		select
 		c_no as cNo,
 		user_id as userId,
-		freelancer_id as freelancerId
+		freelancer_id as freelancerId,
+		s_no as
+		sNo
 		from chat
 		where user_id=#{_parameter}
 	</select>
 
-	<!-- (소현)보낸메세지 저장 -->
+	<!-- (소현)해당 번호 채팅방 대화내용 불러오기 -->
+	<select id="chatContent" parameterType="_int" resultType="cc">
+		select
+		cc_no as ccNo,
+		c_no as cNo,
+		m_id as mId,
+		c_date as cDate,
+		c_time as cTime,
+		c_content as
+		cContent,
+		read_status as readStatus
+		from chat_content
+		where
+		c_no=#{_parameter} order by 1
+	</select>
+
+	<!-- (소현)보낸메세지 저장 , 처음 생성했을때 기본메세지 insert -->
 	<insert id="insertChat" parameterType="map">
-		insert into chat_content
-		values(chat_content_seq.nextval,#{cNo},#{myId},#{time},#{content},1)
+		<if test="welcomeMsg!=null">
+			insert into chat_content
+			values(chat_content_seq.nextval,#{cNo},'admin',to_char(sysdate,'yyyy-mm-dd'),'-',#{welcomeMsg},0)
+		</if>
+		<if test="welcomeMsg==null">
+			insert into chat_content
+			values(chat_content_seq.nextval,#{cNo},#{myId},#{date},#{time},#{content},1)
+		</if>
 	</insert>
 
 	<!-- (소현)채팅방 삭제 -->

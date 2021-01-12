@@ -189,6 +189,17 @@
     font-size: 17px;
     color: rgb(241, 196, 15);
 }
+.inner{
+width:1200px;
+margin:0 auto;}
+.noList{
+    margin-top: 5px;
+    text-align: center;
+   	line-height: 185px;
+   	color :rgb(224, 224, 224);
+   	font-size:20px;
+   	font-weight: bold; 
+}
 </style>
 </head>
 <body>
@@ -205,7 +216,7 @@
             <ul class="menu">
                 <li><img src="/img/icon/circle_navy.png" ><a href="/freelancerMypage.do?MNo=${loginMember.MNo}">나의 프로필</a></li>
                 <li><img src="/img/icon/circle_navy.png" style="display: inline;"><a href="#" style="margin-left: 5px; font-weight: bold; ">서비스 내역</a></li>
-                <li><img src="/img/icon/circle_navy.png"><a href="/freelancerTradeHistory.do">거래 내역</a></li>
+                <li><img src="/img/icon/circle_navy.png"><a href="/freelancerTradeHistory.do?mNo=${loginMember.MNo}">거래 내역</a></li>
             </ul>
         </div>
         
@@ -216,8 +227,14 @@
 	                <option value="content">최신순</option>
 	            </select>
 	        </div>
-	
+			<div class="inner">
 	        <div class="container">
+	        <c:choose>
+	        <c:when test="${j.serviceList.size()==0}">
+	        <div class="noList" style="width:800px">등록된 서비스가 없습니다.</div>
+	        </c:when>
+	        <c:otherwise>
+	        <c:forEach items="${j.serviceList}" var ="a">
 	            <div>
 	                <div>
 	                    <a href="#">
@@ -228,13 +245,16 @@
 	                    <div class="title-img heart-btn"><img id="service1" src="/img/icon/heart_orange.png" width="31px" height="31px" onclick="heart_click(this)" value="fill"></div>
 	                </div>
 	                <div class="empty"></div>
-	                <div class="title">브랜드 이름</div>
+	                <div class="title">${a.STitle}</div>
 	                <a href="#">
-	                    <div class="content">본인 서비스 소개글 소개글 소개글 소개글 소개글소개글 소개글 소개글 </div>
-	                    <div class="price">000,000,000원</div>
-	                    <div class="rate"><span>평점 5.0점</span><span>★★★★★</span></div>
+	                    <div class="content">${a.SContent } </div>
 	                </a>
 	            </div>
+	            </c:forEach>
+	        </c:otherwise>
+	        </c:choose>
+	        
+	        </div>
 	        </div>
 	    </div>
 	</div>
@@ -252,8 +272,8 @@
                $(obj).attr('src','/img/icon/heart_orange.png');
                 $(obj).attr('value', "fill");
             }
-
         }
+        	
     </script>
 </body>
 </html>
