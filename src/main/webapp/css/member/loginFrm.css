@@ -1,8 +1,8 @@
 .background-screen {
     display: none;
     position: absolute;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     background-color: black;
     opacity: 0.2;
 }
@@ -65,19 +65,25 @@
 
 .login-inputs input[type=submit] {
     background-color: lightgray;
-    color: white;
-    /* border-color: #314C83; */
+    color: gray;
+    border: none;
     font-weight: bold;
+    outline: none;
 }
 .login-inputs input[type=submit]:hover{
     cursor: not-allowed;
 }
 .login-inputs a {
     display: block;
+    width: fit-content;
     text-decoration: none;
     color: #282828;
     font-weight: bold;
+    margin:0 auto;
     margin-top: 15px;
+}
+.login-inputs a:hover{
+    text-decoration: underline;
 }
 
 .login-form-center {

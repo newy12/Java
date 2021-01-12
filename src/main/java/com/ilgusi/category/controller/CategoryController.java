@@ -32,7 +32,7 @@ public class CategoryController {
 	@RequestMapping(value = "/categoryAjax.do", produces = "text/json; charset=utf-8")
 	@ResponseBody
 	public String categoryAjax(HttpServletResponse resp) {
-		System.out.println("아작스");
+		System.out.println("에이잭스");
 		Gson gson = new Gson();
 		List<Category> list = service.selectCategoryList();
 		String json = gson.toJson(list);

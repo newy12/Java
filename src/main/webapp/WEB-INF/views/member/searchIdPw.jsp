@@ -108,7 +108,7 @@
                         아이디 찾기
                     </div>
                     <div class="search-contents">
-                        <form action="/searchIdPw.do" method="post">
+                        <form action="/searchId.do" method="post">
                             <input type="text" name="mName" id="mName" placeholder="이름을 입력해주세요.">
                             <input type="text" name="mPhone" id="mPhone" placeholder="전화번호를 입력해주세요.">
                             <input type="submit" value="아이디 찾기">

@@ -118,13 +118,13 @@
                 <ul>
                     <span class="footer-title">고객센터</span>
                     <li>
-                        <span><a href="#">공지사항</a></span>
+                        <span><a href="noticeList.do">공지사항</a></span>
                     </li>
                     <li>
                         <span><a href="#">이용약관</a></span>
                     </li>
                     <li>
-                        <span><a href="#">1:1 문의</a></span>
+                        <span><a href="qna.do">1:1 문의</a></span>
                     </li>
                     <li>
                         <span><a href="#">FAQ</a></span>
