@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,25 @@ public class ServiceController {
 		model.addAttribute("j", j);
 		return "freelancer/introduce";
 	}
+	//(영재) 리뷰갯수 구하기
+	@RequestMapping("/reviewListSize.do")
+	public void reviewListSize(Model model) {
+		List<ServiceReview> list = service.reviewListSize();
+		model.addAttribute("list",list);
+	}
 
+	
+	  //(영재) 평점 평균 구하기
+	  
+	  @RequestMapping("/sRateAVG.do") 
+	  public void sRateAVG(Model model) {
+	  List<Service> list = service.sRateAVG();
+	  model.addAttribute("list",list);
+	  System.out.println("list>>>>>>평점"+list);
+	  }
+	  //(영재) 
+	  
+	 
 	@RequestMapping("/serviceJoinFrm.do")
 	public String serviceJoinFrm() {
 		return "freelancer/servicejoin";

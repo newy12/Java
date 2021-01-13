@@ -7,6 +7,14 @@
 <title>거래 내역</title>
 
 <style>
+.noList{
+    margin-top: 5px;
+    text-align: center;
+   	line-height: 185px;
+   	color :rgb(224, 224, 224);
+   	font-size:20px;
+   	font-weight: bold; 
+}
 .page-wrap {
 	width: 1104px;
 	height: 1100px;
@@ -258,7 +266,7 @@
 				</div>
 
 				<c:if test="${tradeList.size() == 0}">
-					<div class="content-box noTrade">진행한 거래가 없습니다</div>
+					<div class="noList">진행한 거래가 없습니다</div>
 				</c:if>
 				<c:if test="${tradeList.size() != 0 }">
 					<c:forEach items="${tradeList}" var="t" varStatus="status">
@@ -280,6 +288,7 @@
 							<div>
 								<div>
 									<div>
+								
 										<a href="#"><img src="/img/icon/img.jpg" width="175px"
 											height="103px"></a>
 									</div>
@@ -348,8 +357,7 @@
 									<c:when test="${t.TStatus == 1 }">
 										<input type="hidden" value="${t.MNo}" />
 										<input id="tnoId" type="hidden" value="${t.TNo}" />
-										<button class="review-btn" id="ajax_button"
-											onclick="ajax_click(this)">작업 완료</button>
+										<button class="review-btn" id="ajax_button" onclick="ajax_click(this)">작업 완료</button>
 									</c:when>
 									<c:when test="${t.TStatus == 2}">
 	               				작업 완료
