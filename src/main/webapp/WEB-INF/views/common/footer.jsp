@@ -124,7 +124,7 @@
                         <span><a href="#">이용약관</a></span>
                     </li>
                     <li>
-                        <span><a href="qna.do">1:1 문의</a></span>
+                        <span><a href="qna.do?pageNum=1">1:1 문의</a></span>
                     </li>
                     <li>
                         <span><a href="#">FAQ</a></span>

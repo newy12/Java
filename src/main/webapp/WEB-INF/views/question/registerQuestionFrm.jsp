@@ -52,9 +52,9 @@
     <jsp:include page="/WEB-INF/views/common/header.jsp" />
     <script>
         $(document).ready(function () {
-            $("form").on("submit", function (e) {
+            $("#qna-reg-form").on("submit", function (e) {
                 let $qTitle = $("#qTitle");
-                if($qTitle.val() == '' || $("#qContent").val()){
+                if($qTitle.val() == '' || $("#qContent").val() == ''){
                     alert("빈칸없이 입력해주세요.")
                     e.preventDefault();
                 }
@@ -74,7 +74,7 @@
                     </div>
                 </div>
             </div>
-            <form action="registerQuestion.do" method="POST" enctype="multipart/form-data">
+            <form id="qna-reg-form" action="registerQuestion.do" method="POST" enctype="multipart/form-data">
                 <div class="qna-center">
                     <table>
                         <thead>
