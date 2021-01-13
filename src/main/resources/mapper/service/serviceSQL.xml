@@ -168,6 +168,29 @@
 		update service set working_count=(select working_count from service where s_no=#{_parameter})+1 
 		where s_no=#{_parameter}
 	</update>
+	
+	<!-- (다솜)서비스 리스트 불러오기 -->
+	<select id="serviceList" parameterType="s" resultType="s">
+		select 
+			s_no as sNo,
+			m_id as mId,
+			s_title as sTitle,
+			s_price as sPrice,
+			s_img as sImg,
+			main_category as mainCategory,
+			sub_category as subCategory,
+			s_rate as sRate
+		from service where delete_status = 'n'
+		<if test="mainCategory != 0 ">
+			and main_category = #{mainCategory}
+		</if>
+		<if test="subCategory != 0 ">
+			and  sub_category= #{subCategory}
+		</if>
+		
+		  
+	
+	</select>
 
 </mapper>
 
