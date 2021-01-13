@@ -88,5 +88,15 @@ public class RequestService {
 	public Request selectOneRequest(int reqNo) {
 		return dao.selectOneRequest(reqNo);
 	}
+
+	//(문정) 의뢰 게시판 수정하기
+	public int requestUpdate(Request req) {
+		return dao.requestUpdate(req);
+	}
+
+	//(문정) 의뢰글 삭제
+	public int requestDeleteOne(int reqNo) {
+		return dao.requestDeleteOne(reqNo);
+	}
 	
 }

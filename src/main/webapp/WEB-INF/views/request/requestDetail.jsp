@@ -96,7 +96,7 @@
                 </tr>
                 <tr>
                     <th style="border-top: 0px;text-align: center;">작성자</th>
-                    <th style="border-top: 0px">${req.MId } &nbsp;&nbsp;&nbsp;<button class="contact-user">고객에게 연락하기</button></th>
+                    <th style="border-top: 0px">${req.MId } &nbsp;&nbsp;&nbsp;<button class="contact-user" value="${req.MId }">고객에게 연락하기</button></th>
                     <th style="border-top: 0px"></th>
                 </tr>
                 <tr>
@@ -114,9 +114,14 @@
             </table>
             <div class="reqContent">${req.reqContent }</div>
             <div class="btn-box">
+            	<input type="hidden" id="reqNo" value="${req.reqNo }">
+            	<input type="hidden" id="reqStatus" value="${req.reqStatus }">
             	<button class="btns btn-back" onclick="history.back()">목록으로</button>
-            	<button class="btns btn-delete">삭제하기</button>
-            	<button class="btns btn-update">수정하기</button>
+            	<c:if test="${req.MId == loginMember.MId }">
+            		<button class="btns btn-delete">삭제하기</button>
+            		<button class="btns btn-update">수정하기</button>
+            	</c:if>
+            	
             </div>
             <div>
             	
@@ -132,6 +137,24 @@
     		var reqContent = $(".reqContent").height();
     		$(".reqContent").height(reqContent);
     		$(".page-wrap").height(reqContent+600);
+    	});
+    	
+    	$(".btn-update").click(function(){
+    		var reqNo = $("#reqNo").val();
+    		location.href = "/requestUpdateFrm.do?reqNo="+reqNo;
+    	});
+    	
+    	$(".btn-delete").click(function(){
+    		var reqNo = $("#reqNo").val();
+    		var reqStatus = $("#reqStatus").val();
+    		if(reqStatus == 1){  //진행중이면 삭제안되게
+    			alert('진행중인 의뢰는 삭제하실 수 없습니다.');
+    		}else{
+    			var result = confirm('정말 삭제하시겠습니까?');
+    			if(result){
+    				location.href = "/requestDeleteOne.do?reqNo="+reqNo;
+    			}
+    		}
     	});
     </script>
 </body>

@@ -38,4 +38,14 @@ public class RequestDao {
 	public Request selectOneRequest(int reqNo) {
 		return session.selectOne("request.selectOneRequest", reqNo);
 	}
+
+	//(문정) 의뢰 수정
+	public int requestUpdate(Request req) {
+		return session.update("request.requestUpdate",req);
+	}
+
+	//(문정) 의뢰글 삭제
+	public int requestDeleteOne(int reqNo) {
+		return session.delete("request.requestDeleteOne", reqNo);
+	}
 }

@@ -39,4 +39,14 @@
 		from request_board r where req_no = #{_parameter} 
 	</select>
 
+	<!-- (문정) 의뢰글 수정 -->
+	<update id="requestUpdate" parameterType="req">
+		update request_board set req_title = #{reqTitle}, req_content =#{reqContent}, filename=#{filename}, filepath=#{filepath}
+		where req_no = #{reqNo} 
+	</update>
+	
+	<!-- (문정) 의뢰글 삭제 -->
+	<delete id="requestDeleteOne" parameterType="_int">
+		delete from request_board where req_no = #{_parameter}
+	</delete>
 </mapper>
