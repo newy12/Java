@@ -5,10 +5,12 @@
 <!-- 프리랜서 소개글 불러오기 쿼리 -->
 	select
       m_name as mName,
+      m_id as mId,
       m_phone as mPhone,
       m_email as mEmail,
       introduce as introduce,
-      brand_Name as brandName
+      brand_Name as brandName,
+      contact_time as contactTime 
       from
       member
       where m_id =#{mId}
@@ -145,6 +147,22 @@
 		insert into service_file
 		values(SERVICE_FILE_SEQ.NEXTVAL,#{sNo},#{filename},#{filepath})
 	</insert>
+	<select id="reviewListSize" resultType="_int">
+		select 
+		count(*) 
+		from service_review 
+		where m_id = 'newy10'
+	
+	
+	</select>
+ 	<select id="sRateAVG" resultType="float">
+		select
+		 ROUND(AVG(s_rate),1) 
+		 from service
+		 where m_id = 'newy10'
+	</select>
+
+	
 
 	<!-- (소현)관리자-서비스 승인 -->
 	<update parameterType="_int" id="acceptService">
@@ -172,6 +190,5 @@
 	<select resultType="trade" parameterType="_int" id="userHistory">
 		select * from service_trade where m_no=#{_parameter} 
 	</select>
-
 </mapper>
 

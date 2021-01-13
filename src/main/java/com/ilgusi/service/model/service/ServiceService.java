@@ -12,6 +12,7 @@ import com.ilgusi.service.model.dao.ServiceDao;
 import com.ilgusi.service.model.vo.Join;
 import com.ilgusi.service.model.vo.ServiceFile;
 import com.ilgusi.service.model.vo.ServiceReview;
+import com.ilgusi.service.model.vo.ServiceTrade;
 
 @Service
 public class ServiceService {
@@ -49,6 +50,8 @@ public class ServiceService {
 			int start = end - numPerPage + 1;//
 			List<ServiceReview> j = dao.selectReviewList(mId,start,end);
 			int totalCount = dao.totalCount();
+			System.out.println("end<<>>>>>>>>>>>>>"+end);
+			System.out.println("totalCount<<>>>>>>>>>>>>>"+totalCount);
 			int totalPage = 0;
 			if(totalCount%numPerPage ==0) {
 				totalPage = totalCount/numPerPage;
@@ -59,7 +62,7 @@ public class ServiceService {
 			int pageNo = ((reqPage-1)/pageNaviSize)*pageNaviSize + 1;
 			String pageNavi = "";
 			if(pageNo != 1) {
-				pageNavi += "<a href='/introduceFrm.do?mId="+mId+"&reqPage="+(pageNo-1)+"'>[이전]</a>";
+				pageNavi += "<a href='/introduceFrm.do?mId="+mId+"&reqPage="+(pageNo-1)+"'><</a>";
 			}
 			for(int i=0;i<pageNaviSize;i++) {
 				if(pageNo != reqPage) {
@@ -74,7 +77,7 @@ public class ServiceService {
 				}
 			}
 			if(pageNo <= totalPage) {
-				pageNavi += "<a href='/introduceFrm.do?mId="+mId+"&reqPage="+pageNo+"'>[다음]</a>";
+				pageNavi += "<a href='/introduceFrm.do?mId="+mId+"&reqPage="+pageNo+"'>></a>";
 			}
 			Join join = new Join();
 			join.setReviewList(j);
@@ -117,10 +120,17 @@ public class ServiceService {
 		public int serviceTradeStatusUpdate(int tNo) {
 			return dao.serviceTradeStatusUpdate(tNo);
 		}
-
 		/*
 		 * public ArrayList<Category> selectCategory(int cNO) { return
 		 * dao.selectCategory(cNO); }
 		 */
+
+		public List<ServiceReview> reviewListSize() {
+			return dao.reviewListSize();
+		}
+
+		public List<com.ilgusi.service.model.vo.Service> sRateAVG() {
+			return dao.sRateAVG();
+		}
 
 }

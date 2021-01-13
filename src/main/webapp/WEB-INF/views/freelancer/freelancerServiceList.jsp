@@ -239,15 +239,15 @@ margin:0 auto;}
 	                <div>
 	                    <a href="#">
 	                        <div class="title-img">
-	                            <div class="back-img"><img src="/img/icon/img.jpg" width="225x" height="133px"></div>
+	                            <div class="back-img"><img src="/upload/service/${a.SImg}" width="225x" height="133px"></div>
 	                        </div>
 	                    </a>
-	                    <div class="title-img heart-btn"><img id="service1" src="/img/icon/heart_orange.png" width="31px" height="31px" onclick="heart_click(this)" value="fill"></div>
+	                   
 	                </div>
 	                <div class="empty"></div>
-	                <div class="title">${a.STitle}</div>
+	                <div class="title">제목 ${a.STitle}</div>
 	                <a href="#">
-	                    <div class="content">${a.SContent } </div>
+	                    <div class="content">내용 ${a.SContent } </div>
 	                </a>
 	            </div>
 	            </c:forEach>
@@ -264,16 +264,7 @@ margin:0 auto;}
 
 
     <script>
-        function heart_click(obj){
-            if($(obj).attr('value') == "fill"){
-               $(obj).attr('src','/img/icon/heart_navy.png');
-                $(obj).attr('value', "empty");
-            }else{
-               $(obj).attr('src','/img/icon/heart_orange.png');
-                $(obj).attr('value', "fill");
-            }
-        }
-        	
+
     </script>
 </body>
 </html>
