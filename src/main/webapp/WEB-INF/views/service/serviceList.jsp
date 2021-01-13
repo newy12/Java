@@ -152,7 +152,7 @@
 
         .star {
             color: rgb(241, 196, 15);
-            font-size: 12pt;
+            font-size: 14pt;
         }
 
 </style>
