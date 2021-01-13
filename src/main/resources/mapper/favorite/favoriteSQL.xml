@@ -47,41 +47,41 @@
 		delete_status as deleteStatus,
 		admin_approval as adminApproval 
 	from service 
-	where s_no in (select s_no from favorite where m_no = #{mNo}) 
+	where s_no in (select s_no from favorite where m_no = #{mNo}) and delete_status = 'n'
 	<choose>
 		<when test='order == "priceDown"'>
-			order by s_price 
+			order by s_price  
 		</when>
 		<when test='order == "priceUp"'>
-		 	order by s_price desc
+		 	order by s_price desc 
 		</when>
 		<when test='order == "new"'>
-			order by s_no desc
+			order by s_no desc 
 		</when>
 		<otherwise>
-			order by m_id
+			order by m_id 
 		</otherwise>
 	</choose>
 </select>
 	
 	<!-- (문정) 찜한 애들 브래드명 가져오기 -->
 	<select id="selectBrandName" parameterType="fo" resultType="string">
-		select brand_name from (select  s.m_id as m_id from service s where s_no in (select s_no from favorite where m_no = #{mNo}) 
+		select brand_name from (select  s.m_id as m_id from service s where s_no in (select s_no from favorite where m_no = #{mNo}) and delete_status = 'n' 
 		<choose>
 			<when test='order == "priceDown"'>
 				order by s_price 
 			</when>
 			<when test='order == "priceUp"'>
-			 	order by s_price desc
+			 	order by s_price desc 
 			</when>
 			<when test='order == "new"'>
-				order by s_no desc
+				order by s_no desc 
 			</when>
 			<otherwise>
-				order by m_id
+				order by m_id 
 			</otherwise>
 	</choose>
-		) a 
+		 ) a 
 		left outer join (select m_id, brand_name from member where m_id in (select m_id  from service where s_no in (select s_no from favorite where m_no = #{mNo}))) b 
 		on a.m_id=b.m_id 
 	</select>
