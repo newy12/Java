@@ -187,8 +187,19 @@
 		<if test="subCategory != 0 ">
 			and  sub_category= #{subCategory}
 		</if>
-		
-		  
+	</select>
+	
+	<!--(다솜) 브랜드 이름 불러오기 -->
+	<select id="brandList" parameterType="s" resultType="string">
+		SELECT brand_name FROM member
+			JOIN service USING (m_id) where  delete_status = 'n' 
+			
+		<if test="mainCategory != 0 ">
+			and main_category = #{mainCategory}
+		</if>
+		<if test="subCategory != 0 ">
+			and  sub_category= #{subCategory}
+		</if>
 	
 	</select>
 

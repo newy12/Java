@@ -129,6 +129,10 @@ public class ServiceService {
 			return dao.serviceList(s);
 		}
 
+		public ArrayList<String> brandList(com.ilgusi.service.model.vo.Service s) {
+			return dao.brandList(s);
+		}
+
 		
 		
 

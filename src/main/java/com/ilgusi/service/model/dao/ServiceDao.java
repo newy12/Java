@@ -103,6 +103,10 @@ public class ServiceDao {
 		List<com.ilgusi.service.model.vo.Service> list = session.selectList("service.serviceList",s);
 		return (ArrayList<com.ilgusi.service.model.vo.Service>)list;
 	}
+	public ArrayList<String> brandList(com.ilgusi.service.model.vo.Service s) {
+		List<String> list = session.selectList("service.brandList",s);
+		return (ArrayList<String>) list;
+	}
 
 	
 	/*

@@ -18,7 +18,7 @@
         .contentWrap {
             width: 1200px;
             margin: 0 auto;
-            height: 1200px;
+            height: 1600px;
         }
 
         .sideNavi {
@@ -147,6 +147,7 @@
             text-align: right;
             color: gray;
             margin: 0;
+            height: 15px;
         }
 
         .star {
@@ -192,13 +193,46 @@
                 </div>
             </div>
             <div class="tableContainer">
-            <c:forEach items="${serviceList }" var="s">
+            <c:forEach items="${serviceList }" var="s" varStatus="status">
 	            <div class="serviceBox">
 	                    <img src="upload/service/${s.SImg }"><br>
-	                    <span class="preName">하이샵</span><br>
-	                    <p class="serviceCon">${s.STitle }</p>
+	                    <span class="preName">${brandName[status.index] }</span><br>
+	                    <p class="serviceCon" style="height: 30px;">${s.STitle }</p>
 	                    <p class="price">${s.SPrice }원~</p>
-	                    <p class="score">평점 ${s.SRate }.0점<span class="star"> ★★★★★</span></p>
+	                    <p class="score">평점 ${s.SRate }.0
+	                    
+	                   		<c:if test="${s.SRate == 5}">
+	                    		<span class="star">
+	                    			★★★★★
+	                   			</span>
+	                   		</c:if>
+	                   		
+	                   		<c:if test="${s.SRate == 4}">
+	                    		<span class="star">
+	                    			☆★★★★
+	                   			</span>
+	                   		</c:if>
+	                   		<c:if test="${s.SRate == 3}">
+	                    		<span class="star">
+	                    			☆☆★★★
+	                   			</span>
+	                   		</c:if>
+	                   		<c:if test="${s.SRate == 2}">
+	                    		<span class="star">
+	                    			☆☆☆★★
+	                   			</span>
+	                   		</c:if>
+	                   		<c:if test="${s.SRate == 1}">
+	                    		<span class="star">
+	                    			☆☆☆☆★
+	                   			</span>
+	                   		</c:if>
+	                   		<c:if test="${s.SRate == 0}">
+	                    		<span class="star">
+	                    			☆☆☆☆☆
+	                   			</span>
+	                   		</c:if>                   	
+	                    </p>
 	               </div>
             </c:forEach>
                 
@@ -211,6 +245,20 @@
 	
 	
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
+
+
+<script >
+	$(function (){
+		
+		
+		
+		
+		
+	})
+
+
+
+</script>
 
 
 </body>

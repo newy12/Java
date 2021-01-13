@@ -214,9 +214,9 @@ public class ServiceController {
 			System.out.println("serList 사이즈 : " + serList.size());
 			System.out.println("serList(0)값 : " + serList.get(0));
 		}
-		
-		model.addAttribute("catList",catList);
-		model.addAttribute("serviceList", serList);
+		System.out.println("serList(1)의 m_id : " + serList.get(1).getMId());
+		ArrayList<String> brandName = service.brandList(s);
+		System.out.println("brandName(0)의 값 :" + brandName.get(0));
 		
 		switch(maincateNum) {
 			case 10: model.addAttribute("mainCate", "디자인");
@@ -234,6 +234,12 @@ public class ServiceController {
 			case 70: model.addAttribute("mainCate", "주문제작");
 				break;
 		}
+		
+		
+		
+		model.addAttribute("catList",catList);
+		model.addAttribute("serviceList", serList);
+		model.addAttribute("brandName", brandName);
 		
 		return "/service/serviceList";
 	}
