@@ -2,6 +2,7 @@ package com.ilgusi.member.model.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.ilgusi.chat.model.vo.ChatContent;
 import com.ilgusi.member.model.dao.AdminDao;
 import com.ilgusi.member.model.vo.Member;
+import com.ilgusi.question.model.vo.Question;
 import com.ilgusi.service.model.vo.TradeHistory;
 import com.ilgusi.service.model.vo.ServiceTrade;
 
@@ -48,7 +50,6 @@ public class AdminService {
 		dao.deleteService(sNo);
 	}
 
-
 	// (소현)서비스 등록 거절
 	public void rejectService(int sNo) {
 		dao.rejectService(sNo);
@@ -59,7 +60,7 @@ public class AdminService {
 		return dao.selectAdminMsg(mId);
 	}
 
-	//(소현)아이디로 회원 불러오기
+	// (소현)아이디로 회원 불러오기
 	public Member selectOneMember(String freeId) {
 		return dao.selectOneMember(freeId);
 	}
@@ -67,6 +68,27 @@ public class AdminService {
 	// (소현)작업내역 조회
 	public ArrayList<TradeHistory> tradeHistory(HashMap<String, Integer> map) {
 		return dao.tradeHistory(map);
+	}
+
+	public int selectQuestionCount() {
+		return dao.selectQuestionCount();
+	}
+
+	public int selectQuestionCount(int type, String keyword) {
+		return dao.selectQuestionCount(type, keyword);
+	}
+
+	public List<Question> selectQuestionList(int begin, int end, int type, String keyword) {
+		return dao.selectQuestionList(begin, end, type, keyword);
+	}
+
+	public int selectMaxPageCount(int numPerPage, int listCount) {
+		int maxPageCount = listCount / numPerPage;
+
+		if (listCount % numPerPage > 0)
+			maxPageCount++;
+
+		return maxPageCount;
 	}
 
 }

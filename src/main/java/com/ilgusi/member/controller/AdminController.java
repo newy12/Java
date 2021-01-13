@@ -2,16 +2,19 @@ package com.ilgusi.member.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ilgusi.chat.model.vo.ChatContent;
 import com.ilgusi.member.model.service.AdminService;
 import com.ilgusi.member.model.vo.Member;
+import com.ilgusi.question.model.vo.Question;
 import com.ilgusi.service.model.vo.Service;
 import com.ilgusi.service.model.vo.TradeHistory;
 
@@ -152,5 +155,33 @@ public class AdminController {
 		model.addAttribute("member", oneMember);
 		return "/admin/adminMessage";
 	}
+	
+	// (도현) qna 관리자페이지 내에서 접속
+		@RequestMapping("manageQnA.do")
+		public String qna(Model model, @RequestParam(value = "page", defaultValue = "1") int page,
+				@RequestParam(value = "list_num", defaultValue = "10") int listNum,
+				@RequestParam(value = "qna_keyword", required = false) String keyword,
+				@RequestParam(value = "qna_type", defaultValue = "1") int type) {
+			// 검색기능 type--> 1: 제목 , 2:작성자 아이디
+			// 네비 기능
+			int listPerPage = listNum;
+			int maxListCount;
+			if (keyword == null)
+				maxListCount = service.selectQuestionCount();
+			else
+				maxListCount = service.selectQuestionCount(type, keyword);
 
+			List<Question> list = service.selectQuestionList(maxListCount - ((page) * listPerPage) + 1,
+					maxListCount - ((page - 1) * listPerPage), type, keyword);
+			int maxPrintPageCount = 5;
+			int maxPageCount = service.selectMaxPageCount(listPerPage, maxListCount);
+			int begin = maxPrintPageCount * (page / maxPrintPageCount) + 1; // 네비 시작
+			int end = (begin + 4) < maxPageCount ? begin + 4 : maxPageCount; // 네비 끝
+			model.addAttribute("questionList", list);
+			model.addAttribute("begin", begin);
+			model.addAttribute("end", end);
+			
+			return "/admin/qnaList";
+		}
+	
 }
