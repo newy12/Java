@@ -29,8 +29,18 @@
  	from notice where n_no =#{_parameter}
  </select>
 
-<delete id="deleteNotice" parameterType="_int">
+ <delete id="deleteNotice" parameterType="_int">
 	delete from notice where n_no = #{_parameter}
-</delete>
+ </delete>
+
+ <update id="updateNotice" parameterType="n" >
+	update notice set
+		n_title = #{nTitle},
+		n_content = #{nContent},
+		filename = #{filename},
+	  	filepath = #{filepath}
+	where n_no = #{nNo}
+ </update>
+
   
 </mapper>

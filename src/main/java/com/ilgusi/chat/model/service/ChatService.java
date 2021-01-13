@@ -10,6 +10,8 @@ import com.ilgusi.chat.model.dao.ChatDao;
 import com.ilgusi.chat.model.vo.Chat;
 import com.ilgusi.chat.model.vo.ChatContent;
 import com.ilgusi.favorite.model.vo.Favorite;
+import com.ilgusi.member.model.vo.Member;
+import com.ilgusi.service.model.vo.ServiceTrade;
 
 @Service
 public class ChatService {
@@ -37,8 +39,8 @@ public class ChatService {
 	}
 
 	// (소현)아이디로 채팅방 불러오기
-	public ArrayList<Chat> selectRoomList(String mId) {
-		return dao.selectRoomList(mId);
+	public ArrayList<Chat> selectRoomList(HashMap<String, String> myInfo) {
+		return dao.selectRoomList(myInfo);
 	}
 
 	// (소현)보낸메세지 저장
@@ -51,18 +53,29 @@ public class ChatService {
 		dao.deleteChat(cNo);
 	}
 
-	//(소현)문의 시작한 서비스 찜리스트에서 삭제
+	// (소현)문의 시작한 서비스 찜리스트에서 삭제
 	public void deleteOneFavorite(Favorite oneFavorite) {
 		dao.deleteOneFavorite(oneFavorite);
 	}
 
-	//(소현)해당 번호 채팅방에서 대화 불러오기
+	// (소현)해당 번호 채팅방에서 대화 불러오기
 	public ArrayList<ChatContent> chatContentList(int roomNo) {
 		return dao.chatContentList(roomNo);
 	}
 
-	
+	// (소현)아이디로 회원 불러오기
+	public Member selectOneMember(String userId) {
+		return dao.selectOneMember(userId);
+	}
 
-	
+	// (소현)serviceTrade에 insert
+	public void startTrade(HashMap<String, Object> tradeInfo) {
+		dao.startTrade(tradeInfo);
+	}
+
+	//(소현)service working_conut 1증가
+	public void updateWorkingCount(int sNo) {
+		dao.updateWorkingCount(sNo);	
+	}
 
 }

@@ -143,16 +143,6 @@ public class ServiceController {
 		return "common/msg";
 	}
 
-	@RequestMapping("/serviceList.do")
-	public String serviceList() {
-		return "service/serviceList";
-	}
-
-	@RequestMapping("/serviceView.do")
-	public String serviceView() {
-		return "service/serviceView";
-	}
-
 
 	//(문정)사용자 마이페이지 - 거래후기 쓰기
 	@RequestMapping("/serviceReviewWrite.do")
@@ -209,16 +199,62 @@ public class ServiceController {
 		return "/service/reviewDone";
 	}
 	
-	/*
-	 * @RequestMapping("/serviceListTest.do") public String serviceListTest(int cNo,
-	 * Model model) { ArrayList<Service> list = service.selectServiceList();
-	 * model.addAttribute("list", list); return "service/serviceList"; }
-	 */
-
-	/*
-	 * //서비스 리스트 메뉴 불러오기
-	 * 
-	 * @RequestMapping("/serviceListTest.do") public String serviceListTest(int cNO)
-	 * { ArrayList<Category> list = service.selectCategory(cNO); return ""; }
-	 */
+	//(다솜) serviceView 페이지 이동 
+	@RequestMapping("/serviceView.do")
+	public String serviceView() {
+		return "service/serviceView";
+	}
+	
+	//(다솜)serviceList 
+	@RequestMapping("/serviceList.do")
+	public String serviceList (int cNo, Model model) { 
+		Service s = new Service();
+		System.out.println("cNo : " + cNo);
+		int maincateNum = 0;
+		int subNo = 0;
+		if(cNo%10 == 0 ) {
+			maincateNum = cNo;
+			s.setSubCategory(subNo);
+		}else {
+			maincateNum = (cNo/10)*10;
+			subNo = cNo;
+		}
+		s.setMainCategory(maincateNum);
+		s.setSubCategory(subNo);
+		System.out.println("메인카테고리 : " + s.getMainCategory());
+		System.out.println("서브카테고리 : " + s.getSubCategory());
+		//카테고리 리스트 불러오기
+		ArrayList<Category> catList = service.categoryList(maincateNum);
+		System.out.println("카테고리 리스트 사이즈 : " + catList.size());
+		System.out.println("catList(1)값 : " + catList.get(1));
+		//서비스 리스트 불러오기
+		ArrayList<Service> serList = service.serviceList(s);
+		if(serList.size() != 0 ) {
+			System.out.println("serList 사이즈 : " + serList.size());
+			System.out.println("serList(0)값 : " + serList.get(0));
+		}
+		
+		model.addAttribute("catList",catList);
+		model.addAttribute("serviceList", serList);
+		
+		switch(maincateNum) {
+			case 10: model.addAttribute("mainCate", "디자인");
+				break;
+			case 20: model.addAttribute("mainCate", "ITㆍ프로그래밍");
+				break;
+			case 30: model.addAttribute("mainCate", "영상ㆍ사진ㆍ음향");
+				break;
+			case 40: model.addAttribute("mainCate", "교육");
+				break;
+			case 50: model.addAttribute("mainCate", "문서ㆍ글쓰기");
+				break;
+			case 60: model.addAttribute("mainCate", "비즈니스컨설팅");
+				break;
+			case 70: model.addAttribute("mainCate", "주문제작");
+				break;
+		}
+		
+		return "/service/serviceList";
+	}
+	
 }

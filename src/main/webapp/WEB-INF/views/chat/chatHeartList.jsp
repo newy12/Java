@@ -28,22 +28,30 @@
 					<div id="heart-list">
 						<ul>
 							<c:forEach items="${heartList }" var="s">
-								<li class="list">
-									<div class="list-wrap">
-										<div id="service-preview">
-											<p id="name">[${s.brandName}] ${s.STitle }</p>
-											<p id="preview">제공자: ${s.MId }</p>
-											<p id="preview">내용: ${s.SContent}</p>
-											<p id="preview">가격: ${s.SPrice } 평점: ${s.SRate }</p>
-											<%-- <span class="start-chat"><a
-												href="/startChat.do?sNo=${s.SNo }&myId=${sessionScope.loginMember.MId }&yourId=${s.MId}"><u>문의하기</u></a></span> --%>
-											<a href="#"
-												onclick="startChat('${s.SNo }','${sessionScope.loginMember.MId }','${s.MId}','${sessionScope.loginMember.MNo }');">문의하기</a>
+								<!-- 삭제된 서비스는 안보이게 -->
+								<c:if test="${s.deleteStatus eq 'n'.charAt(0)}">
+									<li class="list">
+										<div class="list-wrap">
+											<div id="service-preview">
 
-											<!-- 문의하기 버튼 누르면 사라지게 -->
+												<p id="name">[${s.brandName}] ${s.STitle }</p>
+												<p id="preview">
+													제공자:
+													<c:if test="${empty s.MId }">탈퇴한 회원</c:if>
+													<c:if test="${not empty s.MId }">${s.MId }</c:if>
+												</p>
+												<p id="preview">내용: ${s.SContent}</p>
+												<p id="preview">가격: ${s.SPrice } 평점: ${s.SRate }</p>
+												<c:if test="${not empty s.MId }">
+													<a href="#"
+														onclick="startChat('${s.SNo }','${sessionScope.loginMember.MId }','${s.MId}','${sessionScope.loginMember.MNo }');">문의하기</a>
+												</c:if>
+												<a href="#" onclick="deleteFavorite();">삭제하기</a>
+											</div>
 										</div>
-									</div>
-								</li>
+									</li>
+								</c:if>
+								<!-- 삭제된 서비스는 안보이게 -->
 							</c:forEach>
 						</ul>
 					</div>
@@ -75,7 +83,7 @@
 	<!-- chat-wrap 끝-->
 
 	<script>
-		function startChat(sNo, userId, freeId,mNo) {
+		function startChat(sNo, userId, freeId, mNo) {
 			$.ajax({
 				url : "/makeRoom.do",
 				type : "post",
@@ -84,7 +92,7 @@
 					sNo : sNo,
 					userId : userId,
 					freeId : freeId,
-					mNo:mNo
+					mNo : mNo
 				},
 				success : function(data) {
 					location.href = "/startChat.do?sNo=" + sNo + "&userId="

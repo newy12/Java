@@ -1,8 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="request">
+	<!-- (문정) 의뢰글 작성 -->
+	<insert id="insertBoard" parameterType="req">
+		insert into request_board values(REQUEST_BOARD_SEQ.nextval, #{mId},#{reqTitle},#{reqContent},0,#{filename}, #{filepath},to_char(sysdate,'yy-mm-dd')) 
+	</insert>
 
-<insert id="insertBoard" parameterType="req">
-	insert into request_board values(REQUEST_BOARD_SEQ.nextval, #{mId},#{reqTitle},#{reqContent},0,#{filename}, #{filepath},to_char(sysdate,'yy-mm-dd')) 
-</insert>
+	<!-- (문정) 의뢰게시글 총 개수 -->
+	<select id="totalCount"  resultType="_int">
+		select count(*) totalCount from request_board 
+	</select>
+	
+	<!-- (문정) 의뢰 게시글리스트 불러오기 -->
+	<select id="selectRequestList" parameterType="map" resultType="req">
+		select  
+			r.req_no as reqNo,
+			r.m_id as mId, 
+			r.req_title as reqTitle,
+			r.req_content as reqContent,
+			r.req_status as reqStatus,
+			r.filename,
+			r.filepath,
+			r.write_date as writeDate 
+		from (select rownum as rnum, b.* from(select * from request_board order by req_no desc) b) r where rnum between #{start} and #{end} 
+	</select>
+	
+	<!-- (문정) 의뢰게시판 글 상세보기 -->
+	<select id="selectOneRequest" parameterType="_int" resultType="req">
+		select 
+			r.req_no as reqNo,
+			r.m_id as mId, 
+			r.req_title as reqTitle,
+			r.req_content as reqContent,
+			r.req_status as reqStatus,
+			r.filename,
+			r.filepath,
+			r.write_date as writeDate 
+		from request_board r where req_no = #{_parameter} 
+	</select>
+
+	<!-- (문정) 의뢰글 수정 -->
+	<update id="requestUpdate" parameterType="req">
+		update request_board set req_title = #{reqTitle}, req_content =#{reqContent}, filename=#{filename}, filepath=#{filepath}
+		where req_no = #{reqNo} 
+	</update>
+	
+	<!-- (문정) 의뢰글 삭제 -->
+	<delete id="requestDeleteOne" parameterType="_int">
+		delete from request_board where req_no = #{_parameter}
+	</delete>
 </mapper>

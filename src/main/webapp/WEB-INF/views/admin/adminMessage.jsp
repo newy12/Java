@@ -13,6 +13,7 @@
 	<h1>${member.MId }에게 메세지 보내기</h1>
 	<textarea class="message"></textarea>
 	<button class="submit" onclick="sendMsg();">전송</button>
+	<button onclick="sendMsg();">닫기</button>
 	<script>
 		function sendMsg() {
 			// 현재 시간 구하기
@@ -48,8 +49,16 @@
 			var time = ampm + hour + ":" + minute; //보낸 시간
 			var content = $(".message").val(); //메세지 내용
 			var mNo="${member.MNo}";
+			mNo=Number(mNo);
 			var userId="${member.MId }";
 			var freeId="admin";
+			
+			console.log(date);
+			console.log(time);
+			console.log(content);
+			console.log(mNo);
+			console.log(userId);
+			console.log(freeId);
 			
 			//admin과 회원간의 채팅방 생성
 			$.ajax({
@@ -65,12 +74,17 @@
 				success : function(data) {
 					var cNo =data.cNo; //방번호 
 					cNo = Number(cNo);
+					console.log("방만들기 성공");
 					console.log(freeId);
 					console.log(date);
 					console.log(time);
 					console.log(content);
-					location.href = "/insertChat.do?cNo="+cNo+"+&myId="+freeId+"&date="+date+"&time="+time+"&content="+content;  
-				 	window.close();  
+					location.href = "/insertChat.do?cNo="+cNo+"+&myId="+freeId+"&date="+date+"&time="+time+"&content="+content;   
+					console.log("메세지보내기 성공");
+					opener.parent.location.reload();  
+					/* 창닫기하면 메세지저장x */
+					/* window.close(); */
+				 	
 				},
 				error : function() {
 

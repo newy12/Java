@@ -12,7 +12,6 @@ import com.ilgusi.service.model.dao.ServiceDao;
 import com.ilgusi.service.model.vo.Join;
 import com.ilgusi.service.model.vo.ServiceFile;
 import com.ilgusi.service.model.vo.ServiceReview;
-import com.ilgusi.service.model.vo.ServiceTrade;
 
 @Service
 public class ServiceService {
@@ -120,10 +119,26 @@ public class ServiceService {
 		public int serviceTradeStatusUpdate(int tNo) {
 			return dao.serviceTradeStatusUpdate(tNo);
 		}
+
 		/*
 		 * public ArrayList<Category> selectCategory(int cNO) { return
 		 * dao.selectCategory(cNO); }
 		 */
+
+
+		
+		//(다솜) 카테고리 리스트 불러오기
+		public ArrayList<Category> categoryList(int cNo) {
+			return dao.categoryList(cNo);
+		}
+
+		//(다솜) 서비스 리스트 불러오기
+		public ArrayList<com.ilgusi.service.model.vo.Service> serviceList(com.ilgusi.service.model.vo.Service s) {
+			return dao.serviceList(s);
+		}
+
+		
+
 
 		public List<ServiceReview> reviewListSize() {
 			return dao.reviewListSize();

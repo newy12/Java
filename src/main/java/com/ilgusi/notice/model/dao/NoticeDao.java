@@ -30,4 +30,15 @@ public class NoticeDao {
 	public int deleteNotice(int nNo) {
 		return session.delete("notice.deleteNotice",nNo);
 	}
+
+	public int updateNotice(Notice n) {
+		System.out.println("updateNotice : dao 들어옴");
+		int nNo = n.getNNo();
+		String nTitle = n.getNTitle();
+		System.out.println("dao 값확인 n_no:"+nNo);
+		System.out.println("dao 값확인 n_Title:"+nTitle);
+		
+		System.out.println();
+		return session.update("notice.updateNotice", n);
+	}
 }

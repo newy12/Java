@@ -93,6 +93,19 @@ public class ServiceDao {
 	public int serviceTradeStatusUpdate(int tNo) {
 		return session.update("review.serviceTradeStatusUpdate",tNo);
 	}
+	
+	//(다솜) 서비스 리스트 - 카테고리 불러오기
+	public ArrayList<Category> categoryList(int cNo) {
+		List<Category> list = session.selectList("category.categoryList",cNo);
+		return (ArrayList<Category>)list;
+	}
+	//(다솜)서비스 리스트 - 서비스 불러오기
+	public ArrayList<com.ilgusi.service.model.vo.Service> serviceList(com.ilgusi.service.model.vo.Service s) {
+		List<com.ilgusi.service.model.vo.Service> list = session.selectList("service.serviceList",s);
+		return (ArrayList<com.ilgusi.service.model.vo.Service>)list;
+	}
+
+
 	/*
 	 * public ArrayList<Category> selectCategory(int cNO) { List<Category> list =
 	 * session.selectList("") return null; }

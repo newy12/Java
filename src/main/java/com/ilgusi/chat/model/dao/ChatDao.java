@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.ilgusi.chat.model.vo.Chat;
 import com.ilgusi.chat.model.vo.ChatContent;
 import com.ilgusi.favorite.model.vo.Favorite;
+import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.service.model.vo.Service;
 
 @Repository
@@ -35,9 +36,9 @@ public class ChatDao {
 		session.insert("chat.createChat", room);
 	}
 
-	// (소현)아이디로 채팅방 불러오기
-	public ArrayList<Chat> selectRoomList(String mId) {
-		List<Chat> list = session.selectList("chat.roomList", mId);
+	// (소현)일반회원아이디로 채팅방 불러오기
+	public ArrayList<Chat> selectRoomList(HashMap<String, String> myInfo) {
+		List<Chat> list = session.selectList("chat.roomList", myInfo);
 		return (ArrayList<Chat>) list;
 	}
 
@@ -65,6 +66,20 @@ public class ChatDao {
 	public ArrayList<ChatContent> chatContentList(int roomNo) {
 		List<ChatContent> list = session.selectList("chat.chatContent", roomNo);
 		return (ArrayList<ChatContent>) list;
+	}
+
+	// (소현)아이디로 회원 불러오기
+	public Member selectOneMember(String userId) {
+		return session.selectOne("member.selectAllMember", userId);
+	}
+
+	// (소현)serviceTrade에 insert
+	public void startTrade(HashMap<String, Object> tradeInfo) {	
+		session.insert("trade.insertTrade",tradeInfo);
+	}
+
+	public void updateWorkingCount(int sNo) {
+		session.update("service.updateCount",sNo);
 	}
 
 }

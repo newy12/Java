@@ -1,14 +1,17 @@
 package com.ilgusi.member.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.ilgusi.chat.model.vo.ChatContent;
 import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.service.model.vo.Service;
+import com.ilgusi.service.model.vo.TradeHistory;
 import com.ilgusi.service.model.vo.ServiceTrade;
 
 @Repository
@@ -51,20 +54,25 @@ public class AdminDao {
 	}
 
 	// (소현)서비스 삭제
-	public int deleteService(int sNo) {
-		return session.delete("service.deleteService", sNo);
+	public void deleteService(int sNo) {
+		session.delete("service.deleteService", sNo);
 	}
 
-	// (소현)작업내역 조회
-	public ArrayList<ServiceTrade> workingCount(int sNo) {
-		List<ServiceTrade> history = session.selectList("service.tradeHistory", sNo);
-		return (ArrayList<ServiceTrade>) history;
+	// (소현)관리자가 회원에게 보낸 메세지 리스트
+	public ArrayList<ChatContent> selectAdminMsg(String mId) {
+		List<ChatContent> msg = session.selectList("chat.selectAdminMsg", mId);
+		return (ArrayList<ChatContent>) msg;
 	}
 
-	// (소현)이용내역 조회
-	public ArrayList<ServiceTrade> useCount(int mNo) {
-		List<ServiceTrade> history = session.selectList("service.userHistory", mNo);
-		return (ArrayList<ServiceTrade>) history;
+	// (소현)아이디로 회원 불러오기
+	public Member selectOneMember(String freeId) {
+		return session.selectOne("member.selectAllMember", freeId);
+	}
+
+	// (소현)작업내역조회
+	public ArrayList<TradeHistory> tradeHistory(HashMap<String, Integer> map) {
+		List<TradeHistory> list = session.selectList("trade.tradeHistory", map);
+		return (ArrayList<TradeHistory>) list;
 	}
 
 }

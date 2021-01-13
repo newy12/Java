@@ -55,7 +55,7 @@
 	</insert>
 
 	<!--(소현)관리자전체회원조회 -->
-	<select id="selectAllMember" resultType="m">
+	<select id="selectAllMember" parameterType="String" resultType="m">
 		select
 		m_no mNo,
 		m_id mId,
@@ -70,7 +70,10 @@
 		enroll_date enrollDate ,
 		brand_name brandName ,
 		contact_time contactTime
-		from member order by 1
+		from member
+		<if test="value!=null">
+		where m_id=#{userId}
+		</if>
 	</select>
 
 	<!-- (소현)회원별서비스이용횟수 -->

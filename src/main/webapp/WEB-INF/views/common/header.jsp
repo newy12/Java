@@ -112,7 +112,7 @@
         .dh-header .header-bottom>.nav>ul>li>a:hover,
         .dh-header .header-bottom>.nav>ul>li:hover>a {
             border-bottom: 4px solid #314C83;
-            color: black;      
+            color: black;
         }
 
         .dh-header .header-bottom>.nav>ul ul {
@@ -126,9 +126,7 @@
             padding: 0;
         }
 
-        .dh-header .header-bottom>.nav>ul ul>li {
-
-        }
+        .dh-header .header-bottom>.nav>ul ul>li {}
 
         .dh-header .header-bottom>.nav>ul ul>li>a {
             display: block;
@@ -138,10 +136,12 @@
             padding: 0 35px;
             margin-top: 20px;
         }
-        .dh-header .header-bottom>.nav>ul ul>li>a:last-child{
+
+        .dh-header .header-bottom>.nav>ul ul>li>a:last-child {
             margin-bottom: 20px;
         }
-        .dh-header .header-bottom>.nav>ul ul>li>a:hover{
+
+        .dh-header .header-bottom>.nav>ul ul>li>a:hover {
             text-decoration: underline;
         }
 
@@ -168,32 +168,49 @@
             dataType: 'json',
             success: function (data) {
                 let $navUl = $(".nav>ul");
+                
                 for (let i = 0; i < data.length; i++) {
                     if (data[i].cDivision == 'm') {
-                        $navUl.append("<li><a href='#'>" + data[i].cName + "</a> <ul></ul></li>")
+                        $navUl.append("<li><a href='/serviceList.do?cNo="+data[i].cNo+"'>" + data[i].cName + "</a> <ul></ul></li>")
+                        console.log(data[i].cNo)
+                        
                     }
                     if (data[i].cDivision == 's') {
                         $(".nav>ul>li:eq(" + (parseInt(data[i].cNo / 10) - 1) + ")>ul").append(
-                            "<li><a href='#'>" + data[i].cName + "</a></li>")
+                            "<li><a href='/serviceList.do?cNo="+data[i].cNo+"'>" + data[i].cName + "</a></li>")
                         // console.log(data[i]);
                     }
                 }
             }
         })
+        //스크롤 막기 true : 막기 , false : 풀기
+        function blockScroll(toggle) {  
+            if(toggle){
+                $("body").css('height','100vh');
+                $("body").css('overflow','hidden');
+            }else{
+                $("body").removeAttr('style');
+            }
+        }
+
         //헤더의 로그인 버튼 누르면 로그인 창 show
         $(".header-menu #login").on("click", function () {
             $(".background-screen").show();
+            $(".background-screen").css("top", window.scrollY);
             $(".login-form-container").show();
+            blockScroll(true);
         });
         // 뒷 배경 누르면 ,로그인 창, 뒷 배경 Hide
         $(".background-screen").on("click", function () {
             $(".background-screen").hide();
             $(".login-form-container").hide();
+            blockScroll(false);
         });
         // 로그인 창 x버튼 누르면 ,로그인 창, 뒷 배경 Hide
         $(".login-form-close").on("click", function () {
             $(".background-screen").hide();
             $(".login-form-container").hide();
+            blockScroll(false);
         });
         //submit 버튼 비활성화
         $("#btnLogin").prop("disabled", true);
@@ -266,7 +283,7 @@
             }
 
         }
-        
+
     });
 </script>
 <div class="background-screen"></div>
