@@ -32,7 +32,7 @@
 	<a href="/serviceJoinFrm.do?MId=${loginMember.MId}">서비스등록</a>
 	<a href="/freelancerMypage.do?MNo=${loginMember.MNo}">프리랜서 마이페이지</a>
 	<br> 문정
-	<a href="/requestList.do?reqPage=1">의뢰게시판 리스트 </a> /
+	<a href="/requestList.do?reqPage=1&order=new&subject=all&keyword=">의뢰게시판 리스트 </a> /
 	<a href="/userMypage.do">사용자 마이페이지</a>
 	<br> 다솜
 	<a href="/noticeList.do">공지사항 게시판</a> /

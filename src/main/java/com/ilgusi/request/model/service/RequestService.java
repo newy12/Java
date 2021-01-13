@@ -20,17 +20,17 @@ public class RequestService {
 	}
 
 	//(문정) 의뢰 리스트 + ㅍ ㅔ이징 처리
-	public RequestPageData selectRequestList(int reqPage) {
+	public RequestPageData selectRequestList(int reqPage, String order, String subject, String keyword) {
 		//1. 한 페이지에 보여줄 리스트 개수
 		int numPerPage = 10;
 		
 		//2. 쿼리에서 시작-끝 번호로 리스트결과 가져옴
 		int end = reqPage*numPerPage;
 		int start = (end - numPerPage) + 1;
-		ArrayList<Request> list = dao.selectRequestList(start, end);
+		ArrayList<Request> list = dao.selectRequestList(start, end, order, subject, keyword);
 		
 		//3. 의뢰글 총 몇개?
-		int totalCount = dao.totalCount();
+		int totalCount = dao.totalCount(subject, keyword);
 		
 		//4. 페이지가 총 몇 개?
 		int totalPage = 0;
@@ -49,7 +49,7 @@ public class RequestService {
 		
 		//이전 버튼
 		if(pageNo != 1) {
-			pageNavi += "<li class='page-item'><a class='page-link' href='/requestList.do?reqPage="+(pageNo-1)+"'><<</a></li>";
+			pageNavi += "<li class='page-item'><a class='page-link' href='/requestList.do?reqPage="+(pageNo-1)+"&order="+order+"&subject="+subject+"&keyword="+keyword+"'><<</a></li>";
 		}
 		
 		//네비게이션 숫자
@@ -57,7 +57,7 @@ public class RequestService {
 			if(reqPage == pageNo) {
 				pageNavi += "<li class='page-item'><a class='page-link target' href='#' style='background-color:rgb(49, 76, 131)'>"+pageNo+"</a></li>";
 			}else {
-				pageNavi += "<li class='page-item'><a class='page-link' href='/requestList.do?reqPage="+(pageNo)+"'>"+pageNo+"</a></li>";
+				pageNavi += "<li class='page-item'><a class='page-link' href='/requestList.do?reqPage="+(pageNo)+"&order="+order+"&subject="+subject+"&keyword="+keyword+"'>"+pageNo+"</a></li>";
 			}
 			pageNo++;
 			
@@ -68,7 +68,7 @@ public class RequestService {
 		
 		//다음 버튼
 		if(reqPage <= (totalPage/pageNaviSize)) {
-			pageNavi += "<li class='page-item'><a class='page-link' href='/requestList.do?reqPage="+pageNo+"'>>></a></li>";
+			pageNavi += "<li class='page-item'><a class='page-link' href='/requestList.do?reqPage="+pageNo+"&order="+order+"&subject="+subject+"&keyword="+keyword+"'>>></a></li>";
 		}
 		
 		//페이지 할게 없으면

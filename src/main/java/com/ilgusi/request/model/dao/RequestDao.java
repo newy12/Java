@@ -21,15 +21,21 @@ public class RequestDao {
 	}
 
 	//(문정) 의뢰게시판 총 개수
-	public int totalCount() {
-		return session.selectOne("request.totalCount");
+	public int totalCount(String subject, String keyword) {
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("subject", subject);
+		map.put("keyword", keyword);
+		return session.selectOne("request.totalCount", map);
 	}
 
 	//(문정) 페이징 리스트 
-	public ArrayList<Request> selectRequestList(int start, int end) {
-		HashMap<String, Integer> map = new HashMap<String, Integer>();
+	public ArrayList<Request> selectRequestList(int start, int end, String order, String subject, String keyword) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("start", start);
 		map.put("end", end);
+		map.put("order", order);
+		map.put("subject", subject);
+		map.put("keyword", keyword);
 		List<Request> list = session.selectList("request.selectRequestList",map );
 		return (ArrayList<Request>)list;
 	}

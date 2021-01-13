@@ -27,8 +27,14 @@ public class RequestController {
 	
 	//(문정)의뢰게시판 리스트
 	@RequestMapping("/requestList.do")
-	public String requestList(int reqPage, Model model) {
-		RequestPageData rpd = service.selectRequestList(reqPage);
+	public String requestList(int reqPage, String order, String subject, String keyword, Model model) {
+		if(keyword == "") {
+			keyword = "null";
+		}
+		RequestPageData rpd = service.selectRequestList(reqPage, order, subject, keyword);
+		model.addAttribute("order",order);
+		model.addAttribute("subject", subject);
+		model.addAttribute("keyword",keyword);
 		model.addAttribute("list", rpd.getList());
 		model.addAttribute("pageNavi", rpd.getPageNavi());
 		model.addAttribute("totalCount", rpd.getTotalCount());
