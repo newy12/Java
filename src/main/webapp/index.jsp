@@ -23,7 +23,7 @@
 	<hr>
 	<h3>본인 페이지 테스트</h3>
 	소현
-	<a href="/chatList.do?mId=${loginMember.MId}"
+	<a href="/chatList.do?mGrade=${loginMember.MGrade}&mId=${loginMember.MId}"
 		onClick="window.open(this.href, '', 'width=530, height=630, left=1000,location=no,scrollbars=no,location=no, resizable=no'); return false;">채팅하기</a>
 	<a href="/manageMember.do">관리자-회원관리</a>
 	<a href="/manageService.do">관리자-서비스관리</a>

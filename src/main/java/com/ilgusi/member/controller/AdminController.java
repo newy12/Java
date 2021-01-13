@@ -9,10 +9,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ilgusi.chat.model.vo.ChatContent;
 import com.ilgusi.member.model.service.AdminService;
 import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.service.model.vo.Service;
-import com.ilgusi.service.model.vo.ServiceTrade;
+import com.ilgusi.service.model.vo.TradeHistory;
 
 @Controller
 public class AdminController {
@@ -28,24 +29,48 @@ public class AdminController {
 
 		// 회원별서비스이용횟수 리스트
 		HashMap<Integer, Integer> useHistory = new HashMap<Integer, Integer>();
+
+		// 관리자가 회원에게 보낸 메세지 리스트
+		HashMap<String, ArrayList<ChatContent>> adminMsg = new HashMap<String, ArrayList<ChatContent>>();
+
 		for (int i = 0; i < memberList.size(); i++) {
 			Member oneMember = memberList.get(i);
+			// 서비스 이용횟수
 			int mNo = oneMember.getMNo();
 			int use = service.countHistory(mNo);
 			useHistory.put(mNo, use);
+			// 관리자가 보낸 메세지
+			String mId = oneMember.getMId();
+			ArrayList<ChatContent> msgList = service.selectAdminMsg(mId);
+			adminMsg.put(mId, msgList);
 		}
 
 		model.addAttribute("memberList", memberList);
 		model.addAttribute("useHistory", useHistory);
-
+		model.addAttribute("adminMsg", adminMsg);
 		return "admin/memberList";
 	}
 
 	// (소현)전체서비스조회
 	@RequestMapping("/manageService.do")
 	public String selectAllService(Model model) {
-		ArrayList<Service> list = service.selectAllService();
-		model.addAttribute("serviceList", list);
+		ArrayList<Service> serviceList = service.selectAllService();
+
+		// 전체회원리스트
+		ArrayList<Member> memberList = service.selectAllMember();
+		HashMap<String, Integer> mIdandmNo = new HashMap<String, Integer>();
+
+		for (int i = 0; i < serviceList.size(); i++) {
+			String mId = serviceList.get(i).getMId();
+			for (int j = 0; j < memberList.size(); j++) {
+				if (mId.equals(memberList.get(j).getMId())) {
+					int mNo = memberList.get(j).getMNo();
+					mIdandmNo.put(mId, mNo);
+				}
+			}
+		}
+		model.addAttribute("mIdandmNo", mIdandmNo);
+		model.addAttribute("serviceList", serviceList);
 		return "admin/serviceList";
 	}
 
@@ -63,20 +88,23 @@ public class AdminController {
 		ArrayList<Service> serviceList = service.selectService(sNo);
 		Service oneService = serviceList.get(0);
 		String freeId = oneService.getMId();
-		ArrayList<Member> memberList = service.selectAllMember();
-		int mNo = 0;
-		for (int i = 0; i < memberList.size(); i++) {
-			Member oneMember = memberList.get(i);
-			if (freeId == oneMember.getMId()) {
-				mNo = oneMember.getMNo();
-			}
-		}
-		model.addAttribute("mNo",mNo);
+
+		/*
+		 * ArrayList<Member> memberList = service.selectAllMember(); int mNo = 0; for
+		 * (int i = 0; i < memberList.size(); i++) { Member oneMember =
+		 * memberList.get(i); if (freeId == oneMember.getMId()) { mNo =
+		 * oneMember.getMNo(); } }
+		 */
+
+		Member oneUser = service.selectOneMember(freeId);
+		int mNo = oneUser.getMNo();
+
+		model.addAttribute("mNo", mNo);
 		model.addAttribute("service", oneService);
 		return "admin/rejectFrm";
 	}
-	
-	//(소현)서비스 등록 거절
+
+	// (소현)서비스 등록 거절
 	@ResponseBody
 	@RequestMapping("rejectService.do")
 	public void rejectService(int sNo) {
@@ -86,28 +114,29 @@ public class AdminController {
 	// (소현)서비스 삭제
 	@ResponseBody
 	@RequestMapping("deleteService.do")
-	public int deleteService(int sNo) {
-		int result = service.deleteService(sNo);
-		return result;
+	public void deleteService(int sNo) {
+		service.deleteService(sNo);
 	}
 
-	// (소현)프리랜서의 작업내역 조회
-	@RequestMapping("workingHistory.do")
-	public String workingCount(Model model, int sNo) {
-		ArrayList<ServiceTrade> history = service.workingCount(sNo);
-		model.addAttribute("history", history);
-		return "/admin/serviceHistory";
-	}
+	// (소현)작업내역 조회
+	@RequestMapping("tradeHistory.do")
+	public String workingCount(Model model, int sNo, int mNo) {
+		// 서비스의 작업내역조회
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		ArrayList<TradeHistory> history = new ArrayList<TradeHistory>();
+		if (mNo == -1) {
+			map.put("sNo", sNo);
+			history = service.tradeHistory(map);
+			model.addAttribute("history", history);
+			return "/admin/serviceHistory";
 
-	// (소현)회원의 서비스 이용내역 조회
-	@RequestMapping("userHistory.do")
-	public String useCount(Model model, int mNo) {
-		ArrayList<ServiceTrade> history = service.useCount(mNo);
-		for (int i = 0; i < history.size(); i++) {
-			System.out.println(history.get(i).getSNo());
+		} else {
+			// 사용자의 이용내역조회
+			map.put("mNo", mNo);
+			history = service.tradeHistory(map);
+			model.addAttribute("history", history);
+			return "/admin/userHistory";
 		}
-		model.addAttribute("history", history);
-		return "/admin/userHistory";
 	}
 
 	// (소현)회원에게 메세지보내기 창 열기

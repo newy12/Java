@@ -7,7 +7,7 @@
 		values(chat_seq.nextval,#{sNo},#{userId},#{freeId})
 	</insert>
 
-	<!-- (소현)채팅방 불러오기 -->
+	<!-- (소현)채팅방 불러오기 - 일반회원 채팅리스트 -->
 	<select id="selectOneRoom" parameterType="map" resultType="c">
 		select
 		c_no as cNo,
@@ -24,8 +24,8 @@
 		</if>
 	</select>
 
-	<!-- (소현)채팅방 불러오기 -->
-	<select id="roomList" parameterType="String" resultType="c">
+	<!-- (소현)채팅방 불러오기 - 일반회원 userId가 notnull 프리랜서 freeId가 not null -->
+	<select id="roomList" parameterType="map" resultType="c">
 		select
 		c_no as cNo,
 		user_id as userId,
@@ -33,7 +33,12 @@
 		s_no as
 		sNo
 		from chat
-		where user_id=#{_parameter}
+		<if test="user!=null">
+			where user_id=#{user}
+		</if>
+		<if test="free!=null">
+			where freelancer_id=#{free}
+		</if>
 	</select>
 
 	<!-- (소현)해당 번호 채팅방 대화내용 불러오기 -->
@@ -69,4 +74,23 @@
 		delete from chat where
 		c_no=#{_parameter}
 	</delete>
+
+	<!-- (소현)관리자가 보낸 메세지 불러오기 -->
+	<select id="selectAdminMsg" parameterType="String"
+		resultType="cc">
+		select
+		cc_no as ccNo,
+		c_no as cNo,
+		m_id as mId,
+		c_date as
+		cDate,
+		c_time as cTime,
+		c_content as
+		cContent,
+		read_status as readStatus
+		from chat_content
+		where c_no=(select c_no from chat where
+		user_id=#{_parameter} and freelancer_id='admin' and s_no=0) order by
+		cc_no desc
+	</select>
 </mapper>

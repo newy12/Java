@@ -30,12 +30,17 @@
 					<div id="content-title">문의 리스트</div>
 					<div id="chat-list">
 						<ul>
-							<c:forEach items="${room }" var="r">
+							<c:forEach items="${room }" var="r">	
+							<!-- 일반 채팅내용 -->
+						<c:if test="${r.freeId ne 'admin'}">
 								<li class="list">
 									<div class="list-wrap">
 										<div class="new"></div>
 										<div id="chat-preview">
-											<p><b id="name">${r.freeId}</b><span id="time">${r.lastTime}</span>
+											<p><b id="name">
+											<c:if test="${r.freeId eq null }">(탈퇴한 회원)</c:if>
+											<c:if test="${r.freeId ne null }">${r.freeId}</c:if>
+											</b><span id="time">${r.lastTime}</span>
 											</p>
 											<p id="preview">${r.lastMsg }</p>
 											<input type="hidden" class="cNo" value="${r.cNo }">
@@ -43,6 +48,7 @@
 										</div>
 									</div>
 								</li>
+								</c:if>
 							</c:forEach>
 						</ul>
 					</div>
@@ -79,11 +85,16 @@
 			var sNo = $(this).find(".sNo").val();
 			cNo=Number(cNo);
 			sNo=Number(sNo);
+			/* 상대방아이디 */
 			var freeId = $(this).find("#name").html();
+			/* 탈퇴한회원일때 */
+			if(freeId=='(탈퇴한 회원)'){
+				return;
+			}
 			console.log(cNo);
 			console.log(sNo);
 			console.log(freeId);
-			location.href="/enterRoom.do?cNo="+cNo+"&sNo="+sNo+"&freeId="+freeId; 
+			location.href="/enterRoom.do?cNo="+cNo+"&sNo="+sNo+"&yourId="+freeId; 
 		});
 	</script>
 
