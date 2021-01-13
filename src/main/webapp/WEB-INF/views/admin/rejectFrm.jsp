@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>19시(관리자) :: 서비스 승인 거절 이유</title>
+<title>19시(관리자) :: 서비스 등록 거절 이유</title>
 <script src="https://code.jquery.com/jquery-3.5.1.js"
 	integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
 	crossorigin="anonymous"></script>
@@ -83,9 +83,10 @@ fieldset input {
 					mNo = Number(mNo);
 					var userId = "${service.MId }";
 					var freeId = "admin";
+					var sTitle="${service.STitle }";
 					//선택한 이유
 					var content = $("input[type=radio]:checked").next().html(); 
-					content="서비스 등록이 거절되었습니다.(이유 : "+content+")";
+					content="서비스 <b> ["+sTitle+"]</b>의 등록이 <b>거절</b>되었습니다.<br>(이유 : "+content+")";
 					
 					//admin과 회원간의 채팅방 생성
 					//거절이유보내기
@@ -136,7 +137,8 @@ fieldset input {
 										},
 										success : function(data) {
 											console.log("3333333");
-										/*  window.close();   */
+											opener.parent.location.reload();
+											window.close();    
 										},
 										error : function() {
 
@@ -153,34 +155,7 @@ fieldset input {
 						}
 					}); 
 					
-					
-					
-				/*  	$.ajax({
-						url : "/makeRoom.do",
-						type : "post",
-						async : false,
-						data : {
-							sNo : 0,
-							userId : userId,
-							freeId : freeId,
-							mNo : mNo
-						},
-						success : function(data) {
-							var cNo = data.cNo; //방번호 
-							cNo = Number(cNo);
-							console.log(freeId);
-							console.log(date);
-							console.log(time);
-							console.log(content);
-							location.href = "/insertChat.do?cNo=" + cNo
-									+ "+&myId=" + freeId + "&date=" + date
-									+ "&time=" + time + "&content=" + content;
-							 window.close();   
-						},
-						error : function() {
 
-						}
-					});  */
 
 				});
 	</script>

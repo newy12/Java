@@ -16,6 +16,7 @@
 		s_rate as sRate,
 		main_category as mainCategory,
 		working_count as workingCount,
+		delete_status as deleteStatus,
 		brand_name as brandName
 		from
 		service s,member m
@@ -26,6 +27,7 @@
 		s_no as sNo
 		from favorite
 		where m_no=#{mNo})
+		and delete_status='n'
 	</select>
 	
 	<!-- (문정) 마이페이지에서 찜한 목록 불러오기 -->

@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
 <script src="https://code.jquery.com/jquery-3.5.1.js"
 	integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
 	crossorigin="anonymous"></script>
@@ -271,8 +273,6 @@ ul {
 	background-color: #FF8F3F;
 }
 
-
-
 .messages>p {
 	display: inline-block;
 	padding: 10px 15px;
@@ -340,7 +340,7 @@ textarea::-webkit-scrollbar-thumb {
 	background-color: #FF8F3F;
 }
 
- .submit {
+.submit {
 	float: right;
 	border: none;
 	width: 15%;
@@ -412,26 +412,43 @@ textarea::-webkit-scrollbar-thumb {
 				<img src="/img/logo/logo-chat_navy.png" width="120px"> <b>${ sessionScope.loginMember.MName }</b>
 				<div>
 					<ul id="account">
-						<li><a href="#">일반 고객 </a>
-							<ul class="expanded">
-								<li><a href="#">프리랜서</a></li>
-							</ul></li>
+						<li><a href="#"> <c:if
+									test="${sessionScope.loginMember.MGrade eq 1 }">일반회원</c:if> <c:if
+									test="${sessionScope.loginMember.MGrade eq 2 }">프리랜서</c:if>
+						</a>
+							<!-- <ul class="expanded">
+								<li><a href="#">바꾸기</a></li>
+							</ul> --></li>
 					</ul>
 				</div>
 			</div>
 		</div>
 		<div id="side-menu">
 			<ul>
-				<li><a href="/chatList.do?mId=${loginMember.MId}"><img
-						src="/img/icon/chat_white.png" width="45px;"><br>문의</a></li>
-				<li><a href="/chatHeartList.do?mNo=${loginMember.MNo}"><img
-						src="/img/icon/heart_white.png" width="40px;"><br>찜</a></li>
+			
+				<li><a href="/selectNotification.do?mId=${loginMember.MId}"> <img
+						src="/img/icon/notification_white.png" width="45px;"><br>알림
+				</a></li>
+				
+				<li><a href="/chatList.do?mGrade=${loginMember.MGrade}&mId=${loginMember.MId}"> <img
+						src="/img/icon/chat_white.png" width="45px;"><br>문의
+				</a></li>
+				<!-- 일반 회원일때  -->
+				<c:if test="${sessionScope.loginMember.MGrade eq 1 }">
+					<li><a href="/chatHeartList.do?mNo=${loginMember.MNo}"><img
+							src="/img/icon/heart_white.png" width="40px;"><br>찜</a></li>
+				</c:if>
+				<!-- 프리랜서일때 -->
+				<c:if test="${sessionScope.loginMember.MGrade eq 2}">
+					<li><a href="/chatServiceList.do"><img
+							src="/img/icon/list_white.png" width="40px;"><br>서비스</a></li>
+				</c:if>
 				<!-- 고객일때 -->
 				<!-- 프리랜서일때 <li>서비스</li>-->
 			</ul>
 		</div>
 		<div id="side-bottom">
-			<button id="mypageBtn">mypage</button>
+			<button id="mypageBtn" onclick="">mypage</button>
 			<button id="closeBtn" onclick="window.close();">닫기</button>
 		</div>
 	</div>

@@ -153,24 +153,20 @@
 	
 	<!-- (소현)관리자-서비스 거절 -->
 	<update parameterType="_int" id="rejectService">
-		update service set admin_approval='n'
+		update service set delete_status='y',s_title='(거절)'||(select s_title from service where s_no=#{_parameter}) 
 		where s_no=#{_parameter} 
 	</update>
 
 	<!-- (소현)관리자-서비스 삭제 -->
 	<update parameterType="_int" id="deleteService">
-		update service set delete_status='y' where s_no=#{_parameter} 
+		update service set delete_status='y',s_title='(삭제)'||(select s_title from service where s_no=#{_parameter}) where s_no=#{_parameter} 
 	</update>
-
-	<!-- (소현)관리자-작업내역 조회 -->
-	<select resultType="trade" parameterType="_int" id="tradeHistory">
-		select * from service_trade where s_no=#{_parameter} 
-	</select>
-
-	<!-- (소현)관리자-이용내역 조회 -->
-	<select resultType="trade" parameterType="_int" id="userHistory">
-		select * from service_trade where m_no=#{_parameter} 
-	</select>
+	
+	<!-- (소현)서비스 작업수 1 증가 -->
+	<update id="updateCount" parameterType="_int">
+		update service set working_count=(select working_count from service where s_no=#{_parameter})+1 
+		where s_no=#{_parameter}
+	</update>
 
 </mapper>
 
