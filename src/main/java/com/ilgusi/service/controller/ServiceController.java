@@ -17,6 +17,7 @@ import com.ilgusi.category.model.vo.Category;
 import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.service.model.service.ServiceService;
 import com.ilgusi.service.model.vo.Join;
+import com.ilgusi.service.model.vo.Service;
 import com.ilgusi.service.model.vo.ServiceFile;
 import com.ilgusi.service.model.vo.ServiceReview;
 
@@ -187,14 +188,37 @@ public class ServiceController {
 	
 	//(다솜)serviceList 
 	@RequestMapping("/serviceList.do")
-	public String serviceList (Integer cNo, Model model) { 
+	public String serviceList (int cNo, Model model) { 
+		Service s = new Service();
 		System.out.println("cNo : " + cNo);
-		ArrayList<Category> catList = service.categoryList(cNo);
+		int maincateNum = 0;
+		int subNo = 0;
+		if(cNo%10 == 0 ) {
+			maincateNum = cNo;
+			s.setSubCategory(subNo);
+		}else {
+			maincateNum = (cNo/10)*10;
+			subNo = cNo;
+		}
+		s.setMainCategory(maincateNum);
+		s.setSubCategory(subNo);
+		System.out.println("메인카테고리 : " + s.getMainCategory());
+		System.out.println("서브카테고리 : " + s.getSubCategory());
+		//카테고리 리스트 불러오기
+		ArrayList<Category> catList = service.categoryList(maincateNum);
 		System.out.println("카테고리 리스트 사이즈 : " + catList.size());
 		System.out.println("catList(1)값 : " + catList.get(1));
-		model.addAttribute("catList",catList);
+		//서비스 리스트 불러오기
+		ArrayList<Service> serList = service.serviceList(s);
+		if(serList.size() != 0 ) {
+			System.out.println("serList 사이즈 : " + serList.size());
+			System.out.println("serList(0)값 : " + serList.get(0));
+		}
 		
-		switch(cNo) {
+		model.addAttribute("catList",catList);
+		model.addAttribute("serviceList", serList);
+		
+		switch(maincateNum) {
 			case 10: model.addAttribute("mainCate", "디자인");
 				break;
 			case 20: model.addAttribute("mainCate", "ITㆍ프로그래밍");
@@ -209,8 +233,8 @@ public class ServiceController {
 				break;
 			case 70: model.addAttribute("mainCate", "주문제작");
 				break;
-			
 		}
+		
 		return "/service/serviceList";
 	}
 	

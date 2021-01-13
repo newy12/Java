@@ -124,11 +124,12 @@ public class ServiceService {
 			return dao.categoryList(cNo);
 		}
 
-		
+		//(다솜) 서비스 리스트 불러오기
+		public ArrayList<com.ilgusi.service.model.vo.Service> serviceList(com.ilgusi.service.model.vo.Service s) {
+			return dao.serviceList(s);
+		}
 
-		/*
-		 * public ArrayList<Category> selectCategory(int cNO) { return
-		 * dao.selectCategory(cNO); }
-		 */
+		
+		
 
 }

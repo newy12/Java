@@ -101,28 +101,26 @@
             width: 55px;
         }
 
-        table {
+        .tableContainer {
             margin: 0 auto;
-        }
-
-        td {
-            width: 250px;
 
         }
-
+        
         .serviceBox {
             color: #282828;
             font-family: 'BBTreeGR';
-            margin: 0 auto;
+            margin: 10px;
             /*border: 1px solid gray;*/
             padding: 10px;
-            width: 245px;
-
+            width: 225px;
+            display:inline-block;
+            float: left;
         }
 
         .serviceBox img {
             border-radius: 5px;
-            width: 235px;
+            width: 225px;
+            height: 180px;
         }
 
         .preName {
@@ -133,10 +131,8 @@
         }
 
         .serviceCon {
-
             font-size: 10pt;
             margin: 0;
-
         }
 
         .price {
@@ -177,32 +173,9 @@
             <ul>
 				<c:forEach items="${catList }" var="c">
 					<li class="navi-item">
-	                    <a href="#"> ${c.CName } </a>
+	                    <a href="/serviceList.do?cNo=${c.CNo }"> ${c.CName } </a>
 	                </li>	
 				</c:forEach>
-               
-                <!-- <li class="navi-item">
-                    <a href="#">인쇄ㆍ홍보물ㆍ배너</a>
-                </li>
-                <li class="navi-item">
-                    <a href="#">캘리그라피ㆍ폰트</a>
-                </li>
-                <li class="navi-item">
-                    <a href="#">일러스트ㆍ캐리커쳐</a>
-                </li>
-                <li class="navi-item">
-                    <a href="#">간판ㆍ시공</a>
-                </li>
-                <li class="navi-item">
-                    <a href="#">이벤트ㆍ상세페이지</a>
-                </li>
-                <li class="navi-item">
-                    <a href="#">의류</a>
-                </li>
-                <li class="navi-item">
-                    <a href="#">웹툰ㆍ캐릭터ㆍ이모티콘</a>
-                </li> -->
-
             </ul>
 
         </div>
@@ -219,51 +192,22 @@
                 </div>
             </div>
             <div class="tableContainer">
-                <table>
-                    <tr>
-                        <td>
-                            <div class="serviceBox">
-                                <img src="img/test/matildadjerf%20discovered%20by%20Alma%20Dahl%20on%20We%20Heart%20It.jpg"><br>
-                                <span class="preName">하이샵</span><br>
-                                <p class="serviceCon">"로고디자인 전문" 평생사용하시는 로고로 깔끔하게 디자인해 드립니다.</p>
-                                <p class="price">80,000원~</p>
-                                <p class="score">평균 5.0점<span class="star"> ★★★★★</span></p>
-                            </div>
-                        </td>
-
-                        <td>
-                            <div class="serviceBox">
-                                <img src="img/test/matildadjerf%20discovered%20by%20Alma%20Dahl%20on%20We%20Heart%20It.jpg"><br>
-                                <span class="preName">하이샵</span><br>
-                                <p class="serviceCon">"로고디자인 전문" 평생사용하시는 로고로 깔끔하게 디자인해 드립니다.</p>
-                                <p class="price">80,000원~</p>
-                                <p class="score">평균 5.0점<span class="star">★★★★★</span></p>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="serviceBox">
-                                <img src="img/test/matildadjerf%20discovered%20by%20Alma%20Dahl%20on%20We%20Heart%20It.jpg"><br>
-                                <span class="preName">하이샵</span><br>
-                                <p class="serviceCon">"로고디자인 전문" 평생사용하시는 로고로 깔끔하게 디자인해 드립니다.</p>
-                                <p class="price">80,000원~</p>
-                                <p class="score">평균 5.0점<span class="star">★★★★★</span></p>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="serviceBox">
-                                <img src="img/test/matildadjerf%20discovered%20by%20Alma%20Dahl%20on%20We%20Heart%20It.jpg"><br>
-                                <span class="preName">하이샵</span><br>
-                                <p class="serviceCon">"로고디자인 전문" 평생사용하시는 로고로 깔끔하게 디자인해 드립니다.</p>
-                                <p class="price">80,000원~</p>
-                                <p class="score">평균 5.0점<span class="star">★★★★★</span></p>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
+            <c:forEach items="${serviceList }" var="s">
+	            <div class="serviceBox">
+	                    <img src="upload/service/${s.SImg }"><br>
+	                    <span class="preName">하이샵</span><br>
+	                    <p class="serviceCon">${s.STitle }</p>
+	                    <p class="price">${s.SPrice }원~</p>
+	                    <p class="score">평점 ${s.SRate }.0점<span class="star"> ★★★★★</span></p>
+	               </div>
+            </c:forEach>
+                
+                
+                       
+            
         </div>
     </div>
-		
+</div>
 	
 	
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
