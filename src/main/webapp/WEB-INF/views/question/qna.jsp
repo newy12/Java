@@ -31,7 +31,7 @@
             width: 100%;
             margin-top: 60px;
             margin-left: 50px;
-            
+
         }
 
         .qna-top>.title>.title-main {
@@ -73,11 +73,11 @@
         }
 
         .qna-center table>thead th:nth-child(2) {
-            width: 500px;
+            width: 520px;
         }
 
         .qna-center table>thead th:nth-child(3) {
-            width: 100px;
+            width: 200px;
         }
 
         .qna-center table>thead th:nth-child(4) {
@@ -87,6 +87,21 @@
         .qna-center table>tbody tr td {
             padding: 5px 0;
             font-size: medium;
+        }
+
+        .qna-bottom {
+            margin: 0 auto;
+            width: 90%;
+            text-align: center;
+        }
+
+        .qna-bottom>.paging {
+            display: inline-block;
+        }
+
+        .btn-write {
+            display: inline-block;
+            float: right;
         }
     </style>
 </head>
@@ -138,13 +153,22 @@
             </div>
             <div class="qna-bottom">
                 <div class="paging">
-                    <a href="#">1</a>
+                    <c:forEach var="i" begin="${not empty param.page ?  begin : 1}" end="${end}" step="1">
+                        <a href="?page=${i}${not empty param.qna_type ? '&qna_type='+=param.qna_type : ''}${not empty param.qna_keyword ? '&qna_keyword='+=param.qna_keyword : ''}">${i}</a>
+                    </c:forEach>
+                </div>
+                <div class="btn-write">
                     <a href="/questionFrm.do">글쓰기</a>
                 </div>
                 <div class="qna-search">
-                    <select name="" id=""></select>
-                    <input type="text" name="" id="">
-                    <input type="submit" value="검색">
+                    <form action="" method="get">
+                        <select name="qna_type">
+                            <option value="1">제목</option>
+                            <option value="2">작성자</option>
+                        </select>
+                        <input type="text" name="qna_keyword">
+                        <input type="submit" value="검색">
+                    </form>
                 </div>
             </div>
         </div>
