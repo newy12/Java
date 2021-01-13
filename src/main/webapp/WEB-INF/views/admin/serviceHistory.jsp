@@ -10,7 +10,7 @@
 <body>
 	<table border=1>
 		<tr>
-			<th>사용자아이디번호</th>
+			<th>사용자아이디</th>
 			<th>진행상태</th>
 			<th>가격</th>
 			<th>시작일</th>
@@ -18,8 +18,11 @@
 		</tr>
 		<c:forEach items="${history }" var="h">
 			<tr>
-				<td>${h.MNo }</td>
-				<td>${h.TStatus}</td>
+				<td>${h.MId }</td>
+				<td>
+				<c:if test="${h.TStatus eq 0}">결제전</c:if>
+				<c:if test="${h.TStatus eq 1}">진행중</c:if>
+				<c:if test="${h.TStatus eq 2}">진행완료</c:if></td>
 				<td>${h.TPrice}</td>
 				<td>${h.startDate}</td>
 				<td>${h.endDate}</td>

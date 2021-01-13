@@ -1,12 +1,17 @@
 package com.ilgusi.member.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ilgusi.chat.model.vo.ChatContent;
 import com.ilgusi.member.model.dao.AdminDao;
 import com.ilgusi.member.model.vo.Member;
+import com.ilgusi.question.model.vo.Question;
+import com.ilgusi.service.model.vo.TradeHistory;
 import com.ilgusi.service.model.vo.ServiceTrade;
 
 @Service
@@ -41,23 +46,49 @@ public class AdminService {
 	}
 
 	// (소현)서비스 삭제
-	public int deleteService(int sNo) {
-		return dao.deleteService(sNo);
+	public void deleteService(int sNo) {
+		dao.deleteService(sNo);
+	}
+
+	// (소현)서비스 등록 거절
+	public void rejectService(int sNo) {
+		dao.rejectService(sNo);
+	}
+
+	// (소현)관리자가 회원에게 보낸 메세지 리스트
+	public ArrayList<ChatContent> selectAdminMsg(String mId) {
+		return dao.selectAdminMsg(mId);
+	}
+
+	// (소현)아이디로 회원 불러오기
+	public Member selectOneMember(String freeId) {
+		return dao.selectOneMember(freeId);
 	}
 
 	// (소현)작업내역 조회
-	public ArrayList<ServiceTrade> workingCount(int sNo) {
-		return dao.workingCount(sNo);
+	public ArrayList<TradeHistory> tradeHistory(HashMap<String, Integer> map) {
+		return dao.tradeHistory(map);
 	}
 
-	// (소현)이용내역 조회
-	public ArrayList<ServiceTrade> useCount(int mNo) {
-		return dao.useCount(mNo);
+	public int selectQuestionCount() {
+		return dao.selectQuestionCount();
 	}
 
-	//(소현)서비스 등록 거절
-	public void rejectService(int sNo) {
-		dao.rejectService(sNo);
+	public int selectQuestionCount(int type, String keyword) {
+		return dao.selectQuestionCount(type, keyword);
+	}
+
+	public List<Question> selectQuestionList(int begin, int end, int type, String keyword) {
+		return dao.selectQuestionList(begin, end, type, keyword);
+	}
+
+	public int selectMaxPageCount(int numPerPage, int listCount) {
+		int maxPageCount = listCount / numPerPage;
+
+		if (listCount % numPerPage > 0)
+			maxPageCount++;
+
+		return maxPageCount;
 	}
 
 }

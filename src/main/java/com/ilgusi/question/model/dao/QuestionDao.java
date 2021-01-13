@@ -50,4 +50,7 @@ public class QuestionDao {
 		map.put("keyword", keyword);
 		return session.selectOne("question.selectCount",map);
 	}
+	public int updateAnswer(Question q) {
+		return session.update("question.updateAnswer",q);
+	}
 }

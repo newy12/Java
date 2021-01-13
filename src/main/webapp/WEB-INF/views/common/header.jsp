@@ -177,7 +177,7 @@
                     }
                     if (data[i].cDivision == 's') {
                         $(".nav>ul>li:eq(" + (parseInt(data[i].cNo / 10) - 1) + ")>ul").append(
-                            "<li><a href='#'>" + data[i].cName + "</a></li>")
+                            "<li><a href='/serviceList.do?cNo="+data[i].cNo+"'>" + data[i].cName + "</a></li>")
                         // console.log(data[i]);
                     }
                 }

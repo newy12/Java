@@ -13,6 +13,7 @@ import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.service.model.vo.Join;
 import com.ilgusi.service.model.vo.ServiceFile;
 import com.ilgusi.service.model.vo.ServiceReview;
+import com.ilgusi.service.model.vo.ServiceTrade;
 
 @Repository
 public class ServiceDao {
@@ -98,11 +99,29 @@ public class ServiceDao {
 		List<Category> list = session.selectList("category.categoryList",cNo);
 		return (ArrayList<Category>)list;
 	}
+	//(다솜)서비스 리스트 - 서비스 불러오기
+	public ArrayList<com.ilgusi.service.model.vo.Service> serviceList(com.ilgusi.service.model.vo.Service s) {
+		List<com.ilgusi.service.model.vo.Service> list = session.selectList("service.serviceList",s);
+		return (ArrayList<com.ilgusi.service.model.vo.Service>)list;
+	}
+	public ArrayList<String> brandList(com.ilgusi.service.model.vo.Service s) {
+		List<String> list = session.selectList("service.brandList",s);
+		return (ArrayList<String>) list;
+	}
 
-	
+
 	/*
 	 * public ArrayList<Category> selectCategory(int cNO) { List<Category> list =
 	 * session.selectList("") return null; }
 	 */
+	//(영재)review총 갯수 구하기
+	public List<ServiceReview> reviewListSize() {
+		List<ServiceReview> list = session.selectList("service.reviewListSize");
+		return list;
+	}
+	public List<com.ilgusi.service.model.vo.Service> sRateAVG() {
+		List<com.ilgusi.service.model.vo.Service> list = session.selectList("service.sRateAVG");
+		return list;
+	}
 
 }

@@ -49,6 +49,8 @@ public class ServiceService {
 			int start = end - numPerPage + 1;//
 			List<ServiceReview> j = dao.selectReviewList(mId,start,end);
 			int totalCount = dao.totalCount();
+			System.out.println("end<<>>>>>>>>>>>>>"+end);
+			System.out.println("totalCount<<>>>>>>>>>>>>>"+totalCount);
 			int totalPage = 0;
 			if(totalCount%numPerPage ==0) {
 				totalPage = totalCount/numPerPage;
@@ -59,7 +61,7 @@ public class ServiceService {
 			int pageNo = ((reqPage-1)/pageNaviSize)*pageNaviSize + 1;
 			String pageNavi = "";
 			if(pageNo != 1) {
-				pageNavi += "<a href='/introduceFrm.do?mId="+mId+"&reqPage="+(pageNo-1)+"'>[이전]</a>";
+				pageNavi += "<a href='/introduceFrm.do?mId="+mId+"&reqPage="+(pageNo-1)+"'><</a>";
 			}
 			for(int i=0;i<pageNaviSize;i++) {
 				if(pageNo != reqPage) {
@@ -74,7 +76,7 @@ public class ServiceService {
 				}
 			}
 			if(pageNo <= totalPage) {
-				pageNavi += "<a href='/introduceFrm.do?mId="+mId+"&reqPage="+pageNo+"'>[다음]</a>";
+				pageNavi += "<a href='/introduceFrm.do?mId="+mId+"&reqPage="+pageNo+"'>></a>";
 			}
 			Join join = new Join();
 			join.setReviewList(j);
@@ -118,17 +120,36 @@ public class ServiceService {
 			return dao.serviceTradeStatusUpdate(tNo);
 		}
 
+		/*
+		 * public ArrayList<Category> selectCategory(int cNO) { return
+		 * dao.selectCategory(cNO); }
+		 */
+
+
 		
 		//(다솜) 카테고리 리스트 불러오기
 		public ArrayList<Category> categoryList(int cNo) {
 			return dao.categoryList(cNo);
 		}
 
+		//(다솜) 서비스 리스트 불러오기
+		public ArrayList<com.ilgusi.service.model.vo.Service> serviceList(com.ilgusi.service.model.vo.Service s) {
+			return dao.serviceList(s);
+		}
+
+		public ArrayList<String> brandList(com.ilgusi.service.model.vo.Service s) {
+			return dao.brandList(s);
+		}
+
 		
 
-		/*
-		 * public ArrayList<Category> selectCategory(int cNO) { return
-		 * dao.selectCategory(cNO); }
-		 */
+
+		public List<ServiceReview> reviewListSize() {
+			return dao.reviewListSize();
+		}
+
+		public List<com.ilgusi.service.model.vo.Service> sRateAVG() {
+			return dao.sRateAVG();
+		}
 
 }

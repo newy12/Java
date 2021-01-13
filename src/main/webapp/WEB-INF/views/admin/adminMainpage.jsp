@@ -127,7 +127,7 @@
 			<li class="navi-link"><a href="/manageMember.do">MEMBER</a></li>
 			<li class="navi-link"><a href="/manageService.do">SERVICE</a></li>
 			<li class="navi-link"><a href="">NOTICE</a></li>
-			<li class="navi-link"><a href="">FAQ</a></li>
+			<li class="navi-link"><a href="/manageQnA.do?list_num=10">FAQ</a></li>
 		</ul>
 	</div>
 

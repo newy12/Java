@@ -11,12 +11,12 @@
 	border: 1px solid orange;
 	border-radius: 30px;
 	width: 150px;
-	align-self:center;
+	align-self: center;
 	text-align: center;
-	padding-top:4px;
-	padding-bottom:4px;
-	margin-top:3px;
-	margin-bottom:3px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	margin-top: 3px;
+	margin-bottom: 3px;
 }
 
 .messages .read {
@@ -30,28 +30,27 @@
 
 .messages .adminBox {
 	text-align: center;
-	align-self:center;
+	align-self: center;
 }
 
 .adminBox .adminMsg {
-	padding: 10px; 
-	border-radius : 40px;
-	border: 1px solid #FF8F3F;
-	color: #282828;
-	border-radius: 40px;
-	margin:8px;
+	padding: 10px;
+	background-color: #FF8F3F;
+	border-radius: 10px;
+	color: white;
+	width: 80%;
+	margin: 8px;
 }
 
-.button {
-	width:100%;
-	height:100%;
-	background-color:orange;
-	display:block;
-	text-align:center;
-	line-height:60px;
-	color:white;
-	font-size:20px;
-	
+#message-input .wrap .bigBtn {
+	width: 100%;
+	height: 100%;
+	background-color: orange;
+	display: block;
+	text-align: center;
+	line-height: 60px;
+	color: white;
+	font-size: 20px;
 }
 </style>
 </head>
@@ -67,23 +66,26 @@
 		<!------------------------ content 시작 ------------------------------------->
 
 		<div class="content">
-
-			<!-- 문의내용-->
-			<div class="content-chat">
-				<div id="chat-profile">
+			<c:if test="${not empty content }">
+				<!-- 문의내용-->
+				<div class="content-chat">
 					<c:if test="${service.SNo eq 0 }">
-					19시 :: 알림
+						<div id="content-title">19시 :: 알림
 					</c:if>
 					<c:if test="${service.SNo ne 0 }">
-						<span>${freeId } - ${service.STitle}</span>
+						<div id="chat-profile">
+							<span>${freeId } - ${service.STitle}</span>
 					</c:if>
 					<div id="option-box">
-						<a href="#" onclick="deleteChat();">대화 나가기</a><br>
-						<c:if test="${sessionScope.loginMember.MGrade==2 }">
-							<a
-								href="/quotationFrm.do?sTitle=${service.STitle }&userId=${userId}&freeId=${freeId}"
-								onClick="window.open(this.href, '', 'width=800, height=800, left=1000, scrollbars=no,location=no, resizable=no'); return false;">견적서
-								작성</a>
+						<c:if test="${service.SNo ne 0 }">
+							<a href="#" onclick="deleteChat();">대화 나가기</a>
+							<br>
+							<c:if test="${sessionScope.loginMember.MGrade==2 }">
+								<a
+									href="/quotationFrm.do?sNo=${service.SNo}&sTitle=${service.STitle }&userId=${freeId}&freeId=${loginMember.MId}"
+									onClick="window.open(this.href, '', 'width=800, height=800, left=1000, scrollbars=no,location=no, resizable=no'); return false;">견적서
+									작성</a>
+							</c:if>
 						</c:if>
 					</div>
 				</div>
@@ -92,22 +94,23 @@
 					<!-- 이전 대화내용 db에서 불러오기 -->
 					<c:forEach items="${content }" var="message" varStatus="status">
 						<!-- 관리자와의 채팅방 -->
-						<div class="adminBox">
 							<c:if test="${service.SNo eq 0 }">
-								<c:if test="${status.index ne 0 }">
-									<c:if test="${message.CDate ne content.get(status.index-1).CDate }">
+							<c:if test="${message.CContent ne '문의를 시작합니다!' }">
+									<div class="adminBox">
+									<br>
 									<p class="date">${message.CDate }</p>
-								</c:if>
 									<p class="adminMsg">${message.CContent }</p>
+								</div>
 								</c:if>
 							</c:if>
-						</div>
+						
 						<!-- 일반 문의 채팅방 -->
 						<c:if test="${service.SNo ne 0 }">
 							<c:if test="${status.index ne 0 }">
 								<!-- 이전 메세지의 보낸날짜와 다르면 출력 -->
 								<c:if
 									test="${message.CDate ne content.get(status.index-1).CDate }">
+									<br>
 									<div class="date">${message.CDate }</div>
 								</c:if>
 
@@ -120,12 +123,15 @@
 								<!-- 내가 보낸 메세지 -->
 								<c:if test="${message.MId ne freeId }">
 									<p class="sent">
-										${message.CContent } <br> <span class="chat-time">${message.CTime }
-											<c:if test="${message.readStatus eq 1}">
+										${message.CContent }
+										<c:if test="${message.readStatus eq 1}">
+											<a href="#">삭제 </a>
+										</c:if>
+										<br> <span class="chat-time"> <c:if
+												test="${message.readStatus eq 1}">
 												<span class="read"></span>
-											</c:if>
+											</c:if> ${message.CTime }
 										</span>
-
 									</p>
 								</c:if>
 							</c:if>
@@ -148,20 +154,43 @@
 					<div id="message-input">
 						<div class="wrap">
 							<!-- 문의사항페이지로 이동 -->
-							<a class="button" href="">관리자에게 문의하기 </a>
+							<a class="bigBtn" href="">관리자에게 문의하기 </a>
 						</div>
 					</div>
 				</c:if>
-			</div>
-			<!-- 문의내용 끝-->
-
 		</div>
-		<!------------------------ content 끝 ------------------------------------->
+		</c:if>
+		<!-- 문의내용 끝-->
+
+		<!-- content가 null -->
+		<c:if test="${service.SNo eq 0 }">
+		<c:if test="${empty content}">
+			<div class="empty-page">
+				<div id="content-title">19시 :: 알림</div>
+				<div id="empty-content">
+					<br> <br> <br> <br> <br> <br> <img
+						src="/img/icon/exclamation_black.png">
+					<h3>
+						알림이 <br>없습니다!
+					</h3>
+					<a href="#"><u>관리자에게 문의하기 ></u></a>
+				</div>
+			</div>
+		</c:if>
+		</c:if>
+		<!-- content가 null -->
+
+	</div>
+	<!------------------------ content 끝 ------------------------------------->
 
 	</div>
 	<!-- chat-wrap 끝-->
 
 	<script>
+		$(function() {
+			$(".messages").scrollTop($(".messages")[0].scrollHeight);
+		});
+
 		function sendMsg(myId, cNo) {
 			// 현재 시간 구하기
 			var now = new Date();
@@ -222,19 +251,19 @@
 										+ hour + ":" + minute + "</span></p>");
 
 						$(".message").val('');
-						$(".messages")
-								.scrollTop($(".messages")[0].scrollHeight);
+						/* $(".messages").scrollTop($(".messages")[0].scrollHeight); */
+						location.reload();
 					}
 				});
 			}
 		}
 
-		/* // 엔터 누르면 전송 
-		$(".message").keyup(function(e) {
+		// 엔터 누르면 전송 
+		/* $(".message").keyup(function(e) {
 			if (e.keyCode == 13)
 				sendMsg();
-		}); */
-
+		});
+ */
 		function deleteChat() {
 			check = confirm("대화내용이 모두 삭제됩니다")
 			if (check) {
