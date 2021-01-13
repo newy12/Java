@@ -90,8 +90,7 @@
 									<option value="70">주문제작</option>
 							</select>
 								<p style="margin-top: 9px;">※메인카테고리</p> ※서브카테고리
-								 <select name="subCategory" style="width: 200px; float: left; margin-left: 30px; height: 30px;">
-
+								 <select name="subCategory" style="width: 200px; float: left; margin-left: 30px; height: 30px;">								
 									<option value="11">로고/브랜딩</option>
 									<option value="12">인쇄ㆍ홍보물ㆍ배너</option>
 									<option value="13">캘리그라피ㆍ폰트</option>

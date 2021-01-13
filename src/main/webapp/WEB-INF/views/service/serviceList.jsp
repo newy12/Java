@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -161,6 +162,7 @@
 
 </head>
 <body>
+
 	<jsp:include page="/WEB-INF/views/common/header.jsp"/>
 	
 		<div class="contentWrap">
@@ -170,12 +172,16 @@
         </div>
         
         <div class="sideNavi menu">
-            <p class="naviTitle">디자인</p>
+            <p class="naviTitle">${mainCate }</p>
+            
             <ul>
-                <li class="navi-item">
-                    <a href="#">로고ㆍ브랜딩</a>
-                </li>
-                <li class="navi-item">
+				<c:forEach items="${catList }" var="c">
+					<li class="navi-item">
+	                    <a href="#"> ${c.CName } </a>
+	                </li>	
+				</c:forEach>
+               
+                <!-- <li class="navi-item">
                     <a href="#">인쇄ㆍ홍보물ㆍ배너</a>
                 </li>
                 <li class="navi-item">
@@ -195,7 +201,7 @@
                 </li>
                 <li class="navi-item">
                     <a href="#">웹툰ㆍ캐릭터ㆍ이모티콘</a>
-                </li>
+                </li> -->
 
             </ul>
 

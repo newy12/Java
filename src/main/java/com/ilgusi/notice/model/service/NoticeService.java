@@ -29,4 +29,9 @@ public class NoticeService {
 	public int deleteNotice(int nNo) {
 		return dao.deleteNotice(nNo);
 	}
+
+	public int updateNotice(Notice n) {
+		System.out.println("updateNotice : service 들어옴");
+		return dao.updateNotice(n);
+	}
 }

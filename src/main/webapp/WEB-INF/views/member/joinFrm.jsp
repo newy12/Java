@@ -109,8 +109,8 @@
         .background-screen {
             display: none;
             position: absolute;
-            width: 100%;
-            height: 120%;
+            width: 100vw;
+            height: 100vh;
             background-color: black;
             opacity: 0.2;
         }
@@ -346,26 +346,41 @@
                 }
                 checkAllValidation();
             });
+            //스크롤 막기 true : 막기 , false : 풀기
+        function blockScroll(toggle) {  
+            if(toggle){
+                $("body").css('height','100vh');
+                $("body").css('overflow','hidden');
+            }else{
+                $("body").removeAttr('style');
+            }
+        }
             // 약관 눌렀으면 모달창 띄우기
             $(".terms-bottom label input[type=button]:eq(0)").on("click", function () {
                 $(".background-screen").show();
+                $(".background-screen").css("top", window.scrollY);
                 $(".service-terms-container").show();
+                blockScroll(true);
             });
             $(".terms-bottom label input[type=button]:eq(1)").on("click", function () {
                 $(".background-screen").show();
+                $(".background-screen").css("top", window.scrollY);
                 $(".privacy-terms-container").show();
+                blockScroll(true);
             });
             // 회색 배경 누르면 약관 꺼지게
             $(".background-screen").on("click", function () {
                 $(this).hide();
                 $(".service-terms-container").hide();
                 $(".privacy-terms-container").hide();
+                blockScroll(false);
             });
             // 약관 x 표시 누르면 꺼지게
             $(".terms-close").on("click", function () {
                 $(".background-screen").hide();
                 $(".service-terms-container").hide();
                 $(".privacy-terms-container").hide();
+                blockScroll(false);
 
             });
 

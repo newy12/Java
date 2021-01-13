@@ -79,7 +79,7 @@
 					<h2>평가</h2>
 				</div>
 				<br>
-				<p>★★★★★ 5.0/ n개의 평가</p>
+				<p>★★★★★ 5.0/n개의 평가</p>
 				<br> <br>
 				<p>실제 구매한 이용자들이 남긴 평가입니다.</p>
 				<br>
@@ -91,7 +91,7 @@
 					</div>		
 					<div class="reviewCon">
 						<p class="date">${r.writeDate}</p>
-						<p class="score star">평점★★★★</p>
+						<p class="score star">평점★★★★★</p>
 						<p class="reviewText">${r.RContent}</p>
 						<br><br>
 						<p class="userId">${j.MName}</p>
@@ -109,7 +109,16 @@
 				<div id="three">
 					<h2>서비스(n개)</h2>
 				</div>
-				<div class="serviceadd">이미지넣기</div>
+				<br><br><br>
+				<c:forEach items="${j.serviceList}" var ="r">
+				  <div class="serviceBox" style="float:left; margin-left:30px;">
+                                <img src="/upload/service/${r.SImg}" alt="없는이미지" style="width:150px;height:150px;"><br>
+                                <span class="preName">${r.STitle }</span> 
+                                <p class="serviceCon">${r.SContent }</p>
+                                <p class="score">평균 5.0점<span class="star"> ★★★★★</span></p>
+                            </div>
+                            </c:forEach>
+                            
 			</div>	
 		</div>
 	</div>
@@ -135,7 +144,7 @@ $(function(){
 </script>
 <style>
 .content {
-	height: 3600px;
+	height: 3400px;
 }
 
 body, hr, p, ul {
@@ -224,8 +233,7 @@ div.middle2right {
 }
 
 div.middle3 {
-	width: 70%;
-	height: 600px;
+	width: 70%;;
 	float: left;
 }
 

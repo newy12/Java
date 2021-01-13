@@ -98,20 +98,21 @@
         </div>
         
         <div class="board-box">
-        <form id="reqForm" action="/requestInsert.do" method="post" enctype="multipart/form-data">
+        	<form id="reqForm" action="/requestUpdate.do" method="post" enctype="multipart/form-data">
             <table class="table title-box">
                 <tr>
                     <th style="width: 10%;border-top: 2px solid rgb(49, 76, 131);text-align: center;line-height: 31px;">제목</th>
                     <th style="width: 75%;border-top: 2px solid rgb(49, 76, 131);">
-                    	<input type="text" name="mId" value="${loginMember.MId }" style="display:none;">
-                        <input type="text" name="reqTitle" id="title" placeholder="제목을 입력해주세요.(30글자 이내)" maxlength="33">
+                    	<input type="hidden" name="reqNo" value="${req.reqNo }">
+                    	<input type="hidden" name="mId" value="${loginMember.MId }">
+                    	<input type="text" name="reqTitle" id="title" value="${req.reqTitle }">
                     </th>
                     <th style="width: 15%;border-top: 2px solid rgb(49, 76, 131);text-align: center;"></th>
                 </tr>
                 <tr>
                     <th style="border-top: 0px;text-align: center;">첨부파일</th>
                     <th style="border-top: 0px">
-                    	<input type="file" name="filename" value="찾기" multiple>
+                    <input type="file" name="file_name" value="찾기">
                     </th>
                     <th style="border-top: 0px"></th>
                 </tr>
@@ -120,16 +121,17 @@
 				<table style="width:100%;height:500px;">
 			        <tr>
 			            <td>
-			                <textarea id="smartEditor" name="reqContent" style=" height:500px; "></textarea>
+						<textarea id="smartEditor" name="reqContent" style=" height:500px; ">${req.reqContent }</textarea>
 			            </td>
 			        </tr>
 				</table>
             </div>
-            </form>
+         
             <div>
-            	<button class="back-btn save" id="savebutton">작성완료</button>
+            	<button class="back-btn save" id="updatebutton">수정완료</button>
             	<button class="back-btn" onclick="history.back()">목록으로</button>
             </div>
+            </form>
         </div>
     </div>
     
@@ -151,9 +153,8 @@
 	    }); 
 	    
 	    $(function() { 
-	    	$("#savebutton").click(function() { 
+	    	$("#updatebutton").click(function(){
 	    		oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD", []); 
-	    		//textarea의 id를 적어줍니다. 
 	    		var title = $("#title").val(); 
 	    		var content = document.getElementById("smartEditor").value; 
 	    		if (title == null || title == "") { 
@@ -166,16 +167,15 @@
 	    			oEditors.getById["smartEditor"].exec("FOCUS"); 
 	    			return; 
 	    			} 
-	    		//이 부분은 스마트에디터 유효성 검사 부분이니 참고하시길 바랍니다. 
-	    		var result = confirm("등록 하시겠습니까?"); 
+	    		var result = confirm("수정 하시겠습니까?"); 
 	    		if(result){
 	    			$("#reqForm").submit(); 
 	   			}
 	    		else{ 
 	    			return; 
 	    			} 
-	    		}); 
-	    	})
+	    	});
+    	});
     </script>
 
 </body>
