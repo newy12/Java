@@ -333,7 +333,7 @@
                         <a href="/join.do"><span>무료회원가입</span></a>
                     </c:if>
                     <c:if test="${not empty loginMember}">
-                        <span>${loginMember.MName}</span>
+                        <span><a href="/userMypage.do">${loginMember.MName}</a></span>
                         <span id="logout"><a href="/logout.do">로그아웃</a></span>
                     </c:if>
                 </div>
