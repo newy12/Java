@@ -73,9 +73,14 @@ public class ChatService {
 		dao.startTrade(tradeInfo);
 	}
 
-	//(소현)service working_conut 1증가
+	// (소현)service working_conut 1증가
 	public void updateWorkingCount(int sNo) {
-		dao.updateWorkingCount(sNo);	
+		dao.updateWorkingCount(sNo);
+	}
+
+	// (소현)일반회원-프리랜서 전환
+	public void switchAccount(HashMap<String, Object> map) {
+		dao.switchAccount(map);
 	}
 
 }

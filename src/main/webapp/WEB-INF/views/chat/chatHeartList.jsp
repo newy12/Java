@@ -44,7 +44,7 @@
 												<p id="preview">가격: ${s.SPrice } 평점: ${s.SRate }</p>
 												<c:if test="${not empty s.MId }">
 													<a href="#"
-														onclick="startChat('${s.SNo }','${sessionScope.loginMember.MId }','${s.MId}','${sessionScope.loginMember.MNo }');">문의하기</a>
+														onclick="startChat('${s.SNo }','${sessionScope.loginMember.MId }','${s.MId}','${sessionScope.loginMember.MNo }','${sessionScope.loginMember.MGrade}');">문의하기</a>
 												</c:if>
 												<a href="#" onclick="deleteFavorite();">삭제하기</a>
 											</div>
@@ -83,7 +83,7 @@
 	<!-- chat-wrap 끝-->
 
 	<script>
-		function startChat(sNo, userId, freeId, mNo) {
+		function startChat(sNo, userId, freeId, mNo,mGrade) {
 			$.ajax({
 				url : "/makeRoom.do",
 				type : "post",
@@ -92,11 +92,12 @@
 					sNo : sNo,
 					userId : userId,
 					freeId : freeId,
-					mNo : mNo
+					mNo : mNo,
+					mGrade:mGrade
 				},
 				success : function(data) {
-					location.href = "/startChat.do?sNo=" + sNo + "&userId="
-							+ userId + "&freeId=" + freeId
+					location.href = "/enterRoom.do?cNo=-1&sNo=" + sNo + "&myId="
+							+ userId + "&yourId=" + freeId+"&mGrade="+mGrade
 				},
 				error : function() {
 

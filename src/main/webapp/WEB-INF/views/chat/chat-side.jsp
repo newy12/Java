@@ -55,29 +55,26 @@ ul {
 	text-align: center;
 }
 
-#expanded {
-	display: block;
-	display: none;
-}
-
-.switch {
-	font-size: 13px;
-	position: absolute;
-	transition-duration: 0.5s;
-}
-
-.active {
-	transform: scaleY(-1);
-}
-
 #account {
+	width: 70%;
+	margin: 0 auto;
+	margin-bottom: 3px;
 	padding: 5px;
-	border: 0.5px solid white;
+	background-color: orange;
 	border-radius: 30px;
+	background-color: orange;
+	padding: 5px;
+	padding: 5px;
 }
 
 #account li {
 	text-align: center;
+	diaplay: block;
+	padding: 0px;
+}
+
+#account li a {
+	display: block;
 }
 
 #side-menu ul li {
@@ -185,6 +182,7 @@ ul {
 	width: 100%;
 	margin: 0 auto;
 	overflow: hidden;
+	padding-left:10px;
 }
 
 .new {
@@ -194,6 +192,7 @@ ul {
 	border-radius: 50%;
 	background: transparent;
 	margin-top: 25px;
+	background-color:orange;
 }
 
 #chat-preview, #service-preview {
@@ -409,29 +408,29 @@ textarea::-webkit-scrollbar-thumb {
 	<div id="side">
 		<div id="side-profile">
 			<div class="wrap">
-				<img src="/img/logo/logo-chat_navy.png" width="120px"> <b>${ sessionScope.loginMember.MName }</b>
-				<div>
-					<ul id="account">
-						<li><a href="#"> <c:if
-									test="${sessionScope.loginMember.MGrade eq 1 }">일반회원</c:if> <c:if
-									test="${sessionScope.loginMember.MGrade eq 2 }">프리랜서</c:if>
-						</a>
-							<!-- <ul class="expanded">
-								<li><a href="#">바꾸기</a></li>
-							</ul> --></li>
-					</ul>
-				</div>
+				<img src="/img/logo/logo-chat_navy.png" width="120px">
+
+				<ul id="account">
+					<li><a href="#" onclick="switchAccount();"> <c:if
+								test="${sessionScope.loginMember.MGrade eq 1 }">일반회원</c:if> <c:if
+								test="${sessionScope.loginMember.MGrade eq 2 }">프리랜서</c:if>
+					</a></li>
+				</ul>
+
+				<b>${ sessionScope.loginMember.MName }</b>
 			</div>
 		</div>
 		<div id="side-menu">
 			<ul>
-			
-				<li><a href="/selectNotification.do?mId=${loginMember.MId}"> <img
-						src="/img/icon/notification_white.png" width="45px;"><br>알림
+
+				<li><a
+					href="/enterRoom.do?cNo=-1&sNo=0&yourId=admin&myId=${loginMember.MId}">
+						<img src="/img/icon/notification_white.png" width="40px;"><br>알림
 				</a></li>
-				
-				<li><a href="/chatList.do?mGrade=${loginMember.MGrade}&mId=${loginMember.MId}"> <img
-						src="/img/icon/chat_white.png" width="45px;"><br>문의
+
+				<li><a
+					href="/chatList.do?mGrade=${loginMember.MGrade}&mId=${loginMember.MId}">
+						<img src="/img/icon/chat_white.png" width="40px;"><br>문의
 				</a></li>
 				<!-- 일반 회원일때  -->
 				<c:if test="${sessionScope.loginMember.MGrade eq 1 }">
@@ -440,8 +439,8 @@ textarea::-webkit-scrollbar-thumb {
 				</c:if>
 				<!-- 프리랜서일때 -->
 				<c:if test="${sessionScope.loginMember.MGrade eq 2}">
-					<li><a href="/chatServiceList.do"><img
-							src="/img/icon/list_white.png" width="40px;"><br>서비스</a></li>
+					<li><a href="#"><img src="/img/icon/list_white.png"
+							width="35px;"><br>진행중</a></li>
 				</c:if>
 				<!-- 고객일때 -->
 				<!-- 프리랜서일때 <li>서비스</li>-->
@@ -452,5 +451,42 @@ textarea::-webkit-scrollbar-thumb {
 			<button id="closeBtn" onclick="window.close();">닫기</button>
 		</div>
 	</div>
+
+	<script>
+		// 일반회원 - 프리랜서 전환 
+		function switchAccount() {
+			var mId = "${loginMember.MId}";
+			var mGrade = "${loginMember.MGrade}";
+			mGrade = Number(mGrade);
+
+			console.log(mId);
+			console.log(mGrade);
+			
+			$.ajax({
+				url : "/switchAccount.do",
+				type : "post",
+				async : false,
+				data : {
+					mId : mId,
+					mGrade : mGrade
+				},
+				success : function(data) {
+					// -1이 리턴되면 alert:프리랜서로 전환한적없습니다 
+					if (data == -1) {
+						alert("프리랜서 계정이 없습니다!");
+					} else if(data==1){
+						alert("일반회원으로 전환!");
+						location.href="/chatList.do?mGrade=1&mId=${loginMember.MId}";
+					}else if(data==2){
+						alert("프리랜서로 전환!");
+						location.href="/chatList.do?mGrade=2&mId=${loginMember.MId}";
+					}
+				},
+				error : function() {
+
+				}
+			});
+		}
+	</script>
 </body>
 </html>
