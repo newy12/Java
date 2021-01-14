@@ -26,33 +26,40 @@
 			<c:if test="${not empty room }">
 				<!-- 문의 리스트 -->
 				<!-- 새로운 메세지 표시 span- color:orange 로 변경-->
+
 				<div class="content-list">
 					<div id="content-title">문의 리스트</div>
 					<div id="chat-list">
 						<ul>
-							<c:forEach items="${room }" var="r">	
-							<!-- 일반 채팅내용 -->
-						<c:if test="${r.freeId ne 'admin'}">
-								<li class="list">
-									<div class="list-wrap">
-										<div class="new"></div>
-										<div id="chat-preview">
-											<p><b id="name">
-											<c:if test="${r.freeId eq null }">(탈퇴한 회원)</c:if>
-											<c:if test="${r.freeId ne null }">${r.freeId}</c:if>
-											</b><span id="time">${r.lastTime}</span>
-											</p>
-											<p id="preview">${r.lastMsg }</p>
-											<input type="hidden" class="cNo" value="${r.cNo }">
-											<input type="hidden" class="sNo" value="${r.sNo }">
+							<c:forEach items="${room }" var="r">
+								<!-- 일반 채팅내용 -->
+								<c:if test="${r.freeId ne 'admin'}">
+									<li class="list">
+										<div class="list-wrap">
+										<c:if test="${r.read eq 1 }"><!-- 마지막 메세지가 내가 보낸게 아니고, status=1일때 -->
+										<c:if test="${r.sender ne sessionScope.loginMember.MId }">
+											<span class="new"></span>
+											</c:if>
+											</c:if>
+											<div id="chat-preview">
+												<p>
+													<b id="name"> <c:if test="${r.freeId eq null }">(탈퇴한 회원)</c:if>
+														<c:if test="${r.freeId ne null }">${r.freeId}</c:if>
+													</b><span id="time">${r.lastTime}</span>
+												</p>
+												<p id="preview">${r.lastMsg }</p>
+												<input type="hidden" class="cNo" value="${r.cNo }">
+												<input type="hidden" class="sNo" value="${r.sNo }">
+												<input type="hidden" class="freeId" value="${r.freeId }">
+											</div>
 										</div>
-									</div>
-								</li>
+									</li>
 								</c:if>
 							</c:forEach>
 						</ul>
 					</div>
 				</div>
+
 			</c:if>
 			<!-- chatlist가 not null -->
 
@@ -80,22 +87,24 @@
 	</div>
 	<!-- chat-wrap 끝-->
 	<script>
-		$(".list").click(function() {
-			var cNo = $(this).find(".cNo").val();
-			var sNo = $(this).find(".sNo").val();
-			cNo=Number(cNo);
-			sNo=Number(sNo);
-			/* 상대방아이디 */
-			var freeId = $(this).find("#name").html();
-			/* 탈퇴한회원일때 */
-			if(freeId=='(탈퇴한 회원)'){
-				return;
-			}
-			console.log(cNo);
-			console.log(sNo);
-			console.log(freeId);
-			location.href="/enterRoom.do?cNo="+cNo+"&sNo="+sNo+"&yourId="+freeId; 
-		});
+		$(".list").click(
+				function() {
+					var cNo = $(this).find(".cNo").val();
+					var sNo = $(this).find(".sNo").val();
+					cNo = Number(cNo);
+					sNo = Number(sNo);
+					/* 상대방아이디 */
+					var freeId = $(this).find(".freeId").val();
+					/* 탈퇴한회원일때 */
+					if (freeId == '(탈퇴한 회원)') {
+						return;
+					}
+					console.log(cNo);
+					console.log(sNo);
+					console.log(freeId);
+					location.href = "/enterRoom.do?cNo=" + cNo + "&sNo=" + sNo
+							+ "&yourId=" + freeId;
+				});
 	</script>
 
 </body>

@@ -229,7 +229,10 @@ tr, th {
 									end:d2
 								},
 								success : function(data) {
-									//작업수 1 증가
+									
+									opener.parent.location.reload();
+									window.close();   
+								/* 	//작업수 1 증가
 									$.ajax({
 										url : "/updateCount.do",
 										type : "post",
@@ -245,7 +248,7 @@ tr, th {
 										error : function() {
 											console.log("update실패");
 										}
-									});  
+									});   */
 	   
 								},
 								error : function() {
