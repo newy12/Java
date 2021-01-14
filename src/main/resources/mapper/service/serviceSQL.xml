@@ -186,7 +186,7 @@
 		where s_no=#{_parameter}
 	</update>
 	
-	<!-- (다솜)서비스 리스트 불러오기 -->
+	<!-- (다솜)서비스 리스트 불러오기
 	<select id="serviceList" parameterType="s" resultType="s">
 		select 
 			s_no as sNo,
@@ -204,7 +204,7 @@
 		<if test="subCategory != 0 ">
 			and  sub_category= #{subCategory}
 		</if>
-	</select>
+	</select> -->
 	
 	<!--(다솜) 브랜드 이름 불러오기 -->
 	<select id="brandList" parameterType="s" resultType="string">
@@ -219,5 +219,25 @@
 		</if>
 	
 	</select>
+	
+	<select id="serviceListPage" parameterType="map" resultType="s">
+		select 
+			s_no as sNo,
+			m_id as mId,
+			s_title as sTitle,
+			s_price as sPrice, 
+			s_img as sImg,
+			main_category as mainCategory,
+			sub_category as subCategory,
+			s_rate as sRate
+		from  (select rownum as rnum, n. * from 
+       			(select*from service order by 1 desc)n) 
+		where delete_status = 'n' and rnum between #{start} and #{end}
+				and main_category = #{main}
+		<if test="sub != null and sub != 0">
+			and  sub_category= #{sub}
+		</if>
+	</select>
+	
 </mapper>
 

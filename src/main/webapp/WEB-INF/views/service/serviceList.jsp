@@ -114,6 +114,7 @@
             /*border: 1px solid gray;*/
             padding: 10px;
             width: 225px;
+            height:340px;
             display:inline-block;
             float: left;
         }
@@ -175,7 +176,7 @@
             <ul>
 				<c:forEach items="${catList }" var="c">
 					<li class="navi-item">
-	                    <a href="/serviceList.do?cNo=${c.CNo }"> ${c.CName } </a>
+	                    <a href="/serviceList.do?cNo=${c.CNo }&reqPage=1"> ${c.CName } </a>
 	                </li>	
 				</c:forEach>
             </ul>
@@ -194,6 +195,9 @@
                 </div>
             </div>
             <div class="tableContainer">
+            <c:if test="${noServiceList != null }">
+            	<p class="noService"> 등록된 서비스가 없습니다. </p>
+            </c:if>
             <c:forEach items="${serviceList }" var="s" varStatus="status">
 	            <div class="serviceBox">
 	                    <img src="upload/service/${s.SImg }"><br>
