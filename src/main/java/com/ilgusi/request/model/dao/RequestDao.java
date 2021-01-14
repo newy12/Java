@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ilgusi.request.model.vo.Request;
+import com.ilgusi.service.model.vo.Service;
 
 @Repository
 public class RequestDao {
@@ -53,5 +54,11 @@ public class RequestDao {
 	//(문정) 의뢰글 삭제
 	public int requestDeleteOne(int reqNo) {
 		return session.delete("request.requestDeleteOne", reqNo);
+	}
+
+	//(문정) 판매자의 리스트
+	public ArrayList<Service> selectList(String freeId) {
+		List<Service> list = session.selectList("request.selectList", freeId );
+		return (ArrayList<Service>)list;
 	}
 }

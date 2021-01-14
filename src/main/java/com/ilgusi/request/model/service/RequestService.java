@@ -98,5 +98,10 @@ public class RequestService {
 	public int requestDeleteOne(int reqNo) {
 		return dao.requestDeleteOne(reqNo);
 	}
+
+	//(문정) 판매자의 서비스 리스트
+	public ArrayList<com.ilgusi.service.model.vo.Service> serviceList(String freeId) {
+		return dao.selectList(freeId);
+	}
 	
 }

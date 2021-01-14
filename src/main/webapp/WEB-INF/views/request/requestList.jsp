@@ -169,6 +169,7 @@
             </table>
             <div>
             	<c:if test="${loginMember.MId != null }">
+            		<br>
             		<button class="btn-custom" onclick="location.href='/requestWriteFrm.do'">글쓰기</button>
             	</c:if>
             </div>

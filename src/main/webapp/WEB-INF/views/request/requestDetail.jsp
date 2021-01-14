@@ -65,8 +65,9 @@
     }
     .contact-user{
         width: 124px;
-        height: 26px;
-        font-size: 12px;
+        height: 22px;
+        font-size: 11px;
+        line-height:18px;
         color: rgb(49, 76, 131);
         border-radius: 5px;
         border: 2px solid rgb(49, 76, 131);
@@ -74,7 +75,13 @@
     .table{
         text-align: center;
     }
-
+	.contact-user:hover{
+		border: 2px solid black;
+	}
+	.th-text{
+		text-align: center;
+		color:rgb(49, 76, 131);
+	}
 </style>
 </head>
 <body>
@@ -90,17 +97,17 @@
         <div class="board-box">
             <table class="table title">
                 <tr>
-                    <th style="width: 10%;border-top: 2px solid rgb(49, 76, 131);text-align: center;">제목</th>
+                    <th class="th-text" style="border-top: 2px solid rgb(49, 76, 131);">제목</th>
                     <th style="width: 75%;border-top: 2px solid rgb(49, 76, 131);">${req.reqTitle }</th>
                     <th style="width: 15%;border-top: 2px solid rgb(49, 76, 131);text-align: center;">${req.writeDate }</th>
                 </tr>
                 <tr>
-                    <th style="border-top: 0px;text-align: center;">작성자</th>
+                    <th style="border-top: 0px" class="th-text">작성자</th>
                     <th style="border-top: 0px">${req.MId } &nbsp;&nbsp;&nbsp;<button class="contact-user" value="${req.MId }">고객에게 연락하기</button></th>
                     <th style="border-top: 0px"></th>
                 </tr>
                 <tr>
-                    <th style="border-top: 0px;text-align: center;">첨부파일</th>
+                    <th style="border-top: 0px" class="th-text">첨부파일</th>
                     <th style="border-top: 0px">
                     <c:if test="${req.filepath==null }">
                     	첨부파일이 없습니다.
@@ -114,6 +121,7 @@
             </table>
             <div class="reqContent">${req.reqContent }</div>
             <div class="btn-box">
+            	<input type="hidden" id="loginId" value="${loginMember.MId }">
             	<input type="hidden" id="reqNo" value="${req.reqNo }">
             	<input type="hidden" id="reqStatus" value="${req.reqStatus }">
             	<button class="btns btn-back" onclick="history.back()">목록으로</button>
@@ -155,6 +163,14 @@
     				location.href = "/requestDeleteOne.do?reqNo="+reqNo;
     			}
     		}
+    	});
+    	
+    	$(".contact-user").click(function(){
+    		var userId = $(".contact-user").val(); 
+    		var freeId = $("#loginId").val();     
+    		var _left = Math.ceil(( window.screen.width - 473 )/2);
+    		window.open('/requestSendPopup.do?userId='+userId+'&freeId='+freeId, '의뢰자에게 보낼 서비스 선택하기', 'width=473, height=515, left='+_left+', top=50, scrollbars=yes, location=no, resizable=no');
+			return false;
     	});
     </script>
 </body>
