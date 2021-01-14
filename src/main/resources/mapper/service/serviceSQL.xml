@@ -92,8 +92,7 @@
 		s_no as sNo,
 		m_id as mId,
 		s_title as sTitle,
-		s_price as
-		sPrice,
+		s_price as sPrice,
 		s_content
 		as sContent,
 		s_area as sArea,
@@ -193,7 +192,7 @@
 			s_no as sNo,
 			m_id as mId,
 			s_title as sTitle,
-			to_char(s_price , '999,999,999,999,999')as sPrice,
+			s_price as sPrice, 
 			s_img as sImg,
 			main_category as mainCategory,
 			sub_category as subCategory,
