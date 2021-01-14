@@ -1,6 +1,7 @@
 package com.ilgusi.service.model.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -133,8 +134,12 @@ public class ServiceService {
 		}
 
 		//(다솜) 서비스 리스트 불러오기
-		public ArrayList<com.ilgusi.service.model.vo.Service> serviceList(com.ilgusi.service.model.vo.Service s) {
-			return dao.serviceList(s);
+		public ArrayList<com.ilgusi.service.model.vo.Service> selectServiceList(HashMap<String, Integer> map) {
+			return dao.selectServiceList(map);
+		}
+		//(다솜) 브랜드 이름 불러오기
+		public ArrayList<String> brandList(com.ilgusi.service.model.vo.Service s) {
+			return dao.brandList(s);
 		}
 
 		
@@ -147,5 +152,7 @@ public class ServiceService {
 		public List<com.ilgusi.service.model.vo.Service> sRateAVG(String mId) {
 			return dao.sRateAVG(mId);
 		}
+
+		
 
 }

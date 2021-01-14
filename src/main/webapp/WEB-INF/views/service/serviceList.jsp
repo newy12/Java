@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
@@ -18,7 +19,7 @@
         .contentWrap {
             width: 1200px;
             margin: 0 auto;
-            height: 1200px;
+            height: 1600px;
         }
 
         .sideNavi {
@@ -113,6 +114,7 @@
             /*border: 1px solid gray;*/
             padding: 10px;
             width: 225px;
+            height:340px;
             display:inline-block;
             float: left;
         }
@@ -147,11 +149,12 @@
             text-align: right;
             color: gray;
             margin: 0;
+            height: 15px;
         }
 
         .star {
             color: rgb(241, 196, 15);
-            font-size: 12pt;
+            font-size: 14pt;
         }
 
 </style>
@@ -173,7 +176,7 @@
             <ul>
 				<c:forEach items="${catList }" var="c">
 					<li class="navi-item">
-	                    <a href="/serviceList.do?cNo=${c.CNo }"> ${c.CName } </a>
+	                    <a href="/serviceList.do?cNo=${c.CNo }&reqPage=1"> ${c.CName } </a>
 	                </li>	
 				</c:forEach>
             </ul>
@@ -192,13 +195,49 @@
                 </div>
             </div>
             <div class="tableContainer">
-            <c:forEach items="${serviceList }" var="s">
+            <c:if test="${noServiceList != null }">
+            	<p class="noService"> 등록된 서비스가 없습니다. </p>
+            </c:if>
+            <c:forEach items="${serviceList }" var="s" varStatus="status">
 	            <div class="serviceBox">
 	                    <img src="upload/service/${s.SImg }"><br>
-	                    <span class="preName">하이샵</span><br>
-	                    <p class="serviceCon">${s.STitle }</p>
+	                    <span class="preName">${brandName[status.index] }</span><br>
+	                    <p class="serviceCon" style="height: 30px;">${s.STitle }</p>
 	                    <p class="price">${s.SPrice }원~</p>
-	                    <p class="score">평점 ${s.SRate }.0점<span class="star"> ★★★★★</span></p>
+	                    <p class="score">평점 ${s.SRate }.0
+	                    
+	                   		<c:if test="${s.SRate == 5}">
+	                    		<span class="star">
+	                    			★★★★★
+	                   			</span>
+	                   		</c:if>
+	                   		
+	                   		<c:if test="${s.SRate == 4}">
+	                    		<span class="star">
+	                    			☆★★★★
+	                   			</span>
+	                   		</c:if>
+	                   		<c:if test="${s.SRate == 3}">
+	                    		<span class="star">
+	                    			☆☆★★★
+	                   			</span>
+	                   		</c:if>
+	                   		<c:if test="${s.SRate == 2}">
+	                    		<span class="star">
+	                    			☆☆☆★★
+	                   			</span>
+	                   		</c:if>
+	                   		<c:if test="${s.SRate == 1}">
+	                    		<span class="star">
+	                    			☆☆☆☆★
+	                   			</span>
+	                   		</c:if>
+	                   		<c:if test="${s.SRate == 0}">
+	                    		<span class="star">
+	                    			☆☆☆☆☆
+	                   			</span>
+	                   		</c:if>                   	
+	                    </p>
 	               </div>
             </c:forEach>
                 
@@ -211,6 +250,20 @@
 	
 	
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
+
+
+<script >
+	$(function (){
+		
+		
+		
+		
+		
+	})
+
+
+
+</script>
 
 
 </body>

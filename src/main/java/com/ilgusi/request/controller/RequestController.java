@@ -4,6 +4,8 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,6 +19,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.ilgusi.request.model.service.RequestService;
 import com.ilgusi.request.model.vo.Request;
 import com.ilgusi.request.model.vo.RequestPageData;
+import com.ilgusi.service.model.service.ServiceService;
+import com.ilgusi.service.model.vo.Service;
 
 import common.FileNameOverlap;
 
@@ -24,11 +28,18 @@ import common.FileNameOverlap;
 public class RequestController {
 	@Autowired
 	private RequestService service;
+
 	
 	//(문정)의뢰게시판 리스트
 	@RequestMapping("/requestList.do")
-	public String requestList(int reqPage, Model model) {
-		RequestPageData rpd = service.selectRequestList(reqPage);
+	public String requestList(int reqPage, String order, String subject, String keyword, Model model) {
+		if(keyword == "") {
+			keyword = "null";
+		}
+		RequestPageData rpd = service.selectRequestList(reqPage, order, subject, keyword);
+		model.addAttribute("order",order);
+		model.addAttribute("subject", subject);
+		model.addAttribute("keyword",keyword);
 		model.addAttribute("list", rpd.getList());
 		model.addAttribute("pageNavi", rpd.getPageNavi());
 		model.addAttribute("totalCount", rpd.getTotalCount());
@@ -153,5 +164,14 @@ public class RequestController {
 		}
 		model.addAttribute("loc", "/requestList.do?reqPage=1");
 		return "common/msg";
+	}
+	
+	//(문정) 의뢰자에게 연락하기 전 서비스 고르는 팝업창 띄움
+	@RequestMapping("/requestSendPopup.do")
+	public String requestSendPopup(String userId, String freeId, Model model) {
+		ArrayList<Service> list = service.serviceList(freeId);
+		model.addAttribute("userId", userId);
+		model.addAttribute("list",list);
+		return "request/requestSendPopup";
 	}
 }

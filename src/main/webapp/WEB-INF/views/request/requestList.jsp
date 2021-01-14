@@ -84,6 +84,14 @@
     .target{
     	color : white;
     }
+	.noList{
+	    margin-top: 5px;
+	    text-align: center;
+	   	line-height: 185px;
+	   	color :rgb(224, 224, 224);
+	   	font-size:20px;
+	   	font-weight: bold; 
+	}
 </style>
 </head>
 <body>
@@ -99,20 +107,30 @@
         <div class="search-box">
             <div class="container" style="width:81%;">
                 <span>검색구분</span>
-                <select name="subject" class="form-control subject" style="width:145px;">
+                <input type="hidden" id="subject" value="${subject }">
+                <select  class="form-control subject" id="search-subject" style="width:145px;">
                     <option value="all">전체</option>
                     <option value="title">제목</option>
                     <option value="content">내용</option>
                 </select>
-                <input type="text" class="form-control word" placeholder="검색어를 입력해주세요" name="word" style="width:377px;">
-                <input type="submit" class="btn btn-primary btn-md" value="검색">
+                <c:choose>
+                	<c:when test="${keyword == 'null' }">
+                		<input type="text" class="form-control keyword" placeholder="검색어를 입력해주세요" style="width:377px;">
+                	</c:when>
+                	<c:otherwise>
+                		<input type="text" class="form-control keyword" style="width:377px;" value="${keyword }">
+                	</c:otherwise>
+                </c:choose>
+                
+                <input type="button" class="btn btn-primary btn-md search-btn" value="검색">
             </div>
         </div>
         
         <div class="board-box">
             <p>총 &nbsp;&nbsp;</p><p style="color:rgb(255, 143, 63);font-size: 18px;">${totalCount }건</p><p>의 의뢰글이 있습니다.</p>
             <div>
-                <select name="array" class="form-control subject">
+            	<input type="hidden" id="order" value="${order }">
+                <select class="form-control subject array">
                     <option value="new">최신순</option>
                     <option value="title">이름순</option>
                     <option value="status">진행순</option>
@@ -125,23 +143,33 @@
                     <th style="width: 100px;text-align: center">진행상태</th>
                     <th style="width: 200px;text-align: center">작성일</th>
                 </tr>
-                <c:forEach items="${list }" var="r">
-               	<tr>
-               		<td>${r.reqNo } </td>
-               		<td><a href="/requestDetail.do?reqNo=${r.reqNo }" class = "table-title">${r.reqTitle } </a></td>
-               		<td>
-               		<c:choose>
-               			<c:when test="${r.reqStatus == 0 }">모집 중</c:when>
-               			<c:when test="${r.reqStatus == 1 }">진행 중</c:when>
-               			<c:when test="${r.reqStatus == 2 }">마감</c:when>
-               		</c:choose>
-               		</td>
-               		<td> ${r.writeDate } </td>
-               	</tr>
-                </c:forEach>
+                <c:if test="${list.size() == 0 }">
+                	<tr>
+                		<td colspan="4" class="noList">
+                			검색 내용을 찾을 수 없습니다.
+                		</td>
+                	</tr>
+                </c:if>
+                <c:if test="${list.size() != 0 }">
+	                <c:forEach items="${list }" var="r">
+	               	<tr>
+	               		<td>${r.reqNo } </td>
+	               		<td><a href="/requestDetail.do?reqNo=${r.reqNo }" class = "table-title">${r.reqTitle } </a></td>
+	               		<td>
+	               		<c:choose>
+	               			<c:when test="${r.reqStatus == 0 }">모집 중</c:when>
+	               			<c:when test="${r.reqStatus == 1 }">진행 중</c:when>
+	               			<c:when test="${r.reqStatus == 2 }">마감</c:when>
+	               		</c:choose>
+	               		</td>
+	               		<td> ${r.writeDate } </td>
+	               	</tr>
+	                </c:forEach>
+                </c:if>
             </table>
             <div>
             	<c:if test="${loginMember.MId != null }">
+            		<br>
             		<button class="btn-custom" onclick="location.href='/requestWriteFrm.do'">글쓰기</button>
             	</c:if>
             </div>
@@ -162,6 +190,44 @@
     	$(document).ready(function(){
     		var containerHeight = $(".board-box").height();
 			$(".page-wrap").height(containerHeight+1000);
+			
+        	var order = $("#order").val();
+        	var subject = $("#subject").val();
+        	console.log("어케 받아오는겨?"+subject);
+        	var keyword = $(".keyword").val();
+        	
+        	if(order == "new"){
+        		$(".array").val("new").prop("selected", true);
+        	}else if(order == "title"){
+        		$(".array").val("title").prop("selected", true);
+        	}else if(order == "status"){
+        		$(".array").val("status").prop("selected", true);
+        	}
+        	
+        	if(subject == "all"){
+        		$("#search-subject").val("all").prop("selected", true);
+        	}else if(subject == "title"){
+        		$("#search-subject").val("title").prop("selected", true);
+        	}else if(subject == "content"){
+        		$("#search-subject").val("content").prop("selected", true);
+        	}
+        	
+        	$(".array").change(function(){
+        		var order = $(".array").val();
+        		location.href ="/requestList.do?reqPage=1&order="+order+"&subject="+subject+"&keyword="+keyword;
+        	});
+    	});
+    	
+
+    	$("#search-subject").change(function(){
+    		var value = $("#search-subject").val();
+    		console.log(value);
+    	});
+    	
+    	$(".search-btn").click(function(){
+    		var search = $("#search-subject").val();
+    		var keyword = $(".keyword").val();
+    		location.href ="/requestList.do?reqPage=1&order=new&subject="+search+"&keyword="+keyword;
     	});
     </script>
 </body>

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 
@@ -17,6 +18,7 @@
             margin: 0 auto;
             width: 90%;
         }
+
         .qna-top {
             margin: 50px auto;
             width: 90%;
@@ -40,11 +42,11 @@
             margin: 0 auto;
             width: fit-content;
         }
+
         .qna-bottom {
             margin: 0 auto;
             width: fit-content;
         }
-
     </style>
 </head>
 
@@ -54,7 +56,7 @@
         $(document).ready(function () {
             $("#qna-reg-form").on("submit", function (e) {
                 let $qTitle = $("#qTitle");
-                if($qTitle.val() == '' || $("#qContent").val() == ''){
+                if ($qTitle.val() == '' || $("#qContent").val() == '') {
                     alert("빈칸없이 입력해주세요.")
                     e.preventDefault();
                 }
@@ -75,19 +77,25 @@
                 </div>
             </div>
             <form id="qna-reg-form" action="registerQuestion.do" method="POST" enctype="multipart/form-data">
+                <c:if test="${not empty param.qNo}">
+                    <input type="hidden" name="q_No" value="${param.qNo}">
+                </c:if>
                 <div class="qna-center">
                     <table>
                         <thead>
+                            <c:if test="${empty param.qNo}">
                             <tr>
                                 <th>제목</th>
                                 <th><input type="text" name="qTitle" id="qTitle" placeholder="내용을 입력해주세요."></th>
                             </tr>
-                            <tr>
-                                <th>첨부파일</th>
-                                <th><input type="file" name="file" id="file" placeholder="내용을 입력해주세요."></th>
-                            </tr>
+                                <tr>
+                                    <th>첨부파일</th>
+                                    <th><input type="file" name="file" id="file" placeholder="내용을 입력해주세요."></th>
+                                </tr>
+                            </c:if>
                         </thead>
                         <tbody>
+                            
                             <tr>
                                 <td colspan="2">
                                     <textarea name="qContent" id="qContent" cols="30" rows="10"></textarea>
@@ -101,6 +109,7 @@
                 </div>
                 <div class="qna-bottom">
                     <div class="submit">
+
                         <input type="submit" value="등록하기">
                         <a href="/qna.do">목록으로</a>
                     </div>

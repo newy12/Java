@@ -64,18 +64,20 @@
                     <thead>
                         <tr>
                             <th>제목</th>
-                            <th><span>${question.QTitle}</span></th>
+                            <th><span>답변 : ${question.QTitle}</span></th>
                         </tr>
-                        <tr>
-                            <th>첨부파일</th>
-                            <th><a href="#">${question.filePath}</a></th>
-                        </tr>
+                        <c:if test="${empty param.answer || param.answer == false}">
+                            <tr>
+                                <th>첨부파일</th>
+                                <th><a href="#">${question.filePath}</a></th>
+                            </tr>
+                        </c:if>
                     </thead>
                     <tbody>
                         <tr>
                             <td colspan="2">
-                                <textarea name="qContent" id="qContent" cols="30" rows="10"
-                                    disabled>${question.QContent}</textarea>
+                                <textarea name="qContent" id="qContent" cols="30" rows="10" disabled><c:if test="${empty param.answer || param.answer == false}">${question.QContent}</c:if><c:if test="${param.answer == true}">${question.answerContent}</c:if>
+                                </textarea>
                             </td>
                         </tr>
                     </tbody>

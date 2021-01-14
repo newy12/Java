@@ -45,4 +45,7 @@ public class QuestionService {
 		
 		return maxPageCount;
 	}
+	public int updateAnswer(Question q) {
+		return dao.updateAnswer(q);
+	}
 }

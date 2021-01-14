@@ -256,8 +256,8 @@
 		                <div class="empty"></div>
 		                <div class="title">${brandList[status.index] }</div>
 		                <a href="#" id="serviceContent">
-		                    <div class="content">${s.SContent } </div>
-		                    <div class="price">${s.SPrice }원</div>
+		                    <div class="content">${s.STitle } </div>
+		                    <div class="price">${s.SPrice }</div>
 		                    <div class="rate"><span>평점 </span><span>${s.SRate }</span><span>.0점</span><span>★★★★★</span>
 		                    </div>
 		                </a>
@@ -359,6 +359,25 @@
 	        	//높이 동적으로 늘려줌
 	        	var containerHeight = $(".container-box").height();
 				$(".page-wrap").height(containerHeight+400);
+				
+				
+				//가격을 천 단위로 , 넣음
+				var price = $(".price");
+				for(var i=0; i<price.length; i++){
+					var priceTxt = price.eq(i).html();
+					if(priceTxt.length > 3 && priceTxt.length < 7){
+						var result1 = priceTxt.substring(0,(priceTxt.length-3));
+						var result2 = priceTxt.substring((priceTxt.length-3));
+						$(".price").eq(i).html(result1+","+result2+"원");
+					}else if(priceTxt.length > 6){
+						var result1 = priceTxt.substring(0,(priceTxt.length-6));
+						var result2 = priceTxt.substring((priceTxt.length-6), (priceTxt.length-3));
+						var result3 = priceTxt.substring(priceTxt.length-3);
+						$(".price").eq(i).html(result1+","+result2+","+result3+"원");
+					}else{
+						$(".price").eq(i).html(priceTxt+"원");
+					}
+				}
         });
         
         $("#array-select").change(function(){

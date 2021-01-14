@@ -20,6 +20,10 @@ public class Service {
 	private char deleteStatus;	//삭제 여부
 	private char adminApproval;	//승인 여부
 	
+	//(문정) 추가
+	private String mainCategoryName;
+	private String subCategoryName;
+	
 	//줄바꿈
 	public String getSContentBr() {
 		return sContent.replaceAll("\r\n", "<br>");

@@ -20,7 +20,7 @@
 		mNo,q_title qTitle,q_content qContent,
 		secret_status
 		secretStatus,write_date writeDate,answer_status
-		answerStatus,answer_date answerDate,
+		answerStatus,answer_contnet answerContent,answer_date answerDate,
 		filePath
 		from question where q_no =
 		#{qNo}
@@ -35,7 +35,7 @@
 		secretStatus,write_date
 		writeDate,
 		answer_status
-		answerStatus,answer_date answerDate,
+		answerStatus,answer_contnet answerContent,answer_date answerDate,
 		filePath
 		from question q,member m
 		where q.m_no = m.m_no
@@ -59,4 +59,7 @@
 		insert into question
 		values(question_seq.nextval,#{mNo},#{qTitle},#{qContent},0,sysdate,0,null,null,#{filePath})
 	</insert>
+	<update id="updateAnswer" parameterType="q">
+		update question set answer_status = 1,answer_contnet = #{qContent},answer_date = sysdate where q_no = #{qNo}
+	</update>
 </mapper>
