@@ -111,12 +111,12 @@ public class ServiceDao {
 	 * session.selectList("") return null; }
 	 */
 	//(영재)review총 갯수 구하기
-	public List<ServiceReview> reviewListSize() {
-		List<ServiceReview> list = session.selectList("service.reviewListSize");
+	public List<ServiceReview> reviewListSize(String mId) {
+		List<ServiceReview> list = session.selectList("service.reviewListSize",mId);
 		return list;
 	}
-	public List<com.ilgusi.service.model.vo.Service> sRateAVG() {
-		List<com.ilgusi.service.model.vo.Service> list = session.selectList("service.sRateAVG");
+	public List<com.ilgusi.service.model.vo.Service> sRateAVG(String mId) {
+		List<com.ilgusi.service.model.vo.Service> list = session.selectList("service.sRateAVG",mId);
 		return list;
 	}
 

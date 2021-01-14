@@ -140,12 +140,12 @@ public class ServiceService {
 		
 
 
-		public List<ServiceReview> reviewListSize() {
-			return dao.reviewListSize();
+		public List<ServiceReview> reviewListSize(String mId) {
+			return dao.reviewListSize(mId);
 		}
 
-		public List<com.ilgusi.service.model.vo.Service> sRateAVG() {
-			return dao.sRateAVG();
+		public List<com.ilgusi.service.model.vo.Service> sRateAVG(String mId) {
+			return dao.sRateAVG(mId);
 		}
 
 }
