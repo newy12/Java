@@ -13,6 +13,7 @@ import com.ilgusi.category.model.vo.Category;
 import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.service.model.vo.Join;
 import com.ilgusi.service.model.vo.ServiceFile;
+import com.ilgusi.service.model.vo.ServicePay;
 import com.ilgusi.service.model.vo.ServiceReview;
 import com.ilgusi.service.model.vo.ServiceTrade;
 
@@ -139,6 +140,16 @@ public class ServiceDao {
 	public List<com.ilgusi.service.model.vo.Service> sRateAVG(String mId) {
 		List<com.ilgusi.service.model.vo.Service> list = session.selectList("service.sRateAVG",mId);
 		return list;
+	}
+	
+	//(문정) 결제 진행
+	public int insertServicePay(ServicePay pay) {
+		return session.insert("servicePay.insertSerivcePay", pay);
+	}
+	
+	//(문정) tradeStatus 변경
+	public int updateTradeStatus(int tNo) {
+		return session.update("trade.updateTradeStatus", tNo);
 	}
 
 	
