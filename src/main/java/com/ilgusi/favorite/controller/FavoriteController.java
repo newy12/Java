@@ -1,5 +1,6 @@
 package com.ilgusi.favorite.controller;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,13 @@ public class FavoriteController {
 	public String userHeartList(int mNo, String order, Model model) {
 		ArrayList<Service> list = service.selectHeartList(mNo, order);
 		ArrayList<String> brandnameList = service.selectBrandName(mNo, order);
+		
+		//천원단위
+		DecimalFormat df = new DecimalFormat("###,###");
+		for(int i=0; i<list.size(); i++) {
+			list.get(i).setSPriceTxt(df.format(list.get(i).getSPrice())+"원");
+		}
+		
 		model.addAttribute("list", list);
 		model.addAttribute("brandList", brandnameList);
 		model.addAttribute("order", order);
