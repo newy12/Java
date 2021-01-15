@@ -105,19 +105,40 @@
         }
 
         .btn-answer {
-            width: 40px;
+            width: 50px;
+            height: 20px;
+            line-height: 20px;
+            margin-left: 5px;
+            outline: none;
+            background-color: white;
+            color: #314C83;
+            border-radius: 5px;
+            border: 2px solid #314C83;
+            display: inline-block;
+            text-decoration: none;
+            font-size: small;
+        }
+        .btn-answer:hover{
+            text-decoration: none;
+            color: #314C83;
+        }
+        .btn-update{
+            width: 50px;
+            height: 20px;
+            line-height: 20px;
             margin-left: 5px;
             outline: none;
             background-color: #314C83;
             color: white;
             border-radius: 5px;
-            border: none;
+            border: 2px solid #314C83;
             display: inline-block;
             text-decoration: none;
+            font-size: small;
         }
-        .btn-answer:hover{
-            text-decoration: none;
+        .btn-update:hover{            
             color: white;
+            text-decoration: none;
         }
     </style>
 </head>
@@ -153,11 +174,11 @@
                                 <td>${qList.QNo}</td>
                                 <td>
                                     <a href="/questionView.do?qNo=${qList.QNo}">${qList.QTitle}</a>
-                                    <c:if test="${qList.answerStatus == 0}">
-                                        <a href="questionFrm.do?answerNo=${qList.QNo}" class="btn-answer">답변</a>
-                                    </c:if>
                                     <c:if test="${qList.secretStatus == 1}">
                                         <span>&#128274;</span>
+                                    </c:if>
+                                    <c:if test="${qList.answerStatus == 0}">
+                                        <a href="questionFrm.do?answerNo=${qList.QNo}" class="btn-answer">답변</a>
                                     </c:if>
                                 </td>
                                 <td>${qList.MId}</td>
@@ -168,6 +189,7 @@
                                     <td></td>
                                     <td>
                                         <a href="/questionView.do?qNo=${qList.QNo}&answer=true">&#10551; 답변입니다.</a>
+                                        <a href="questionFrm.do?answerNo=${qList.QNo}" class="btn-update">수정</a>
                                     </td>
                                     <td>
                                         관리자
