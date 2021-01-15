@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="service">
 	<select id="selectOneMember" parameterType="String" resultType="j">
-<!-- 프리랜서 소개글 불러오기 쿼리 -->
+<!-- (영재)프리랜서 소개글 불러오기 쿼리 -->
 	select
       m_name as mName,
       m_id as mId,
@@ -21,7 +21,7 @@
         from service_review
       </select>
 		
-		<!-- 소개글 중 리뷰 리스트 불러오기 쿼리 -->
+		<!-- (영재)소개글 중 리뷰 리스트 불러오기 쿼리 -->
 		<select id="selectListReview" parameterType="j" resultType="review">
 		 select * from (select rownum rnum, s.* 
 		 from (select r_no as rNo,
@@ -35,19 +35,9 @@
       service_review
       where service_review.s_no = temp.s_no) s) 
       where rnum BETWEEN #{mainCategory} and #{subCategory}
-           <!--  select r_no as rNo, 원래있던코드 페이징전
-         t_no as tNo,
-         service_review.s_no as sNo,
-         m_id as mId,
-         r_content as rContent,
-         r_rate as rRate,
-         write_date as writeDate
-       from (select s_no from service
-      where service.m_id = #{mId}) temp,
-      service_review
-      where service_review.s_no = temp.s_no -->
+
 		</select>
-		<!-- 서비스 전체 출력 리스트 -->
+		<!--(영재) 서비스 전체 출력 리스트 -->
 		<select id="selectServiceList" parameterType="String" resultType="s">
 		select 
 			s_no as sNo,
@@ -64,7 +54,7 @@
 		from service
 		where m_Id = #{mId}
 		</select>
-		<!-- 서비스 등록글 전체받는 쿼리  -->
+		<!--(영재) 서비스 등록글 전체받는 쿼리  -->
 		<select id="selectAllService" parameterType="String" resultType="j">
 			select 
          s_no as sNo,
@@ -80,7 +70,7 @@
       from service
       where m_id = #{mId}
 		</select>
-		<!-- 서비스 등록 쿼리 -->
+		<!--(영재!!) 서비스 등록 쿼리 -->
 		<insert id="insertService" parameterType="j">
 		insert into service 
 		values
@@ -151,8 +141,8 @@
 			and s_no=#{_parameter}
 		</if>
 	</select>
-	
-	<!-- 영재 프리랜서마이페이지 정보수정 -->
+
+	<!-- (영재) 프리랜서마이페이지 정보수정 -->
 	<update id="updateFreelancer" parameterType="m">
 		update member set
 		brand_name = #{brandName},
@@ -160,7 +150,7 @@
 		introduce = #{introduce}
 		where m_id = #{MId}
 	</update>
-	<!-- 영재 프리랜서마이페이지 정보찾기 -->
+	<!-- (영재) 프리랜서마이페이지 정보찾기 -->
 	<select id="freelancerOneMember" parameterType="_int" resultType="m">
 		select
 		m_id as mId,
@@ -172,33 +162,31 @@
 		introduce as introduce
 	from member where m_no = #{MNo}
 	</select>
-	<!--영재 서비스고유번호 받기 -->
+	<!--(영재) 서비스고유번호 받기 -->
 	<select id="selectServiceNo" resultType="_int">
 		select
 		max(s_no)
 		from service
 	</select>
+	<!-- (영재) 파일업로드 -->
 	<insert id="insertServiceFile" parameterType="sf">
 		insert into service_file
 		values(SERVICE_FILE_SEQ.NEXTVAL,#{sNo},#{filename},#{filepath})
 	</insert>
-	<select id="reviewListSize" resultType="_int">
+	<!--(영재) 평가 개수 -->
+	<select id="reviewListSize" parameterType="String" resultType="_int">
 		select 
 		count(*) 
 		from service_review 
-		where m_id = 'newy10'
-	
-	
+		where m_id = #{mId}
 	</select>
- 	<select id="sRateAVG" resultType="float">
+	<!--(영재)  평점평균매기기 -->
+ 	<select id="sRateAVG" parameterType="String" resultType="float">
 		select
 		 ROUND(AVG(s_rate),1) 
 		 from service
-		 where m_id = 'newy10'
+		 where m_id = #{mId}
 	</select>
-
-	
-
 	<!-- (소현)관리자-서비스 승인 -->
 	<update parameterType="_int" id="acceptService">
 		update service set admin_approval='y', write_date=to_char(sysdate,'yyyy-mm-dd') 
@@ -222,7 +210,7 @@
 		where s_no=#{_parameter}
 	</update>
 	
-	<!-- (다솜)서비스 리스트 불러오기 -->
+	<!-- (다솜)서비스 리스트 불러오기
 	<select id="serviceList" parameterType="s" resultType="s">
 		select 
 			s_no as sNo,
@@ -240,7 +228,7 @@
 		<if test="subCategory != 0 ">
 			and  sub_category= #{subCategory}
 		</if>
-	</select>
+	</select> -->
 	
 	<!--(다솜) 브랜드 이름 불러오기 -->
 	<select id="brandList" parameterType="s" resultType="string">
@@ -255,5 +243,25 @@
 		</if>
 	
 	</select>
+	
+	<select id="serviceListPage" parameterType="map" resultType="s">
+		select 
+			s_no as sNo,
+			m_id as mId,
+			s_title as sTitle,
+			s_price as sPrice, 
+			s_img as sImg,
+			main_category as mainCategory,
+			sub_category as subCategory,
+			s_rate as sRate
+		from  (select rownum as rnum, n. * from 
+       			(select*from service order by 1 desc)n) 
+		where delete_status = 'n' and rnum between #{start} and #{end}
+				and main_category = #{main}
+		<if test="sub != null and sub != 0">
+			and  sub_category= #{sub}
+		</if>
+	</select>
+	
 </mapper>
 

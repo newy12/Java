@@ -38,7 +38,7 @@
 	<a href="/noticeList.do">공지사항 게시판</a> /
 	<a href="/serviceList.do">서비스리스트</a> /
 	<a href="/serviceView.do">서비스 상세보기</a> <br>
-	<a href="/serviceList.do?cNo=30">리스트테스트</a>
+	<a href="/serviceList.do?cNo=10&reqPage=1">리스트테스트</a>
 
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>

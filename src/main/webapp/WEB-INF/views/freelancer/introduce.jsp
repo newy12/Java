@@ -181,6 +181,7 @@
 				</div>	
 				</div>
 		</div>
+		<input type="hidden" id="haha" value="${j.MId}">
 	</div>
 	<a id="topBtn" href="#"
 		style="width: 100px; height: 100px; line-height: 100px; background-color: gray; border-radius: 25%; text-decoration: none; text-align: center;">Top</a>
@@ -198,6 +199,7 @@
 </style>
 <script>
 $(function(){
+	var mId = $('#haha').val();
     $(window).scroll(function(){
       if($(this).scrollTop() > 200){
         $('#topBtn').fadeIn(); 
@@ -211,10 +213,11 @@ $(function(){
     });
     
     
-    //새 jsp(reviewListSize.jsp)파서 값 불러내고 다시 불러오는 방식 ajax
+    //새 jsp(reviewListSize.jsp)파서 값 불러내고 다시 불러오는 방식 ajax 평가 개수구하기
     $.ajax({
     	type : "get",
     	url : "/reviewListSize.do",
+    	data : {mId : mId},
     	success :  function(result){
     				console.log(result);
     			$('#listSize').html(result+"개의 평가").css("color","gray");
@@ -225,9 +228,16 @@ $(function(){
     $.ajax({
     	type : "get",
     	url : "/sRateAVG.do",
+    	data : {mId : mId},
     	success : function(result){
+    		if(result='null'){
+    			$('#sRate').html("평점[0.0]").css("color","gray");	
+    			$('#sRate2').html("평점[0.0]").css("color","gray");
+    		}else{
     			$('#sRate').html("평점"+result).css("color","gray");	
-    			$('#sRate2').html("평점"+result).css("color","gray");	
+    			$('#sRate2').html("평점"+result).css("color","gray");
+    		}
+    				
     	}   	
     });
     

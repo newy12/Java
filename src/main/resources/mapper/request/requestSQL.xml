@@ -88,4 +88,16 @@
 	<delete id="requestDeleteOne" parameterType="_int">
 		delete from request_board where req_no = #{_parameter}
 	</delete>
+	
+	<!-- (문정) 판매자의 서비스 조회-->
+	<select id="selectList" parameterType="string" resultType="s">
+	select 
+		s.s_no as sNo,
+		s.m_id as mId,
+		s.s_title as sTitle,
+		s.s_img as sImg,
+	   (select c_name from category  where c_no = s.main_category) as mainCategoryName, 
+	   (select c_name from category where c_no = s.sub_category) as subCategoryName 
+	from service s where m_id = #{_parameter}
+	</select>
 </mapper>

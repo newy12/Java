@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,25 +37,28 @@ public class ServiceController {
 		Join join = service.selectReviewList(mId, reqPage);
 		j.setServiceList(service.serviceList(mId));
 		j.setReviewList(join.getReviewList());
+		
 		model.addAttribute("pageNavi",join.getPageNavi());
 		model.addAttribute("j", j);
 		return "freelancer/introduce";
 	}
 	//(영재) 리뷰갯수 구하기
 	@RequestMapping("/reviewListSize.do")
-	public void reviewListSize(Model model) {
-		List<ServiceReview> list = service.reviewListSize();
+	public void reviewListSize(String mId,Model model) {
+		List<ServiceReview> list = service.reviewListSize(mId);
+		System.out.println("mid>>>>>"+mId);
 		model.addAttribute("list",list);
+		System.out.println("list>>>>>>평점"+list);
 	}
-
-	
 	  //(영재) 평점 평균 구하기
 	  
 	  @RequestMapping("/sRateAVG.do") 
-	  public void sRateAVG(Model model) {
-	  List<Service> list = service.sRateAVG();
+	  public void sRateAVG(String mId,Model model) {
+		  System.out.println("midRate>>>>>>>>전>"+mId);
+	  List<Service> list = service.sRateAVG(mId);
+	  System.out.println("midRate>>>>>>>>>"+mId);
 	  model.addAttribute("list",list);
-	  System.out.println("list>>>>>>평점"+list);
+	  System.out.println("list>>>>>>평균점수"+list);
 	  }
 	  //(영재) 
 	  
@@ -207,36 +211,63 @@ public class ServiceController {
 	
 	//(다솜)serviceList 
 	@RequestMapping("/serviceList.do")
-	public String serviceList (int cNo, Model model) { 
+	public String serviceList (int cNo, int reqPage, Model model) { 
+		
+		int numPerPage = 12;
+		int end = reqPage * numPerPage;
+		int start = end-numPerPage+1;
+		
 		Service s = new Service();
 		System.out.println("cNo : " + cNo);
 		int maincateNum = 0;
 		int subNo = 0;
+		
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		
 		if(cNo%10 == 0 ) {
 			maincateNum = cNo;
 			s.setSubCategory(subNo);
+			map.put("sub", 0);
+			
 		}else {
 			maincateNum = (cNo/10)*10;
 			subNo = cNo;
+			map.put("sub", subNo);
 		}
+		
+		map.put("main", maincateNum);
+		map.put("start", start);
+		map.put("end", end);
+		
 		s.setMainCategory(maincateNum);
 		s.setSubCategory(subNo);
-		System.out.println("메인카테고리 : " + s.getMainCategory());
-		System.out.println("서브카테고리 : " + s.getSubCategory());
+		System.out.println("메인카테고리 : " + maincateNum);
+		System.out.println("서브카테고리 : " + subNo);
 		//카테고리 리스트 불러오기
 		ArrayList<Category> catList = service.categoryList(maincateNum);
 		System.out.println("카테고리 리스트 사이즈 : " + catList.size());
 		System.out.println("catList(1)값 : " + catList.get(1));
-		//서비스 리스트 불러오기
-		ArrayList<Service> serList = service.serviceList(s);
-		if(serList.size() != 0 ) {
-			System.out.println("serList 사이즈 : " + serList.size());
-			System.out.println("serList(0)값 : " + serList.get(0));
-		}
-		System.out.println("serList(1)의 m_id : " + serList.get(1).getMId());
-		ArrayList<String> brandName = service.brandList(s);
-		System.out.println("brandName(0)의 값 :" + brandName.get(0));
 		
+		//서비스 리스트 불러오기			
+		ArrayList<Service> serList = service.selectServiceList(map);
+		
+		//맵 확인용 ArrayList 
+		ArrayList<HashMap<String, Integer>> mapList = new ArrayList<HashMap<String,Integer>>();
+		mapList.add(map);
+		
+		if(mapList.size() != 0) {
+			System.out.println("mapList(0) : " + mapList.get(0));
+		}
+
+		if(serList.size() > 0 ) {
+			System.out.println("serList 사이즈 : " + serList.size());
+			model.addAttribute("serviceList", serList);
+		}else {
+			System.out.println("serList 사이즈 : "+ serList.size());
+			model.addAttribute("noServiceList", "noServiceList");
+		}
+		
+		ArrayList<String> brandName = service.brandList(s);
 		switch(maincateNum) {
 			case 10: model.addAttribute("mainCate", "디자인");
 				break;
@@ -254,10 +285,7 @@ public class ServiceController {
 				break;
 		}
 		
-		
-		
 		model.addAttribute("catList",catList);
-		model.addAttribute("serviceList", serList);
 		model.addAttribute("brandName", brandName);
 		
 		return "/service/serviceList";
