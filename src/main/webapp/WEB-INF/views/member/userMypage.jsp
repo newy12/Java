@@ -375,25 +375,20 @@
 			 $('#phone-btn').html('저장');
 		 }else{
 			 var phone = "010-"+phone1+"-"+phone2;
-			 var reg = /^[0-9]{4}$/;
-			 if(reg.test(phone1) && reg.test(phone2)){
-				$.ajax({
-	                url : "/changeMypage.do",
-	                type : "get",
-	                data : {"mId":mId,"mPw":mPw,"data":phone,"object":"phone" }, 
-	                success : function(data){
-	                $('#phone1').attr('readonly', true).css({'background-color': 'rgba(224, 224, 224, 0.4)'});
-	       			 $('#phone2').attr('readonly', true).css({'background-color': 'rgba(224, 224, 224, 0.4)'});
-	       			 $('#phone-btn').html("수정");
-	       			$('#phone-check').html('정상적으로 수정되었습니다').css({'color':'#008000'}).fadeIn(1000).delay(1000).fadeOut(1000); 
-	                },
-	               error : function(){
-	                  console.log("실패");
-	               }
-	             }); 
-			 }else{
-				 $('#phone-check').html('숫자 4자리로 작성해주세요').css({'color':'red'}).fadeIn(1000).delay(1000).fadeOut(1000);  
-			 } 
+            $.ajax({
+                url : "/changeMypage.do",
+                type : "get",
+                data : {"mId":mId,"mPw":mPw,"data":phone,"object":"phone" }, 
+                success : function(data){
+                $('#phone1').attr('readonly', true).css({'background-color': 'rgba(224, 224, 224, 0.4)'});
+       			 $('#phone2').attr('readonly', true).css({'background-color': 'rgba(224, 224, 224, 0.4)'});
+       			 $('#phone-btn').html("수정");
+       			 $('#phone-check').fadeIn(1000).delay(1000).fadeOut(1000);  
+                },
+               error : function(){
+                  console.log("실패");
+               }
+             });
 		 }
  	}
  	
