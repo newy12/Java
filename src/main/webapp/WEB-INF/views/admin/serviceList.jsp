@@ -45,7 +45,7 @@
 									<td>${s.writeDate }</td>
 									<td>${s.SNo }</td>
 									<td>${s.MId }<c:if test="${s.MId eq null}">탈퇴한회원</c:if></td>
-									<td>메인:${ s.mainCategory}서브:${s.subCategory }</td>
+									<td><b>[${ s.MCatName}]</b>${s.SCatName }</td>
 									<td><a href=#>${s.STitle }</a></td>
 									<td><c:forEach items="${mIdandmNo }" var="m">
 											<c:if test="${m.key eq s.MId }">
@@ -83,7 +83,7 @@
 							<td>${s.writeDate }</td>
 							<td>${s.SNo }</td>
 							<td>${s.MId }<c:if test="${s.MId eq null}">탈퇴한회원</c:if></td>
-							<td>메인:${ s.mainCategory}서브:${s.subCategory }</td>
+							<td><b>[${ s.MCatName}]</b>${s.SCatName }</td>
 							<td><a href=#>${s.STitle }</a></td>
 							<td>
 								<!-- 작업수가 0이 아닐때 클릭가능-->
@@ -129,7 +129,7 @@
 								<td>${s.writeDate }</td>
 								<td>${s.SNo }</td>
 								<td>${s.MId }<c:if test="${s.MId eq null}">탈퇴한회원</c:if></td>
-								<td>메인:${ s.mainCategory}서브:${s.subCategory }</td>
+								<td><b>[${ s.MCatName}]</b>${s.SCatName }</td>
 								<td><a href=#>${s.STitle }</a></td>
 								<td>
 								<!-- 작업수가 0이 아닐때 클릭가능-->
