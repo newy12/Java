@@ -13,6 +13,8 @@ import com.ilgusi.chat.model.vo.ChatContent;
 import com.ilgusi.favorite.model.vo.Favorite;
 import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.service.model.vo.Service;
+import com.ilgusi.service.model.vo.ServiceInfo;
+import com.ilgusi.service.model.vo.ServiceTrade;
 
 @Repository
 public class ChatDao {
@@ -26,9 +28,9 @@ public class ChatDao {
 	}
 
 	// (소현)서비스 정보 불러오기
-	public ArrayList<Service> selectService(int sNo) {
-		List<Service> list = session.selectList("service.selectService", sNo);
-		return (ArrayList<Service>) list;
+	public ArrayList<ServiceInfo> selectService(int sNo) {
+		List<ServiceInfo> list = session.selectList("service.selectServiceInfo", sNo);
+		return (ArrayList<ServiceInfo>) list;
 	}
 
 	// (소현)채팅방 생성
@@ -86,6 +88,17 @@ public class ChatDao {
 	// (소현)일반회원-프리랜서 전환
 	public void switchAccount(HashMap<String, Object> map) {
 		session.update("member.switchAccount",map);
+	}
+
+	//상대가 보낸 메세지 읽음 처리
+	public void updateReadStatus(HashMap<String, Object> roomAndId) {
+		session.update("chat.updateReadStatus",roomAndId);
+	}
+
+	//거래내역 불러와서 견적서 작성여부 확인
+	public ArrayList<ServiceTrade> tradeList(HashMap<String, Integer> tradeInfo) {
+		List<ServiceTrade> list = session.selectList("trade.tradeList", tradeInfo);
+		return (ArrayList<ServiceTrade>) list;
 	}
 
 }

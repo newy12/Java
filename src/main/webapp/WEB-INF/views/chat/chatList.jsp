@@ -36,15 +36,19 @@
 								<c:if test="${r.freeId ne 'admin'}">
 									<li class="list">
 										<div class="list-wrap">
-										<c:if test="${r.read eq 1 }"><!-- 마지막 메세지가 내가 보낸게 아니고, status=1일때 -->
-										<c:if test="${r.sender ne sessionScope.loginMember.MId }">
-											<span class="new"></span>
-											</c:if>
+											<!-- 마지막 메세지가 내가 보낸게 아니고, status=1일때 -->
+											<c:if test="${r.read eq 1 }">
+												<c:if test="${r.sender ne sessionScope.loginMember.MId }">
+													<span class="new"></span>
+												</c:if>
 											</c:if>
 											<div id="chat-preview">
 												<p>
 													<b id="name"> <c:if test="${r.freeId eq null }">(탈퇴한 회원)</c:if>
-														<c:if test="${r.freeId ne null }">${r.freeId}</c:if>
+														<c:if test="${r.freeId ne null }">
+															<c:if test="${ loginMember.MGrade eq 1}">${r.brandName }(${r.freeId})<br>${r.serviceTitle }</c:if>
+															<c:if test="${ loginMember.MGrade eq 2}">${r.freeId}-${r.serviceTitle }</c:if>
+														</c:if>
 													</b><span id="time">${r.lastTime}</span>
 												</p>
 												<p id="preview">${r.lastMsg }</p>

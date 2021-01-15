@@ -122,12 +122,30 @@
 					<div id="chat-profile">
 						<span>${freeId } - ${service.STitle}</span>
 						<div id="option-box">
-							<a href="#" onclick="deleteChat();">대화 나가기</a> <br>
-							<c:if test="${sessionScope.loginMember.MGrade==2 }">
-								<a href="/quotationFrm.do?sNo=${service.SNo}&sTitle=${service.STitle }&userId=${freeId}&freeId=${loginMember.MId}"
-									onClick="window.open(this.href, '', 'width=800, height=800, left=1000, scrollbars=no,location=no, resizable=no'); return false;">
-									견적서 작성</a>
+							<!-- 아직 견적서 작성 전 -->
+							<c:if test="${empty status }">
+								<a href="#" onclick="deleteChat();">대화 나가기</a>
+								<br>
+								<c:if test="${sessionScope.loginMember.MGrade==2 }">
+									<a
+										href="/quotationFrm.do?sNo=${service.SNo}&sTitle=${service.STitle }&userId=${freeId}&freeId=${loginMember.MId}"
+										onClick="window.open(this.href, '', 'width=800, height=800, left=1000, scrollbars=no,location=no, resizable=no'); return false;">
+										견적서 작성</a>
+								</c:if>
 							</c:if>
+							<!-- 견적서 작성&결제 전 -->
+							<c:if test="${status eq 0 }">
+								<a href="#" onclick="deleteChat();">대화 나가기</a>
+								<br>
+								<c:if test="${sessionScope.loginMember.MGrade==2 }">
+									결제 대기 중
+								</c:if>
+							</c:if>
+							<!-- 결제 완료&진행 중 -->
+							<c:if test="${status eq 1 }">작업 진행중</c:if>
+							<!-- 작업완료 -->
+							<a href="#" onclick="deleteChat();">대화 나가기</a><br>
+							<c:if test="${status eq 2 }">작업 완료</c:if>
 						</div>
 					</div>
 
@@ -144,7 +162,7 @@
 									<br>
 									<div class="date">${message.CDate }</div>
 								</c:if>
-								
+
 								<!-- 받은 메세지 -->
 								<c:if test="${message.MId ne sessionScope.loginMember.MId }">
 									<p class="replies">
@@ -201,7 +219,7 @@
 	</div>
 	<!--전체 wrap-->
 
-	 <script>
+	<script>
 		$(function() {
 			$(".messages").scrollTop($(".messages")[0].scrollHeight);
 		});
@@ -283,12 +301,29 @@
 		});
 		 */
 		function deleteChat() {
-			check = confirm("대화내용이 모두 삭제됩니다")
+			var cNo = ${cNo}; //방번호 
+			cNo = Number(cNo);
+			var mGrade = ${loginMember.MGrade};
+			var mId = "${loginMember.MId}";
+			check = confirm("대화내용이 모두 삭제됩니다");
 			if (check) {
-				location.href = "/deleteChat.do?cNo=" + ${cNo}+"&myId=" + ${sessionScope.loginMember.MId}
+
+				$.ajax({
+					url : "/deleteChat.do",
+					type : "post",
+					async : false,
+					data : {
+						cNo : cNo
+					},
+					success : function(data) {
+						console.log("삭제성공");
+						location.href = "/chatList.do?mGrade=" + mGrade
+								+ "&mId=" + mId
+					}
+				});
 			}
 		}
-	</script> 
+	</script>
 
 </body>
 </html>

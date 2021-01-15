@@ -30,8 +30,9 @@ fieldset input {
 	<div class="r-wrap">
 		<img src="img/logo/logo_white.png" width="200px;">
 		<fieldset>
-			<b>서비스 :</b> ${service.STitle } (${service.MId })<br> <b>거절
-				이유 :</b><br> 
+		<b>카테고리 : </b>[${ service.MCatName}]${service.SCatName }<br>
+			<b>서비스 : </b>${service.STitle } (${service.MId })<br> 
+			<b>거절 이유 :</b><br> 
 				<input type="radio" name="reason" id="r1"> <label for="r1">카테고리 선택이 잘못되었습니다.</label><br> 
 				<input type="radio" name="reason" id="r2"> <label for="r2">서비스 설명이 부족합니다.</label><br> 
 				<input type="radio" name="reason" id="r3"> <label for="r3">부적절한 서비스입니다.</label><br> 

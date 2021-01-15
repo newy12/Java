@@ -32,7 +32,8 @@
 					<th>등급</th>
 					<th>서비스 이용횟수</th>
 					<th>신고횟수</th>
-					<th>최근 메세지</th>
+					<th colspan="2">최근 메세지</th>
+
 				</tr>
 				<c:forEach items="${memberList }" var="m">
 					<!-- 조건 추가 -->
@@ -59,15 +60,25 @@
 									</c:if>
 								</c:forEach></td>
 							<td>${m.warningCount }</td>
-							<td><a href="">
+							<td>
 							<c:forEach items="${adminMsg }" var="msg">
 									<!-- map값 불러오는 방법?? -->
 									<c:if test="${msg.key eq m.MId }">
-									${msg.value[0].CContent}
+									<a href="">${msg.value[0].CContent}	</a>
 									</c:if>
 								</c:forEach>
 							
-							</a></td>
+						</td>
+							<td>
+								<c:forEach items="${adminMsg }" var="msg">
+									<!-- map값 불러오는 방법?? -->
+									<c:if test="${msg.key eq m.MId }">
+									<c:if test="${msg.value[0].readStatus eq 0}">읽음</c:if>
+									<c:if test="${msg.value[0].readStatus eq 1}">안읽음</c:if>
+									</c:if>
+								</c:forEach>
+							
+							</td>
 						</tr>
 					</c:if>
 					<!-- 조건 추가 -->

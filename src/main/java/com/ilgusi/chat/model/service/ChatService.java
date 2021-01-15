@@ -24,7 +24,7 @@ public class ChatService {
 	}
 
 	// (소현)찜한 서비스 정보 불러오기
-	public ArrayList<com.ilgusi.service.model.vo.Service> selectService(int sNo) {
+	public ArrayList<com.ilgusi.service.model.vo.ServiceInfo> selectService(int sNo) {
 		return dao.selectService(sNo);
 	}
 
@@ -81,6 +81,16 @@ public class ChatService {
 	// (소현)일반회원-프리랜서 전환
 	public void switchAccount(HashMap<String, Object> map) {
 		dao.switchAccount(map);
+	}
+
+	//상대가 보낸 메세지 읽음으로 처리
+	public void updateReadStatus(HashMap<String, Object> roomAndId) {
+		dao.updateReadStatus(roomAndId);
+	}
+
+	//거래내역 불러와서 견적서 작성여부 확인
+	public ArrayList<ServiceTrade> tradeList(HashMap<String, Integer> tradeInfo) {
+		return dao.tradeList(tradeInfo);
 	}
 
 }

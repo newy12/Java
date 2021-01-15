@@ -81,15 +81,15 @@
 		values
 		(service_seq.nextval,#{mId},#{sTitle},#{sPrice},#{sContent},#{sArea},#{sImg},#{sRate},#{mainCategory},#{subCategory},#{workingDate},0,to_char(sysdate,'yyyy-mm-dd'),'n','n')
 	</insert>
+	
 	<!-- (소현)서비스불러오기,동적쿼리-sNo로 service 불러오기 -->
-	<select id="selectService" parameterType="_int" resultType="s">
+<!-- 	<select id="selectService" parameterType="_int" resultType="s">
 		select
 		s_no as sNo,
 		m_id as mId,
 		s_title as sTitle,
 		s_price as sPrice,
-		s_content
-		as sContent,
+		s_content as sContent,
 		s_area as sArea,
 		s_img as sImg,
 		s_rate as sRate,
@@ -100,19 +100,55 @@
 		write_date
 		as writeDate,
 		delete_status as deleteStatus,
-		admin_approval as
-		adminApproval,
-		write_date
-		as writeDate,
-		delete_status as
-		deleteStatus,
-		admin_approval as
-		adminApproval
+		admin_approval as adminApproval,
+		write_date as writeDate,
+		delete_status as deleteStatus,
+		admin_approval as adminApproval
+
 		from service
+		<if test="value ==null">
+			order by s_no desc
+		</if>
 		<if test="value !=null">
 			where s_no=#{_parameter}
 		</if>
+	</select> -->
+	
+	 <!-- (소현)서비스+브랜드이름+카테고리이름 불러오기,동적쿼리-sNo로 service 불러오기 --> 
+	<select id="selectServiceInfo" parameterType="_int" resultType="com.ilgusi.service.model.vo.ServiceInfo">
+		select
+		service.s_no as sNo,
+		service.m_id as mId,
+		s_title as sTitle,
+		s_price as sPrice,
+		s_content as sContent,
+		s_area as sArea,
+		s_img as sImg,
+		s_rate as sRate,
+		main_category as mainCategory,
+		sub_category as subCategory,
+		working_date as workingDate,
+		working_count as workingCount,
+		write_date as writeDate,
+		delete_status as deleteStatus,
+		admin_approval as adminApproval,
+		write_date as writeDate,
+		delete_status as deleteStatus,
+		admin_approval as adminApproval,
+		(select c_name from category where c_no in main_category) as mCatName,
+		(select c_name from category where c_no in sub_category) as sCatName,
+		brand_name as brandName
+		from service,category,member
+		where (service.m_id=member.m_id) and 
+		main_category in c_no 
+		<if test="value ==null">
+			order by s_no desc
+		</if>
+		<if test="value !=null">
+			and s_no=#{_parameter}
+		</if>
 	</select>
+
 	<!-- (영재) 프리랜서마이페이지 정보수정 -->
 	<update id="updateFreelancer" parameterType="m">
 		update member set
