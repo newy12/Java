@@ -141,8 +141,32 @@
     		var freeId = $("input[type=radio]:checked").prev().prev().val();
     		var sNo = $("input[type=radio]:checked").prev().val();
     		var userId = $("#userId").val();
-    		console.log(freeId+"/"+sNo+"/"+userId);
-    		//window.close();
+    		var mGrade=${loginMember.MGrade};
+    		console.log(freeId+"/"+sNo+"/"+userId+"/"+mGrade);
+    		
+    		$.ajax({
+				url : "/makeRoom.do",
+				type : "post",
+				async : false,
+				data : {
+					sNo : sNo,
+					userId : userId,
+					freeId : freeId,
+					mNo : -1,
+					mGrade:mGrade
+				},
+				success : function(data) {
+					var loc="/enterRoom.do?cNo=-1&sNo=" + sNo + "&myId="+ userId + "&yourId=" + freeId+"&mGrade="+mGrade
+					var _left = Math.ceil(( window.screen.width - 473 )/2);
+					window.open(loc, '', 'width=530, height=630, left='+_left+', top=50, location=no,scrollbars=no,location=no, resizable=no'); 
+					window.close();
+					
+				},
+				error : function() {
+
+				}
+			});
+  
     	});
     </script>
 </body>

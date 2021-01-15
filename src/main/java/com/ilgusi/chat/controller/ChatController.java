@@ -268,39 +268,46 @@ public class ChatController {
 
 			}
 		} else { // mGrade값을 주면
-			if (mGrade.equals("1")) { ////////////////////////////////////////////////// 일반회원이 문의를시작할떄
-				// 문의하려는 서비스정보 가져오기
-				ArrayList<ServiceInfo> serviceList = service.selectService(sNo);
-				ServiceInfo oneService = serviceList.get(0);
 
-				// 채팅방 정보
-				HashMap<String, Object> room = new HashMap<String, Object>();
-				room.put("sNo", sNo);
-				room.put("userId", myId);
-				room.put("freeId", yourId);
+			
+			// 문의하려는 서비스정보 가져오기
+			ArrayList<ServiceInfo> serviceList = service.selectService(sNo);
+			ServiceInfo oneService = serviceList.get(0);
+			
+			// 채팅방 정보
+			HashMap<String, Object> room = new HashMap<String, Object>();
+			room.put("sNo", sNo);
+			room.put("userId", myId);
+			room.put("freeId", yourId);
 
-				// 만든 방 가져오기
-				Chat oneRoom = service.selectOneRoom(room);
-				int rNo = oneRoom.getCNo();
-
+			// 만든 방 가져오기
+			Chat oneRoom = service.selectOneRoom(room);
+			int rNo = oneRoom.getCNo();
+			
+			if (mGrade.equals("1")) { 
 				// 상대가 보낸 메세지 읽음으로 update
 				HashMap<String, Object> roomAndId = new HashMap<String, Object>();
 				roomAndId.put("mId", yourId);
 				roomAndId.put("rNo", rNo);
 				service.updateReadStatus(roomAndId);
 
-				// 채팅방 번호로 채팅내용 불러오기
-				ArrayList<ChatContent> content = service.chatContentList(rNo);
-
-				model.addAttribute("content", content);
-				model.addAttribute("service", oneService);
-				model.addAttribute("userId", myId);
-				model.addAttribute("freeId", yourId);
-				model.addAttribute("cNo", rNo);
-
 			} else if (mGrade.equals("2")) {///////////////////////////////////////// 프리랜서가 의뢰글보고 채팅시작할때
+				// 상대가 보낸 메세지 읽음으로 update
+				HashMap<String, Object> roomAndId = new HashMap<String, Object>();
+				roomAndId.put("mId", myId);
+				roomAndId.put("rNo", rNo);
+				service.updateReadStatus(roomAndId);
 
 			}
+			
+			// 채팅방 번호로 채팅내용 불러오기
+			ArrayList<ChatContent> content = service.chatContentList(rNo);
+
+			model.addAttribute("content", content);
+			model.addAttribute("service", oneService);
+			model.addAttribute("userId", myId);
+			model.addAttribute("freeId", yourId);
+			model.addAttribute("cNo", rNo);
 
 		}
 		return "chat/chatContent";
