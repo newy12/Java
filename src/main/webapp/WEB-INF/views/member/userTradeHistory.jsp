@@ -259,7 +259,7 @@
 	                        	<a href="javascript:void(0)" onclick="trade_open(this)">${t.TNo }</a>
 	                        </div>
 	                        <div style="color: rgb(51, 51, 51);font-size: 15px;margin-top: 20px;">거래 금액</div>
-	                        <div style="color: rgb(255, 143, 63);font-size: 20px;margin-top: 5px;font-weight: bold;" class="price">${t.TPrice }</div>
+	                        <div style="color: rgb(255, 143, 63);font-size: 20px;margin-top: 5px;font-weight: bold;">${t.TPriceTxt }</div>
 	                    </div>
 	                    <div>
 	                        <div>
@@ -332,25 +332,6 @@
 		$(document).ready(function(){
 			var containerHeight = $(".container-box").height();
 			$(".page-wrap").height(containerHeight+400);
-			
-			//가격을 천 단위로 , 넣음
-			var price = $(".price");
-			for(var i=0; i<price.length; i++){
-				var priceTxt = price.eq(i).html();
-				if(priceTxt.length > 3 && priceTxt.length < 7){
-					var result1 = priceTxt.substring(0,(priceTxt.length-3));
-					var result2 = priceTxt.substring((priceTxt.length-3));
-					$(".price").eq(i).html(result1+","+result2+"원");
-				}else if(priceTxt.length > 6){
-					var result1 = priceTxt.substring(0,(priceTxt.length-6));
-					var result2 = priceTxt.substring((priceTxt.length-6), (priceTxt.length-3));
-					var result3 = priceTxt.substring(priceTxt.length-3);
-					$(".price").eq(i).html(result1+","+result2+","+result3+"원");
-				}else{
-					$(".price").eq(i).html(priceTxt+"원");
-				}
-			}
-			
 		});
 
 		

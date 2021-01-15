@@ -1,5 +1,6 @@
 package com.ilgusi.service.controller;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,13 @@ public class ServiceTradeController {
 		ArrayList<ServiceTrade> tradeList = service.selectTradeList(mNo); //거래내역 불러옴
 		ArrayList<Service> serviceList = service.selectServiceList(mNo);  //거래에 해당하는 서비스 불러옴
 		ArrayList<String> payDate = service.selectPayDateList(mNo);       //결제 날짜 불러옴
+		
+		//천원단위로 수정
+		DecimalFormat df = new DecimalFormat("###,###");
+		for(int i=0; i<tradeList.size();i++) {
+			tradeList.get(i).setTPriceTxt(df.format(tradeList.get(i).getTPrice())+"원");
+		}
+		
 		model.addAttribute("tradeList", tradeList);
 		model.addAttribute("serviceList",serviceList);
 		model.addAttribute("payDate",payDate);
@@ -37,6 +45,11 @@ public class ServiceTradeController {
 		if(trade!= null) {
 			Service s = service.selectOneService(trade.getSNo());
 			if(s!=null) {
+				
+				//천원단위로 수정
+				DecimalFormat df = new DecimalFormat("###,###");
+				trade.setTPriceTxt(df.format(trade.getTPrice())+"원");
+				
 				model.addAttribute("trade", trade);
 				model.addAttribute("service",s);
 			}
