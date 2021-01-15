@@ -9,9 +9,11 @@ import org.springframework.stereotype.Service;
 
 import com.ilgusi.category.model.vo.Category;
 import com.ilgusi.member.model.vo.Member;
+import com.ilgusi.notice.model.vo.NoticePageData;
 import com.ilgusi.service.model.dao.ServiceDao;
 import com.ilgusi.service.model.vo.Join;
 import com.ilgusi.service.model.vo.ServiceFile;
+import com.ilgusi.service.model.vo.ServicePageData;
 import com.ilgusi.service.model.vo.ServiceReview;
 
 @Service
@@ -133,17 +135,73 @@ public class ServiceService {
 			return dao.categoryList(cNo);
 		}
 
-		//(다솜) 서비스 리스트 불러오기
-		public ArrayList<com.ilgusi.service.model.vo.Service> selectServiceList(HashMap<String, Integer> map) {
-			return dao.selectServiceList(map);
+		/*
+		 * //(다솜) 서비스 리스트 불러오기 public ArrayList<com.ilgusi.service.model.vo.Service>
+		 * selectServiceList(HashMap<String, Integer> map) {
+		 * ArrayList<com.ilgusi.service.model.vo.Service>list =
+		 * dao.selectServiceList(map); return list; }
+		 */
+		
+		//(다솜)서비스 리스트 
+		public ServicePageData servicePageList(HashMap<String, Integer> map) {
+			ArrayList<com.ilgusi.service.model.vo.Service>list = dao.selectServiceList(map);
+			
+			int numPerPage = 16;
+			int totalCount = dao.serviceTotalCount(map);
+			
+			int totalPage = 0;
+			if(totalCount%numPerPage == 0 ) {
+				totalPage = totalCount/numPerPage;
+			}else {
+				totalPage = totalCount/numPerPage+1;
+			}
+			
+			int reqPage = map.get("reqPage");
+			
+			//페이지 네비 길이
+			int pageNaviSize = 5;
+			int pageNo = ((reqPage-1)/pageNaviSize)*pageNaviSize +1; //페이지 네비가 시작하는 페이지 번호
+			
+			//페이지 네비 작성
+			String pageNavi = "<ul class='pagination justify-content-center'>";
+			
+			int cNo = map.get("cNo");
+			
+			//이전버튼 생성
+			if(pageNo != 1) {
+				pageNavi += "<li class='page=item'><a class='pageNavi page-link' href='/serviceList.do?cNo="+cNo+"&reqPage="+(pageNo-1)+"'> pre </a></li>";
+			}
+			for(int i=0; i<pageNaviSize; i++) {
+				if(pageNo != reqPage) {
+					pageNavi += "<li class='page=item'><a class='pageNavi page-link' href='/serviceList.do?cNo="+cNo+"&reqPage="+(pageNo)+"'>"+pageNo+"</a></li>";
+				}else {
+					pageNavi += "<li class='page=item'><span class='selectedPage pageNavi page-link'>"+pageNo+"</span></li>";
+				}
+				pageNo++;
+				
+				if(pageNo > totalPage) {
+					break;
+				}
+			}
+			
+			//다음 버튼 
+			if(pageNo <= totalPage) {
+				pageNavi += "<li class='page=item'><a href='/serviceList.do?cNo="+cNo+"&reqPage="+pageNo+"'> next </a></li>";
+			}
+			
+			pageNavi += "</ul>";
+			
+			ServicePageData spd = new ServicePageData(list,pageNavi);
+			
+			return spd;
 		}
+		
+		
 		//(다솜) 브랜드 이름 불러오기
 		public ArrayList<String> brandList(com.ilgusi.service.model.vo.Service s) {
 			return dao.brandList(s);
 		}
-
 		
-
 
 		public List<ServiceReview> reviewListSize(String mId) {
 			return dao.reviewListSize(mId);
@@ -152,6 +210,10 @@ public class ServiceService {
 		public List<com.ilgusi.service.model.vo.Service> sRateAVG(String mId) {
 			return dao.sRateAVG(mId);
 		}
+
+		
+
+		
 
 		
 

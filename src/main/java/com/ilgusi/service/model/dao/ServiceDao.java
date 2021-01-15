@@ -119,6 +119,11 @@ public class ServiceDao {
 		System.out.println("dao_main : " + map.get("main"));
 		return (ArrayList<com.ilgusi.service.model.vo.Service>) list;
 	}
+	//(다솜)서비스 데이터 카운트
+	public int serviceTotalCount() {
+		// TODO Auto-generated method stub
+		return session.selectOne("service.selectServiceTotalCount");
+	}
 	
 
 
@@ -135,6 +140,7 @@ public class ServiceDao {
 		List<com.ilgusi.service.model.vo.Service> list = session.selectList("service.sRateAVG",mId);
 		return list;
 	}
+
 	
 	
 
