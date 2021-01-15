@@ -120,7 +120,7 @@ public class ServiceDao {
 		return (ArrayList<com.ilgusi.service.model.vo.Service>) list;
 	}
 	//(다솜)서비스 데이터 카운트
-	public int serviceTotalCount() {
+	public int serviceTotalCount(HashMap<String, Integer> map) {
 		// TODO Auto-generated method stub
 		return session.selectOne("service.selectServiceTotalCount");
 	}

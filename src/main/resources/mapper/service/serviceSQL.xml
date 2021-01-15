@@ -233,10 +233,15 @@
 		</if>
 	</select>
 
-	<select id="selectServiceTotalCount" resultType="_int">
+	<select id="selectServiceTotalCount" parameterType="map" resultType="_int">
 		select
-		count(*) cnt
-		from service
+			count(*) cnt
+		from service where delete_status = 'n'
+		and main_category = #{main}
+		<if test="sub != null and sub != 0">
+			and sub_category= #{sub}
+		</if>
+		
 	</select>
 
 </mapper>

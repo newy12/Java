@@ -144,10 +144,13 @@ public class ServiceService {
 		
 		//(다솜)서비스 리스트 
 		public ServicePageData servicePageList(HashMap<String, Integer> map) {
+			
 			ArrayList<com.ilgusi.service.model.vo.Service>list = dao.selectServiceList(map);
 			
 			int numPerPage = 16;
 			int totalCount = dao.serviceTotalCount(map);
+			
+			System.out.println("totalCount : " + totalCount);
 			
 			int totalPage = 0;
 			if(totalCount%numPerPage == 0 ) {

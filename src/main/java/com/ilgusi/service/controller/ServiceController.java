@@ -252,9 +252,11 @@ public class ServiceController {
 		System.out.println("catList(1)값 : " + catList.get(1));
 		
 		//서비스 리스트 불러오기			
-		ArrayList<Service> serList = service.selectServiceList(map);
+		
+		
 		//서비스 리스트 불러오기+페이징 
 		ServicePageData spd = service.servicePageList(map);
+		ArrayList<Service> serList = spd.getList();
 		
 		//맵 확인용 ArrayList 
 		ArrayList<HashMap<String, Integer>> mapList = new ArrayList<HashMap<String,Integer>>();
