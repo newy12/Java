@@ -16,6 +16,7 @@ import com.ilgusi.member.model.service.AdminService;
 import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.question.model.vo.Question;
 import com.ilgusi.service.model.vo.Service;
+import com.ilgusi.service.model.vo.ServiceInfo;
 import com.ilgusi.service.model.vo.TradeHistory;
 
 @Controller
@@ -57,7 +58,7 @@ public class AdminController {
 	// (소현)전체서비스조회
 	@RequestMapping("/manageService.do")
 	public String selectAllService(Model model) {
-		ArrayList<Service> serviceList = service.selectAllService();
+		ArrayList<ServiceInfo> serviceList = service.selectAllService();
 
 		// 전체회원리스트
 		ArrayList<Member> memberList = service.selectAllMember();
@@ -88,16 +89,9 @@ public class AdminController {
 	// (소현)서비스거절창에 서비스정보보내기
 	@RequestMapping("/rejectFrm.do")
 	public String rejectFrm(Model model, int sNo) {
-		ArrayList<Service> serviceList = service.selectService(sNo);
-		Service oneService = serviceList.get(0);
+		ArrayList<ServiceInfo> serviceList = service.selectService(sNo);
+		ServiceInfo oneService = serviceList.get(0);
 		String freeId = oneService.getMId();
-
-		/*
-		 * ArrayList<Member> memberList = service.selectAllMember(); int mNo = 0; for
-		 * (int i = 0; i < memberList.size(); i++) { Member oneMember =
-		 * memberList.get(i); if (freeId == oneMember.getMId()) { mNo =
-		 * oneMember.getMNo(); } }
-		 */
 
 		Member oneUser = service.selectOneMember(freeId);
 		int mNo = oneUser.getMNo();

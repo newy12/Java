@@ -93,4 +93,10 @@
 		user_id=#{_parameter} and freelancer_id='admin' and s_no=0) order by
 		cc_no desc
 	</select>
+	
+	<!-- (소현)상대가 보낸 메세지 읽음으로 변경 -->
+	<update id="updateReadStatus" parameterType="map">
+		update chat_content set read_status=0 where c_no=#{rNo} and m_id=#{mId}
+	</update>
+	
 </mapper>

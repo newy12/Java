@@ -12,6 +12,7 @@ import com.ilgusi.chat.model.vo.ChatContent;
 import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.question.model.vo.Question;
 import com.ilgusi.service.model.vo.Service;
+import com.ilgusi.service.model.vo.ServiceInfo;
 import com.ilgusi.service.model.vo.TradeHistory;
 import com.ilgusi.service.model.vo.ServiceTrade;
 
@@ -33,9 +34,9 @@ public class AdminDao {
 	}
 
 	// (소현)관리자-전체서비스불러오기
-	public ArrayList<Service> selectAllService() {
-		List<Service> list = session.selectList("service.selectService");
-		return (ArrayList<Service>) list;
+	public ArrayList<ServiceInfo> selectAllService() {
+		List<ServiceInfo> list = session.selectList("service.selectServiceInfo");
+		return (ArrayList<ServiceInfo>) list;
 	}
 
 	// (소현)서비스 승인
@@ -44,9 +45,9 @@ public class AdminDao {
 	}
 
 	// (소현)관리자-서비스거절창에 서비스정보보내기
-	public ArrayList<Service> selectService(int sNo) {
-		List<Service> list = session.selectList("service.selectService", sNo);
-		return (ArrayList<Service>) list;
+	public ArrayList<ServiceInfo> selectService(int sNo) {
+		List<ServiceInfo> list = session.selectList("service.selectServiceInfo", sNo);
+		return (ArrayList<ServiceInfo>) list;
 	}
 
 	// (소현)서비스 등록 거절

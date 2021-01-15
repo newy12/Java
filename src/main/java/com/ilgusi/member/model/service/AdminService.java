@@ -31,7 +31,7 @@ public class AdminService {
 	}
 
 	// (소현)관리자-전체서비스불러오기
-	public ArrayList<com.ilgusi.service.model.vo.Service> selectAllService() {
+	public ArrayList<com.ilgusi.service.model.vo.ServiceInfo> selectAllService() {
 		return dao.selectAllService();
 	}
 
@@ -41,7 +41,7 @@ public class AdminService {
 	}
 
 	// (소현)관리자-서비스거절창에 서비스정보보내기
-	public ArrayList<com.ilgusi.service.model.vo.Service> selectService(int sNo) {
+	public ArrayList<com.ilgusi.service.model.vo.ServiceInfo> selectService(int sNo) {
 		return dao.selectService(sNo);
 	}
 
