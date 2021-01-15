@@ -1,6 +1,7 @@
 package com.ilgusi.service.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -100,14 +101,25 @@ public class ServiceDao {
 		return (ArrayList<Category>)list;
 	}
 	//(다솜)서비스 리스트 - 서비스 불러오기
-	public ArrayList<com.ilgusi.service.model.vo.Service> serviceList(com.ilgusi.service.model.vo.Service s) {
-		List<com.ilgusi.service.model.vo.Service> list = session.selectList("service.serviceList",s);
-		return (ArrayList<com.ilgusi.service.model.vo.Service>)list;
-	}
+	/*
+	 * public ArrayList<com.ilgusi.service.model.vo.Service>
+	 * serviceList(com.ilgusi.service.model.vo.Service s) {
+	 * List<com.ilgusi.service.model.vo.Service> list =
+	 * session.selectList("service.serviceList",s); return
+	 * (ArrayList<com.ilgusi.service.model.vo.Service>)list; }
+	 */
 	public ArrayList<String> brandList(com.ilgusi.service.model.vo.Service s) {
 		List<String> list = session.selectList("service.brandList",s);
 		return (ArrayList<String>) list;
 	}
+	//(다솜)서비스 리스트 페이징
+	public ArrayList<com.ilgusi.service.model.vo.Service> selectServiceList(HashMap<String, Integer> map) {
+		System.out.println("dao들어옴");
+		List<com.ilgusi.service.model.vo.Service> list = session.selectList("service.serviceListPage",map);
+		System.out.println("dao_main : " + map.get("main"));
+		return (ArrayList<com.ilgusi.service.model.vo.Service>) list;
+	}
+	
 
 
 	/*
@@ -115,13 +127,15 @@ public class ServiceDao {
 	 * session.selectList("") return null; }
 	 */
 	//(영재)review총 갯수 구하기
-	public List<ServiceReview> reviewListSize() {
-		List<ServiceReview> list = session.selectList("service.reviewListSize");
+	public List<ServiceReview> reviewListSize(String mId) {
+		List<ServiceReview> list = session.selectList("service.reviewListSize",mId);
 		return list;
 	}
-	public List<com.ilgusi.service.model.vo.Service> sRateAVG() {
-		List<com.ilgusi.service.model.vo.Service> list = session.selectList("service.sRateAVG");
+	public List<com.ilgusi.service.model.vo.Service> sRateAVG(String mId) {
+		List<com.ilgusi.service.model.vo.Service> list = session.selectList("service.sRateAVG",mId);
 		return list;
 	}
+	
+	
 
 }

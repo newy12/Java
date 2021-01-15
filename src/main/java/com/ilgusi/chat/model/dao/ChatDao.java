@@ -74,12 +74,18 @@ public class ChatDao {
 	}
 
 	// (소현)serviceTrade에 insert
-	public void startTrade(HashMap<String, Object> tradeInfo) {	
-		session.insert("trade.insertTrade",tradeInfo);
+	public void startTrade(HashMap<String, Object> tradeInfo) {
+		session.insert("trade.insertTrade", tradeInfo);
 	}
 
+	// (소현)service working_conut 1증가
 	public void updateWorkingCount(int sNo) {
-		session.update("service.updateCount",sNo);
+		session.update("service.updateCount", sNo);
+	}
+
+	// (소현)일반회원-프리랜서 전환
+	public void switchAccount(HashMap<String, Object> map) {
+		session.update("member.switchAccount",map);
 	}
 
 }

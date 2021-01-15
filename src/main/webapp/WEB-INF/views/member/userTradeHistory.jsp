@@ -346,6 +346,8 @@
 					var result2 = priceTxt.substring((priceTxt.length-6), (priceTxt.length-3));
 					var result3 = priceTxt.substring(priceTxt.length-3);
 					$(".price").eq(i).html(result1+","+result2+","+result3+"원");
+				}else{
+					$(".price").eq(i).html(priceTxt+"원");
 				}
 			}
 			

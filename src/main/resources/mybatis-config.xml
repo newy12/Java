@@ -4,6 +4,8 @@
 <settings>
 		<!-- null 값이 발생하는 경우 빈칸이 아닌 null로 처리 -->
 		<setting name="jdbcTypeForNull" value="NULL" />
+		<setting name="callSettersOnNulls" value="true"/>
+		
 	</settings>
 	<typeAliases>
 		<typeAlias type="com.ilgusi.member.model.vo.Member" alias="m" />
