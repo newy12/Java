@@ -149,6 +149,21 @@
 		warning_count = warning_count+1
 		where m_no = #{_parameter}
 	</update>
+	
+	<!-- (소현)sNo,mNo로 거래내역 불러오기 -->
+	<select id="tradeList" parameterType="map" resultType="trade">
+		select
+		t_no as tNo,
+		s_no as sNo,
+		m_no as mNo,
+		t_status as tStatus,
+		t_price as tPrice,
+		start_date as startDate,
+		end_date as endDate
+		from
+		service_trade where s_no=#{sNo} and m_no=#{mNo} order by t_No desc
+		
+	</select>
 
 
 </mapper>

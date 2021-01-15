@@ -21,6 +21,7 @@ import com.ilgusi.service.model.service.ServiceService;
 import com.ilgusi.service.model.vo.Join;
 import com.ilgusi.service.model.vo.Service;
 import com.ilgusi.service.model.vo.ServiceFile;
+import com.ilgusi.service.model.vo.ServicePageData;
 import com.ilgusi.service.model.vo.ServiceReview;
 
 import common.FileNameOverlap;
@@ -213,7 +214,7 @@ public class ServiceController {
 	@RequestMapping("/serviceList.do")
 	public String serviceList (int cNo, int reqPage, Model model) { 
 		
-		int numPerPage = 12;
+		int numPerPage = 16;
 		int end = reqPage * numPerPage;
 		int start = end-numPerPage+1;
 		
@@ -238,6 +239,8 @@ public class ServiceController {
 		map.put("main", maincateNum);
 		map.put("start", start);
 		map.put("end", end);
+		map.put("reqPage", reqPage);
+		map.put("cNo",cNo);
 		
 		s.setMainCategory(maincateNum);
 		s.setSubCategory(subNo);
@@ -249,7 +252,11 @@ public class ServiceController {
 		System.out.println("catList(1)값 : " + catList.get(1));
 		
 		//서비스 리스트 불러오기			
-		ArrayList<Service> serList = service.selectServiceList(map);
+		
+		
+		//서비스 리스트 불러오기+페이징 
+		ServicePageData spd = service.servicePageList(map);
+		ArrayList<Service> serList = spd.getList();
 		
 		//맵 확인용 ArrayList 
 		ArrayList<HashMap<String, Integer>> mapList = new ArrayList<HashMap<String,Integer>>();
@@ -261,11 +268,12 @@ public class ServiceController {
 
 		if(serList.size() > 0 ) {
 			System.out.println("serList 사이즈 : " + serList.size());
-			model.addAttribute("serviceList", serList);
+			model.addAttribute("serviceList", spd.getList());
 		}else {
 			System.out.println("serList 사이즈 : "+ serList.size());
 			model.addAttribute("noServiceList", "noServiceList");
 		}
+		
 		
 		ArrayList<String> brandName = service.brandList(s);
 		switch(maincateNum) {
@@ -284,9 +292,10 @@ public class ServiceController {
 			case 70: model.addAttribute("mainCate", "주문제작");
 				break;
 		}
-		
+	
 		model.addAttribute("catList",catList);
 		model.addAttribute("brandName", brandName);
+		model.addAttribute("pageNavi", spd.getPageNavi());
 		
 		return "/service/serviceList";
 	}
