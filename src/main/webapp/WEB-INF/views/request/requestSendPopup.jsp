@@ -82,6 +82,12 @@
         width: 20px;
         height: 20px;
     }
+	.noList{
+	    margin-top: 5px;
+	    text-align: center;
+	   	color :rgb(224, 224, 224);
+	   	font-weight: bold; 
+	}
 </style>
 <body>
 	<div class="wrap">
@@ -92,6 +98,10 @@
                 <td class="table-top">선택</td>
                 <td class="table-top">서비스 내용</td>
             </tr>
+            <c:if test="${list.size() == 0 }">
+            	<tr><td colspan="3" class="noList">등록하신 서비스가 없습니다.</td></tr>
+            </c:if>
+            <c:if test="${list.size() != 0 }">
             <c:forEach items="${list }" var="s" varStatus="status">
 				<tr>
 	                <td style="text-align: center">${status.count }</td>
@@ -111,18 +121,52 @@
 	                </td>
 	            </tr>
             </c:forEach>
+            </c:if>
         </table>
         <br>
         <input type="hidden" value="${userId }" id="userId">
-        <div><button class="send-btn">의뢰인에게 메시지 보내기</button></div>
+        <div>
+        	<c:if test="${list.size() == 0 }">
+        		<button class="send-btn cancel" onclick="window.close();">닫기</button>
+        	</c:if>
+        	<c:if test="${list.size() != 0 }">
+        		<button class="send-btn send">의뢰인에게 메시지 보내기</button>
+        	</c:if>
+        </div>
     </div>
     
     <script>
-    	$(".send-btn").click(function(){
+    	//소현언니~~~~~~~^__^
+    	$(".send").click(function(){
     		var freeId = $("input[type=radio]:checked").prev().prev().val();
     		var sNo = $("input[type=radio]:checked").prev().val();
     		var userId = $("#userId").val();
-    		console.log(freeId+"/"+sNo+"/"+userId);
+    		var mGrade=${loginMember.MGrade};
+    		console.log(freeId+"/"+sNo+"/"+userId+"/"+mGrade);
+    		
+    		$.ajax({
+				url : "/makeRoom.do",
+				type : "post",
+				async : false,
+				data : {
+					sNo : sNo,
+					userId : userId,
+					freeId : freeId,
+					mNo : -1,
+					mGrade:mGrade
+				},
+				success : function(data) {
+					var loc="/enterRoom.do?cNo=-1&sNo=" + sNo + "&myId="+ userId + "&yourId=" + freeId+"&mGrade="+mGrade
+					var _left = Math.ceil(( window.screen.width - 473 )/2);
+					window.open(loc, '', 'width=530, height=630, left='+_left+', top=50, location=no,scrollbars=no,location=no, resizable=no'); 
+					window.close();
+					
+				},
+				error : function() {
+
+				}
+			});
+  
     	});
     </script>
 </body>

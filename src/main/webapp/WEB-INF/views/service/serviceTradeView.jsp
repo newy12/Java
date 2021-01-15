@@ -90,7 +90,7 @@
 		</div>
 		<div class="sub-title">서비스 가격</div>
 		<div class="text-box">
-			<div id="price">${trade.TPrice }</div>
+			<div id="price">${trade.TPriceTxt }</div>
 		</div>
 		<div class="sub-title">작업 시작 날짜</div>
 		<div class="text-box">
@@ -107,23 +107,6 @@
 	</div>
 	
 	<script>
-		//가격을 천원 단위로 쉽표 찍어줌
-		document.addEventListener('DOMContentLoaded', function() {
-			var price = $("#price").html();
-			if(price.length > 3 && price.length < 7){
-				var result1 = price.substring(0,(price.length-3));
-				var result2 = price.substring((price.length-3));
-				$("#price").html(result1+","+result2+"원");
-			}else if(price.length > 6){
-				var result1 = price.substring(0,(price.length-6));
-				var result2 = price.substring((price.length-6), (price.length-3));
-				var result3 = price.substring(price.length-3);
-				$("#price").html(result1+","+result2+","+result3+"원");
-			}else{
-				$("#price").html(price+"원");
-			}
-		});
-	
 		$("#close_btn").click(function(){
 			window.close();
 	    });
