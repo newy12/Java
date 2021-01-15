@@ -30,6 +30,7 @@
     <title>Insert title here</title>
 
     <style>
+        
         .dh-header-container {
             width: 100%;
             border-bottom: 1px solid gray;
@@ -154,8 +155,26 @@
         }
 
         .header-menu span:hover {
-            text-decoration: underline;
             cursor: pointer;
+        }
+        .btn-deepblue{
+            outline: none;
+            background-color: #314C83;
+            border: none;
+            color: white;
+            border-radius: 5px;
+        }
+        #join-btn{
+            display: inline-block;
+            width: 110px;
+            height: 35px;
+            line-height: 35px;
+            margin-left: 20px;
+            text-decoration: none;
+        }
+        #join-btn:hover{
+            color: lightgray;
+            background-color: #15377c;
         }
     </style>
 </head>
@@ -330,7 +349,7 @@
                     <span>고객센터</span>
                     <c:if test="${empty loginMember}">
                         <span id="login">로그인</span>
-                        <a href="/join.do"><span>무료회원가입</span></a>
+                        <a href="/join.do" id="join-btn"class="btn-deepblue"><span>무료 회원가입</span></a>
                     </c:if>
                     <c:if test="${not empty loginMember}">
                         <span>${loginMember.MName}</span>

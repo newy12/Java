@@ -48,4 +48,7 @@ public class QuestionService {
 	public int updateAnswer(Question q) {
 		return dao.updateAnswer(q);
 	}
+	public int updateQuestion(Question q) {
+		return dao.updateQuestion(q);
+	}
 }

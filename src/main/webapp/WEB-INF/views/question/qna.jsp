@@ -154,7 +154,7 @@
                                 <td>
                                     <a href="/questionView.do?qNo=${qList.QNo}">${qList.QTitle}</a>
                                     <c:if test="${qList.answerStatus == 0}">
-                                        <a href="questionFrm.do?qNo=${qList.QNo}" class="btn-answer">답변</a>
+                                        <a href="questionFrm.do?answerNo=${qList.QNo}" class="btn-answer">답변</a>
                                     </c:if>
                                     <c:if test="${qList.secretStatus == 1}">
                                         <span>&#128274;</span>
