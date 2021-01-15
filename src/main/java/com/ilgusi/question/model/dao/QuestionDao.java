@@ -53,4 +53,7 @@ public class QuestionDao {
 	public int updateAnswer(Question q) {
 		return session.update("question.updateAnswer",q);
 	}
+	public int updateQuestion(Question q) {
+		return session.update("question.updateQuestion",q);
+	}
 }
