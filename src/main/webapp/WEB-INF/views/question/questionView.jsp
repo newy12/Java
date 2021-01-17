@@ -89,7 +89,7 @@
             <div class="qna-bottom">
                 <div class="submit">
                     <c:if test="${question.MNo == loginMember.MNo}">
-                        <a href="/qna.do">수정하기</a>
+                        <a href="/questionFrm.do?q_No=${question.QNo}" class="btn-deepblue">수정하기</a>
                     </c:if>
                     <a href="/qna.do">목록으로</a>
                 </div>
