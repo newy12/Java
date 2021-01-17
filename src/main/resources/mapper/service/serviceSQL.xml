@@ -11,7 +11,8 @@
 		m_email as mEmail,
 		introduce as introduce,
 		brand_Name as brandName,
-		contact_time as contactTime
+		contact_time as
+		contactTime
 		from
 		member
 		where m_id =#{mId}
@@ -20,24 +21,30 @@
 	<select id="selectTotalCount" resultType="_int">
 		select
 		count(*) cnt
-		from service_review
+		from
+		service_review
 	</select>
 
 	<!-- (영재)소개글 중 리뷰 리스트 불러오기 쿼리 -->
 	<select id="selectListReview" parameterType="j"
 		resultType="review">
 		select * from (select rownum rnum, s.*
-		from (select r_no as rNo,
+		from (select r_no as
+		rNo,
 		t_no as tNo,
 		service_review.s_no as sNo,
 		m_id as mId,
-		r_content as rContent,
+		r_content as
+		rContent,
 		r_rate as rRate,
 		write_date as writeDate
-		from (select s_no from service where service.m_id = #{mId}) temp,
+		from (select s_no from
+		service where service.m_id = #{mId}) temp,
 		service_review
-		where service_review.s_no = temp.s_no) s)
-		where rnum BETWEEN #{mainCategory} and #{subCategory}
+		where
+		service_review.s_no = temp.s_no) s)
+		where rnum BETWEEN #{mainCategory}
+		and #{subCategory}
 
 	</select>
 	<!--(영재) 서비스 전체 출력 리스트 -->
@@ -47,11 +54,13 @@
 		s_no as sNo,
 		m_id as mId,
 		s_title as sTitle,
-		s_price as sPrice,
+		s_price as
+		sPrice,
 		s_content as sContent,
 		s_area as sArea,
 		s_img as sImg,
-		s_rate as sRate,
+		s_rate as
+		sRate,
 		working_date as workingDate,
 		working_count as workingCount,
 		write_date as writeDate
@@ -65,13 +74,15 @@
 		s_no as sNo,
 		m_id as mId,
 		s_title as sTitle,
-		s_price as sPrice,
+		s_price as
+		sPrice,
 		s_content as sContent,
 		s_area as sArea,
 		s_img as sImg,
 		working_date as workingDate,
 		working_count as workingCount,
-		write_date as writeDate
+		write_date
+		as writeDate
 		from service
 		where m_id = #{mId}
 	</select>
@@ -81,41 +92,21 @@
 		values
 		(service_seq.nextval,#{mId},#{sTitle},#{sPrice},#{sContent},#{sArea},#{sImg},#{sRate},#{mainCategory},#{subCategory},#{workingDate},0,to_char(sysdate,'yyyy-mm-dd'),'n','n')
 	</insert>
-	
-	<!-- (소현)서비스불러오기,동적쿼리-sNo로 service 불러오기 -->
-<!-- 	<select id="selectService" parameterType="_int" resultType="s">
-		select
-		s_no as sNo,
-		m_id as mId,
-		s_title as sTitle,
-		s_price as sPrice,
-		s_content as sContent,
-		s_area as sArea,
-		s_img as sImg,
-		s_rate as sRate,
-		main_category as mainCategory,
-		sub_category as subCategory,
-		working_date as workingDate,
-		working_count as workingCount,
-		write_date
-		as writeDate,
-		delete_status as deleteStatus,
-		admin_approval as adminApproval,
-		write_date as writeDate,
-		delete_status as deleteStatus,
-		admin_approval as adminApproval
 
-		from service
-		<if test="value ==null">
-			order by s_no desc
-		</if>
-		<if test="value !=null">
-			where s_no=#{_parameter}
-		</if>
-	</select> -->
-	
-	 <!-- (소현)서비스+브랜드이름+카테고리이름 불러오기,동적쿼리-sNo로 service 불러오기 --> 
-	<select id="selectServiceInfo" parameterType="_int" resultType="com.ilgusi.service.model.vo.ServiceInfo">
+	<!-- (소현)서비스불러오기,동적쿼리-sNo로 service 불러오기 -->
+	<!-- <select id="selectService" parameterType="_int" resultType="s"> select 
+		s_no as sNo, m_id as mId, s_title as sTitle, s_price as sPrice, s_content 
+		as sContent, s_area as sArea, s_img as sImg, s_rate as sRate, main_category 
+		as mainCategory, sub_category as subCategory, working_date as workingDate, 
+		working_count as workingCount, write_date as writeDate, delete_status as 
+		deleteStatus, admin_approval as adminApproval, write_date as writeDate, delete_status 
+		as deleteStatus, admin_approval as adminApproval from service <if test="value 
+		==null"> order by s_no desc </if> <if test="value !=null"> where s_no=#{_parameter} 
+		</if> </select> -->
+
+	<!-- (소현)서비스+브랜드이름+카테고리이름 불러오기,동적쿼리-sNo로 service 불러오기 -->
+	<select id="selectServiceInfo" parameterType="_int"
+		resultType="com.ilgusi.service.model.vo.ServiceInfo">
 		select
 		service.s_no as sNo,
 		service.m_id as mId,
@@ -126,21 +117,27 @@
 		s_img as sImg,
 		s_rate as sRate,
 		main_category as mainCategory,
-		sub_category as subCategory,
+		sub_category as
+		subCategory,
 		working_date as workingDate,
 		working_count as workingCount,
 		write_date as writeDate,
 		delete_status as deleteStatus,
-		admin_approval as adminApproval,
+		admin_approval
+		as adminApproval,
 		write_date as writeDate,
-		delete_status as deleteStatus,
+		delete_status as
+		deleteStatus,
 		admin_approval as adminApproval,
-		(select c_name from category where c_no in main_category) as mCatName,
-		(select c_name from category where c_no in sub_category) as sCatName,
-		brand_name as brandName
+		(select c_name from
+		category where c_no in main_category) as mCatName,
+		(select c_name from
+		category where c_no in sub_category) as sCatName,
+		brand_name as
+		brandName
 		from service,category,member
-		where (service.m_id=member.m_id) and 
-		main_category in c_no 
+		where (service.m_id=member.m_id)
+		and main_category in c_no
 		<if test="value ==null">
 			order by s_no desc
 		</if>
@@ -203,7 +200,8 @@
 	<update parameterType="_int" id="acceptService">
 		update service set
 		admin_approval='y', write_date=to_char(sysdate,'yyyy-mm-dd')
-		where s_no=#{_parameter}
+		where
+		s_no=#{_parameter}
 	</update>
 
 	<!-- (소현)관리자-서비스 거절 -->
@@ -239,7 +237,8 @@
 	<!--(다솜) 브랜드 이름 불러오기 -->
 	<select id="brandList" parameterType="s" resultType="string">
 		SELECT brand_name FROM member
-		JOIN service USING (m_id) where delete_status = 'n'
+		JOIN service USING (m_id) where
+		delete_status = 'n'
 
 		<if test="mainCategory != 0 ">
 			and main_category = #{mainCategory}
@@ -252,32 +251,145 @@
 
 	<select id="serviceListPage" parameterType="map" resultType="s">
 		select
-			s_no as sNo,
-			m_id as mId,
-			s_title as sTitle,
-			s_price as sPrice,
-			s_img as sImg,
-			main_category as mainCategory,
-			sub_category as subCategory,
-			s_rate as sRate
+		s_no as sNo,
+		m_id as mId,
+		s_title as sTitle,
+		s_price as sPrice,
+		s_img as sImg,
+		main_category as mainCategory,
+		sub_category as
+		subCategory,
+		s_rate as sRate
 		from (select rownum as rnum, n. * from
-		(select*from service order by 1 desc)n)
-		where delete_status = 'n' and rnum between #{start} and #{end}
+		(select*from service
+		order by 1 desc)n)
+		where delete_status = 'n' and
+		rnum between #{start}
+		and #{end}
 		and main_category = #{main}
 		<if test="sub != null and sub != 0">
 			and sub_category= #{sub}
 		</if>
 	</select>
 
-	<select id="selectServiceTotalCount" parameterType="map" resultType="_int">
+	<select id="selectServiceTotalCount" parameterType="map"
+		resultType="_int">
 		select
-			count(*) cnt
+		count(*) cnt
 		from service where delete_status = 'n'
-		and main_category = #{main}
+		and
+		main_category = #{main}
 		<if test="sub != null and sub != 0">
 			and sub_category= #{sub}
 		</if>
-		
+
+	</select>
+
+	<!-- (소현)서비스-페이징 totalCount -->
+	<select id="totalServiceCount" parameterType="map" resultType="_int">
+		select count(*) totalCount from service
+		<choose>
+			<when test='status == "waiting"'>
+				where admin_approval='n' and delete_status='n'
+			</when>
+
+			<when test='status == "approved"'>
+				where admin_approval='y' and delete_status='n'
+			</when>
+
+			<when test='status == "deleted"'>
+				where delete_status='y'
+			</when>
+		</choose>
+
+		<choose>
+			<when test="keyword1 == 'title'">
+				and s_title like '%'||#{keyword2}||'%'
+			</when>
+			<when test="keyword1 == 'id'">
+				and m_id like '%'||#{keyword2}||'%'
+			</when>
+		</choose>
+	</select>
+
+	<!-- (소현)서비스-페이징추가 -->
+	<select id="selectAllServicePaging" parameterType="map"
+		resultType="com.ilgusi.service.model.vo.ServiceInfo">
+		select
+		s_no as sNo,
+		m_id as mId,
+		s_title as sTitle,
+		s_price as sPrice,
+		s_content as sContent,
+		s_area as sArea,
+		s_img as sImg,
+		s_rate as sRate,
+		main_category as mainCategory,
+		sub_category as
+		subCategory,
+		working_date as workingDate,
+		working_count as workingCount,
+		write_date as writeDate,
+		delete_status as deleteStatus,
+		admin_approval
+		as adminApproval,
+		write_date as writeDate,
+		delete_status as
+		deleteStatus,
+		admin_approval as adminApproval,
+		main as mCatName,
+		sub as sCatName,
+		brand_name as brandName
+		from
+		(select rownum as rnum,s.*
+			from 
+				(select service.*,
+				(select c_name from category where c_no in main_category) as main,
+				(select c_name from category where c_no in sub_category) as sub,
+				brand_name
+				from service,category,member 
+				where service.m_id=member.m_id and main_category in c_no
+
+		<choose>
+			<when test='status == "waiting"'>
+				and admin_approval='n' and delete_status='n'
+			</when>
+
+			<when test='status == "approved"'>
+				and admin_approval='y' and delete_status='n'
+			</when>
+
+			<when test='status == "deleted"'>
+				and delete_status='y'
+			</when>
+		</choose>
+
+		<choose>
+			<when test="keyword1 == 'title'">
+				and s_title like '%'||#{keyword2}||'%'
+			</when>
+			<when test="keyword1 == 'free'">
+				and service.m_id like '%'||#{keyword2}||'%'
+			</when>
+		</choose>
+
+		<choose>
+			<when test='order == "working"'>
+				order by working_count desc
+			</when>
+			<when test='order == "old"'>
+				order by s_no 
+			</when>
+			<when test='order == "new"'>
+				order by s_no desc
+			</when>
+			<when test='order == "cate"'>
+				order by c_no
+			</when>
+		</choose>
+		) s) r where rnum between #{start} and #{end}
+
+
 	</select>
 
 </mapper>

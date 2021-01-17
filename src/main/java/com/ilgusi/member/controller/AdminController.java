@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ilgusi.chat.model.vo.ChatContent;
 import com.ilgusi.member.model.service.AdminService;
 import com.ilgusi.member.model.vo.Member;
+import com.ilgusi.member.model.vo.MemberViewData;
 import com.ilgusi.question.model.vo.Question;
 import com.ilgusi.service.model.vo.Service;
 import com.ilgusi.service.model.vo.ServiceInfo;
+import com.ilgusi.service.model.vo.ServiceViewData;
 import com.ilgusi.service.model.vo.TradeHistory;
 
 @Controller
@@ -25,11 +27,74 @@ public class AdminController {
 	@Autowired
 	private AdminService service;
 
-	// (소현)전체회원조회
+	// (소현)전체회원조회-검색,정렬,페이징
 	@RequestMapping("/manageMember.do")
-	public String manageMember(Model model) {
-		// 전체회원리스트
-		ArrayList<Member> memberList = service.selectAllMember();
+	public String manageMember(Model model, int reqPage, String grade, String keyword, String order) {
+		// 조건
+		// keyword는 id/brandname검색,order는 이용횟수 내림차순, 신고 내림차순
+
+		// request 페이징 코드 참고
+		// 1. 한 페이지에 보여줄 리스트 개수
+		int numPerPage = 13;
+
+		// 2. 쿼리에서 시작-끝 번호로 리스트결과 가져옴
+		int end = reqPage * numPerPage;
+		int start = (end - numPerPage) + 1;
+		MemberViewData mvd = new MemberViewData(grade, keyword, order, start, end);
+
+		// 조건에 맞는 회원리스트
+		ArrayList<Member> memberList = service.selectMemberListPaging(start, end, mvd);
+
+		// 3. 의뢰글 총 몇개?
+		int totalCount = service.totalMemberCount(grade, keyword);
+
+		// 4. 페이지가 총 몇 개?
+		int totalPage = 0;
+		if (totalCount % numPerPage == 0) {
+			totalPage = totalCount / numPerPage;
+		} else {
+			totalPage = totalCount / numPerPage + 1;
+		}
+
+		// 5. 페이지 네비 몇 개까지 보여줄 건지?
+		int pageNaviSize = 5;
+		int pageNo = ((reqPage - 1) / pageNaviSize) * pageNaviSize + 1;
+
+		// 6. 페이지 네비
+		String pageNavi = "";
+
+		// 이전 버튼
+		if (pageNo != 1) {
+			pageNavi += "<li class='page-item'><a class='page-link' href='/manageMember.do?reqPage=" + (pageNo - 1)
+					+ "&grade=" + grade + "&keyword=" + keyword + "&order=" + order + "'><<</a></li>";
+		}
+
+		// 네비게이션 숫자
+		for (int i = 0; i < pageNaviSize; i++) {
+			if (reqPage == pageNo) {
+				pageNavi += "<li class='page-item'><a class='page-link target' href='#' style='color:white'>" + pageNo
+						+ "</a></li>";
+			} else {
+				pageNavi += "<li class='page-item'><a class='page-link' href='/manageMember.do?reqPage=" + (pageNo)
+						+ "&grade=" + grade + "&keyword=" + keyword + "&order=" + order + "'>" + pageNo + "</a></li>";
+			}
+			pageNo++;
+
+			if (pageNo > totalPage) {
+				break;
+			}
+		}
+
+		// 다음 버튼
+		if (reqPage <= (totalPage / pageNaviSize)) {
+			pageNavi += "<li class='page-item'><a class='page-link' href='/manageMember.do?reqPage=" + pageNo
+					+ "&grade=" + grade + "&keyword=" + keyword + "&order=" + order + "'>>></a></li>";
+		}
+
+		// 페이지 할게 없으면
+		if (totalCount <= numPerPage) {
+			pageNavi = "";
+		}
 
 		// 회원별서비스이용횟수 리스트
 		HashMap<Integer, Integer> useHistory = new HashMap<Integer, Integer>();
@@ -49,16 +114,115 @@ public class AdminController {
 			adminMsg.put(mId, msgList);
 		}
 
+		String page = "";
+		if (grade.equals("all")) {
+			page = "all";
+		}
+		if (grade.equals("free")) {
+			page = "free";
+		}
+		if (grade.equals("black")) {
+			page = "black";
+		}
+
+		model.addAttribute("page", page);
+		model.addAttribute("keyword", keyword);
+		model.addAttribute("order", order);
+		model.addAttribute("pageNavi", pageNavi);
+		model.addAttribute("totalCount", totalCount);
 		model.addAttribute("memberList", memberList);
+		model.addAttribute("totalCount", totalCount);
 		model.addAttribute("useHistory", useHistory);
 		model.addAttribute("adminMsg", adminMsg);
 		return "admin/memberList";
 	}
 
-	// (소현)전체서비스조회
+	// (소현)전체서비스조회-검색,정렬,페이징
 	@RequestMapping("/manageService.do")
-	public String selectAllService(Model model) {
-		ArrayList<ServiceInfo> serviceList = service.selectAllService();
+	public String selectAllService(Model model, int reqPage, String status, String keyword1, String keyword2,
+			String order) {
+
+		// 조건
+		// grade:승인대기중,등록,거절/삭제
+		// keyword1: service title / m_id인지 정하는값
+		// keyword2: 검색어
+		// order는 작업수 내림차순, 신고 내림차순
+
+		// 1. 한 페이지에 보여줄 리스트 개수
+		int numPerPage = 13;
+
+		// 2. 쿼리에서 시작-끝 번호로 리스트결과 가져옴
+		int end = reqPage * numPerPage;
+		int start = (end - numPerPage) + 1;
+		ServiceViewData svd = new ServiceViewData(status, keyword1, keyword2, order, start, end);
+
+		// 조건에 맞는 서비스리스트
+		ArrayList<ServiceInfo> serviceList = service.selectServiceListPaging(start, end, svd);
+
+		// 3. 의뢰글 총 몇개?
+		int totalCount = service.totalServiceCount(status, keyword1, keyword2);
+
+		// 4. 페이지가 총 몇 개?
+		int totalPage = 0;
+		if (totalCount % numPerPage == 0) {
+			totalPage = totalCount / numPerPage;
+		} else {
+			totalPage = totalCount / numPerPage + 1;
+		}
+
+		// 5. 페이지 네비 몇 개까지 보여줄 건지?
+		int pageNaviSize = 5;
+		int pageNo = ((reqPage - 1) / pageNaviSize) * pageNaviSize + 1;
+
+		// 6. 페이지 네비
+		String pageNavi = "";
+
+		// 이전 버튼
+		if (pageNo != 1) {
+			pageNavi += "<li class='page-item'><a class='page-link' href='/manageService.do?reqPage=" + (pageNo - 1)
+					+ "&status=" + status + "&keyword1=" + keyword1 + "&keyword2=" + keyword2 + "&order=" + order
+					+ "'><<</a></li>";
+		}
+
+		// 네비게이션 숫자
+		for (int i = 0; i < pageNaviSize; i++) {
+			if (reqPage == pageNo) {
+				pageNavi += "<li class='page-item'><a class='page-link target' href='#' style='color:white'>" + pageNo
+						+ "</a></li>";
+			} else {
+				pageNavi += "<li class='page-item'><a class='page-link' href='/manageService.do?reqPage=" + (pageNo)
+						+ "&status=" + status + "&keyword1=" + keyword1 + "&keyword2=" + keyword2 + "&order=" + order
+						+ "'>" + pageNo + "</a></li>";
+			}
+			pageNo++;
+
+			if (pageNo > totalPage) {
+				break;
+			}
+		}
+
+		// 다음 버튼
+		if (reqPage <= (totalPage / pageNaviSize)) {
+			pageNavi += "<li class='page-item'><a class='page-link' href='/manageService.do?reqPage=" + pageNo
+					+ "&status=" + status + "&keyword1=" + keyword1 + "&keyword2=" + keyword2 + "&order=" + order
+					+ "'>>></a></li>";
+		}
+
+		// 페이지 할게 없으면
+		if (totalCount <= numPerPage) {
+			pageNavi = "";
+		}
+
+		String page = "";
+		if (status.equals("waiting")) {
+			page = "waiting";
+		}
+		if (status.equals("approved")) {
+			page = "approved";
+		}
+		if (status.equals("deleted")) {
+			page = "deleted";
+		}
 
 		// 전체회원리스트
 		ArrayList<Member> memberList = service.selectAllMember();
@@ -73,6 +237,13 @@ public class AdminController {
 				}
 			}
 		}
+
+		model.addAttribute("page", page);
+		model.addAttribute("keyword1", keyword1);
+		model.addAttribute("keyword2", keyword2);
+		model.addAttribute("order", order);
+		model.addAttribute("pageNavi", pageNavi);
+		model.addAttribute("totalCount", totalCount);
 		model.addAttribute("mIdandmNo", mIdandmNo);
 		model.addAttribute("serviceList", serviceList);
 		return "admin/serviceList";
@@ -149,33 +320,33 @@ public class AdminController {
 		model.addAttribute("member", oneMember);
 		return "/admin/adminMessage";
 	}
-	
-	// (도현) qna 관리자페이지 내에서 접속
-		@RequestMapping("manageQnA.do")
-		public String qna(Model model, @RequestParam(value = "page", defaultValue = "1") int page,
-				@RequestParam(value = "list_num", defaultValue = "10") int listNum,
-				@RequestParam(value = "qna_keyword", required = false) String keyword,
-				@RequestParam(value = "qna_type", defaultValue = "1") int type) {
-			// 검색기능 type--> 1: 제목 , 2:작성자 아이디
-			// 네비 기능
-			int listPerPage = listNum;
-			int maxListCount;
-			if (keyword == null)
-				maxListCount = service.selectQuestionCount();
-			else
-				maxListCount = service.selectQuestionCount(type, keyword);
 
-			List<Question> list = service.selectQuestionList(maxListCount - ((page) * listPerPage) + 1,
-					maxListCount - ((page - 1) * listPerPage), type, keyword);
-			int maxPrintPageCount = 5;
-			int maxPageCount = service.selectMaxPageCount(listPerPage, maxListCount);
-			int begin = maxPrintPageCount * (page / maxPrintPageCount) + 1; // 네비 시작
-			int end = (begin + 4) < maxPageCount ? begin + 4 : maxPageCount; // 네비 끝
-			model.addAttribute("questionList", list);
-			model.addAttribute("begin", begin);
-			model.addAttribute("end", end);
-			
-			return "/admin/qnaList";
-		}
-	
+	// (도현) qna 관리자페이지 내에서 접속
+	@RequestMapping("manageQnA.do")
+	public String qna(Model model, @RequestParam(value = "page", defaultValue = "1") int page,
+			@RequestParam(value = "list_num", defaultValue = "10") int listNum,
+			@RequestParam(value = "qna_keyword", required = false) String keyword,
+			@RequestParam(value = "qna_type", defaultValue = "1") int type) {
+		// 검색기능 type--> 1: 제목 , 2:작성자 아이디
+		// 네비 기능
+		int listPerPage = listNum;
+		int maxListCount;
+		if (keyword == null)
+			maxListCount = service.selectQuestionCount();
+		else
+			maxListCount = service.selectQuestionCount(type, keyword);
+
+		List<Question> list = service.selectQuestionList(maxListCount - ((page) * listPerPage) + 1,
+				maxListCount - ((page - 1) * listPerPage), type, keyword);
+		int maxPrintPageCount = 5;
+		int maxPageCount = service.selectMaxPageCount(listPerPage, maxListCount);
+		int begin = maxPrintPageCount * (page / maxPrintPageCount) + 1; // 네비 시작
+		int end = (begin + 4) < maxPageCount ? begin + 4 : maxPageCount; // 네비 끝
+		model.addAttribute("questionList", list);
+		model.addAttribute("begin", begin);
+		model.addAttribute("end", end);
+
+		return "/admin/qnaList";
+	}
+
 }

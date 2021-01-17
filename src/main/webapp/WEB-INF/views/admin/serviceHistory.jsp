@@ -6,9 +6,49 @@
 <head>
 <meta charset="UTF-8">
 <title>19시(관리자) :: 서비스 작업내역</title>
+<style>
+@font-face {
+	font-family: 'Arita-dotum-Medium';
+	src:
+		url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Arita-dotum-Medium.woff')
+		format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+* {
+	font-family: 'Arita-dotum-Medium';
+}
+
+.historyTable a {
+	text-decoration: none;
+}
+
+.historyTable th {
+	background-color: #314C83;
+	text-align: center;
+	padding: 10px;
+	color: white;
+}
+
+.historyTable th:first-child {
+	border-top-left-radius: 10px;
+}
+
+.historyTable th:last-child {
+	border-top-right-radius: 10px;
+}
+
+.historyTable td {
+	text-align: center;
+	padding: 5px;
+	border-bottom: 0.5px solid gray;
+}
+</style>
 </head>
 <body>
-	<table border=1>
+	<table class="historyTable"
+		style="width: 90%; margin-top: 10px; text-align: center;">
 		<tr>
 			<th>사용자아이디</th>
 			<th>진행상태</th>

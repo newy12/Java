@@ -10,9 +10,10 @@ import org.springframework.stereotype.Service;
 import com.ilgusi.chat.model.vo.ChatContent;
 import com.ilgusi.member.model.dao.AdminDao;
 import com.ilgusi.member.model.vo.Member;
+import com.ilgusi.member.model.vo.MemberViewData;
 import com.ilgusi.question.model.vo.Question;
+import com.ilgusi.service.model.vo.ServiceViewData;
 import com.ilgusi.service.model.vo.TradeHistory;
-import com.ilgusi.service.model.vo.ServiceTrade;
 
 @Service
 public class AdminService {
@@ -89,6 +90,35 @@ public class AdminService {
 			maxPageCount++;
 
 		return maxPageCount;
+	}
+
+	// (소현)조건에 만족하는 회원리스트 불러오기 - 페이징전
+	/*
+	 * public ArrayList<Member> selectAllMember2(MemberViewData mvd) { return
+	 * dao.selectAllMember2(mvd); }
+	 */
+
+	// (소현)회원리스트 페이징 추가
+	public ArrayList<Member> selectMemberListPaging(int start, int end, MemberViewData mvd) {
+		ArrayList<Member> list = dao.selectMemberListPaging(start, end, mvd);
+		return list;
+	}
+
+	// (소현)member total count
+	public int totalMemberCount(String grade, String keyword) {
+		return dao.totalMemberCount(grade, keyword);
+	}
+
+	// (소현)관리자-서비스리스트 페이징추가
+	public ArrayList<com.ilgusi.service.model.vo.ServiceInfo> selectServiceListPaging(int start, int end,
+			ServiceViewData svd) {
+		ArrayList<com.ilgusi.service.model.vo.ServiceInfo> list = dao.selectServiceListPaging(start, end, svd);
+		return list;
+	}
+
+	// (소현)service total count
+	public int totalServiceCount(String status, String keyword1, String keyword2) {
+		return dao.totalServiceCount(status, keyword1, keyword2);
 	}
 
 }
