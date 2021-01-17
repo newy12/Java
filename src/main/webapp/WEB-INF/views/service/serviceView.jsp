@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,6 +19,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     
+
     
 	 <style>
         @font-face {
@@ -33,7 +35,7 @@
 
         .contentWrap {
             width: 1200px;
-            height : 1200px;
+            height : 1500px;
             margin: 0 auto;
             display: block;
         }
@@ -177,7 +179,30 @@
         .reviewText {
             font-size: 10pt;
         }
+        
+        .anotherService{
+        	
+        	border-radius:5px;
+        	width: 185px;
+        	float: left;
+        	margin: 5px;
+        	padding: 2px;
+        	box-shadow: 3px 3px 5px lightgray;
+        }
+        .anoImg{
+        	border-top-left-radius: 10px;
+        	border-top-right-radius: 10px;
+        	margin-left: 3px;
+        }
 
+		.anoCon{
+			height: 80px;
+		}
+		
+		.anCon>p{
+			font-size: 12pt;
+		}
+		
         /*.................... ▲ 왼쪽 컨텐츠...........................*/
 
         /*.................... ▼ 오른쪽 컨텐츠...........................*/
@@ -289,6 +314,12 @@
                     font-size: 10pt;
 
                 }
+                .sIntro>pre,
+                .Intro-detail>pre{
+                	background-color: transparent;
+                	border: none;
+             
+                }
 
 
 
@@ -352,10 +383,11 @@
                 </div>
 
                 <div class="tabContentWrap">
-                    <div class="tabcontent">
+                    <div class="tabcontent sIntro">
 
                         <h2>서비스 설명</h2>
                         <hr>
+                        <pre>${s.SContent }</pre>
                     </div>
                     <div class="tabcontent">
 
@@ -363,18 +395,21 @@
                         <div class="priceInfo">
                             <div class="priceContent">
                                 <p class="bold-font">서비스종류</p>
+                                <span>${s.mainCategoryName }</span> <span> > </span> <span>${s.subCategoryName }</span>
 
                             </div>
                             <div class="priceContent">
                                 <p class="bold-font">서비스지역</p>
+                                <span>${s.SArea }</span>
 
                             </div>
                             <div class="priceContent">
                                 <p class="bold-font">예상작업일</p>
+                                <span> <i class='far fa-calendar-alt'></i> ${s.workingDate }일</span>
 
                             </div>
                             <div class="realPrice">
-                                <p class=" bold-font">50,000원</p>
+                                <p class=" bold-font">${s.SPriceTxt }원~</p>
                                 <span>(VAT포함가)</span>
                             </div>
 
@@ -409,31 +444,68 @@
                     <div class="tabcontent">
                         <h2>서비스 평가</h2>
                         <hr>
-                        <br>
-                        <table>
-                            <tr>
-                                <td>
-                                    <div class="reviewBox">
-                                        <div class="profile-img">
-                                            <img src="/img/test/icon_userProfile.svg" width="100px;">
-                                        </div>
-                                        <div class="reviewCon">
-                                            <p class="date">2020.12.29</p>
-                                            <p class="score star">★★★★</p>
-                                            <p class="reviewText">리뷰리뷰 좋은말 좋은말 너무 맘에들고 좋아요 다음에 또 이용할래요 히히히히</p>
-                                            <p class="userId">user03</p>
-                                        </div>
-                                    </div>
-
-                                </td>
-                            </tr>
-                        </table>
-
+                        
+                        <c:forEach items="${reviewList }" var="review">
+                              <div class="reviewBox">
+                                  <div class="profile-img">
+                                      <img src="/img/test/icon_userProfile.svg" width="100px;">
+                                  </div>
+                                  <div class="reviewCon">
+                                      <p class="date">${review.writeDate }</p>
+                                      <p class="score star">
+                                      <c:choose>
+                                      	<c:when test="${review.RRate == 0}">
+                                      		☆☆☆☆☆
+                                      	</c:when>
+                                      	<c:when test="${review.RRate == 1}">
+                                      		☆☆☆☆★
+                                      	</c:when>
+                                      	<c:when test="${review.RRate == 2}">
+                                      		☆☆☆★★
+                                      	</c:when>
+                                      	<c:when test="${review.RRate == 3}">
+                                      		☆☆★★★
+                                      	</c:when>
+                                      	<c:when test="${review.RRate == 4}">
+                                      		☆★★★★
+                                      	</c:when>
+                                      	<c:when test="${review.RRate == 5}">
+                                      		★★★★★
+                                      	</c:when>
+                                      	
+                                      </c:choose>
+										<span style="font-size: 9pt; color: gray;">${review.RRate }.0점</span>                                        
+                                      </p>
+                                      <p class="reviewText">${review.RContent }</p>
+                                      <p class="userId">${review.MId }</p>
+                                  </div>
+                              </div>          
+                        </c:forEach>
+                            
+                            	<div>  <%-- ${pageNavi } --%> 
+                            		
+                            	
+                            	</div>
+                            
+                        
+                       
 
                     </div>
                     <div class="tabcontent">
                         <h2>다른서비스보기</h2>
                         <hr>
+                        <c:forEach items="${sList }" var="s" begin="0" end="4">
+                        	<div class="anotherService"> 
+	                        	<img class="anoImg" src="/upload/service/${s.SImg }" width="180px;" style="margin: 0 auto;">
+	                        	<div class="anoCon">
+	                        		<p class="anoTitle" style="font-size: 11pt;"> ${s.STitle } </p>
+	                        		<span>${s.mainCategoryName } / ${s.subCategoryName } </span>
+	                        	</div>
+                        </div>
+                        </c:forEach>
+                        
+                        
+                         
 
                     </div>
                 </div>
@@ -441,8 +513,8 @@
             </div>
 			 <div class="rightContent">
                 <div class="titleWrap">
-                    <div class="contentTitle bold-font">레트로 시티팝 느낌의 일러스트 작업 해드립니다.</div>
-                    <p class="titlePrice">50,000원</p>
+                    <div class="contentTitle bold-font">${s.STitle }</div>
+                    <p class="titlePrice">${s.SPriceTxt }원~</p>
                     <div class="heart">
                         <i class="far fa-heart"></i>
                         이 서비스 찜하기
@@ -451,15 +523,15 @@
                 <div class="rightInfo">
                     <div class="Infocon conFirst">
                         <p>서비스 종류</p>
-                        <span>종류종류</span>
+                        <span>${s.mainCategoryName }</span> <span> > </span> <span>${s.subCategoryName }</span>
                     </div>
                     <div class="Infocon othercon">
                         <p>예상 작업일</p>
-                        <span> <i class='far fa-calendar-alt'></i> 1일</span>
+                        <span> <i class='far fa-calendar-alt'></i> ${s.workingDate }일</span>
                     </div>
                     <div class="Infocon othercon">
                         <p>서비스 지역</p>
-                        <span></span>
+                        <span>${s.SArea }</span>
 
                     </div>
                     <br>
@@ -474,14 +546,15 @@
                 <div class="preIntro">
                     <div class="pre-profile">
                         <img src="/img/test/icon_profile.svg" width="100px;">
-                        <p class="brandName bold-font">브랜드 이름</p>
+                        <p class="brandName bold-font">${m.brandName }</p>
 
-                        <button class="emptyBtn">[브랜드 이름]의 다른 서비스 보기</button>
+                        <button class="emptyBtn">[${m.brandName }]의 다른 서비스 보기</button>
                     </div>
 
                     <hr>
                     <div class="Intro-detail">
                         <p class="introTitle bold-font">전문가 소개</p>
+                        <Pre> ${m.introduce } </Pre>
 
                     </div>
 

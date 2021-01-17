@@ -121,8 +121,27 @@ public class ServiceDao {
 	}
 	//(다솜)서비스 데이터 카운트
 	public int serviceTotalCount(HashMap<String, Integer> map) {
-		// TODO Auto-generated method stub
-		return session.selectOne("service.selectServiceTotalCount");
+		
+		return session.selectOne("service.selectServiceTotalCount",map);
+	}
+	//(다솜)서비스 상세보기
+	public com.ilgusi.service.model.vo.Service selectServiceView(int sNo) {
+		com.ilgusi.service.model.vo.Service s = new com.ilgusi.service.model.vo.Service();
+		s = session.selectOne("service.selectServiceView",sNo);
+		return s;
+	}
+	public ArrayList<ServiceReview> serviceViewReviewList(int sNo, int start, int end) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("start", start);
+		map.put("end", end);
+		map.put("sNo", sNo);
+		
+		List<ServiceReview> list = session.selectList("review.serviceReviewList",map);
+		return (ArrayList<ServiceReview>)list;
+	}
+	
+	public int totalReviewCount(int sNo) {
+		return session.selectOne("review.totalRiviewCount",sNo);
 	}
 	
 
@@ -140,6 +159,17 @@ public class ServiceDao {
 		List<com.ilgusi.service.model.vo.Service> list = session.selectList("service.sRateAVG",mId);
 		return list;
 	}
+	
+	public Member selectMemberName(String memberId) {
+		return session.selectOne("member.selectBrand",memberId);
+	}
+	public ArrayList<com.ilgusi.service.model.vo.Service> userService(String memberId) {
+		List<com.ilgusi.service.model.vo.Service> list = session.selectList("service.userServiceList",memberId);
+		return (ArrayList<com.ilgusi.service.model.vo.Service>)list;
+	}
+	
+	
+	
 
 	
 	

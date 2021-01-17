@@ -143,8 +143,8 @@ a:hover {
 	margin-bottom: px;
 }
 
-.serviceCon {
-	font-size: 10pt;
+.serviceCon >a{
+	font-size: 12pt;
 	margin: 0;
 }
 
@@ -202,11 +202,12 @@ a:hover {
 
 		<div class="sideNavi menu">
 			<p class="naviTitle">${mainCate }</p>
+			<input type="hidden" class="pageNo" value="${c_no }">
 
 			<ul>
 				<c:forEach items="${catList }" var="c">
 					<li class="navi-item"><a
-						href="/serviceList.do?cNo=${c.CNo }&reqPage=1"> ${c.CName } </a></li>
+						href="/serviceList.do?cNo=${c.CNo }&reqPage=1&order=new"> ${c.CName } </a></li>
 				</c:forEach>
 			</ul>
 
@@ -214,10 +215,11 @@ a:hover {
 		<div class="serviceList">
 			<div class="searchDiv">
 				<div class="searchBox">
-					<select class="selectBox">
-						<option>인기순</option>
-						<option>평점순</option>
-						<option>최신순</option>
+					<input type="hidden" id="order" value="${order }">
+					<select class="selectBox subject array">
+						<option value="popular">인기순</option>
+						<option value="review">평점순</option>
+						<option value="new">최신순</option>
 					</select> <input type="text" name="searchKeyword">
 					<button>검색</button>
 				</div>
@@ -232,8 +234,8 @@ a:hover {
 					<div class="serviceBox">
 						<img src="upload/service/${s.SImg }"><br> <span
 							class="preName">${brandName[status.index] }</span><br>
-						<p class="serviceCon" style="height: 30px;">${s.STitle }</p>
-						<p class="price">${s.SPrice }원~</p>
+						<p class="serviceCon" style="height: 30px;"><a href="/serviceView.do?sNo=${s.SNo}&reqPage=1"> ${s.STitle } </a></p>
+						<p class="price">${s.SPriceTxt }원~</p>
 						<p class="score">
 							평점 ${s.SRate }.0
 
@@ -274,9 +276,47 @@ a:hover {
 	<script>
 		$(function() {
 
-		})
+			var order = $("#order").val();
+			var subject = $("#subject").val();
+			var cNo = $(".pageNo").val();
+			console.log("페이지번호"+cNo);
+			
+			if(order == "new"){
+				$(".array").val("new").prop("selected",true);
+			}else if (order == "popular"){
+				$(".array").val("popular").prop("selected",true);
+			}else if (order == "review"){
+				$(".array").val("review").prop("selected",true);
+			}
+			
+			$(".array").change(function(){
+				var order = $(".array").val();
+				location.href = "/serviceList.do?cNo="+cNo+"&reqPage=1&order="+order;
+			});
+	
+		});
 	</script>
+
 
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -37,7 +37,7 @@
     <div class="header-container">
         <header>
             <div class="header-left">
-                <a href="/"><img src="/img/logo/logo_white.png" alt=""></a>
+                <a href="/"><img src="/img/logo/logo_navy.png" alt=""></a>
             </div>
         </header>
     </div>

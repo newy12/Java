@@ -249,7 +249,8 @@
 		</if>
 
 	</select>
-
+	
+	<!-- (다솜)서비스 리스트 불러오기 -->
 	<select id="serviceListPage" parameterType="map" resultType="s">
 		select
 			s_no as sNo,
@@ -260,15 +261,17 @@
 			main_category as mainCategory,
 			sub_category as subCategory,
 			s_rate as sRate
-		from (select rownum as rnum, n. * from
-		(select*from service order by 1 desc)n)
-		where delete_status = 'n' and rnum between #{start} and #{end}
-		and main_category = #{main}
-		<if test="sub != null and sub != 0">
-			and sub_category= #{sub}
-		</if>
-	</select>
+		from (select rownum as rnum, s. * from
+				(select*from service where delete_status = 'n' and main_category = #{main}
+			<if test="sub != null and sub != 0">
+				and sub_category= #{sub} 
+			</if>
+		order by 1 desc)s)
+				where rnum between #{start} and #{end} 
 
+	</select>
+	
+	<!-- (다솜) 서비스 리스트 토탈카운트 -->
 	<select id="selectServiceTotalCount" parameterType="map" resultType="_int">
 		select
 			count(*) cnt
@@ -279,6 +282,38 @@
 		</if>
 		
 	</select>
-
+	
+	<!-- (다솜)serviceView 이동 -->
+	<select id="selectServiceView" parameterType="_int" resultType="s">
+		select
+		s_no as sNo,
+		m_id as mId,
+		s_title as sTitle,
+		s_price as sPrice,
+		s_content as sContent,
+		s_area as sArea,
+		s_img as sImg,
+		s_rate as sRate,
+		(select c_name from category  where c_no = main_category) as mainCategoryName, 
+	    (select c_name from category where c_no = sub_category) as subCategoryName,
+		working_date as workingDate,
+		working_count as workingCount,
+		write_date as writeDate
+		from service
+		where s_no = #{parameter}
+		
+	</select>
+	
+	<!-- (다솜)serviceView 해당이용자가 등록한 서비스 불러오기 -->
+	<select id="userServiceList" parameterType="string" resultType="s">
+		select
+			m_id as mId,
+			s_title as sTitle,
+			s_img as sImg,
+			(select c_name from category  where c_no = main_category) as mainCategoryName, 
+	   		(select c_name from category where c_no = sub_category) as subCategoryName
+	   	from service where m_id=#{parameter} and  delete_status = 'n'
+	
+	</select>
 </mapper>
 
