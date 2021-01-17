@@ -39,12 +39,12 @@
 }
 
 .sideNavi {
-	height: 800px;
+	height: 100vh;
 	width: 200px;
 	background-color: #314C83;
 	border-top-left-radius: 15px;
 	padding-top: 20px;
-	float:left
+	float: left
 }
 
 .sideNavi>ul {
@@ -71,11 +71,6 @@
 	background-color: #304582;
 }
 
-.adminContent {
-	float: left;
-	margin-left:50px;
-	
-}
 .serviceNavi ul {
 	list-style-type: none;
 	overflow: hidden;
@@ -83,6 +78,7 @@
 	margin: 0px;
 }
 
+/* -----------------------------(소현) ------------------------------------*/
 .tab {
 	float: left;
 	width: 150px;
@@ -102,7 +98,7 @@
 .adminContent div {
 	margin: 30px;
 	text-align: left;
-	display: none;
+	/* display: none; */
 }
 
 .select {
@@ -113,6 +109,108 @@
 	border-top-right-radius: 10px;
 }
 
+.adminContent {
+	float: left;
+	margin-left: 50px;
+	width: 80vw;
+	height: 100%;
+	margin: 0 auto;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.memberTable a, .serviceTable a {
+	color: #282828;
+}
+
+.memberTable th, .serviceTable th {
+	background-color: #e2e2e2;
+	text-align: center;
+	padding: 10px;
+}
+
+.memberTable td, .serviceTable td {
+	text-align: center;
+	padding: 5px;
+	height: 30px;
+}
+
+.memberTable tr:nth-child(odd), .serviceTable tr:nth-child(odd) {
+	background-color: #FFF6E5;
+}
+
+.keyword {
+	outline: none;
+	width: 150px;
+	height: 25px;
+}
+
+.btn {
+	height: 30px;
+	width: 50px;
+	border: none;
+	border-radius: 5px;
+}
+
+.btn:focus {
+	outline: none;
+}
+
+.acceptBtn, .deleteBtn {
+	background-color: #FF8F3F;
+	color: white;
+	cursor: pointer;
+}
+
+.rejectBtn {
+	background-color: white;
+	border: 2px solid #FF8F3F;
+}
+
+.rejectBtn a {
+	text-decoration: none;
+	color: #FF8F3F;
+}
+
+.search {
+	background-color: #314C83;
+	color: white;
+	cursor: pointer;
+}
+
+.pageNavi {
+	list-style: none;
+	margin: 0 auto;
+	padding: 0;
+	text-align: 30px;
+}
+
+.pageNavi li {
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	margin-top: 30px;
+}
+
+.page-link {
+	display: block;
+	width: 30px;
+	height: 30px;
+	width: 30px;
+	border-radius: 10px;
+	line-height: 30px;
+}
+
+.pageNavi>li>a {
+	text-decoration: none;
+	color: black;
+}
+
+.target {
+	background-color: #FF8F3F;
+	color: white;
+}
+/* -----------------------------(소현) ------------------------------------*/
 </style>
 
 
@@ -124,8 +222,10 @@
 	</div>
 	<div class="sideNavi">
 		<ul>
-			<li class="navi-link"><a href="/manageMember.do">MEMBER</a></li>
-			<li class="navi-link"><a href="/manageService.do">SERVICE</a></li>
+			<li class="navi-link"><a
+				href="/manageMember.do?reqPage=1&grade=all&keyword=&order=new">MEMBER</a></li>
+			<li class="navi-link"><a
+				href="/manageService.do?reqPage=1&status=waiting&keyword1=&keyword2=&order=old">SERVICE</a></li>
 			<li class="navi-link"><a href="">NOTICE</a></li>
 			<li class="navi-link"><a href="/manageQnA.do?list_num=10">FAQ</a></li>
 		</ul>

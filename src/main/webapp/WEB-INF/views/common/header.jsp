@@ -30,6 +30,7 @@
     <title>Insert title here</title>
 
     <style>
+        
         .dh-header-container {
             width: 100%;
             border-bottom: 1px solid gray;
@@ -148,14 +149,98 @@
         .dh-header .header-bottom>.nav>ul>li:hover ul {
             display: block;
         }
-
+        .header-menu{
+            margin-left: 50px;
+            line-height: 40px;
+        }
         .header-menu span {
             font-size: 15px;
         }
 
         .header-menu span:hover {
-            text-decoration: underline;
             cursor: pointer;
+        }
+        .btn-deepblue{
+            outline: none;
+            background-color: #314C83;
+            border: none;
+            color: white;
+            border-radius: 5px;
+        }
+        #join-btn{
+            display: inline-block;
+            width: 110px;
+            height: 35px;
+            line-height: 35px;
+            margin-left: 20px;
+            text-decoration: none;
+        }
+        #join-btn:hover{
+            color: lightgray;
+            background-color: #15377c;
+        }
+        #c-center{
+            display: block;
+            float: left;
+        }
+        .ul-user{
+            float: left;
+            display: block;
+            padding: 0;
+            margin: 0;
+            margin-left: 20px;
+            list-style: none;
+        }
+        #login{
+            display: block;
+            float: left;
+            margin-left: 10px;
+        }
+        .ul-user:hover ul{
+            display: block;
+        }
+        .ul-user ul{
+            display: none;
+            position: absolute;
+            width: fit-content;
+            border: 1px solid lightgray;
+            border-radius: 5px;
+            box-shadow: 1px 1px 6px 0px lightgray;
+            background-color: white;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .ul-user li a{
+            display: block;
+            text-decoration: none;
+            color: #282828;
+            font-size: medium;
+            padding: 10px 10px;
+        }
+        .ul-user>li a:hover{
+            background-color: whitesmoke;
+        }
+        #user_name{
+            font-size: 15px;
+        }
+        .chat-remocon{
+            position: fixed;
+            right: 50px;
+            bottom: 50px;
+        }
+        .chat-remocon>a{
+            text-align: center;
+            line-height: 45px;
+            text-decoration: none;
+            color: white;
+            background-color: #314C83;
+            font-size: 17px;
+            display: block;
+            width: 130px;
+            height: 45px;
+            border-radius: 30px;
+            
         }
     </style>
 </head>
@@ -283,7 +368,12 @@
             }
 
         }
-
+        $("#user_name").on("hover",function (e) {  
+            $(".ul-user").css("display","block");
+        })
+        $(".ul-user").on("hover",function (e) {  
+            $(".ul-user").css("display","block");
+        })
     });
 </script>
 <div class="background-screen"></div>
@@ -314,6 +404,10 @@
     </div>
 </div>
 <div class="dh-header-container">
+    <div class="chat-remocon">
+        <a href="/chatList.do?mGrade=${loginMember.MGrade}&mId=${loginMember.MId}"
+		onClick="window.open(this.href, '', 'width=530, height=630, left=1000,location=no,scrollbars=no,location=no, resizable=no'); return false;">채팅하기</a>
+    </div>
     <header class="dh-header">
         <div class="header-top">
             <div class="header-top-left">
@@ -327,14 +421,28 @@
             </div>
             <div class="header-top-right">
                 <div class="header-menu">
-                    <span>고객센터</span>
+                    <span id="c-center">고객센터</span>
                     <c:if test="${empty loginMember}">
                         <span id="login">로그인</span>
-                        <a href="/join.do"><span>무료회원가입</span></a>
+                        <a href="/join.do" id="join-btn"class="btn-deepblue"><span>무료 회원가입</span></a>
                     </c:if>
                     <c:if test="${not empty loginMember}">
-                        <span><a href="/userMypage.do">${loginMember.MName}</a></span>
-                        <span id="logout"><a href="/logout.do">로그아웃</a></span>
+                        <ul class="ul-user">
+                            <a href="/userMypage.do" id="user_name">${loginMember.MName}</a>
+                            <li>
+                                <ul>
+                                    <li>
+                                        <a href="/userMypage.do">마이페이지</a>
+                                    </li>
+                                    <li>
+                                        <a href="qna.do?pageNum=1">1:1 문의</a>
+                                    </li>
+                                    <li>
+                                        <span id="logout"><a href="/logout.do">로그아웃</a></span>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
                     </c:if>
                 </div>
             </div>

@@ -25,8 +25,8 @@
 	소현
 	<a href="/chatList.do?mGrade=${loginMember.MGrade}&mId=${loginMember.MId}"
 		onClick="window.open(this.href, '', 'width=530, height=630, left=1000,location=no,scrollbars=no,location=no, resizable=no'); return false;">채팅하기</a>
-	<a href="/manageMember.do">관리자-회원관리</a>
-	<a href="/manageService.do">관리자-서비스관리</a>
+	<a href="/manageMember.do?reqPage=1&grade=all&keyword=&order=new">관리자-회원관리+페이징+검색+정렬</a>
+	<a href="/manageService.do?reqPage=1&status=waiting&keyword1=&keyword2=&order=old">관리자-서비스관리+페이징+검색+정렬</a>
 	<br> 영재
 	<a href="/introduceFrm.do?mId=newy10&reqPage=1">프리랜서소개글</a>
 	<a href="/serviceJoinFrm.do?MId=${loginMember.MId}">서비스등록</a>

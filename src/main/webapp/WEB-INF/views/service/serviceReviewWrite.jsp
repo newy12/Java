@@ -31,7 +31,6 @@
 	}
 	.sContent>div:first-child{
 		width:30%;
-		border:1px solid rgb(158, 158, 158);
 	}
 	.sContent>div:last-child {
 		width:65%;
@@ -95,7 +94,7 @@
 		<div id="gray-text">거래 완료 후 리뷰를 쓰시면 다른 구매자의 이용에 도움이 됩니다.</div>
 		<hr>
 		<div class="sContent">
-			<div><img src="/upload/request/img.jpg" width="100%" height="80px" alt="${sImg }"></div>
+			<div><img src="/upload/request/${sImg }" width="100%" height="80px" alt="${sImg }" style="border-radius:5px;"></div>
 			<div><a href="#">${sContent }</a></div>
 		</div>
 		<div class="sub-title">서비스 만족도</div>
@@ -155,10 +154,15 @@
 			var tNo = $("#tNo").val();
 			var sNo = $("#sNo").val();
 			var mId = $("#mId").val();
+			console.log(mId);
+			if(mId == null){
+				console.log("널이다.. 왜?");
+			}else{
 			var rate = rateTxt[0];
 			var content = $("#review").val();
 			location.href="/serviceReviewInsert.do?tNo="+tNo+"&sNo="+sNo+"&mId="+mId+"&rRate="+rate+"&rContent="+content;
-		});
+			}
+			});
 	</script>
 </body>
 </html>

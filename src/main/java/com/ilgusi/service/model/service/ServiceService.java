@@ -15,6 +15,7 @@ import com.ilgusi.service.model.vo.Join;
 import com.ilgusi.service.model.vo.ReviewPageData;
 import com.ilgusi.service.model.vo.ServiceFile;
 import com.ilgusi.service.model.vo.ServicePageData;
+import com.ilgusi.service.model.vo.ServicePay;
 import com.ilgusi.service.model.vo.ServiceReview;
 
 @Service
@@ -229,6 +230,7 @@ public class ServiceService {
 			return dao.sRateAVG(mId);
 		}
 
+
 		public Member selectMemberName(String memberId) {
 			return dao.selectMemberName(memberId);
 		}
@@ -299,11 +301,15 @@ public class ServiceService {
 			return dao.userService(memberId);
 		}
 
-		
+		//(문정) 결제 진행
+		public int insertServicePay(ServicePay pay) {
+			return dao.insertServicePay(pay);
+		}
 
-		
-
-		
+		//(문정) trade status 변경
+		public int updateTradeStatus(int tNo) {
+			return dao.updateTradeStatus(tNo);
+		}
 
 		
 

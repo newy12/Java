@@ -13,6 +13,7 @@ import com.ilgusi.category.model.vo.Category;
 import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.service.model.vo.Join;
 import com.ilgusi.service.model.vo.ServiceFile;
+import com.ilgusi.service.model.vo.ServicePay;
 import com.ilgusi.service.model.vo.ServiceReview;
 import com.ilgusi.service.model.vo.ServiceTrade;
 
@@ -160,6 +161,7 @@ public class ServiceDao {
 		return list;
 	}
 	
+
 	public Member selectMemberName(String memberId) {
 		return session.selectOne("member.selectBrand",memberId);
 	}
@@ -167,9 +169,17 @@ public class ServiceDao {
 		List<com.ilgusi.service.model.vo.Service> list = session.selectList("service.userServiceList",memberId);
 		return (ArrayList<com.ilgusi.service.model.vo.Service>)list;
 	}
+
+	//(문정) 결제 진행
+	public int insertServicePay(ServicePay pay) {
+		return session.insert("servicePay.insertSerivcePay", pay);
+	}
 	
-	
-	
+	//(문정) tradeStatus 변경
+	public int updateTradeStatus(int tNo) {
+		return session.update("trade.updateTradeStatus", tNo);
+	}
+
 
 	
 	

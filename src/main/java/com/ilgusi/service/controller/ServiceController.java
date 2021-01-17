@@ -24,6 +24,7 @@ import com.ilgusi.service.model.vo.ReviewPageData;
 import com.ilgusi.service.model.vo.Service;
 import com.ilgusi.service.model.vo.ServiceFile;
 import com.ilgusi.service.model.vo.ServicePageData;
+import com.ilgusi.service.model.vo.ServicePay;
 import com.ilgusi.service.model.vo.ServiceReview;
 
 import common.FileNameOverlap;
@@ -324,6 +325,7 @@ public class ServiceController {
 		return "/service/serviceList";
 	}
 	
+
 	//(다솜) serviceView 페이지 이동 
 		@RequestMapping("/serviceView.do")
 		public String serviceView(int sNo, Model model,int reqPage) {
@@ -362,5 +364,14 @@ public class ServiceController {
 			return "/service/serviceView";
 		}
 		
-	
+	//(문정) 결제 진행
+	@RequestMapping("/insertServicePay.do")
+	public String insertServicePay(ServicePay pay) {
+		int result = service.insertServicePay(pay);
+		if(result>0) {
+			result = service.updateTradeStatus(pay.getTNo());
+		}
+		return "redirect:/userTradeHistory.do?mNo="+pay.getPNo();
+	}
+
 }

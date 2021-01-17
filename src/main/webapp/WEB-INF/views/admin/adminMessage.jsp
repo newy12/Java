@@ -9,12 +9,93 @@
 	integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
 	crossorigin="anonymous"></script>
 </head>
+<style>
+@font-face {
+	font-family: 'Arita-dotum-Medium';
+	src:url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Arita-dotum-Medium.woff')
+		format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+* {
+	font-family: 'Arita-dotum-Medium';
+}
+
+.wrap {
+	text-align: center;
+}
+
+#input {
+	border-radius: 5px;
+	background-color: #314C83;
+	width: 250px;
+	height: 100px;
+	margin: 0 auto;
+	padding: 10px;
+	margin: 0 auto;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+textarea {
+	border: none;
+	width: 80%;
+	height: 75%;
+	padding: 7px;
+	font-size: 0.9em;
+	color: #32465a;
+	resize: none;
+	overflow-y: scroll;
+	margin: 0 auto;
+}
+
+textarea:focus {
+	outline: none;
+}
+
+.btn {
+	border: 2px solid #314C83;
+	border-radius: 30px;
+	width: 80px;
+	height: 30px;
+	font-size: 15px;
+	border: 2px solid #314C83;
+}
+
+.submit {
+	background-color: #314C83;
+	color: white;
+}
+
+.close {
+	background-color: white;
+	color: #314C83;
+}
+</style>
 <body>
-	<h1>${member.MId }에게 메세지 보내기</h1>
-	<textarea class="message"></textarea>
-	<button class="submit" onclick="sendMsg();">전송</button>
-	<button onclick="sendMsg();">닫기</button>
+	<div class="wrap">
+		<div id="title">
+			<img src="/img/logo/logo-chat_navy.png" width=130px;><br>
+			회원 <b>${member.MId }</b>에게 알림
+			</h1>
+		</div>
+
+		<div id="input">
+			<textarea class="message"></textarea>
+		</div>
+
+		<div id="button">
+			<button class="btn submit" onclick="sendMsg();">전송</button>
+			<button class="btn close" onclick="close();">닫기</button>
+		</div>
+	</div>
+
 	<script>
+		function close() {
+			window.close();
+		}
+		
 		function sendMsg() {
 			// 현재 시간 구하기
 			var now = new Date();
@@ -44,22 +125,22 @@
 					}
 				}
 			}
-			
+
 			var date = year + "년 " + month + "월 " + day + "일";
 			var time = ampm + hour + ":" + minute; //보낸 시간
 			var content = $(".message").val(); //메세지 내용
-			var mNo="${member.MNo}";
-			mNo=Number(mNo);
-			var userId="${member.MId }";
-			var freeId="admin";
-			
+			var mNo = "${member.MNo}";
+			mNo = Number(mNo);
+			var userId = "${member.MId }";
+			var freeId = "admin";
+
 			console.log(date);
 			console.log(time);
 			console.log(content);
 			console.log(mNo);
 			console.log(userId);
 			console.log(freeId);
-			
+
 			//admin과 회원간의 채팅방 생성
 			$.ajax({
 				url : "/makeRoom.do",
@@ -67,31 +148,32 @@
 				async : false,
 				data : {
 					sNo : 0,
-					userId :userId,
+					userId : userId,
 					freeId : freeId,
 					mNo : mNo
 				},
 				success : function(data) {
-					var cNo =data.cNo; //방번호 
+					var cNo = data.cNo; //방번호 
 					cNo = Number(cNo);
 					console.log("방만들기 성공");
 					console.log(freeId);
 					console.log(date);
 					console.log(time);
 					console.log(content);
-					location.href = "/insertChat.do?cNo="+cNo+"+&myId="+freeId+"&date="+date+"&time="+time+"&content="+content;   
+					location.href = "/insertChat.do?cNo=" + cNo + "+&myId="
+							+ freeId + "&date=" + date + "&time=" + time
+							+ "&content=" + content;
 					console.log("메세지보내기 성공");
-					opener.parent.location.reload();  
-					/* 창닫기하면 메세지저장x */
-					/* window.close(); */
-				 	
+					opener.parent.location.reload();
+					
+					 /* window.close();  */
+
 				},
 				error : function() {
 
 				}
 			});
 
-			
 		}
 	</script>
 </body>

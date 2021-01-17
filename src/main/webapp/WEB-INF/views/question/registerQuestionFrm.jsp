@@ -77,20 +77,23 @@
                 </div>
             </div>
             <form id="qna-reg-form" action="registerQuestion.do" method="POST" enctype="multipart/form-data">
-                <c:if test="${not empty param.qNo}">
-                    <input type="hidden" name="q_No" value="${param.qNo}">
+                <c:if test="${not empty param.answerNo}">
+                    <input type="hidden" name="answer_No" value="${param.answerNo}">
+                </c:if>
+                <c:if test="${not empty question}">
+                    <input type="hidden" name="q_No" value="${question.QNo}">
                 </c:if>
                 <div class="qna-center">
                     <table>
                         <thead>
-                            <c:if test="${empty param.qNo}">
+                            <c:if test="${empty param.answerNo}">
                             <tr>
                                 <th>제목</th>
-                                <th><input type="text" name="qTitle" id="qTitle" placeholder="내용을 입력해주세요."></th>
+                                <th><input type="text" name="qTitle" id="qTitle" placeholder="내용을 입력해주세요." value="${not empty question ? question.QTitle : ''}"></th>
                             </tr>
                                 <tr>
                                     <th>첨부파일</th>
-                                    <th><input type="file" name="file" id="file" placeholder="내용을 입력해주세요."></th>
+                                    <th><input type="file" name="file" id="file"></th>
                                 </tr>
                             </c:if>
                         </thead>
@@ -98,7 +101,7 @@
                             
                             <tr>
                                 <td colspan="2">
-                                    <textarea name="qContent" id="qContent" cols="30" rows="10"></textarea>
+                                    <textarea name="qContent" id="qContent" cols="30" rows="10">${not empty question ? question.QContent : ''}</textarea>
                                 </td>
                             </tr>
                         </tbody>
