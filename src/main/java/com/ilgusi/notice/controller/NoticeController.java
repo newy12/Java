@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.ilgusi.notice.model.service.NoticeService;
 import com.ilgusi.notice.model.vo.Notice;
+import com.ilgusi.notice.model.vo.NoticePageData;
 
 import common.FileNameOverlap;
 
@@ -27,9 +28,10 @@ public class NoticeController {
 	
 	//공지사항 목록으로 이동 
 	@RequestMapping("/noticeList.do")
-	public String noticeList (Model model) {
-		ArrayList<Notice> list = service.selectNoticeList();
-		model.addAttribute("list", list);
+	public String noticeList (Model model,int reqPage) {
+		NoticePageData npd = service.selectNoticeList(reqPage);
+		model.addAttribute("list", npd.getList());
+		model.addAttribute("pageNavi", npd.getPageNavi());
 		return "notice/noticeList";
 	}
 	

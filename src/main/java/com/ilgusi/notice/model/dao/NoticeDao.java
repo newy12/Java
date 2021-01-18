@@ -1,6 +1,7 @@
 package com.ilgusi.notice.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -14,8 +15,11 @@ public class NoticeDao {
 	@Autowired
 	private SqlSessionTemplate session;
 
-	public ArrayList<Notice> selectNoticeList() {
-		List<Notice> list = session.selectList("notice.noticeList");
+	public ArrayList<Notice> selectNoticeList(int start, int end) {
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("start", start);
+		map.put("end", end);
+		List<Notice> list = session.selectList("notice.noticeList",map);
 		return (ArrayList<Notice>)list;
 	}
 
@@ -40,5 +44,9 @@ public class NoticeDao {
 		
 		System.out.println();
 		return session.update("notice.updateNotice", n);
+	}
+
+	public int totalCount() {
+		return session.selectOne("notice.noticeCount");
 	}
 }

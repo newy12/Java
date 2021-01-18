@@ -16,7 +16,9 @@
         .text-box {
             height: 332px;
             padding-left: 30px;
-            background-color: rgba(224, 224, 224, 0.5);
+            background-image: url(img/notice/notice.jpg);
+            background-size: 910px;
+            color: white;
         }
 
         .text-box>div:first-child {

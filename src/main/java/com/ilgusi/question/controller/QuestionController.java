@@ -15,8 +15,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.google.gson.Gson;
 import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.question.model.service.QuestionService;
 import com.ilgusi.question.model.vo.Question;
@@ -72,27 +74,56 @@ public class QuestionController {
 		return "/question/questionView";
 	}
 
+	// (도현) qna 상세보기 페이지 ajax로
+	@RequestMapping(value="questionViewAjax.do", produces = "text/json; charset=utf-8")
+	@ResponseBody
+	public String questionViewAjax(int qNo, Model model) {
+		Question q = service.selectOneQuestion(qNo);
+		Gson gson = new Gson();
+		String json = gson.toJson(q);
+		return json;
+	}
+
 	// (도현) question 작성 페이지 접속
 	@RequestMapping("questionFrm.do")
-	public String questionFrm() {
+	public String questionFrm(Model model, @RequestParam(value = "q_No", defaultValue = "-1") int qNo) {
+
+		if (qNo != -1) {
+			Question q = service.selectOneQuestion(qNo);
+			if (q == null) {
+				model.addAttribute("msg", "잘못된 접근!");
+				model.addAttribute("loc", "/");
+				return "/common/msg";
+			}
+			model.addAttribute("question", q);
+		}
 		return "/question/registerQuestionFrm";
 	}
 
 	// (도현) question 작성 기능
 	@RequestMapping("registerQuestion.do")
 	public String registerQuestion(HttpServletRequest req, MultipartFile file, Model model,
-			@RequestParam(value = "q_No", defaultValue = "-1") int qNo) {
+			@RequestParam(value = "answer_No", defaultValue = "-1") int answerNo,
+			@RequestParam(value = "q_No", defaultValue = "-1") int qNo,
+			@RequestParam(value="loc",required = false) String loc) {
 
 		Question q = new Question();
 		String qTitle = req.getParameter("qTitle");
 		String qContent = req.getParameter("qContent");
-		if (qNo == -1
+		if (answerNo == -1
 				&& (qTitle == null || qTitle.equals("") == true || qContent == null || qContent.equals("") == true)) {
 			model.addAttribute("msg", "등록 실패!");
-			model.addAttribute("loc", "/qna.do");
+			if(loc == null || loc.equals(""))
+				model.addAttribute("loc", "/qna.do");
+			else
+				model.addAttribute("loc", loc);
 			return "/common/msg";
 		}
-		q.setQNo(qNo); // 관리자가 답변하는경우 -1이 아닌 답변할 질문 번호값이 들어감.
+		if (qNo != -1)
+			q.setQNo(qNo);
+		else
+			q.setQNo(answerNo); // 관리자가 답변하는경우 -1이 아닌 답변할 질문 번호값이 들어감.
+
 		q.setQTitle(qTitle);
 		q.setQContent(qContent);
 
@@ -122,13 +153,15 @@ public class QuestionController {
 			}
 		}
 		HttpSession sess = req.getSession();
-		System.out.println("여기까진오나?");
+
 		int result = 0;
 		if (sess.getAttribute("loginMember") != null) {
 			q.setMNo(((Member) sess.getAttribute("loginMember")).getMNo());
 			// 만약 qNo가 -1이 아니라면 관리자가 답변하는것.
-			if (qNo != -1)
+			if (answerNo != -1)
 				result = service.updateAnswer(q);
+			else if (qNo != -1)
+				result = service.updateQuestion(q);
 			else
 				result = service.insertQuestion(q);
 		}
@@ -138,7 +171,10 @@ public class QuestionController {
 		} else {
 			model.addAttribute("msg", "등록 실패!");
 		}
-		model.addAttribute("loc", "/qna.do");
+		if(loc == null || loc.equals(""))
+			model.addAttribute("loc", "/qna.do");
+		else
+			model.addAttribute("loc", loc);
 		return "/common/msg";
 	}
 }

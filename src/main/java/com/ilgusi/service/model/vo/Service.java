@@ -23,6 +23,7 @@ public class Service {
 	//(문정) 추가
 	private String mainCategoryName;
 	private String subCategoryName;
+	private String sPriceTxt;    //천원단위로 ,찍은 텍스트 저장
 	
 	//줄바꿈
 	public String getSContentBr() {

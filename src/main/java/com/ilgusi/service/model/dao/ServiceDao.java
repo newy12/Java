@@ -13,6 +13,7 @@ import com.ilgusi.category.model.vo.Category;
 import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.service.model.vo.Join;
 import com.ilgusi.service.model.vo.ServiceFile;
+import com.ilgusi.service.model.vo.ServicePay;
 import com.ilgusi.service.model.vo.ServiceReview;
 import com.ilgusi.service.model.vo.ServiceTrade;
 
@@ -119,8 +120,45 @@ public class ServiceDao {
 		System.out.println("dao_main : " + map.get("main"));
 		return (ArrayList<com.ilgusi.service.model.vo.Service>) list;
 	}
-	
-
+	//(다솜)서비스 데이터 카운트
+	public int serviceTotalCount(HashMap<String, Integer> map) {
+		
+		return session.selectOne("service.selectServiceTotalCount",map);
+	}
+	//(다솜)서비스 상세보기
+	public com.ilgusi.service.model.vo.Service selectServiceView(int sNo) {
+		com.ilgusi.service.model.vo.Service s = new com.ilgusi.service.model.vo.Service();
+		s = session.selectOne("service.selectServiceView",sNo);
+		return s;
+	}
+	//(다솜)서비스 리뷰 불러오기
+	public ArrayList<ServiceReview> serviceViewReviewList(int sNo, int start, int end) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("start", start);
+		map.put("end", end);
+		map.put("sNo", sNo);
+		
+		List<ServiceReview> list = session.selectList("review.serviceReviewList",map);
+		return (ArrayList<ServiceReview>)list;
+	}
+	//(다솜) 리뷰 페이징을 위한 토탈카운트
+	public int totalReviewCount(int sNo) {
+		return session.selectOne("review.totalRiviewCount",sNo);
+	}
+	//(다솜) 전문가 정보 불러오기
+	public Member selectMemberName(String memberId) {
+		return session.selectOne("member.selectBrand",memberId);
+	}
+	//(다솜) 다른 서비스 불러오기 
+	public ArrayList<com.ilgusi.service.model.vo.Service> userService(String memberId) {
+		List<com.ilgusi.service.model.vo.Service> list = session.selectList("service.userServiceList",memberId);
+		return (ArrayList<com.ilgusi.service.model.vo.Service>)list;
+	}
+	//(다솜) 서비스파일 리스트
+	public ArrayList<ServiceFile> fileList(int sNo) {
+		List<ServiceFile> list = session.selectList("service.fileList",sNo);
+		return (ArrayList<ServiceFile>)list;
+	}
 
 	/*
 	 * public ArrayList<Category> selectCategory(int cNO) { List<Category> list =
@@ -135,6 +173,22 @@ public class ServiceDao {
 		List<com.ilgusi.service.model.vo.Service> list = session.selectList("service.sRateAVG",mId);
 		return list;
 	}
+	
+
+
+	//(문정) 결제 진행
+	public int insertServicePay(ServicePay pay) {
+		return session.insert("servicePay.insertSerivcePay", pay);
+	}
+	
+	//(문정) tradeStatus 변경
+	public int updateTradeStatus(int tNo) {
+		return session.update("trade.updateTradeStatus", tNo);
+	}
+	
+	
+
+
 	
 	
 

@@ -25,8 +25,8 @@
 	소현
 	<a href="/chatList.do?mGrade=${loginMember.MGrade}&mId=${loginMember.MId}"
 		onClick="window.open(this.href, '', 'width=530, height=630, left=1000,location=no,scrollbars=no,location=no, resizable=no'); return false;">채팅하기</a>
-	<a href="/manageMember.do">관리자-회원관리</a>
-	<a href="/manageService.do">관리자-서비스관리</a>
+	<a href="/manageMember.do?reqPage=1&grade=all&keyword=&order=new">관리자-회원관리+페이징+검색+정렬</a>
+	<a href="/manageService.do?reqPage=1&status=waiting&keyword1=&keyword2=&order=old">관리자-서비스관리+페이징+검색+정렬</a>
 	<br> 영재
 	<a href="/introduceFrm.do?mId=${loginMember.MId}&reqPage=1">프리랜서소개글</a>
 	<a href="/serviceJoinFrm.do?MId=${loginMember.MId}">서비스등록</a>
@@ -35,10 +35,12 @@
 	<a href="/requestList.do?reqPage=1&order=new&subject=all&keyword=">의뢰게시판 리스트 </a> /
 	<a href="/userMypage.do">사용자 마이페이지</a>
 	<br> 다솜
-	<a href="/noticeList.do">공지사항 게시판</a> /
+	<a href="/noticeList.do?reqPage=1&order=new">공지사항 게시판</a> /
 	<a href="/serviceList.do">서비스리스트</a> /
-	<a href="/serviceView.do">서비스 상세보기</a> <br>
+	<a href="/serviceView.do?sNo=44">서비스 상세보기</a> <br>
 	<a href="/serviceList.do?cNo=10&reqPage=1">리스트테스트</a>
+	<br> 도현
+	<a href="/indexTest.jsp">인덱스 페이지 테스트</a>
 
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>

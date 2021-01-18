@@ -12,6 +12,14 @@
     <title>Insert title here</title>
 
     <style>
+                @font-face {
+	font-family: 'Arita-dotum-Medium';
+	src:
+		url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Arita-dotum-Medium.woff')
+		format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
         body{
             margin: 0;
         }
@@ -37,7 +45,7 @@
     <div class="header-container">
         <header>
             <div class="header-left">
-                <a href="/"><img src="/img/logo/logo_white.png" alt=""></a>
+                <a href="/"><img src="/img/logo/logo_navy.png" alt=""></a>
             </div>
         </header>
     </div>

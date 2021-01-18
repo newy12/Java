@@ -12,19 +12,29 @@
 		m_phone mPhone ,
 		m_grade mGrade ,
 		warning_count warningCount ,
-		introduce ,
+		introduce
+		,
 		enroll_date enrollDate ,
 		brand_name brandName ,
-		contact_time contactTime
+		contact_time
+		contactTime
 		from member where m_id = #{id} and m_pw = #{pw}
 	</select>
-
+	<select id="checkId" parameterType="String" resultType="m">
+		select
+		m_id
+		mId
+		from member
+		where m_id=#{id}
+	</select>
 	<select id="searchIdPw" parameterType="m" resultType="m">
 		select
-		m_id mId,
+		m_id
+		mId,
 		m_pw mPw
 		from member
-		where (m_name = #{mName} and m_phone=#{mPhone}) or (m_id = #{mId} and
+		where (m_name = #{mName} and m_phone=#{mPhone})
+		or (m_id = #{mId} and
 		m_phone=#{mPhone})
 	</select>
 
@@ -55,7 +65,8 @@
 	</insert>
 
 	<!--(소현)관리자전체회원조회 -->
-	<select id="selectAllMember" parameterType="String" resultType="m">
+	<select id="selectAllMember" parameterType="String"
+		resultType="m">
 		select
 		m_no mNo,
 		m_id mId,
@@ -72,8 +83,84 @@
 		contact_time contactTime
 		from member
 		<if test="value!=null">
-		where m_id=#{userId}
+			where m_id=#{userId}
 		</if>
+	</select>
+
+	<!-- (소현)멤버-페이징 totalCount -->
+	<select id="totalCount" parameterType="map" resultType="_int">
+		select count(*) totalCount from member
+		<choose>
+			<when test='grade == "free"'>
+				where m_grade=2
+				<if test="keyword != null">
+					and (m_id = #{keyword} or brand_name like
+					'%'||#{keyword}||'%')
+				</if>
+			</when>
+			<when test='grade == "black"'>
+				where warning_count>3
+				<if test="keyword != null">
+					and (m_id = #{keyword} or brand_name like
+					'%'||#{keyword}||'%')
+				</if>
+			</when>
+			<otherwise>
+				where (m_id = #{keyword} or brand_name like
+				'%'||#{keyword}||'%')
+			</otherwise>
+		</choose>
+	</select>
+
+	<!--(소현)관리자전체회원조회-페이징추가 -->
+	<select id="selectAllMemberPaging" parameterType="map"
+		resultType="m">
+		select
+		m_no mNo,
+		m_id mId,
+		m_pw mPw ,
+		m_name mName ,
+		m_email mEmail ,
+		m_phone mPhone ,
+		m_grade
+		mGrade,
+		warning_count warningCount ,
+		introduce ,
+		enroll_date enrollDate ,
+		brand_name brandName ,
+		contact_time contactTime
+		from (select rownum as rnum,m.* from(select * from member
+
+		<choose>
+			<when test='grade == "free"'>
+				where m_grade=2
+				<if test="keyword != null">
+					and (m_id = #{keyword} or brand_name like
+					'%'||#{keyword}||'%')
+				</if>
+			</when>
+			<when test='grade == "black"'>
+				where warning_count>3
+				<if test="keyword != null">
+					and (m_id = #{keyword} or brand_name like
+					'%'||#{keyword}||'%')
+				</if>
+			</when>
+			<otherwise>
+				where (m_id = #{keyword} or brand_name like
+				'%'||#{keyword}||'%')
+			</otherwise>
+		</choose>
+
+		<choose>
+			<when test='order == "new"'>
+				order by m_no desc
+			</when>
+			<when test='order == "black"'>
+				order by warning_count desc
+			</when>
+		</choose>
+		) m) r where rnum between #{start} and #{end}
 	</select>
 
 	<!-- (소현)회원별서비스이용횟수 -->
@@ -81,4 +168,22 @@
 		select count(*) from service_trade where m_no=#{_parameter}
 	</select>
 
+
+	<!-- (다솜) 서비스상세보기 브랜드 정보 가져오기-->
+	<select id="selectBrand" resultType="m" parameterType="string">
+		select
+		m_no mNo,
+		m_id mId,
+		m_pw mPw ,
+		m_name mName ,
+		m_email mEmail ,
+		m_phone mPhone ,
+		m_grade mGrade,
+		warning_count warningCount ,
+		introduce ,
+		enroll_date enrollDate ,
+		brand_name brandName ,
+		contact_time contactTime
+		from member where m_id=#{parameter}
+	</select>
 </mapper>

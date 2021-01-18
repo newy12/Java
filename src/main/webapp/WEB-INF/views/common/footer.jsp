@@ -118,7 +118,7 @@
                 <ul>
                     <span class="footer-title">고객센터</span>
                     <li>
-                        <span><a href="noticeList.do">공지사항</a></span>
+                        <span><a href="noticeList.do?reqPage=1">공지사항</a></span>
                     </li>
                     <li>
                         <span><a href="#">이용약관</a></span>

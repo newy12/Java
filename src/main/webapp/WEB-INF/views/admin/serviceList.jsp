@@ -5,11 +5,18 @@
 <html>
 <head>
 <meta charset="UTF-8">
+
 <title>19시(관리자) :: 서비스관리</title>
+<!-- favicon -->
+<link rel="apple-touch-icon" sizes="180x180"
+	href="favicon_io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32"
+	href="favicon_io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16"
+	href="favicon_io/favicon-16x16.png">
 <script src="https://code.jquery.com/jquery-3.5.1.js"
 	integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
 	crossorigin="anonymous"></script>
-
 <style>
 </style>
 </head>
@@ -20,160 +27,310 @@
 		<ul>
 			<li class="tab">미등록서비스</li>
 			<li class="tab">등록서비스</li>
+			<li class="tab">거절/삭제된서비스</li>
 		</ul>
 	</div>
 	<div class="adminContent">
-		<div>
-			<h1>미등록 서비스 관리</h1>
-			<table border=1 id="waiting">
-				<tr>
-					<th colspan='7'>승인 대기 중 서비스</th>
-				</tr>
-				<tr>
-					<th>등록일</th>
-					<th>서비스번호</th>
-					<th>아이디</th>
-					<th>카테고리</th>
-					<th>서비스명</th>
-					<th>처리</th>
-				</tr>
-				<c:forEach items="${serviceList }" var="s">
-					<c:if test="${s.adminApproval eq 'n'.charAt(0)}">
-						<c:if test="${s.deleteStatus eq 'n'.charAt(0)}">
-							<c:if test="${s.SNo ne 0 }">
-								<tr>
-									<td>${s.writeDate }</td>
-									<td>${s.SNo }</td>
-									<td>${s.MId }<c:if test="${s.MId eq null}">탈퇴한회원</c:if></td>
-									<td><b>[${ s.MCatName}]</b>${s.SCatName }</td>
-									<td><a href=#>${s.STitle }</a></td>
-									<td><c:forEach items="${mIdandmNo }" var="m">
-											<c:if test="${m.key eq s.MId }">
-												<button id="acceptBtn"
-													onclick="acceptService('${m.value }','${s.MId }','${s.SNo}','${s.STitle }');">승인</button>
-											</c:if>
-										</c:forEach>
-										<button id="reject">
-											<a href="/rejectFrm.do?sNo=${s.SNo }"
-												onClick="window.open(this.href, '', 'width=800, height=400, left=1000, scrollbars=no,location=no, resizable=no'); return false;">거절</a>
-										</button></td>
-								</tr>
-							</c:if>
+		<c:if test="${not empty serviceList }">
+			<div>
+				<%-- <h1 style="margin-bottom: 0;">
+					<c:if test="${page eq 'waiting' }">미등록 서비스</c:if>
+					<c:if test="${page eq 'approved' }">등록 서비스</c:if>
+					<c:if test="${page eq 'deleted' }">거절/삭제된 서비스</c:if>
+				</h1> --%>
+				<div
+					style="float: right; margin-right: 10%; margin-top: 0; margin-bottom: 20px;">
+
+					<select>
+						<c:choose>
+							<c:when test="${keyword1 eq 'title' }">
+								<option value="title" selected>서비스명</option>
+							</c:when>
+							<c:otherwise>
+								<option value="title">서비스명</option>
+							</c:otherwise>
+						</c:choose>
+						<c:choose>
+							<c:when test="${keyword1 eq 'free' }">
+								<option value="free" selected>id</option>
+							</c:when>
+							<c:otherwise>
+								<option value="free">id</option>
+							</c:otherwise>
+						</c:choose>
+					</select> <input type="text" placeholder="검색" class="keyword2">
+					<button class="btn search" onclick="search('${page}');">검색</button>
+					<br>
+					<div style="margin: 0 auto; margin-top: 5px; font-size: 15px;">
+						<b>정렬 : </b>
+						<c:choose>
+							<c:when test="${order eq 'old' }">
+								<input type="radio" name="order" value="old" checked>등록일↑</c:when>
+							<c:otherwise>
+								<input type="radio" name="order" value="old">등록일↑</c:otherwise>
+						</c:choose>
+						<c:choose>
+							<c:when test="${order eq 'new' }">
+								<input type="radio" name="order" value="new" checked>등록일↓</c:when>
+							<c:otherwise>
+								<input type="radio" name="order" value="new">등록일↓</c:otherwise>
+						</c:choose>
+
+						<c:choose>
+							<c:when test="${order eq 'working' }">
+								<input type="radio" name="order" value="working" checked>작업수↓</c:when>
+							<c:otherwise>
+								<input type="radio" name="order" value="working">작업수↓</c:otherwise>
+						</c:choose>
+						<c:choose>
+							<c:when test="${order eq 'cate' }">
+								<input type="radio" name="order" value="cate" checked>카테고리↓</c:when>
+							<c:otherwise>
+								<input type="radio" name="order" value="cate">카테고리↓</c:otherwise>
+						</c:choose>
+
+					</div>
+				</div>
+				<c:if test="${not empty keyword1}">
+					<div>
+						<c:if test="${keyword1 eq 'title'}">
+							<b>서비스명 : </b>
 						</c:if>
-					</c:if>
-				</c:forEach>
-			</table>
+						<c:if test="${keyword1 eq 'free'}">
+							<b>프리랜서 : </b>
+						</c:if>
 
-			<table border=1 id="deleted">
-				<tr>
-					<th colspan='7'>거절/삭제된 서비스</th>
-				</tr>
-				<tr>
-					<th>등록일</th>
-					<th>서비스번호</th>
-					<th>아이디</th>
-					<th>카테고리</th>
-					<th>서비스명</th>
-					<th>작업수</th>
-					<th>상태</th>
-				</tr>
-				<c:forEach items="${serviceList }" var="s">
-					<c:if test="${s.deleteStatus eq 'y'.charAt(0)}">
-						<tr>
-							<td>${s.writeDate }</td>
-							<td>${s.SNo }</td>
-							<td>${s.MId }<c:if test="${s.MId eq null}">탈퇴한회원</c:if></td>
-							<td><b>[${ s.MCatName}]</b>${s.SCatName }</td>
-							<td><a href=#>${s.STitle }</a></td>
-							<td>
-								<!-- 작업수가 0이 아닐때 클릭가능-->
-								<c:if test="${s.workingCount ne 0}">
-								<a href="/tradeHistory.do?sNo=${s.SNo }&mNo=-1"
-									onClick="window.open(this.href, '', 'width=800, height=400, left=1000, scrollbars=no,location=no, resizable=no'); return false;">
-									${s.workingCount }</a>
-									</c:if>
-									<c:if test="${s.workingCount eq 0}">${s.workingCount}</c:if>
-									</td>
-							<td>
-								<!-- 승인 n&삭제y -> 거절 --> 
-								<c:if test="${s.adminApproval eq 'n'.charAt(0)}">거절</c:if> 
-								<!-- 승인 y&삭제y -> 삭제 -->
-								<c:if test="${s.adminApproval eq 'y'.charAt(0)}">삭제</c:if>
-							</td>
-						</tr>
-					</c:if>
-				</c:forEach>
-			</table>
-		</div>
+						[${keyword2 }] 의<b> 검색 결과</b>
+					</div>
+				</c:if>
+				<table class="serviceTable" style="width: 90%;">
 
+					<tr>
+						<th>등록일</th>
+						<th>서비스번호</th>
+						<th>아이디</th>
+						<th>카테고리</th>
+						<th>서비스명</th>
+						<c:if test="${page eq 'waiting'}">
+							<th>처리</th>
+						</c:if>
+						<c:if test="${page ne 'waiting'}">
+							<th>작업수</th>
+						</c:if>
+						<c:if test="${page eq 'approved'}">
+							<th>처리</th>
+						</c:if>
+						<c:if test="${page eq 'deleted'}">
+							<th>상태</th>
+						</c:if>
+					</tr>
+					<c:forEach items="${serviceList }" var="s">
 
-		<div>
-			<h1>등록 서비스 관리</h1>
-			<table border=1 id="approved">
-				<tr>
-					<th colspan='7'>승인된 서비스</th>
-				</tr>
-				<tr>
-					<th>등록일</th>
-					<th>서비스번호</th>
-					<th>아이디</th>
-					<th>카테고리</th>
-					<th>서비스명</th>
-					<th>작업수</th>
-					<th>처리</th>
-				</tr>
-				<c:forEach items="${serviceList }" var="s">
-					<c:if test="${s.adminApproval eq 'y'.charAt(0)}">
-						<c:if test="${s.deleteStatus eq 'n'.charAt(0)}">
+						<c:if test="${s.SNo ne 0 }">
 							<tr>
 								<td>${s.writeDate }</td>
 								<td>${s.SNo }</td>
 								<td>${s.MId }<c:if test="${s.MId eq null}">탈퇴한회원</c:if></td>
-								<td><b>[${ s.MCatName}]</b>${s.SCatName }</td>
-								<td><a href=#>${s.STitle }</a></td>
-								<td>
-								<!-- 작업수가 0이 아닐때 클릭가능-->
-								<c:if test="${s.workingCount ne 0}">
-								<a href="/tradeHistory.do?sNo=${s.SNo }&mNo=-1"
-									onClick="window.open(this.href, '', 'width=800, height=400, left=1000, scrollbars=no,location=no, resizable=no'); return false;">
-									${s.workingCount }</a>
-									</c:if>
-									<c:if test="${s.workingCount eq 0}">${s.workingCount}</c:if>
+								<td style="text-align: left; padding-left: 15px;"><b>[${ s.MCatName}]</b>${s.SCatName }</td>
+								<td style="text-align: left; padding-left: 15px;"><a href=#>${s.STitle }</a></td>
+								<!-- 미등록서비스 -->
+								<c:if test="${page eq 'waiting'}">
+									<td><c:forEach items="${mIdandmNo }" var="m">
+											<c:if test="${m.key eq s.MId }">
+												<button class="btn acceptBtn"
+													onclick="acceptService('${m.value }','${s.MId }','${s.SNo}','${s.STitle }');">승인</button>
+											</c:if>
+										</c:forEach>
+										<button class="btn rejectBtn">
+											<a href="/rejectFrm.do?sNo=${s.SNo }"
+												onClick="window.open(this.href, '', 'width=800, height=400, left=1000, scrollbars=no,location=no, resizable=no'); return false;">거절</a>
+										</button></td>
+								</c:if>
+								<!-- 미등록서비스 -->
+
+								<!-- 등록된 서비스 -->
+								<c:if test="${page ne 'waiting'}">
+									<td>
+										<!-- 작업수가 0이 아닐때 클릭가능--> <c:if test="${s.workingCount ne 0}">
+											<a href="/tradeHistory.do?sNo=${s.SNo }&mNo=-1"
+												onClick="window.open(this.href, '', 'width=800, height=400, left=1000, scrollbars=no,location=no, resizable=no'); return false;">
+												${s.workingCount }</a>
+										</c:if> <c:if test="${s.workingCount eq 0}">${s.workingCount}</c:if>
 									</td>
-								<td><c:forEach items="${mIdandmNo }" var="m">
-										<c:if test="${m.key eq s.MId }">
-											<button id="delete"
-												onclick="deleteService('${m.value }','${s.MId }','${s.SNo}','${s.STitle }');">삭제</button>
-										</c:if>
-									</c:forEach></td>
+									<c:if test="${page eq 'approved'}">
+										<td><c:forEach items="${mIdandmNo }" var="m">
+												<c:if test="${m.key eq s.MId }">
+													<button class="btn deleteBtn"
+														onclick="deleteService('${m.value }','${s.MId }','${s.SNo}','${s.STitle }');">삭제</button>
+												</c:if>
+											</c:forEach></td>
+									</c:if>
+								</c:if>
+								<!-- 등록된 서비스 -->
+
+
+								<!-- 거절/삭제된 서비스 -->
+								<c:if test="${page eq 'deleted'}">
+									<td>
+										<!-- 승인 n&삭제y -> 거절 --> <c:if
+											test="${s.adminApproval eq 'n'.charAt(0)}">거절</c:if> <!-- 승인 y&삭제y -> 삭제 -->
+										<c:if test="${s.adminApproval eq 'y'.charAt(0)}">삭제</c:if>
+									</td>
+								</c:if>
+								<!-- 거절/삭제된 서비스 -->
+
+
+
 							</tr>
 						</c:if>
-					</c:if>
-				</c:forEach>
-			</table>
-		</div>
+
+
+					</c:forEach>
+				</table>
+				<div style="width: 100%; margin: 10px; text-align: center;">
+					<ul class="pageNavi">${pageNavi }</ul>
+				</div>
+			</div>
+		</c:if>
+		<c:if test="${empty serviceList }">
+		<div>
+			<br>
+			<br>
+			<br>
+			<br>
+			<div
+					style="float: right; margin-right: 10%; margin-top: 0; margin-bottom: 20px;">
+
+					<select>
+						<c:choose>
+							<c:when test="${keyword1 eq 'title' }">
+								<option value="title" checked>서비스명</option>
+							</c:when>
+							<c:otherwise>
+								<option value="title">서비스명</option>
+							</c:otherwise>
+						</c:choose>
+						<c:choose>
+							<c:when test="${keyword1 eq 'free' }">
+								<option value="free" checked>프리랜서</option>
+							</c:when>
+							<c:otherwise>
+								<option value="free">프리랜서</option>
+							</c:otherwise>
+						</c:choose>
+					</select> <input type="text" placeholder="검색" class="keyword2">
+					<button class="btn search" onclick="search('${page}');">검색</button>
+					<br>
+					<div style="margin: 0 auto; margin-top: 5px; font-size: 15px;">
+						<b>정렬 : </b>
+						<c:choose>
+							<c:when test="${order eq 'old' }">
+								<input type="radio" name="order" value="old" checked>최신순↑</c:when>
+							<c:otherwise>
+								<input type="radio" name="order" value="old">최신순↑</c:otherwise>
+						</c:choose>
+						<c:choose>
+							<c:when test="${order eq 'new' }">
+								<input type="radio" name="order" value="new" checked>최신순↓</c:when>
+							<c:otherwise>
+								<input type="radio" name="order" value="new">최신순↓</c:otherwise>
+						</c:choose>
+
+						<c:choose>
+							<c:when test="${order eq 'working' }">
+								<input type="radio" name="order" value="working" checked>작업수↓</c:when>
+							<c:otherwise>
+								<input type="radio" name="order" value="working">작업수↓</c:otherwise>
+						</c:choose>
+						<c:choose>
+							<c:when test="${order eq 'cate' }">
+								<input type="radio" name="order" value="cate" checked>카테고리↓</c:when>
+							<c:otherwise>
+								<input type="radio" name="order" value="cate">카테고리↓</c:otherwise>
+						</c:choose>
+
+					</div>
+				</div>
+				<c:if test="${not empty keyword1}">
+					<div>
+						<c:if test="${keyword1 eq 'title'}">
+							<b>서비스명 : </b>
+						</c:if>
+						<c:if test="${keyword1 eq 'free'}">
+							<b>프리랜서 : </b>
+						</c:if>
+
+						[${keyword2 }] 의<b> 검색 결과</b>
+					</div>
+				</c:if>
+			</div>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<br>
+			<img src="/img/icon/exclamation.png">
+			<br>
+			<h1>검색 결과가 없습니다!</h1>
+			</div>
+		</c:if>
 
 	</div>
 	<script>
 	
 	$(function() {
-        $(".adminContent>div").eq(0).show();
-        $(".tab").eq(0).addClass("select");
-         	 
-     });
-	
-	   $(".tab").click(function() {
-           var tabIdx = $(this).index();
-           var content = $(".adminContent");
-           for (var i = 0; i <= tabIdx; i++) {
-              $(".adminContent>div").css("display", "none");
-              $(".tab").removeClass("select");
-           }
-           $(".adminContent>div").eq(tabIdx).css("display", "block");
-           $(".tab").eq(tabIdx).addClass("select");
+		var page = "${page}";
+		if (page == 'waiting') {
+			$(".tab").eq(0).addClass("select");
+		}
+		if (page == 'approved') {
+			$(".tab").eq(1).addClass("select");
+		}
+		if (page == 'deleted') {
+			$(".tab").eq(2).addClass("select");
+		}
 
-        });
 	
+	});
+
+	$(".tab").eq(0).click(function() {
+		locationFunc('waiting', '', '','old');
+	});
+
+	$(".tab").eq(1).click(function() {
+		locationFunc('approved', '', '','new');
+	});
+
+	$(".tab").eq(2).click(function() {
+		locationFunc('deleted', '', '','new');
+	});
+
+	function locationFunc(status, keyword1,keyword2,order) {
+		location.href = "/manageService.do?reqPage=1&status=" + status
+				+ "&keyword1=" + keyword1 + "&keyword2=" + keyword2+ "&order=" + order;
+	}
+
+	function search(page) {
+		
+		var keyword1 = $("option:selected").val();
+		console.log(keyword1);
+		var keyword2 = $(".keyword2").val();
+		console.log(keyword2);
+		locationFunc(page, keyword1,keyword2, ''); 
+	}
+
+	$("input[type=radio]").change(function() {
+		var status = "${page}";
+		var keyword1 = "${keyword1}";
+		var keyword2 = "${keyword2}";
+		var order = $("input[type=radio]:checked").val()
+		locationFunc(status, keyword1,keyword2, order);
+
+	});
+	
+	   
 	  //메세지 보내기
 		function sendMsg(mNo,mId,content) {
 			// 현재 시간 구하기

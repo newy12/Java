@@ -6,18 +6,27 @@
 
 <head>
     <meta charset="UTF-8">
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+    <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
     <!-- 합쳐지고 최소화된 최신 CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 
     <!-- 부가적인 테마 -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
 
-    <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <!-- slick CSS -->
 
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.js"
-        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+
+    <!-- slick JS -->
+
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
 
     <!-- favicon -->
     <link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
@@ -30,9 +39,20 @@
     <title>Insert title here</title>
 
     <style>
+        @font-face {
+            font-family: 'Arita-dotum-Medium';
+            src:
+                url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Arita-dotum-Medium.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         .dh-header-container {
+            position: relative;
             width: 100%;
             border-bottom: 1px solid gray;
+            z-index: 100;
+            font-family: "Arita-dotum-Medium";
         }
 
         header.dh-header {
@@ -149,13 +169,115 @@
             display: block;
         }
 
+        .header-menu {
+            margin-left: 50px;
+            line-height: 40px;
+        }
+
         .header-menu span {
             font-size: 15px;
         }
 
         .header-menu span:hover {
-            text-decoration: underline;
             cursor: pointer;
+        }
+
+        .btn-deepblue {
+            outline: none;
+            background-color: #314C83;
+            border: none;
+            color: white;
+            border-radius: 5px;
+        }
+
+        #join-btn {
+            display: inline-block;
+            width: 110px;
+            height: 35px;
+            line-height: 35px;
+            margin-left: 20px;
+            text-decoration: none;
+        }
+
+        #join-btn:hover {
+            color: lightgray;
+            background-color: #15377c;
+        }
+
+        #c-center {
+            display: block;
+            float: left;
+        }
+
+        .ul-user {
+            float: left;
+            display: block;
+            padding: 0;
+            margin: 0;
+            margin-left: 20px;
+            list-style: none;
+        }
+
+        #login {
+            display: block;
+            float: left;
+            margin-left: 10px;
+        }
+
+        .ul-user:hover ul {
+            display: block;
+        }
+
+        .ul-user ul {
+            display: none;
+            position: absolute;
+            width: fit-content;
+            border: 1px solid lightgray;
+            border-radius: 5px;
+            box-shadow: 1px 1px 6px 0px lightgray;
+            background-color: white;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .ul-user li a {
+            display: block;
+            text-decoration: none;
+            color: #282828;
+            font-size: medium;
+            padding: 10px 10px;
+        }
+
+        .ul-user>li a:hover {
+            background-color: whitesmoke;
+        }
+
+        #user_name {
+            font-size: 15px;
+        }
+
+        .chat-remocon {
+            position: fixed;
+            right: 50px;
+            bottom: 50px;
+            box-shadow: 1px 1px 7px 0px gray;
+            border-radius: 5px;
+        }
+
+        .chat-remocon>a {
+            text-align: center;
+            line-height: 46px;
+            text-decoration: none;
+            color: white;
+            background-color: #FF8F3F;
+            font-size: 18px;
+            font-weight: bold;
+            display: block;
+            width: 130px;
+            height: 45px;
+            border-radius: 5px;
+
         }
     </style>
 </head>
@@ -168,27 +290,27 @@
             dataType: 'json',
             success: function (data) {
                 let $navUl = $(".nav>ul");
-                
+
                 for (let i = 0; i < data.length; i++) {
                     if (data[i].cDivision == 'm') {
-                        $navUl.append("<li><a href='/serviceList.do?cNo="+data[i].cNo+"&reqPage=1'>" + data[i].cName + "</a> <ul></ul></li>")
+                        $navUl.append("<li><a href='/serviceList.do?cNo="+data[i].cNo+"&reqPage=1&order=new'>" + data[i].cName + "</a> <ul></ul></li>")
                         console.log(data[i].cNo)
-                        
+
                     }
                     if (data[i].cDivision == 's') {
                         $(".nav>ul>li:eq(" + (parseInt(data[i].cNo / 10) - 1) + ")>ul").append(
-                            "<li><a href='/serviceList.do?cNo="+data[i].cNo+"&reqPage=1'>" + data[i].cName + "</a></li>")
+                            "<li><a href='/serviceList.do?cNo="+data[i].cNo+"&reqPage=1&order=new'>" + data[i].cName + "</a></li>")
                         // console.log(data[i]);
                     }
                 }
             }
         })
         //스크롤 막기 true : 막기 , false : 풀기
-        function blockScroll(toggle) {  
-            if(toggle){
-                $("body").css('height','100vh');
-                $("body").css('overflow','hidden');
-            }else{
+        function blockScroll(toggle) {
+            if (toggle) {
+                $("body").css('height', '100vh');
+                $("body").css('overflow', 'hidden');
+            } else {
                 $("body").removeAttr('style');
             }
         }
@@ -283,7 +405,12 @@
             }
 
         }
-
+        $("#user_name").on("hover", function (e) {
+            $(".ul-user").css("display", "block");
+        })
+        $(".ul-user").on("hover", function (e) {
+            $(".ul-user").css("display", "block");
+        })
     });
 </script>
 <div class="background-screen"></div>
@@ -314,6 +441,12 @@
     </div>
 </div>
 <div class="dh-header-container">
+    <c:if test="${not empty loginMember}">
+        <div class="chat-remocon">
+            <a href="/chatList.do?mGrade=${loginMember.MGrade}&mId=${loginMember.MId}"
+                onClick="window.open(this.href, '', 'width=530, height=630, left=1000,location=no,scrollbars=no,location=no, resizable=no'); return false;">채팅하기</a>
+        </div>
+    </c:if>
     <header class="dh-header">
         <div class="header-top">
             <div class="header-top-left">
@@ -327,14 +460,28 @@
             </div>
             <div class="header-top-right">
                 <div class="header-menu">
-                    <span>고객센터</span>
+                    <span id="c-center">고객센터</span>
                     <c:if test="${empty loginMember}">
                         <span id="login">로그인</span>
-                        <a href="/join.do"><span>무료회원가입</span></a>
+                        <a href="/join.do" id="join-btn" class="btn-deepblue"><span>무료 회원가입</span></a>
                     </c:if>
                     <c:if test="${not empty loginMember}">
-                        <span><a href="/userMypage.do">${loginMember.MName}</a></span>
-                        <span id="logout"><a href="/logout.do">로그아웃</a></span>
+                        <ul class="ul-user">
+                            <a href="/userMypage.do" id="user_name">${loginMember.MName}</a>
+                            <li>
+                                <ul>
+                                    <li>
+                                        <a href="/userMypage.do">마이페이지</a>
+                                    </li>
+                                    <li>
+                                        <a href="qna.do?pageNum=1">1:1 문의</a>
+                                    </li>
+                                    <li>
+                                        <span id="logout"><a href="/logout.do">로그아웃</a></span>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
                     </c:if>
                 </div>
             </div>

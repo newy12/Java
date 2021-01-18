@@ -44,6 +44,11 @@ public class MemberService {
 		return dao.registerMember(m);
 	}
 
+	// (도현) 아이디 중복검사 기능
+	public Member checkId(String id) {
+		return dao.checkId(id);
+	}
+
 	// (도현) 아이디/비밀번호 찾기 기능
 	public Member searchIdPw(Member m) {
 		return dao.searchIdPw(m);
@@ -63,6 +68,5 @@ public class MemberService {
 	public int deleteMember(String mId, String mPw) {
 		return dao.deleteMember(mId, mPw);
 	}
-
 
 }

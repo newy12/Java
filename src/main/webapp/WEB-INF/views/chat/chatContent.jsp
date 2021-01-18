@@ -6,6 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <title>19시 :: 문의하기</title>
+ <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 <style>
 .messages .date {
 	border: 1px solid orange;
@@ -120,7 +123,10 @@
 				<!-- 일반 채팅일때 -->
 				<c:if test="${service.SNo ne 0 }">
 					<div id="chat-profile">
-						<span>${freeId } - ${service.STitle}</span>
+					
+						<span>${freeId }<c:if test="${sessionScope.loginMember.MGrade==2 }">
+						<c:if test="${not empty black }"><img src="/img/icon/warning.png" width="20px;"></c:if>
+						</c:if> - ${service.STitle}</span>
 						<div id="option-box">
 							<!-- 아직 견적서 작성 전 -->
 							<c:if test="${empty status }">
@@ -201,7 +207,7 @@
 							<!-- 알림창 -->
 							<c:if test="${service.SNo eq 0 }">
 								<!-- 문의사항페이지로 이동 -->
-								<a class="bigBtn" href="">관리자에게 문의하기 </a>
+								<button class="bigBtn" onclick="qnaPage();">관리자에게 문의하기 </button>
 							</c:if>
 						</div>
 					</div>
@@ -220,9 +226,17 @@
 	<!--전체 wrap-->
 
 	<script>
+	
 		$(function() {
 			$(".messages").scrollTop($(".messages")[0].scrollHeight);
+			
 		});
+		
+		function qnaPage(){
+			console.log("click!");
+			/* opener.parent.location.href="/qna.do?pageNum=1"; */
+			/* window.close(); */
+		}
 
 		function sendMsg(myId, cNo) {
 			// 현재 시간 구하기

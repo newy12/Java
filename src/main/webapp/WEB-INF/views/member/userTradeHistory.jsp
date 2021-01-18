@@ -137,19 +137,19 @@
         margin-top: 40px;
     }
     .content-box>div:nth-child(2)>div>div>div>div{
-        margin-top: 5px;
         margin-right: 10px;
         float: left;
     }
     .content-box>div:nth-child(2)>div>div>div>div>a>img{
-        width: 25px;
-        height: 25px;
+        width: 20px;
+        height: 20px;
     }
     .content-box>div:nth-child(2)>div>div>div>div>a{
         color: rgb(51, 51, 51);
         line-height: 25px;
     }
     .content-box>div:nth-child(2)>div>div:last-child>a{
+    	width:368px;
         font-size: 15px;
         margin-bottom: 10px;
         text-overflow: ellipsis;
@@ -183,13 +183,30 @@
         font-weight: bold;
         margin-top: 20px;
         margin-left:4px;
+        line-height:26px;
         color: white;
+        border-radius: 5px;
         background-color:  rgb(49, 76, 131);
         border: 1px solid rgb(49, 76, 131);
     }
+    .pay-btn{
+        width: 80px;
+        height: 26px;
+        color:white;
+        line-height:26px;
+        font-size:13px;
+        font-weight: bold;
+        border-radius: 5px;
+        background-color: rgb(255, 143, 63);
+        border: 1px solid rgb(255, 143, 63);
+    }
+    .pay-btn:hover{
+    	transition-duration:1s;
+    	background-color: #f77740;
+    }
     .review-btn:hover{
-        color: rgb(49, 76, 131);
-        background-color: white;
+        background-color: #203154;
+        transition-duration:1s;
         border: 1px solid rgb(49, 76, 131);
     }
     .noTrade{
@@ -206,11 +223,14 @@
         font-weight: bold;
         margin-top: 20px;
         margin-left:4px;
+        line-height: 26px;
+        border-radius: 5px;
         color: rgb(49, 76, 131);
         background-color: white;
         border: 1px solid rgb(49, 76, 131);
     }
 </style>
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
 </head>
 <body>
 	<div class="header">
@@ -259,11 +279,11 @@
 	                        	<a href="javascript:void(0)" onclick="trade_open(this)">${t.TNo }</a>
 	                        </div>
 	                        <div style="color: rgb(51, 51, 51);font-size: 15px;margin-top: 20px;">거래 금액</div>
-	                        <div style="color: rgb(255, 143, 63);font-size: 20px;margin-top: 5px;font-weight: bold;" class="price">${t.TPrice }</div>
+	                        <div style="color: rgb(255, 143, 63);font-size: 20px;margin-top: 5px;font-weight: bold;">${t.TPriceTxt }</div>
 	                    </div>
 	                    <div>
 	                        <div>
-	                            <div><a href="#"><img src="/img/icon/img.jpg" width="175px" height="103px"></a></div>
+	                            <div><a href="#"><img src="/upload/service/${ serviceList[status.index].SImg}" width="175px" height="103px" style="border-radius:5px;"></a></div>
 	                            <div style="color:#8a8a8a;">
 	                                사용자 ID
 	                                <div>
@@ -279,19 +299,27 @@
 	                    	<c:choose>
 	                    		<c:when test="${t.TStatus == 0 }">
 	                    			<div style="color: rgb(255, 143, 63);font-size: 20px;margin-top: 5px;font-weight: bold;">결제 전</div>
-			                        <div style="color: rgb(51, 51, 51);font-size: 15px;"></div>
+			                        <div>
+			                        	<input type="text" style="display:none" value="${loginMember.MNo }">
+			                        	<input type="text" style="display:none" value="${loginMember.MName }">
+			                        	<input type="text" style="display:none" value="${loginMember.MPhone }">
+			                        	<input type="text" style="display:none" value="${loginMember.MEmail }">
+			                        	<input type="text" style="display:none" value="${t.TNo }">
+	                    				<input type="text" style="display:none" value="${t.TPrice }">
+	                    				<button class="pay-btn">결제하기</button>
+	                    			</div>
 			                        <div style="color: rgb(51, 51, 51);font-size: 15px;margin-top: 20px;">예상 마감일</div>
 			                        <div style="color: rgb(51, 51, 51);font-size: 15px;margin-top: 5px;font-weight: bold;">${t.endDate }</div>
 	                    		</c:when>
 	                    		<c:when test="${t.TStatus == 1 }">
 	                    			<div style="color: rgb(255, 143, 63);font-size: 20px;margin-top: 5px;font-weight: bold;">결제 완료</div>
-			                        <div style="color: rgb(51, 51, 51);font-size: 15px;">${payDate[status.index] }</div>
+			                        <div style="color: rgb(51, 51, 51);font-size: 13px;">${payDate[status.index] }</div>
 			                        <div style="color: rgb(51, 51, 51);font-size: 15px;margin-top: 20px;">예상 마감일</div>
 			                        <div style="color: rgb(51, 51, 51);font-size: 15px;margin-top: 5px;font-weight: bold;">${t.endDate }</div>
 	                    		</c:when>
 	                    		<c:when test="${t.TStatus == 2 || t.TStatus == 3}">
 	                    			<div style="color: rgb(224, 224, 224);font-size: 20px;margin-top: 5px;font-weight: bold;">작업 완료</div>
-			                        <div style="color: rgb(51, 51, 51);font-size: 15px;">${payDate[status.index] }</div>
+			                        <div style="color: rgb(51, 51, 51);font-size: 13px;">${payDate[status.index] }</div>
 			                        <div style="color: rgb(51, 51, 51);font-size: 15px;margin-top: 20px;">작업 종료일</div>
 			                        <div style="color: rgb(51, 51, 51);font-size: 15px;margin-top: 5px;font-weight: bold;">${t.endDate }</div>
 	                    		</c:when>
@@ -331,26 +359,7 @@
 	<script>
 		$(document).ready(function(){
 			var containerHeight = $(".container-box").height();
-			$(".page-wrap").height(containerHeight+400);
-			
-			//가격을 천 단위로 , 넣음
-			var price = $(".price");
-			for(var i=0; i<price.length; i++){
-				var priceTxt = price.eq(i).html();
-				if(priceTxt.length > 3 && priceTxt.length < 7){
-					var result1 = priceTxt.substring(0,(priceTxt.length-3));
-					var result2 = priceTxt.substring((priceTxt.length-3));
-					$(".price").eq(i).html(result1+","+result2+"원");
-				}else if(priceTxt.length > 6){
-					var result1 = priceTxt.substring(0,(priceTxt.length-6));
-					var result2 = priceTxt.substring((priceTxt.length-6), (priceTxt.length-3));
-					var result3 = priceTxt.substring(priceTxt.length-3);
-					$(".price").eq(i).html(result1+","+result2+","+result3+"원");
-				}else{
-					$(".price").eq(i).html(priceTxt+"원");
-				}
-			}
-			
+			$(".page-wrap").height(containerHeight+600);
 		});
 
 		
@@ -363,6 +372,7 @@
 			var tNo = $(this).prev().prev().prev().val();
 			var sImg = $(this).prev().prev().prev().prev().val();
 			var sContent = $(this).prev().prev().prev().prev().prev().val();
+			console.log("아이디"+mId);
 			window.open('/serviceReviewWrite.do?tNo='+tNo+'&sNo='+sNo+'&mId='+mId+'&sImg='+sImg+'&sContent='+sContent,'거래후기 작성', 'width=473, height=510, left='+ _left + ', top=50, scrollbars=no,location=no, resizable=no');
 			return false;
 		});
@@ -382,6 +392,41 @@
 			window.open('/serviceTradeView.do?tNo='+tNo, '거래 내용 확인', 'width=473, height=480, left='+_left+', top=50, scrollbars=no, location=no, resizable=no');
 			return false;
 		}
+		
+		$(".pay-btn").click(function(){
+			var tPrice = $(this).prev().val();
+			var tNo = $(this).prev().prev().val();
+			var mEmail = $(this).prev().prev().prev().val();
+			var mPhone = $(this).prev().prev().prev().prev().val();
+			var mName = $(this).prev().prev().prev().prev().prev().val();
+			var mNo = $(this).prev().prev().prev().prev().prev().prev().val();
+			var d = new Date();
+			var date = d.getFullYear()+''+(d.getMonth()+1)+''+d.getDate()+''+d.getHours()+''+d.getMinutes()+''+d.getSeconds();
+			
+			//할 수 있으면 jQuery 모달로 하기
+			var result = confirm("거래 내용을 충분히 확인하셨나요? \n'확인'버튼을 누르시면 결제가 진행됩니다.");
+			if(result){
+
+		  		//여기""안에 내정보-가맹점 식별코드 넣기
+		  		IMP.init("imp45748539");
+		  		IMP.request_pay({
+		  			merchant_uid : date, //거래ID(고유)
+		  			name : tNo, //결제이름(거래번호)
+		  			amount : tPrice, //결제금액
+		  			buyer_email : mEmail,//구매자email
+		  			buyer_name : mName, //구매자이름
+		  			buyer_tel : mPhone //구매자 전화번호
+		  		}, function(rsp) {
+		  			if(rsp.success) { //결제가 성공한 경우 -> 나중에 이거 DB에 넣으면 됨!
+		  				console.log("성공");
+		  				location.href = "/insertServicePay.do?pNo="+mNo+"&tNo="+tNo+"&pPrice="+tPrice;
+		  			} else {	//결제가 실패한 경우
+		  				console.log("실패");
+		  			}
+		  		});
+				
+			}
+		});
 	</script>
 
 </body>
