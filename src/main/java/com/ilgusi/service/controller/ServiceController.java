@@ -209,7 +209,7 @@ public class ServiceController {
 	
 	//(다솜)serviceList 
 	@RequestMapping("/serviceList.do")
-	public String serviceList (int cNo, int reqPage, String order, Model model) { 
+	public String serviceList (int cNo, int reqPage, String order, Model model, String keyword) { 
 		
 		int numPerPage = 12;
 		int end = reqPage * numPerPage;
@@ -220,7 +220,7 @@ public class ServiceController {
 		int maincateNum = 0;
 		int subNo = 0;
 		
-		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		HashMap<String, Object> map = new HashMap<String, Object>();
 		
 		if(cNo%10 == 0 ) {
 			maincateNum = cNo;
@@ -238,6 +238,10 @@ public class ServiceController {
 		map.put("end", end);
 		map.put("reqPage", reqPage);
 		map.put("cNo",cNo);
+		map.put("keyword", keyword);
+		map.put("order", order);
+		
+		
 		/* map.put("order", order); */
 		
 		s.setMainCategory(maincateNum);
@@ -250,25 +254,27 @@ public class ServiceController {
 		System.out.println("카테고리 리스트 사이즈 : " + catList.size());
 		System.out.println("catList(1)값 : " + catList.get(1));
 		
-		//서비스 리스트 불러오기			
+		//서비스 리스트 불러오기		
 		
+		ServicePageData spd = new ServicePageData();
+		spd.setEnd(end);
+		spd.setKeyword(keyword);
+		spd.setReqPage(reqPage);
+		spd.setStart(start);
+		spd.setCNo(cNo);
 		
 		//서비스 리스트 불러오기+페이징 
-		ServicePageData spd = service.servicePageList(map);
+		spd = service.servicePageList(map, reqPage, cNo);
 		ArrayList<Service> serList = spd.getList();
-		
+
+		//가격 => 천단위 콤마 찍기
 		DecimalFormat formatter = new DecimalFormat("###,###");
-		
 		for (int i = 0; i<serList.size(); i++) {
 			serList.get(i).setSPriceTxt(formatter.format(serList.get(i).getSPrice()));
 		}
 		
-		System.out.println("천단위 콤마 확인 : " + serList.get(0).getSPrice());
-		System.out.println("천단위 콤마 확인 : " + serList.get(0).getSPriceTxt());
-		
-		
 		//맵 확인용 ArrayList 
-		ArrayList<HashMap<String, Integer>> mapList = new ArrayList<HashMap<String,Integer>>();
+		ArrayList<HashMap<String, Object>> mapList = new ArrayList<HashMap<String,Object>>();
 		mapList.add(map);
 		
 		if(mapList.size() != 0) {
@@ -286,7 +292,7 @@ public class ServiceController {
 			System.out.println("serList 사이즈 : " + serList.size());
 			System.out.println("serList.get(0) : "+ serList.get(0));
 			model.addAttribute("serviceList", spd.getList());
-		}else {
+		}else if(serList.size() == 0){
 			System.out.println("serList 사이즈 : "+ serList.size());
 			model.addAttribute("noServiceList", "noServiceList");
 		}
@@ -296,9 +302,6 @@ public class ServiceController {
 		}else {
 			model.addAttribute("c_no",serList.get(0).getSubCategory());
 		}
-		
-		 
-		
 		
 		ArrayList<String> brandName = service.brandList(s);
 		switch(maincateNum) {

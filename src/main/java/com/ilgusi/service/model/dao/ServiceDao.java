@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.mybatis.spring.SqlSessionTemplate;
+import org.omg.CORBA.OBJ_ADAPTER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
@@ -13,6 +16,7 @@ import com.ilgusi.category.model.vo.Category;
 import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.service.model.vo.Join;
 import com.ilgusi.service.model.vo.ServiceFile;
+import com.ilgusi.service.model.vo.ServicePageData;
 import com.ilgusi.service.model.vo.ServicePay;
 import com.ilgusi.service.model.vo.ServiceReview;
 import com.ilgusi.service.model.vo.ServiceTrade;
@@ -101,28 +105,18 @@ public class ServiceDao {
 		List<Category> list = session.selectList("category.categoryList",cNo);
 		return (ArrayList<Category>)list;
 	}
-	//(다솜)서비스 리스트 - 서비스 불러오기
-	/*
-	 * public ArrayList<com.ilgusi.service.model.vo.Service>
-	 * serviceList(com.ilgusi.service.model.vo.Service s) {
-	 * List<com.ilgusi.service.model.vo.Service> list =
-	 * session.selectList("service.serviceList",s); return
-	 * (ArrayList<com.ilgusi.service.model.vo.Service>)list; }
-	 */
+
 	public ArrayList<String> brandList(com.ilgusi.service.model.vo.Service s) {
 		List<String> list = session.selectList("service.brandList",s);
 		return (ArrayList<String>) list;
 	}
 	//(다솜)서비스 리스트 페이징
-	public ArrayList<com.ilgusi.service.model.vo.Service> selectServiceList(HashMap<String, Integer> map) {
-		System.out.println("dao들어옴");
-		List<com.ilgusi.service.model.vo.Service> list = session.selectList("service.serviceListPage",map);
-		System.out.println("dao_main : " + map.get("main"));
+	public ArrayList<com.ilgusi.service.model.vo.Service> selectServiceList(HashMap<String, Object> map) {
+		List<com.ilgusi.service.model.vo.Service> list = session.selectList("service.serviceListPage", map);
 		return (ArrayList<com.ilgusi.service.model.vo.Service>) list;
 	}
-	//(다솜)서비스 데이터 카운트
-	public int serviceTotalCount(HashMap<String, Integer> map) {
-		
+	//(다솜)서비스 토탈 카운트
+	public int serviceTotalCount(HashMap<String, Object> map) {
 		return session.selectOne("service.selectServiceTotalCount",map);
 	}
 	//(다솜)서비스 상세보기
