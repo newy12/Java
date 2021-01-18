@@ -35,7 +35,7 @@
 	<a href="/requestList.do?reqPage=1&order=new&subject=all&keyword=">의뢰게시판 리스트 </a> /
 	<a href="/userMypage.do">사용자 마이페이지</a>
 	<br> 다솜
-	<a href="/noticeList.do">공지사항 게시판</a> /
+	<a href="/noticeList.do?reqPage=1&order=new">공지사항 게시판</a> /
 	<a href="/serviceList.do">서비스리스트</a> /
 	<a href="/serviceView.do?sNo=44">서비스 상세보기</a> <br>
 	<a href="/serviceList.do?cNo=10&reqPage=1">리스트테스트</a>

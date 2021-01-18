@@ -341,22 +341,31 @@
 				
                     <!-- Indicators -->
                     <ul class="carousel-indicators">
-                        <li data-target="#demo" data-slide-to="0" class="active"></li>
-                        <li data-target="#demo" data-slide-to="1"></li>
-                        <li data-target="#demo" data-slide-to="2"></li>
+                    	<c:forEach items="fileList" varStatus="status" >
+                    		<c:if test="${status.index == 0 }">
+                    			<li data-target="#demo" data-slide-to="${status.index }" class="active"></li>
+                    		</c:if>
+                    		<c:if test="${status.index != 0 }">
+                    			<li data-target="#demo" data-slide-to="${status.index }"></li>
+                    		</c:if>
+                    	</c:forEach>
+                        
                     </ul>
 
                     <!-- The slideshow -->
                     <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <img src="img/test/testImg1.jpg" alt="test1">
-                        </div>
-                        <div class="carousel-item">
+                    	<c:forEach items="fileList" var="sf">
+                    		<div class="carousel-item active">
+                           		 <img src="/upload/service/testImg1.jpg" alt="test1">
+                        	</div>
+                    	</c:forEach>
+                        
+                        <!-- <div class="carousel-item">
                             <img src="img/test/testImg2.jpg" alt="test2">
                         </div>
                         <div class="carousel-item">
                             <img src="img/test/testImg4.jpg" alt="test3">
-                        </div>
+                        </div> -->
                     </div>
 
                     <!-- Left and right controls -->
@@ -482,9 +491,8 @@
                               </div>          
                         </c:forEach>
                             
-                            	<div>  <%-- ${pageNavi } --%> 
-                            		
-                            	
+                            	<div style="text-align: center;">  
+                            		 ${pageNavi } 
                             	</div>
                             
                         

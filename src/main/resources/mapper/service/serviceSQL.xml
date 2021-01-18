@@ -270,7 +270,7 @@
 
 	</select>
 	
-	<!-- (다솜) 서비스 리스트 토탈카운트 -->
+<!-- 	 (다솜) 서비스 리스트 토탈카운트 
 	<select id="selectServiceTotalCount" parameterType="map" resultType="_int">
 		s_no as sNo,
 		m_id as mId,
@@ -291,7 +291,7 @@
 		<if test="sub != null and sub != 0">
 			and sub_category= #{sub}
 		</if>
-	</select>
+	</select> -->
 
 	<select id="selectServiceTotalCount" parameterType="map"
 		resultType="_int">
@@ -304,7 +304,7 @@
 			and sub_category= #{sub}
 		</if>
 
-	</select>
+	</select> 
 
 	<!-- (소현)서비스-페이징 totalCount -->
 	<select id="totalServiceCount" parameterType="map" resultType="_int">
@@ -445,5 +445,16 @@
 	   	from service where m_id=#{parameter} and  delete_status = 'n'
 	
 	</select>
+	
+	<!-- (다솜) 서비스 파일리스트 -->
+	<select id="fileList" parameterType="_int" resultType="sf">
+		select 
+			filename,
+			filepath,
+			s_no as sNo
+		from service_file where s_no=#{parameter}
+	
+	</select>
+	
 </mapper>
 

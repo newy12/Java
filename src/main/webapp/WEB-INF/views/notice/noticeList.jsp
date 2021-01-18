@@ -130,13 +130,6 @@
         </div>
 
         <div class="board-box">
-            <div>
-                <select name="array" class="form-control subject">
-                    <option value="new">최신순</option>
-                    <option value="title">이름순</option>
-                    <option value="status">진행순</option>
-                </select>
-            </div>
             <br>
             <br>
             <table class="table table-hover">
@@ -156,6 +149,9 @@
                 		
                 	</tr>
                 </c:forEach>
+                <tr>
+                	<td colspan="4" class="pageNavi" style="text-align: center;"> ${pageNavi } </td>
+                </tr>
                 
             </table>
             <div>

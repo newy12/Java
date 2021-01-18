@@ -131,6 +131,7 @@ public class ServiceDao {
 		s = session.selectOne("service.selectServiceView",sNo);
 		return s;
 	}
+	//(다솜)서비스 리뷰 불러오기
 	public ArrayList<ServiceReview> serviceViewReviewList(int sNo, int start, int end) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("start", start);
@@ -140,12 +141,24 @@ public class ServiceDao {
 		List<ServiceReview> list = session.selectList("review.serviceReviewList",map);
 		return (ArrayList<ServiceReview>)list;
 	}
-	
+	//(다솜) 리뷰 페이징을 위한 토탈카운트
 	public int totalReviewCount(int sNo) {
 		return session.selectOne("review.totalRiviewCount",sNo);
 	}
-	
-
+	//(다솜) 전문가 정보 불러오기
+	public Member selectMemberName(String memberId) {
+		return session.selectOne("member.selectBrand",memberId);
+	}
+	//(다솜) 다른 서비스 불러오기 
+	public ArrayList<com.ilgusi.service.model.vo.Service> userService(String memberId) {
+		List<com.ilgusi.service.model.vo.Service> list = session.selectList("service.userServiceList",memberId);
+		return (ArrayList<com.ilgusi.service.model.vo.Service>)list;
+	}
+	//(다솜) 서비스파일 리스트
+	public ArrayList<ServiceFile> fileList(int sNo) {
+		List<ServiceFile> list = session.selectList("service.fileList",sNo);
+		return (ArrayList<ServiceFile>)list;
+	}
 
 	/*
 	 * public ArrayList<Category> selectCategory(int cNO) { List<Category> list =
@@ -162,13 +175,6 @@ public class ServiceDao {
 	}
 	
 
-	public Member selectMemberName(String memberId) {
-		return session.selectOne("member.selectBrand",memberId);
-	}
-	public ArrayList<com.ilgusi.service.model.vo.Service> userService(String memberId) {
-		List<com.ilgusi.service.model.vo.Service> list = session.selectList("service.userServiceList",memberId);
-		return (ArrayList<com.ilgusi.service.model.vo.Service>)list;
-	}
 
 	//(문정) 결제 진행
 	public int insertServicePay(ServicePay pay) {
@@ -179,6 +185,8 @@ public class ServiceDao {
 	public int updateTradeStatus(int tNo) {
 		return session.update("trade.updateTradeStatus", tNo);
 	}
+	
+	
 
 
 	

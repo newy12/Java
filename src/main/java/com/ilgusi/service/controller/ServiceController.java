@@ -351,6 +351,13 @@ public class ServiceController {
 			Member m = service.selectMemberName(memberId);
 			model.addAttribute("m", m);
 			
+			//서비스 파일 불러오기
+			ArrayList<ServiceFile>fileList = service.fileList(sNo);
+			System.out.println("fileList 사이즈 :" + fileList.size() );
+			System.out.println("fileList값:" + fileList.get(0));
+			model.addAttribute("fileList", fileList);
+			
+			
 			//해당 유저가 등록한 다른서비스 불러오기 
 			ArrayList<Service> sList = service.userService(memberId);
 			model.addAttribute("sList", sList);

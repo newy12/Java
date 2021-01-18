@@ -268,9 +268,9 @@ public class ServiceService {
 			//페이지 네비 버튼
 			for(int i =0; i<pageNaviSize; i++) {
 				if(reqPage == pageNo) {
-					pageNavi += "<li class='page-item'><span class='page-link selected'>"+pageNo+"</a></li>";
+					pageNavi += "<li class='page-item'><span class='page-link selected'>"+pageNo+"</span></li>";
 				}else {
-					pageNavi += "<li class='page-item'><a class='page-link' href='/serviceView.do?sNo="+sNo+"&reqPage="+(pageNo)+">"+pageNo+"</a></li>";
+					pageNavi += "<li class='page-item'><a class='page-link' href='/serviceView.do?sNo="+sNo+"&reqPage="+(pageNo)+"'>"+pageNo+"</a></li>";
 				}
 				pageNo++;
 				
@@ -280,11 +280,11 @@ public class ServiceService {
 			}
 			
 			if(reqPage <= (totalPage/pageNaviSize)) {
-				pageNavi += "<li class='page-item'><a class='page-link' href='/serviceView.do?sNo="+sNo+"&reqPage="+(pageNo+1)+"'> next </a></li></ul>";
+				pageNavi += "<li class='page-item'><a class='page-link' href='/serviceView.do?sNo="+sNo+"&reqPage="+(pageNo+1)+"'> next </a></li>";
 			}
 			
 			if(totalCount <= numPerPage) {
-				pageNavi = "";
+				pageNavi = "</ul>";
 			}
 			
 			ArrayList<ServiceReview> list = dao.serviceViewReviewList(sNo,start,end);
@@ -296,9 +296,15 @@ public class ServiceService {
 			
 			return rpd;
 		}
-
+		
+		//(다솜)해당유저가 등록한 서비스 목록 
 		public ArrayList<com.ilgusi.service.model.vo.Service> userService(String memberId) {
 			return dao.userService(memberId);
+		}
+		//(다솜)해당서비스에 등록된 파일 불러오기
+		public ArrayList<ServiceFile> fileList(int sNo) {
+			// TODO Auto-generated method stub
+			return dao.fileList(sNo);
 		}
 
 		//(문정) 결제 진행
@@ -310,6 +316,8 @@ public class ServiceService {
 		public int updateTradeStatus(int tNo) {
 			return dao.updateTradeStatus(tNo);
 		}
+
+		
 
 		
 
