@@ -10,7 +10,11 @@
 		filename, 
 		filepath,
 		write_date as writeDate
- 	from(select rownum as rnum, n. * from(select*from notice order by 1 desc)n) where rnum between #{start} and #{end}
+ 	from(select rownum as rnum, n. * from(select*from notice 
+ 	<if test="keyword != null">
+ 		where n_title like '%'||#{keyword}||'%'
+ 	</if>
+ 	order by 1 desc)n) where rnum between #{start} and #{end}
   </select>
   
   <insert id="insertNotice" parameterType="n">

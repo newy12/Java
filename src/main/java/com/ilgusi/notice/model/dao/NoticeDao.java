@@ -15,13 +15,15 @@ public class NoticeDao {
 	@Autowired
 	private SqlSessionTemplate session;
 
-	public ArrayList<Notice> selectNoticeList(int start, int end) {
-		HashMap<String, Integer> map = new HashMap<String, Integer>();
+	public ArrayList<Notice> selectNoticeList(int start, int end, String keyword) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("start", start);
 		map.put("end", end);
+		map.put("keyword", keyword);
 		List<Notice> list = session.selectList("notice.noticeList",map);
 		return (ArrayList<Notice>)list;
 	}
+	
 
 	public int insertNotice(Notice n) {
 		return session.insert("notice.insertNotice",n);

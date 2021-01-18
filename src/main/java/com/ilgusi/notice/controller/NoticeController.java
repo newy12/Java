@@ -28,8 +28,8 @@ public class NoticeController {
 	
 	//공지사항 목록으로 이동 
 	@RequestMapping("/noticeList.do")
-	public String noticeList (Model model,int reqPage) {
-		NoticePageData npd = service.selectNoticeList(reqPage);
+	public String noticeList (Model model,int reqPage, String keyword) {
+		NoticePageData npd = service.selectNoticeList(reqPage,keyword);
 		model.addAttribute("list", npd.getList());
 		model.addAttribute("pageNavi", npd.getPageNavi());
 		return "notice/noticeList";
