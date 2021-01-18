@@ -41,7 +41,6 @@ public class ServiceController {
 		Join join = service.selectReviewList(mId, reqPage);
 		j.setServiceList(service.serviceList(mId));
 		j.setReviewList(join.getReviewList());
-		
 		model.addAttribute("pageNavi",join.getPageNavi());
 		model.addAttribute("j", j);
 		return "freelancer/introduce";
@@ -51,7 +50,7 @@ public class ServiceController {
 	public void reviewListSize(String mId,Model model) {
 		List<ServiceReview> list = service.reviewListSize(mId);
 		System.out.println("mid>>>>>"+mId);
-		model.addAttribute("list",list);
+		model.addAttribute("list",list.size());
 		System.out.println("list>>>>>>평점"+list);
 	}
 	  //(영재) 평점 평균 구하기
@@ -61,7 +60,7 @@ public class ServiceController {
 		  System.out.println("midRate>>>>>>>>전>"+mId);
 	  List<Service> list = service.sRateAVG(mId);
 	  System.out.println("midRate>>>>>>>>>"+mId);
-	  model.addAttribute("list",list);
+	  model.addAttribute("list",list.size());
 	  System.out.println("list>>>>>>평균점수"+list);
 	  }
 	  //(영재) 
