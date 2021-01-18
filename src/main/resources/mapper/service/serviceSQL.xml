@@ -271,28 +271,6 @@
 	</select>
 	
 	<!-- (다솜) 서비스 리스트 토탈카운트 -->
-	<select id="selectServiceTotalCount" parameterType="map" resultType="_int">
-		s_no as sNo,
-		m_id as mId,
-		s_title as sTitle,
-		s_price as sPrice,
-		s_img as sImg,
-		main_category as mainCategory,
-		sub_category as
-		subCategory,
-		s_rate as sRate
-		from (select rownum as rnum, n. * from
-		(select*from service
-		order by 1 desc)n)
-		where delete_status = 'n' and
-		rnum between #{start}
-		and #{end}
-		and main_category = #{main}
-		<if test="sub != null and sub != 0">
-			and sub_category= #{sub}
-		</if>
-	</select>
-
 	<select id="selectServiceTotalCount" parameterType="map"
 		resultType="_int">
 		select
