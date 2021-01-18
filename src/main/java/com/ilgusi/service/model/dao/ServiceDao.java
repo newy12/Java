@@ -60,8 +60,8 @@ public class ServiceDao {
 		List<com.ilgusi.service.model.vo.Service> j = session.selectList("service.selectServiceList",mId);
 		return j;
 	}
-	public int totalCount() {	
-		return session.selectOne("service.selectTotalCount");
+	public int totalCount(String mId) {	
+		return session.selectOne("service.selectTotalCount",mId);
 		
 	}
 	

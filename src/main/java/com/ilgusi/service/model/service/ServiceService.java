@@ -53,7 +53,7 @@ public class ServiceService {
 			int end = reqPage * numPerPage;//1보내면 end=4
 			int start = end - numPerPage + 1;//
 			List<ServiceReview> j = dao.selectReviewList(mId,start,end);
-			int totalCount = dao.totalCount();
+			int totalCount = dao.totalCount(mId);
 			System.out.println("end<<>>>>>>>>>>>>>"+end);
 			System.out.println("totalCount<<>>>>>>>>>>>>>"+totalCount);
 			int totalPage = 0;

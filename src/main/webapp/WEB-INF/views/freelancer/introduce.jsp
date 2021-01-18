@@ -20,7 +20,7 @@
 				<div class="title2"></div>
 				<p class="tt" >${j.brandName}<br> ${j.MName}</p>
 				<p class="tt" id="sRate" ></p>
-				<p class="tt" id="listSize"></p>
+				<p class="tt" id="listSize">${list}</p>
 				<form action="#">
 					<button type="submit"
 						style="float: right; margin-right: 50px; width: 200px; height: 40px; margin-top: 20px;";>문의하기</button>
@@ -225,7 +225,7 @@ $(function(){
     	} 	
     });
      //평점 평균 구하기 ajax
-    $.ajax({
+ /*    $.ajax({
     	type : "get",
     	url : "/sRateAVG.do",
     	data : {mId : mId},
@@ -239,7 +239,7 @@ $(function(){
     		}
     				
     	}   	
-    });
+    }); */
     
      
     

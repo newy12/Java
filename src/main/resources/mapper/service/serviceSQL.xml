@@ -18,11 +18,11 @@
 		where m_id =#{mId}
 	</select>
 
-	<select id="selectTotalCount" resultType="_int">
+	<select id="selectTotalCount" parameterType="String" resultType="_int">
 		select
-		count(*) cnt
+		sum(count(*)) cnt
 		from
-		service_review
+		service_review group by s_no having s_no in(select s_no from service where m_id=#{mId})
 	</select>
 
 	<!-- (영재)소개글 중 리뷰 리스트 불러오기 쿼리 -->
@@ -184,10 +184,8 @@
 	<!--(영재) 평가 개수 -->
 	<select id="reviewListSize" parameterType="String"
 		resultType="_int">
-		select
-		count(*)
-		from service_review
-		where m_id = #{mId}
+	select sum(count(*)) from service_review group by s_no having s_no in(select s_no from service where m_id=#{mId})
+	<!-- select count(*) from service_review where s_no in (select s_no from service where service.m_id = #{mId}); -->
 	</select>
 	<!--(영재) 평점평균매기기 -->
 	<select id="sRateAVG" parameterType="String" resultType="float">
