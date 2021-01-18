@@ -111,12 +111,12 @@
 
 .adminContent {
 	float: left;
-	margin-left: 50px;
+	padding-left: 50px;
+	padding-top:0;
 	width: 80vw;
 	height: 100%;
 	margin: 0 auto;
 	text-align: center;
-	margin: 0 auto;
 }
 
 .memberTable a, .serviceTable a {
@@ -189,7 +189,7 @@
 	display: inline-block;
 	width: 30px;
 	height: 30px;
-	margin-top: 30px;
+	margin-top: 15px;
 }
 
 .page-link {

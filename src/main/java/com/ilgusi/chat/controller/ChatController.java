@@ -295,8 +295,14 @@ public class ChatController {
 				// 상대가 보낸 메세지 읽음으로 update
 				HashMap<String, Object> roomAndId = new HashMap<String, Object>();
 				roomAndId.put("mId", myId);
-				roomAndId.put("rNo", rNo);
+				roomAndId.put("rNo", rNo);	
 				service.updateReadStatus(roomAndId);
+				//의뢰인의 신고횟수가 4이상인지 확인
+				Member oneMember=service.selectOneMember(myId);
+				int warningCount=oneMember.getWarningCount();
+				if(warningCount>3) {
+					model.addAttribute("black","black");
+				}
 
 			}
 			

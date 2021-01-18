@@ -5,7 +5,15 @@
 <html>
 <head>
 <meta charset="UTF-8">
+
 <title>19시(관리자) :: 서비스관리</title>
+<!-- favicon -->
+<link rel="apple-touch-icon" sizes="180x180"
+	href="favicon_io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32"
+	href="favicon_io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16"
+	href="favicon_io/favicon-16x16.png">
 <script src="https://code.jquery.com/jquery-3.5.1.js"
 	integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
 	crossorigin="anonymous"></script>
@@ -25,18 +33,18 @@
 	<div class="adminContent">
 		<c:if test="${not empty serviceList }">
 			<div>
-				<h1 style="margin-bottom: 0;">
+				<%-- <h1 style="margin-bottom: 0;">
 					<c:if test="${page eq 'waiting' }">미등록 서비스</c:if>
 					<c:if test="${page eq 'approved' }">등록 서비스</c:if>
 					<c:if test="${page eq 'deleted' }">거절/삭제된 서비스</c:if>
-				</h1>
+				</h1> --%>
 				<div
 					style="float: right; margin-right: 10%; margin-top: 0; margin-bottom: 20px;">
 
 					<select>
 						<c:choose>
 							<c:when test="${keyword1 eq 'title' }">
-								<option value="title" checked>서비스명</option>
+								<option value="title" selected>서비스명</option>
 							</c:when>
 							<c:otherwise>
 								<option value="title">서비스명</option>
@@ -44,10 +52,10 @@
 						</c:choose>
 						<c:choose>
 							<c:when test="${keyword1 eq 'free' }">
-								<option value="free" checked>프리랜서</option>
+								<option value="free" selected>id</option>
 							</c:when>
 							<c:otherwise>
-								<option value="free">프리랜서</option>
+								<option value="free">id</option>
 							</c:otherwise>
 						</c:choose>
 					</select> <input type="text" placeholder="검색" class="keyword2">
@@ -57,15 +65,15 @@
 						<b>정렬 : </b>
 						<c:choose>
 							<c:when test="${order eq 'old' }">
-								<input type="radio" name="order" value="old" checked>최신순↑</c:when>
+								<input type="radio" name="order" value="old" checked>등록일↑</c:when>
 							<c:otherwise>
-								<input type="radio" name="order" value="old">최신순↑</c:otherwise>
+								<input type="radio" name="order" value="old">등록일↑</c:otherwise>
 						</c:choose>
 						<c:choose>
 							<c:when test="${order eq 'new' }">
-								<input type="radio" name="order" value="new" checked>최신순↓</c:when>
+								<input type="radio" name="order" value="new" checked>등록일↓</c:when>
 							<c:otherwise>
-								<input type="radio" name="order" value="new">최신순↓</c:otherwise>
+								<input type="radio" name="order" value="new">등록일↓</c:otherwise>
 						</c:choose>
 
 						<c:choose>

@@ -447,12 +447,17 @@ textarea::-webkit-scrollbar-thumb {
 			</ul>
 		</div>
 		<div id="side-bottom">
-			<button id="mypageBtn" onclick="">mypage</button>
+			<button id="mypageBtn" onclick="mypage();">mypage</button>
 			<button id="closeBtn" onclick="window.close();">닫기</button>
 		</div>
 	</div>
 
 	<script>
+	function mypage(){
+		opener.parent.location.href="/userMypage.do";
+		window.close();
+	}
+	
 		// 일반회원 - 프리랜서 전환 
 		function switchAccount() {
 			var mId = "${loginMember.MId}";

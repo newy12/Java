@@ -6,6 +6,13 @@
 <head>
 <meta charset="UTF-8">
 <title>19시(관리자) :: 서비스 작업내역</title>
+<!-- favicon -->
+<link rel="apple-touch-icon" sizes="180x180"
+	href="favicon_io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32"
+	href="favicon_io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16"
+	href="favicon_io/favicon-16x16.png">
 <style>
 @font-face {
 	font-family: 'Arita-dotum-Medium';
@@ -59,10 +66,8 @@
 		<c:forEach items="${history }" var="h">
 			<tr>
 				<td>${h.MId }</td>
-				<td>
-				<c:if test="${h.TStatus eq 0}">결제전</c:if>
-				<c:if test="${h.TStatus eq 1}">진행중</c:if>
-				<c:if test="${h.TStatus eq 2}">진행완료</c:if></td>
+				<td><c:if test="${h.TStatus eq 0}">결제전</c:if> <c:if
+						test="${h.TStatus eq 1}">진행중</c:if> <c:if test="${h.TStatus eq 2}">진행완료</c:if></td>
 				<td>${h.TPrice}</td>
 				<td>${h.startDate}</td>
 				<td>${h.endDate}</td>

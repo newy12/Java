@@ -6,8 +6,14 @@
 <head>
 <meta charset="UTF-8">
 <title>19시(관리자) :: 회원관리</title>
-<!-- 
-<link href="admin_sh.css" rel="stylesheet" type="text/css"> -->
+
+<!-- favicon -->
+<link rel="apple-touch-icon" sizes="180x180"
+	href="favicon_io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32"
+	href="favicon_io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16"
+	href="favicon_io/favicon-16x16.png">
 
 </head>
 <body>
@@ -24,11 +30,11 @@
 	<div class="adminContent">
 		<c:if test="${not empty memberList }">
 			<div>
-				<h1 style="margin-bottom: 0;">
+				<%-- <h1 style="margin-bottom: 0;">
 					<c:if test="${page eq 'all' }">전체회원</c:if>
 					<c:if test="${page eq 'free' }">프리랜서</c:if>
 					<c:if test="${page eq 'black' }">블랙리스트</c:if>
-				</h1>
+				</h1> --%>
 				<div
 					style="float: right; margin-right: 10%; margin-top: 0; margin-bottom: 20px;">
 					<input type="text" placeholder="id 또는 브랜드네임" class="keyword">
