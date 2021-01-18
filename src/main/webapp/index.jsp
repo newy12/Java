@@ -28,7 +28,7 @@
 	<a href="/manageMember.do">관리자-회원관리</a>
 	<a href="/manageService.do">관리자-서비스관리</a>
 	<br> 영재
-	<a href="/introduceFrm.do?mId=newy10&reqPage=1">프리랜서소개글</a>
+	<a href="/introduceFrm.do?mId=${loginMember.MId}&reqPage=1">프리랜서소개글</a>
 	<a href="/serviceJoinFrm.do?MId=${loginMember.MId}">서비스등록</a>
 	<a href="/freelancerMypage.do?MNo=${loginMember.MNo}">프리랜서 마이페이지</a>
 	<br> 문정

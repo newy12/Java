@@ -231,8 +231,8 @@ $(function(){
     	data : {mId : mId},
     	success : function(result){
     		if(result='null'){
-    			$('#sRate').html("평점[0.0]").css("color","gray");	
-    			$('#sRate2').html("평점[0.0]").css("color","gray");
+    			$('#sRate').html("평점0.0").css("color","gray");	
+    			$('#sRate2').html("평점0.0").css("color","gray");
     		}else{
     			$('#sRate').html("평점"+result).css("color","gray");	
     			$('#sRate2').html("평점"+result).css("color","gray");
