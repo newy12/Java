@@ -20,7 +20,13 @@
 		contactTime
 		from member where m_id = #{id} and m_pw = #{pw}
 	</select>
-
+	<select id="checkId" parameterType="String" resultType="m">
+		select
+		m_id
+		mId
+		from member
+		where m_id=#{id}
+	</select>
 	<select id="searchIdPw" parameterType="m" resultType="m">
 		select
 		m_id
@@ -105,9 +111,10 @@
 			</otherwise>
 		</choose>
 	</select>
-	
+
 	<!--(소현)관리자전체회원조회-페이징추가 -->
-	<select id="selectAllMemberPaging" parameterType="map" resultType="m">
+	<select id="selectAllMemberPaging" parameterType="map"
+		resultType="m">
 		select
 		m_no mNo,
 		m_id mId,
@@ -122,8 +129,8 @@
 		enroll_date enrollDate ,
 		brand_name brandName ,
 		contact_time contactTime
-		from (select rownum as rnum,m.* from(select * from member 
-		
+		from (select rownum as rnum,m.* from(select * from member
+
 		<choose>
 			<when test='grade == "free"'>
 				where m_grade=2
@@ -150,7 +157,7 @@
 				order by m_no desc
 			</when>
 			<when test='order == "black"'>
-				order by warning_count desc  
+				order by warning_count desc
 			</when>
 		</choose>
 		) m) r where rnum between #{start} and #{end}

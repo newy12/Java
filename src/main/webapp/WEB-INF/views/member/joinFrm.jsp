@@ -8,6 +8,9 @@
     <title>Insert title here</title>
 
     <style>
+        body{
+            font-family: "Arita-dotum-Medium";
+        }
         section {
             width: 1200px;
             margin: 0 auto;
@@ -303,7 +306,7 @@
                     $(".phone-form input").removeAttr("style");
                     let phoneStr = $("#phone1").val() + $("#phone2").val() + $("#phone3").val();
                     $("[name=mPhone]").val(phoneStr);
-                    console.log("phoneStr : "+phoneStr);
+                    console.log("phoneStr : " + phoneStr);
                 } else {
                     $("#phone_validation").show();
                     $(".phone-form input").css("border-color", "red");
@@ -347,14 +350,14 @@
                 checkAllValidation();
             });
             //스크롤 막기 true : 막기 , false : 풀기
-        function blockScroll(toggle) {  
-            if(toggle){
-                $("body").css('height','100vh');
-                $("body").css('overflow','hidden');
-            }else{
-                $("body").removeAttr('style');
+            function blockScroll(toggle) {
+                if (toggle) {
+                    $("body").css('height', '100vh');
+                    $("body").css('overflow', 'hidden');
+                } else {
+                    $("body").removeAttr('style');
+                }
             }
-        }
             // 약관 눌렀으면 모달창 띄우기
             $(".terms-bottom label input[type=button]:eq(0)").on("click", function () {
                 $(".background-screen").show();
@@ -395,7 +398,7 @@
                     $(".submit>button").removeAttr("style");
                     console.log("if");
                 } else if ($("#id_validation").css("display") == "block" || $("#pw1_validation").css(
-                    "display") == "block" ||
+                        "display") == "block" ||
                     $("#pw2_validation").css("display") == "block" || $("#name_validation").css("display") ==
                     "block" ||
                     $("#email_validation").css("display") == "block" || $("#phone_validation").css("display") ==
@@ -417,6 +420,27 @@
                 }
 
             }
+            // sumit 이벤트 발생 시 ajax 로 아이디 중복검사
+            $("#reg-form").on("submit", function (e) {
+                $.ajax({
+                    type: "post",
+                    url: "/checkId.do",
+                    async:false,
+                    data: {
+                        id: $("#id").val()
+                    },
+                    dataType: "json",
+                    success: function (response) { // result : true -> 중복 , false -> 중복아님
+                        if (response.result == "true"){
+                            alert("아이디가 중복되었습니다.");
+                            $("#id").val('');
+                            $("#id").trigger("keyup");
+                            $("#id").trigger("blur");
+                            e.preventDefault();
+                        }
+                    }
+                });
+            });
         });
     </script>
     <div class="background-screen">
@@ -509,8 +533,8 @@ l 제2조(개인정보의 수집∙이용 및 보유)
     </div>
 
     <section>
-        <form action="/register.do" method="post">
-        <div class="join-container">
+        <form action="/register.do" method="post" id="reg-form">
+            <div class="join-container">
                 <div class="content-title">
                     <h2>회원가입</h2>
                 </div>
@@ -539,9 +563,9 @@ l 제2조(개인정보의 수집∙이용 및 보유)
                     </div>
                     <div class="phone-form">
                         <span class="form-title">전화번호</span><br>
-                        <input type="text"  id="phone1" placeholder="0XX"> -
-                        <input type="text"  id="phone2" placeholder="1234"> -
-                        <input type="text"  id="phone3" placeholder="5678">
+                        <input type="text" id="phone1" placeholder="0XX"> -
+                        <input type="text" id="phone2" placeholder="1234"> -
+                        <input type="text" id="phone3" placeholder="5678">
                         <input type="hidden" name="mPhone">
                         <div id="phone_validation">* 전화번호 형식이 유효하지 않습니다.</div>
                     </div>
