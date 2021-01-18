@@ -17,7 +17,9 @@
         .text-box {
             height: 332px;
             padding-left: 30px;
-            background-color: rgba(224, 224, 224, 0.5);
+            background-image: url(img/notice/notice.jpg);
+            background-size: 910px;
+            color: white;
         }
 
         .text-box>div:first-child {
@@ -128,13 +130,6 @@
         </div>
 
         <div class="board-box">
-            <div>
-                <select name="array" class="form-control subject">
-                    <option value="new">최신순</option>
-                    <option value="title">이름순</option>
-                    <option value="status">진행순</option>
-                </select>
-            </div>
             <br>
             <br>
             <table class="table table-hover">
@@ -154,6 +149,9 @@
                 		
                 	</tr>
                 </c:forEach>
+                <tr>
+                	<td colspan="4" class="pageNavi" style="text-align: center;"> ${pageNavi } </td>
+                </tr>
                 
             </table>
             <div>

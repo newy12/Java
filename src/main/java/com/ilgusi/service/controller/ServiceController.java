@@ -4,6 +4,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,6 +20,7 @@ import com.ilgusi.category.model.vo.Category;
 import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.service.model.service.ServiceService;
 import com.ilgusi.service.model.vo.Join;
+import com.ilgusi.service.model.vo.ReviewPageData;
 import com.ilgusi.service.model.vo.Service;
 import com.ilgusi.service.model.vo.ServiceFile;
 import com.ilgusi.service.model.vo.ServicePageData;
@@ -205,17 +207,11 @@ public class ServiceController {
 		return "/service/reviewDone";
 	}
 	
-	//(다솜) serviceView 페이지 이동 
-	@RequestMapping("/serviceView.do")
-	public String serviceView() {
-		return "service/serviceView";
-	}
-	
 	//(다솜)serviceList 
 	@RequestMapping("/serviceList.do")
-	public String serviceList (int cNo, int reqPage, Model model) { 
+	public String serviceList (int cNo, int reqPage, String order, Model model) { 
 		
-		int numPerPage = 16;
+		int numPerPage = 12;
 		int end = reqPage * numPerPage;
 		int start = end-numPerPage+1;
 		
@@ -242,11 +238,13 @@ public class ServiceController {
 		map.put("end", end);
 		map.put("reqPage", reqPage);
 		map.put("cNo",cNo);
+		/* map.put("order", order); */
 		
 		s.setMainCategory(maincateNum);
 		s.setSubCategory(subNo);
 		System.out.println("메인카테고리 : " + maincateNum);
 		System.out.println("서브카테고리 : " + subNo);
+		
 		//카테고리 리스트 불러오기
 		ArrayList<Category> catList = service.categoryList(maincateNum);
 		System.out.println("카테고리 리스트 사이즈 : " + catList.size());
@@ -259,6 +257,16 @@ public class ServiceController {
 		ServicePageData spd = service.servicePageList(map);
 		ArrayList<Service> serList = spd.getList();
 		
+		DecimalFormat formatter = new DecimalFormat("###,###");
+		
+		for (int i = 0; i<serList.size(); i++) {
+			serList.get(i).setSPriceTxt(formatter.format(serList.get(i).getSPrice()));
+		}
+		
+		System.out.println("천단위 콤마 확인 : " + serList.get(0).getSPrice());
+		System.out.println("천단위 콤마 확인 : " + serList.get(0).getSPriceTxt());
+		
+		
 		//맵 확인용 ArrayList 
 		ArrayList<HashMap<String, Integer>> mapList = new ArrayList<HashMap<String,Integer>>();
 		mapList.add(map);
@@ -266,14 +274,30 @@ public class ServiceController {
 		if(mapList.size() != 0) {
 			System.out.println("mapList(0) : " + mapList.get(0));
 		}
+		
+		
+		if(cNo%10 == 0) {
+			for(int i = 0; i < serList.size(); i++) {
+				serList.get(i).setSubCategory(0);
+			}
+		}
 
 		if(serList.size() > 0 ) {
 			System.out.println("serList 사이즈 : " + serList.size());
+			System.out.println("serList.get(0) : "+ serList.get(0));
 			model.addAttribute("serviceList", spd.getList());
 		}else {
 			System.out.println("serList 사이즈 : "+ serList.size());
 			model.addAttribute("noServiceList", "noServiceList");
 		}
+		
+		if(cNo%10 == 0) {
+			model.addAttribute("c_no",serList.get(0).getMainCategory());
+		}else {
+			model.addAttribute("c_no",serList.get(0).getSubCategory());
+		}
+		
+		 
 		
 		
 		ArrayList<String> brandName = service.brandList(s);
@@ -301,7 +325,52 @@ public class ServiceController {
 		return "/service/serviceList";
 	}
 	
+
+	//(다솜) serviceView 페이지 이동 
+		@RequestMapping("/serviceView.do")
+		public String serviceView(int sNo, Model model,int reqPage) {
+			System.out.println("서비스 컨트롤러-serviceView");
+			System.out.println("서비스 상세보기 sNo: " + sNo);
+			
+			//해당 서비스 정보 불러오기
+			Service s = service.selectServiceView(sNo);
+			
+			DecimalFormat formatter = new DecimalFormat("###,###");
+			s.setSPriceTxt(formatter.format(s.getSPrice()));
 	
+			System.out.println("메인카테고리 이름 : " + s.getMainCategoryName());
+			System.out.println("서브카테고리 이름 : " + s.getSubCategoryName());
+			
+			if( s != null) {
+				model.addAttribute("s", s);
+			}
+			
+			//브랜드 정보 불러오기 
+			String memberId = s.getMId();
+			
+			Member m = service.selectMemberName(memberId);
+			model.addAttribute("m", m);
+			
+			//서비스 파일 불러오기
+			ArrayList<ServiceFile>fileList = service.fileList(sNo);
+			System.out.println("fileList 사이즈 :" + fileList.size() );
+			System.out.println("fileList값:" + fileList.get(0));
+			model.addAttribute("fileList", fileList);
+			
+			
+			//해당 유저가 등록한 다른서비스 불러오기 
+			ArrayList<Service> sList = service.userService(memberId);
+			model.addAttribute("sList", sList);
+			
+			//리뷰 리스트 불러오기 + 페이징
+			ReviewPageData rpd = service.selectReviewList(sNo,reqPage);
+			System.out.println(rpd.getPageNavi());
+			model.addAttribute("reviewList",rpd.getList());
+			model.addAttribute("pageNavi", rpd.getPageNavi());
+			
+			return "/service/serviceView";
+		}
+		
 	//(문정) 결제 진행
 	@RequestMapping("/insertServicePay.do")
 	public String insertServicePay(ServicePay pay) {
@@ -311,4 +380,5 @@ public class ServiceController {
 		}
 		return "redirect:/userTradeHistory.do?mNo="+pay.getPNo();
 	}
+
 }

@@ -150,8 +150,9 @@
             background-color: black;
             opacity: 0.2;
         }
+
         .qna-view-container,
-        .qna-view-container-answer{
+        .qna-view-container-answer {
             display: none;
             position: absolute;
             background-color: white;
@@ -164,18 +165,21 @@
             top: calc(50% - 350px);
             /* box-sizing: border-box; */
         }
-        .qna-view-container>.qna-view-main{
+
+        .qna-view-main {
             width: 90%;
             height: 90%;
             margin: 0 auto;
             margin-top: 30px;
         }
-        .qna-view-top{
+
+        .qna-view-top {
             width: 100%;
             height: 25px;
             background-color: #314C83;
         }
-        .qna-view-top>.qna-view-top-title{
+
+        .qna-view-top>.qna-view-top-title {
             margin-top: 2px;
             display: inline-block;
             width: 100%;
@@ -183,27 +187,41 @@
             color: white;
             margin: 0;
         }
-        .modal-exit{
+
+        .modal-exit {
             float: right;
             width: 30px;
             text-align: center;
             color: white;
         }
-        .modal-exit:hover{
+
+        .modal-exit:hover {
             cursor: pointer;
         }
+
         .qna-view-title,
-        .qna-view-file{
+        .qna-view-file {
             width: 100%;
             height: 5%;
-            border: 1px solid;
             margin: 10px 0;
         }
-        .qna-view-content{
+
+        .qna-view-content {
             width: 100%;
             height: 75%;
-            border: 1px solid;
+            border: 1px solid #314C83;
+            border-radius: 5px;
             margin: 10px 0;
+        }
+        .qna-view-content>form{
+            height: max-content;
+            width: max-content;
+        }
+        .qna-view-content textarea {
+            width: 98.5%;
+            height: 98.5%;
+            resize: none;
+            border-radius: 5px;
         }
     </style>
 </head>
@@ -230,12 +248,12 @@
             });
 
             //모달창 관련
-            $(".background-screen").on("click",function (e) {
+            $(".background-screen").on("click", function (e) {
                 $(this).hide();
                 $(".qna-view-container").hide();
                 $(".qna-view-container-answer").hide();
             });
-            $(".modal-exit").on("click",function (e) {
+            $(".modal-exit").on("click", function (e) {
                 $(".qna-view-container").hide();
                 $(".qna-view-container-answer").hide();
                 $(".background-screen").hide();
@@ -245,15 +263,17 @@
                 $.ajax({
                     type: "post",
                     url: "/questionViewAjax.do",
-                    data: {qNo:$(this).siblings("input:hidden").val()},
+                    data: {
+                        qNo: $(this).siblings("input:hidden").val()
+                    },
                     dataType: "json",
                     success: function (response) {
                         $(".qna-view-title").empty();
-                        $(".qna-view-title").append("제목: "+response.qTitle);
+                        $(".qna-view-title").append("제목: " + response.qTitle);
                         $(".qna-view-file").empty();
-                        $(".qna-view-file").append("파일: "+response.filePath);
-                        $(".qna-view-content").empty();
-                        $(".qna-view-content").append(response.qContent);
+                        $(".qna-view-file").append("파일: " + response.filePath);
+                        $(".qna-view-content:eq(0)").empty();
+                        $(".qna-view-content:eq(0)").append(response.qContent);
                     }
                 });
                 $(".background-screen").show();
@@ -265,11 +285,13 @@
                 $.ajax({
                     type: "post",
                     url: "/questionViewAjax.do",
-                    data: {qNo:$(this).siblings("input:hidden").val()},
+                    data: {
+                        qNo: $(this).siblings("input:hidden").val()
+                    },
                     dataType: "json",
                     success: function (response) {
                         $(".qna-view-title").empty();
-                        $(".qna-view-title").append("답변: "+response.qTitle);
+                        $(".qna-view-title").append("답변: " + response.qTitle);
                         $(".qna-view-file").empty();
                         $(".qna-view-file").hide();
                         $(".qna-view-content").empty();
@@ -280,9 +302,16 @@
                 $(".qna-view-container").show();
                 e.stopPropagation();
             });
+            $(".btn-answer").on("click", function (e) {
+                $("#answer_No").val($(this).siblings("input:hidden").val());
+                $(".background-screen").show();
+                $(".qna-view-container-answer").show();
+                e.stopPropagation();
+            });
+            $("#loc").val(window.location.href);
         });
     </script>
-    
+
     <div class="qna-view-container">
         <div class="qna-view-top">
             <div class="qna-view-top-title">
@@ -301,6 +330,7 @@
             </div>
         </div>
     </div>
+    <!-- 답변 작성하는 모달창 -->
     <div class="qna-view-container-answer">
         <div class="qna-view-top">
             <div class="qna-view-top-title">
@@ -311,14 +341,20 @@
             </div>
         </div>
         <div class="qna-view-main">
-            <div class="qna-view-title">
-            </div>
-            <div class="qna-view-file">
-            </div>
-            <div class="qna-view-content">
-            </div>
+            <form id="qna-reg-form" action="registerQuestion.do" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="loc" id="loc">
+                <input type="hidden" name="answer_No" id="answer_No">
+                <div class="qna-view-content">
+                    <textarea name="qContent" id=""></textarea>
+                </div>
+                <div class="qna-view-action">
+                    <input type="submit" class="btn-submit" value="등록하기">
+                </div>
+            </form>
         </div>
     </div>
+
+    <!-- 메인섹션부분 -->
     <section class="qna-section">
         <div class="qna-container">
             <select name="list_num">
@@ -346,7 +382,7 @@
                                     <input type="hidden" value="${qList.QNo}">
                                     <a href="#" class="list-title">${qList.QTitle}</a>
                                     <c:if test="${qList.answerStatus == 0}">
-                                        <a href="questionFrm.do?answerNo=${qList.QNo}" class="btn-answer">답변</a>
+                                        <a href="#" class="btn-answer">답변</a>
                                     </c:if>
                                     <c:if test="${qList.secretStatus == 1}">
                                         <span>&#128274;</span>

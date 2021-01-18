@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ilgusi.category.model.vo.Category;
+import com.ilgusi.category.model.vo.CategoryRank;
 import com.ilgusi.member.model.vo.Member;
 
 @Repository
@@ -19,6 +20,10 @@ public class CategoryDao {
 
 	public List<Category> selectCategoryList() {
 		return session.selectList("category.selectCategoryList");
+	}
+
+	public List<CategoryRank> selectCategoryRankList(int cateNum) {
+		return session.selectList("category.selectCategoryRankList",cateNum);
 	}
 
 }
