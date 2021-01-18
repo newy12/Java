@@ -30,6 +30,11 @@ public class MemberDao {
 		return session.insert("member.registerMember", m);
 	}
 
+	// (도현) 아이디 중복검사 기능
+	public Member checkId(String id) {
+		return session.selectOne("member.checkId",id);
+	}
+
 	// (도현) 아이디/비밀번호 찾기 기능
 	public Member searchIdPw(Member m) {
 		return session.selectOne("member.searchIdPw", m);

@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
 import com.ilgusi.member.model.service.MemberService;
 import com.ilgusi.member.model.vo.Member;
 
@@ -24,7 +25,7 @@ public class MemberController {
 		super();
 		System.out.println("Member컨트롤러 생성 완료");
 	}
-	
+
 	// (도현) 아이디/비번 찾기 페이지 이동
 	@RequestMapping("/forgot_pwd.do")
 	public String searchIdPwFrm() {
@@ -98,6 +99,20 @@ public class MemberController {
 		return "member/joinFrm";
 	}
 
+	// (도현) 아이디 중복검사 ajax
+	@RequestMapping(value = "/checkId.do", produces = "text/json; charset=utf-8")
+	@ResponseBody
+	public String checkId(String id) {
+		System.out.println("중복검사 아이디:"+id);
+		Member m = service.checkId(id);
+		String json;
+		if(m != null) {
+			json = "{\"result\":\"true\"}"; //중복임
+		}else {
+			json = "{\"result\":\"false\"}";; // 중복아님
+		}
+		return json;
+	}
 	// (도현) 회원가입 기능
 	@RequestMapping("/register.do")
 	public String register(Member m, Model model) {
@@ -121,12 +136,12 @@ public class MemberController {
 		System.out.println("로그인 시도");
 		System.out.println("id" + id + " pw:" + pw);
 		Member m = service.loginMember(id, pw);
-		
+
 		if (m != null) {
 			HttpSession session = req.getSession();
 			session.setAttribute("loginMember", m);
 			model.addAttribute("msg", "로그인 성공");
-		}else {
+		} else {
 			model.addAttribute("msg", "로그인 실패");
 		}
 		model.addAttribute("loc", "/");

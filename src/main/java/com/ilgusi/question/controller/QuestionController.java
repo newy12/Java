@@ -104,7 +104,8 @@ public class QuestionController {
 	@RequestMapping("registerQuestion.do")
 	public String registerQuestion(HttpServletRequest req, MultipartFile file, Model model,
 			@RequestParam(value = "answer_No", defaultValue = "-1") int answerNo,
-			@RequestParam(value = "q_No", defaultValue = "-1") int qNo) {
+			@RequestParam(value = "q_No", defaultValue = "-1") int qNo,
+			@RequestParam(value="loc",required = false) String loc) {
 
 		Question q = new Question();
 		String qTitle = req.getParameter("qTitle");
@@ -112,7 +113,10 @@ public class QuestionController {
 		if (answerNo == -1
 				&& (qTitle == null || qTitle.equals("") == true || qContent == null || qContent.equals("") == true)) {
 			model.addAttribute("msg", "등록 실패!");
-			model.addAttribute("loc", "/qna.do");
+			if(loc == null || loc.equals(""))
+				model.addAttribute("loc", "/qna.do");
+			else
+				model.addAttribute("loc", loc);
 			return "/common/msg";
 		}
 		if (qNo != -1)
@@ -167,7 +171,10 @@ public class QuestionController {
 		} else {
 			model.addAttribute("msg", "등록 실패!");
 		}
-		model.addAttribute("loc", "/qna.do");
+		if(loc == null || loc.equals(""))
+			model.addAttribute("loc", "/qna.do");
+		else
+			model.addAttribute("loc", loc);
 		return "/common/msg";
 	}
 }
