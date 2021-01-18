@@ -12,6 +12,7 @@ import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.notice.model.vo.NoticePageData;
 import com.ilgusi.service.model.dao.ServiceDao;
 import com.ilgusi.service.model.vo.Join;
+import com.ilgusi.service.model.vo.ReviewPageData;
 import com.ilgusi.service.model.vo.ServiceFile;
 import com.ilgusi.service.model.vo.ServicePageData;
 import com.ilgusi.service.model.vo.ServicePay;
@@ -148,7 +149,7 @@ public class ServiceService {
 			
 			ArrayList<com.ilgusi.service.model.vo.Service>list = dao.selectServiceList(map);
 			
-			int numPerPage = 16;
+			int numPerPage = 12;
 			int totalCount = dao.serviceTotalCount(map);
 			
 			System.out.println("totalCount : " + totalCount);
@@ -205,6 +206,20 @@ public class ServiceService {
 		public ArrayList<String> brandList(com.ilgusi.service.model.vo.Service s) {
 			return dao.brandList(s);
 		}
+		//(다솜) Servie View 불러오기 
+		public com.ilgusi.service.model.vo.Service selectServiceView(int sNo) {
+			
+			com.ilgusi.service.model.vo.Service s = dao.selectServiceView(sNo);
+			
+			if(s != null) {
+				System.out.println("service.sNo : " + s.getSNo());
+			}else {
+				System.out.println("service : s가 null이얌");
+			}
+			
+			return s;
+		}
+		
 		
 
 		public List<ServiceReview> reviewListSize(String mId) {
@@ -213,6 +228,77 @@ public class ServiceService {
 
 		public List<com.ilgusi.service.model.vo.Service> sRateAVG(String mId) {
 			return dao.sRateAVG(mId);
+		}
+
+
+		public Member selectMemberName(String memberId) {
+			return dao.selectMemberName(memberId);
+		}
+
+		
+
+		public ReviewPageData selectReviewList(int sNo, int reqPage) {
+			//보여줄 리스트 개수
+			int numPerPage = 5;
+			//시작번호 끝번호 
+			// reqPage 1  ->  start : 1  end :5;
+			// reqPage 2  ->  start : 6	 end :10;
+			int end = reqPage*numPerPage;
+			int start = (end-numPerPage) +1;
+			//해당 서비스의 리뷰 총 개수
+			int totalCount = dao.totalReviewCount(sNo);
+			System.out.println("review_totalCount : " + totalCount);
+			//총 리뷰 갯수
+			int totalPage = 0;
+			if(totalCount%numPerPage == 0) {
+				totalPage = totalCount/numPerPage;
+			}else {
+				totalPage = totalCount/numPerPage+1;
+			}
+			
+			//페이지 네비
+			int pageNaviSize = 5;
+			int pageNo = ((reqPage-1)/pageNaviSize)*pageNaviSize +1;
+			String pageNavi = "<ul class='pagination'>";
+			
+			//이전 버튼 
+			if(pageNo != 1) {
+				pageNavi += "<li class='page-item'><a class='page-link' href='/serviceView.do?sNo="+sNo+"&reqPage="+(pageNo-1)+"'>pre</a></li>";
+			}
+			//페이지 네비 버튼
+			for(int i =0; i<pageNaviSize; i++) {
+				if(reqPage == pageNo) {
+					pageNavi += "<li class='page-item'><span class='page-link selected'>"+pageNo+"</a></li>";
+				}else {
+					pageNavi += "<li class='page-item'><a class='page-link' href='/serviceView.do?sNo="+sNo+"&reqPage="+(pageNo)+">"+pageNo+"</a></li>";
+				}
+				pageNo++;
+				
+				if(pageNo > totalPage) {
+					break;
+				}
+			}
+			
+			if(reqPage <= (totalPage/pageNaviSize)) {
+				pageNavi += "<li class='page-item'><a class='page-link' href='/serviceView.do?sNo="+sNo+"&reqPage="+(pageNo+1)+"'> next </a></li></ul>";
+			}
+			
+			if(totalCount <= numPerPage) {
+				pageNavi = "";
+			}
+			
+			ArrayList<ServiceReview> list = dao.serviceViewReviewList(sNo,start,end);
+			
+			ReviewPageData rpd = new ReviewPageData();
+			rpd.setList(list);
+			rpd.setPageNavi(pageNavi);
+			
+			
+			return rpd;
+		}
+
+		public ArrayList<com.ilgusi.service.model.vo.Service> userService(String memberId) {
+			return dao.userService(memberId);
 		}
 
 		//(문정) 결제 진행
@@ -224,10 +310,6 @@ public class ServiceService {
 		public int updateTradeStatus(int tNo) {
 			return dao.updateTradeStatus(tNo);
 		}
-
-		
-
-		
 
 		
 
