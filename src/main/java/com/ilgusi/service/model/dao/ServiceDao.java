@@ -180,6 +180,11 @@ public class ServiceDao {
 		return session.update("trade.updateTradeStatus", tNo);
 	}
 	
+	//(문정) 리뷰 작성하면 서비스테이블 s_rate에 평점 넣어줌
+	public int serviceUpdateSRate(int sNo) {
+		return session.update("review.serviceUpdateSRate", sNo);
+	}
+	
 	
 
 

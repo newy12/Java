@@ -307,6 +307,11 @@ public class ServiceService {
 			return dao.updateTradeStatus(tNo);
 		}
 
+		//(문정) 리뷰 작성하면 서비스테이블 s_rate에 평점 넣어줌
+		public int serviceUpdateSRate(int sNo) {
+			return dao.serviceUpdateSRate(sNo);
+		}
+
 		
 
 		

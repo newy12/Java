@@ -173,6 +173,8 @@ public class ServiceController {
 			result = service.serviceReviewSuccess(data.getTNo());
 			if(result>0) {
 				model.addAttribute("msg","리뷰를 등록하였습니다.");
+				result = service.serviceUpdateSRate(data.getSNo());
+				if(result>0) System.out.println("[등록]서비스테이블에 s_rate 수정 성공");
 			}
 		}
 		return "/service/reviewDone";
@@ -192,18 +194,22 @@ public class ServiceController {
 		int result = service.serviceReviewUpdate(review);
 		if(result>0) {
 			model.addAttribute("msg","리뷰를 수정하였습니다.");
+			result = service.serviceUpdateSRate(review.getSNo());
+			if(result>0) System.out.println("[수정]서비스테이블에 s_rate 수정 성공");
 		}
 		return "/service/reviewDone";
 	}
 	
 	//(문정) 서비스 리뷰 삭제
 	@RequestMapping("/serviewReviewDelete.do")
-	public String serviewReviewDelete(int rNo, int tNo, Model model) {
+	public String serviewReviewDelete(int rNo, int tNo, int sNo, Model model) {
 		int result = service.serviceReviewDelete(rNo);
 		if(result>0) {
 			result = service.serviceTradeStatusUpdate(tNo);
 			if(result>0) {
 				model.addAttribute("msg", "리뷰를 삭제했습니다.");
+				result = service.serviceUpdateSRate(sNo);
+				if(result>0) System.out.println("[삭제]서비스테이블에 s_rate 수정 성공");
 			}
 		}
 		return "/service/reviewDone";

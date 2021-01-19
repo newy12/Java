@@ -59,10 +59,17 @@
 				where rnum between #{start} and #{end} 
 
 	</select>
+	
 	<!-- (다솜) 해당 서비스의 리뷰 토탈카운트 -->
 	<select id="totalRiviewCount" parameterType="_int" resultType="_int">
 		select count(*) cnt
 		from service_review where s_no= #{parameter}
 	</select>
 
+	<!--(문정) 리뷰 작성하면 서비스테이블 s_rate에 평점 넣어줌  -->
+	<update id="serviceUpdateSRate" parameterType="_int">
+		update service set s_rate = (select round(avg(r_rate),0) from service_review where s_no = #{_parameter}) 
+		where s_no = #{_parameter}
+	</update>
+	
 </mapper>
