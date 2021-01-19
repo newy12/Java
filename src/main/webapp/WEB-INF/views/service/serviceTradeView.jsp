@@ -31,7 +31,6 @@
 	}
 	.sContent>div:first-child{
 		width:30%;
-		border:1px solid rgb(158, 158, 158);
 	}
 	.sContent>div:last-child {
 		width:65%;
@@ -85,8 +84,8 @@
 		<div id="gray-text">프리랜서와 협의한 거래 내용을 확인해보세요.</div>
 		<hr>
 		<div class="sContent">
-			<div><img src="/upload/request/img.jpg" width="100%" height="80px" alt="${sImg }"></div>
-			<div><a href="#">${service.STitle }</a></div>
+			<div><img src="/upload/service/${ service.SImg}" width="100%" height="80px" style="border-radius:5px;" alt="${sImg }"></div>
+			<div><a href="javascript:goServiceView(${trade.SNo })">${service.STitle }</a></div>
 		</div>
 		<div class="sub-title">서비스 가격</div>
 		<div class="text-box">
@@ -110,6 +109,11 @@
 		$("#close_btn").click(function(){
 			window.close();
 	    });
+		
+		//부모창에서 서비스 상세보기 뜸
+		function goServiceView(sNo){
+			opener.parent.gotoServiceView(sNo);
+		}
 		
 	</script>
 </body>

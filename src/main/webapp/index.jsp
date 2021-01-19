@@ -33,7 +33,6 @@
 	<a href="/freelancerMypage.do?MNo=${loginMember.MNo}">프리랜서 마이페이지</a>
 	<br> 문정
 	<a href="/requestList.do?reqPage=1&order=new&subject=all&keyword=">의뢰게시판 리스트 </a> /
-	<a href="/userMypage.do">사용자 마이페이지</a>
 	<br> 다솜
 	<a href="/noticeList.do?reqPage=1&keyword=">공지사항 게시판</a> /
 	<a href="/serviceList.do?sNo=10&reqPage=1&order=new&keyword=">서비스리스트</a> /
