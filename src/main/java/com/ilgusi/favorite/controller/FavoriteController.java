@@ -59,4 +59,6 @@ public class FavoriteController {
 		int result = service.insertHeart(sNo, mNo);
 		return "";
 	}
+	
+	
 }

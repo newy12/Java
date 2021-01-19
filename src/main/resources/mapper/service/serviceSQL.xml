@@ -266,18 +266,20 @@
 			<if test="keyword != null">
 				and s_title like '%'|| #{keyword}||'%'
 			</if>
-			
 		order by 
 			<choose>
-				<when test="order == 'popular'">
-					s_rate, s_no desc
-				</when>
 				<when test="order == 'review'">
+					s_rate desc 
+				</when>
+				<when test="order == 'popular'">
 					working_count, s_no desc
 				</when>
-				<when test="order == 'new'">
-					s_no desc
+				<when test="order == 'rowPrice'">
+					s_price
 				</when>
+				<otherwise>
+					s_no desc
+				</otherwise>
 			</choose>
 		
 		)s) where rnum between #{start} and #{end} 
