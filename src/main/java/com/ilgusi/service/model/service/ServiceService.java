@@ -307,6 +307,23 @@ public class ServiceService {
 			return dao.updateTradeStatus(tNo);
 		}
 
+		// (도현) search service
+		public List<com.ilgusi.service.model.vo.Service> searchService(int begin,int end, java.lang.String keyword) {
+			return dao.searchService(begin,end,keyword);
+		}
+
+		// (도현) search serviceCount
+		public int selectServiceCount(java.lang.String keyword) {
+			return dao.selectServiceCount(keyword);
+		}
+		public int selectMaxPageCount(int numPerPage,int listCount) {
+			int maxPageCount = listCount / numPerPage;
+			
+			if(listCount % numPerPage > 0)
+				maxPageCount++;
+			
+			return maxPageCount;
+		}
 		
 
 		

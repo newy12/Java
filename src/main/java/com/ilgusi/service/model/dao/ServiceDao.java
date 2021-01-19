@@ -179,6 +179,18 @@ public class ServiceDao {
 	public int updateTradeStatus(int tNo) {
 		return session.update("trade.updateTradeStatus", tNo);
 	}
+	// (도현) search service
+	public List<com.ilgusi.service.model.vo.Service> searchService(int begin, int end, String keyword) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("begin", begin);
+		map.put("end", end);
+		map.put("keyword", keyword);
+		return session.selectList("service.searchService",map);
+	}
+	// (도현) search serviceCount
+	public int selectServiceCount(String keyword) {
+		return session.selectOne("service.selectServiceCount",keyword);
+	}
 	
 	
 

@@ -14,11 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ilgusi.category.model.vo.Category;
 import com.ilgusi.member.model.vo.Member;
+import com.ilgusi.question.model.vo.Question;
 import com.ilgusi.service.model.service.ServiceService;
 import com.ilgusi.service.model.vo.Join;
 import com.ilgusi.service.model.vo.ReviewPageData;
@@ -386,4 +388,32 @@ public class ServiceController {
 		return "redirect:/userTradeHistory.do?mNo="+pay.getPNo();
 	}
 
+	// (도현)serviceList
+	@RequestMapping("/serviceSearch.do")
+	public String serviceSearch(@RequestParam(value="page",defaultValue = "1") int page, String order, Model model, String keyword) {
+		if (!(keyword == null || keyword.equals(""))) {
+			// 네비 기능
+			int listPerPage = 20;
+			int maxListCount;
+			maxListCount = service.selectServiceCount(keyword);
+			
+			List<Service> list = service.searchService(maxListCount - ((page) * listPerPage) + 1,
+					maxListCount - ((page - 1) * listPerPage),keyword);
+			int maxPrintPageCount = 5;
+			int maxPageCount = service.selectMaxPageCount(listPerPage, maxListCount);
+			int begin = maxPrintPageCount * (page / maxPrintPageCount) + 1; // 네비 시작
+			int end = (begin + 4) < maxPageCount ? begin + 4 : maxPageCount; // 네비 끝
+			
+			//천단위 컴마 찍기
+			DecimalFormat formatter = new DecimalFormat("###,###");
+			for (int i = 0; i<list.size(); i++) {
+				list.get(i).setSPriceTxt(formatter.format(list.get(i).getSPrice()));
+			}
+			model.addAttribute("list", list);
+			model.addAttribute("begin", begin);
+			model.addAttribute("end", end);
+			model.addAttribute("maxListCount", formatter.format(maxListCount));
+		}
+		return "/service/serviceAllList";
+	}
 }

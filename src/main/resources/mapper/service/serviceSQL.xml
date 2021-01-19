@@ -448,6 +448,24 @@
 		from service_file where s_no=#{parameter}
 	
 	</select>
-	
+	<!-- (도현) 서비스 검색 -->
+	<select id="searchService" parameterType="map" resultType="s">
+		select * from (select
+		rownum rn,
+		s_no as sNo,
+		m_id as mId,
+		s_title as sTitle,
+		s_price as sPrice,
+		s_content as sContent,
+		s_area as sArea,
+		s_img as sImg,
+		s_rate as sRate
+		from service
+		where s_title like '%'||#{keyword}||'%' and delete_status = 'n' and admin_approval = 'y')
+		where rn between #{begin} and #{end}
+	</select>
+	<select id="selectServiceCount" parameterType="string" resultType="_int">
+		select count(*) from service where s_title like '%'||#{keyword}||'%' and delete_status = 'n' and admin_approval = 'y'
+	</select>
 </mapper>
 

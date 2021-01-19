@@ -82,14 +82,31 @@
             width: 60%;
             text-align: center;
         }
-        
+
         .dh-header .header-top-center>.header-search {
             margin-top: 50px;
             text-align: right;
         }
-        .dh-header .header-top-center>.header-search>input {
-            
-            }
+
+        .dh-header .header-top-center>.header-search input {
+            transition: 0.3s;
+            border: 1px solid lightgray;
+            height: 40px;
+            width: 200px;
+            border-radius: 4px;
+        }
+        .dh-header .header-top-center>.header-search input:focus {
+            width: 310px;
+        }
+        .dh-header .header-top-center>.header-search button{
+            height: 40px;
+            width: 50px;
+            background-color: white;
+            border: 2px solid #314c83;
+            border-radius: 4px;
+            outline: none;
+            box-sizing: border-box;
+        }
         .dh-header .header-top-right {
             float: left;
             width: 25%;
@@ -296,13 +313,16 @@
 
                 for (let i = 0; i < data.length; i++) {
                     if (data[i].cDivision == 'm') {
-                        $navUl.append("<li><a href='/serviceList.do?cNo="+data[i].cNo+"&reqPage=1&order=new&keyword='>" + data[i].cName + "</a> <ul></ul></li>")
+                        $navUl.append("<li><a href='/serviceList.do?cNo=" + data[i].cNo +
+                            "&reqPage=1&order=new&keyword='>" + data[i].cName +
+                            "</a> <ul></ul></li>")
                         console.log(data[i].cNo)
 
                     }
                     if (data[i].cDivision == 's') {
                         $(".nav>ul>li:eq(" + (parseInt(data[i].cNo / 10) - 1) + ")>ul").append(
-                            "<li><a href='/serviceList.do?cNo="+data[i].cNo+"&reqPage=1&order=new&keyword='>" + data[i].cName + "</a></li>")
+                            "<li><a href='/serviceList.do?cNo=" + data[i].cNo +
+                            "&reqPage=1&order=new&keyword='>" + data[i].cName + "</a></li>")
                         // console.log(data[i]);
                     }
                 }
@@ -461,8 +481,8 @@
             </div>
             <div class="header-top-center">
                 <div class="header-search">
-                    <form action=".do" method="get">
-                        <input type="text" name="keyword" id="h-search">
+                    <form action="/serviceSearch.do" method="get">
+                        <input type="text" name="keyword" id="h-search" placeholder="키워드를 입력해주세요.">
                         <button>검색</button>
                     </form>
                 </div>
