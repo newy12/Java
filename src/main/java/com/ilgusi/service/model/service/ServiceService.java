@@ -132,7 +132,7 @@ public class ServiceService {
 		}
 
 		//(다솜)서비스 리스트 
-		public ServicePageData servicePageList(HashMap<String, Object> map, int reqPage, int cNo) {
+		public ServicePageData servicePageList(HashMap<String, Object> map, int reqPage, int cNo, String order) {
 			ArrayList<com.ilgusi.service.model.vo.Service>list = dao.selectServiceList(map);
 			
 			String keyword = String (map.get("keyword"));
@@ -152,17 +152,26 @@ public class ServiceService {
 			int pageNo = ((reqPage-1)/pageNaviSize)*pageNaviSize +1; //페이지 네비가 시작하는 페이지 번호
 			
 			//페이지 네비 작성
-			String pageNavi = "<ul class='pagination justify-content-center'>";
-			
+			String pageNavi = "<ul class='pagination justify-content-center'>";		
 			
 			
 			//이전버튼 생성
 			if(pageNo != 1) {
-				pageNavi += "<li class='page=item'><a class='pageNavi page-link' href='/serviceList.do?cNo="+cNo+"&reqPage="+(pageNo-1)+"&keyword="+keyword+"'> pre </a></li>";
+				if(keyword == null) {
+					pageNavi += "<li class='page=item'><a class='pageNavi page-link' href='/serviceList.do?cNo="+cNo+"&reqPage="+(pageNo-1)+"&order="+order+"&keyword='> pre </a></li>";
+				}else {
+					pageNavi += "<li class='page=item'><a class='pageNavi page-link' href='/serviceList.do?cNo="+cNo+"&reqPage="+(pageNo-1)+"&order="+order+"&keyword="+keyword+"'> pre </a></li>";
+				}
+				
 			}
 			for(int i=0; i<pageNaviSize; i++) {
 				if(pageNo != reqPage) {
-					pageNavi += "<li class='page=item'><a class='pageNavi page-link' href='/serviceList.do?cNo="+cNo+"&reqPage="+(pageNo)+"&keyword="+keyword+"'>"+pageNo+"</a></li>";
+					if(keyword == null) {
+						pageNavi += "<li class='page=item'><a class='pageNavi page-link' href='/serviceList.do?cNo="+cNo+"&reqPage="+(pageNo)+"&order="+order+"&keyword='>"+pageNo+"</a></li>";
+					}else {
+						pageNavi += "<li class='page=item'><a class='pageNavi page-link' href='/serviceList.do?cNo="+cNo+"&reqPage="+(pageNo)+"&order="+order+"&keyword="+keyword+"'>"+pageNo+"</a></li>";
+					}
+					
 				}else {
 					pageNavi += "<li class='page=item'><span class='selectedPage pageNavi page-link'>"+pageNo+"</span></li>";
 				}
@@ -175,7 +184,10 @@ public class ServiceService {
 			
 			//다음 버튼 
 			if(pageNo <= totalPage) {
-				pageNavi += "<li class='page=item'><a href='/serviceList.do?cNo="+cNo+"&reqPage="+pageNo+"&keyword="+keyword+"'> next </a></li>";
+				if(keyword == null) {
+					pageNavi += "<li class='page=item'><a href='/serviceList.do?cNo="+cNo+"&reqPage="+pageNo+"&order="+order+"&keyword='> next </a></li>";	
+				}
+				pageNavi += "<li class='page=item'><a href='/serviceList.do?cNo="+cNo+"&reqPage="+pageNo+"&order="+order+"&keyword="+keyword+"'> next </a></li>";
 			}
 			
 			pageNavi += "</ul>";
@@ -311,6 +323,30 @@ public class ServiceService {
 		//(문정) 리뷰 작성하면 서비스테이블 s_rate에 평점 넣어줌
 		public int serviceUpdateSRate(int sNo) {
 			return dao.serviceUpdateSRate(sNo);
+		}
+
+		// (도현) search service
+		public List<com.ilgusi.service.model.vo.Service> searchService(int begin,int end, java.lang.String keyword) {
+			return dao.searchService(begin,end,keyword);
+		}
+
+		// (도현) search serviceCount
+		public int selectServiceCount(java.lang.String keyword) {
+			return dao.selectServiceCount(keyword);
+		}
+		public int selectMaxPageCount(int numPerPage,int listCount) {
+			int maxPageCount = listCount / numPerPage;
+			
+			if(listCount % numPerPage > 0)
+				maxPageCount++;
+			
+			return maxPageCount;
+		}
+		
+		//프리랜서 마이페이지 서비스 삭제 
+		public int deleteService(int sNo) {
+			
+			return dao.deleteService(sNo);
 		}
 
 		

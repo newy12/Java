@@ -27,9 +27,9 @@
         border: 1px solid rgb(224, 224, 224);
     }
 
-    .container {
+    .ListContainer {
         margin-top: 20px;
-        width: 800px;
+        width: 795px;
         height: 1000px;
     }
 
@@ -50,11 +50,11 @@
     border: 1px solid rgb(204, 204, 204);
 }
 
-.container>div {
-    width: 225px;
+.ListContainer>div {
+    width: 230px;
     height: 270px;
     float: left;
-    margin: 0px 20px 40px 20px;
+    margin:10px;
 }
 
 .title-img {
@@ -73,7 +73,7 @@
 }
 
 .back-img {
-    width: 225px;
+    width: 224px;
     height: 133px;
     overflow: hidden;
     position: absolute;
@@ -111,10 +111,10 @@
     margin-bottom: 10px;
     text-overflow: ellipsis;
     color: rgb(51, 51, 51);
-    overflow: hidden;
+    /* overflow: hidden; */
     display: -webkit-box;
     -webkit-line-clamp: 2; 
-    -webkit-box-orient: vertical;
+    -webkit-box-orient: vertical; 
 
 }
 .price{
@@ -123,7 +123,7 @@
     font-weight: bold;
     color: rgb(51, 51, 51);
 }
-.container>div>a{
+.ListContainer>div>a{
     text-decoration: none;
 }
 .rate{
@@ -138,8 +138,11 @@
     color: rgb(241, 196, 15);
 }
 .inner{
-width:1200px;
-margin:0 auto;}
+	width:1200px;
+	margin:0 auto;
+	padding-left: 30px;
+	padding-right: 30px;
+}
 .noList{
     margin-top: 5px;
     text-align: center;
@@ -148,6 +151,19 @@ margin:0 auto;}
    	font-size:20px;
    	font-weight: bold; 
 }
+.del-btn{
+	height: 30px;
+	width: 100px;
+	border: 2px solid #FF8F3F;
+	background-color: transparent;
+	color: #FF8F3F;
+	font-weight: bold;
+	border-radius: 5px;
+	float: right;
+}
+
+
+
 </style>
 </head>
 <body>
@@ -157,7 +173,6 @@ margin:0 auto;}
     <div class="page-wrap">
         <!-- 사이드메뉴 -->
         <jsp:include page="/WEB-INF/views/freelancer/freelancer-side.jsp" />
-        
 	     <div class="board-wrap">
 	        <div class="board-box">
 	            <span>서비스 내역</span>
@@ -166,33 +181,37 @@ margin:0 auto;}
 	            </select>
 	        </div>
 			<div class="inner">
-	        <div class="container">
-	        <c:choose>
-	        <c:when test="${j.serviceList.size()==0}">
-	        <div class="noList" style="width:800px">등록된 서비스가 없습니다.</div>
-	        </c:when>
-	        <c:otherwise>
-	        <c:forEach items="${j.serviceList}" var ="a">
-	            <div>
-	                <div>
-	                    <a href="#">
-	                        <div class="title-img">
-	                            <div class="back-img"><img src="/upload/service/${a.SImg}" width="225x" height="133px"></div>
-	                        </div>
-	                    </a>
-	                   
-	                </div>
-	                <div class="empty"></div>
-	                <div class="title">제목 ${a.STitle}</div>
-	                <a href="#">
-	                    <div class="content">내용 ${a.SContent } </div>
-	                </a>
-	            </div>
-	            </c:forEach>
-	        </c:otherwise>
-	        </c:choose>
-	        
-	        </div>
+		        <div class="ListContainer">
+		        <c:choose>
+			        <c:when test="${j.serviceList.size() == 0}">
+			        	<div class="noList" style="width:800px">등록된 서비스가 없습니다.</div>
+			        </c:when>
+			        <c:otherwise>
+				        <c:forEach items="${j.serviceList}" var ="a" begin="0" end="4" >
+				            <div>
+				                <div>
+				                	<input type="hidden" value="${a.SNo }" id="sNo">
+				                    <a href="#">
+				                        <div class="title-img">
+				                            <div class="back-img"><img src="/upload/service/${a.SImg}" width="225x" height="133px"></div>
+				                        </div>
+				                    </a>
+				                   
+				                </div>
+				                <div class="empty"></div>
+				                <div class="title"> ${a.STitle}</div>
+				                <a href="#">
+				                    <div class="content"> ${a.SContent } </div>
+				                </a>
+				                <button  class="del-btn" value="삭제하기" onclick="del();">삭제하기</button>
+				            </div>
+				         </c:forEach>
+				    
+			        </c:otherwise>
+			        
+		        </c:choose>
+		        
+		        </div>
 	        </div>
 	    </div>
 	</div>
@@ -207,6 +226,21 @@ margin:0 auto;}
 			 $(".menu").children().eq(2).find('a').css({'margin-left':'5px', 'font-weight':'bold'});
 			 $(".menu").children().eq(2).find('img').css({'display':'inline'});
 		});
+    
+    $(function () {
+
+    })
+    
+    function del(){
+    		var sNo = $("#sNo").val();
+    		console.log("sNo :"+sNo);
+    		var confirm_test = confirm("해당 서비스를 삭제할까요?");
+    		
+    		if(confirm_test == true){
+    			location.href = "/delService.do?sNo="+sNo;
+    		}
+    		
+    	};
     </script>
 </body>
 </html>
