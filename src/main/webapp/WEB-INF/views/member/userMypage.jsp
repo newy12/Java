@@ -13,14 +13,6 @@
         margin: 0 auto;
         margin-top:50px;
     }
-	.profile-box{
-        width: 250px;
-        float: left;
-	}
-    .profile-box>div{
-        text-align: center;
-        margin: 0 auto;
-    }
     .board-box{
         width: 800px;
         height: 531px;
@@ -28,44 +20,6 @@
         margin-top: 40px;
         margin-left: 30px;
         border: 1px solid rgb(224, 224, 224);
-    }
-    .switch{
-        height: 31px;
-        margin-bottom: 30px;
-        background-color: white;
-        color: rgb(49, 76, 131);
-        border: 1px solid rgb(49, 76, 131);
-    }
-    .switch:hover{
-        background-color: rgb(49, 76, 131);
-        color: white;
-        border: 1px solid rgb(49, 76, 131);
-    }
-    .menu{
-        padding: 0;
-        list-style: none;
-    }
-    .menu>li{
-        margin-bottom: 20px;
-    }
-    .menu>li>img{
-        display: none;
-    }
-    .menu>li:hover>img{
-        display: inline;
-    }
-    .menu>li:hover>a{
-        margin-left: 5px;
-        font-weight: bold; 
-    }
-    .menu>li>a{
-        text-decoration: none;
-        color: rgb(51, 51, 51);
-    }
-    .profile-box>p{
-        font-size: 18px;
-        font-weight: bold;
-        color: rgb(49, 76, 131);
     }
     .board-box>p{
         font-size: 18px;
@@ -224,19 +178,9 @@
 		<%@ include file="/WEB-INF/views/common/header.jsp"%>
 	</div>
     <div class="page-wrap">
-        <div class="profile-box">
-            <div><img src="/img/icon/mypage_person.png" style="width: 147px; height: 147px"></div>
-            <div style="margin-top: 10px;">${loginMember.MId }님</div>
-            <div style="margin-top: 5px;"><button class="switch">프리랜서로 전환</button></div>
-            <p>MY PAGE</p>
-            <hr>
-            <ul class="menu">
-                <li><img src="/img/icon/circle_navy.png" style="display: inline;"><a href="#" style="margin-left: 5px; font-weight: bold; ">나의 프로필</a></li>
-                <li><img src="/img/icon/circle_navy.png"><a href="/userHeartList.do?mNo=${loginMember.MNo }&order=all">찜한 내역</a></li>
-                <li><img src="/img/icon/circle_navy.png"><a href="/userTradeHistory.do?mNo=${loginMember.MNo }">거래 내역</a></li>
-            </ul>
-        </div>
-        
+        <!-- 사이드메뉴 -->
+        <jsp:include page="/WEB-INF/views/member/mypage-side.jsp" />
+       
         <div class="board-box">
             <p>나의 프로필</p>
             <div>
@@ -329,6 +273,10 @@
 	 document.addEventListener('DOMContentLoaded', function() {
 		 $('#email-check').hide();
 		 $('#phone-check').hide();
+		 
+		 //메뉴 고정
+		 $(".menu").children().eq(0).find('a').css({'margin-left':'5px', 'font-weight':'bold'});
+		 $(".menu").children().eq(0).find('img').css({'display':'inline'});
 		 
 		 //폰번호 분리
 	 	var phone_data = $("#phone").val();

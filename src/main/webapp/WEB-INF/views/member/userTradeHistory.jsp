@@ -12,17 +12,6 @@
         margin: 0 auto;
         margin-top:50px;
     }
-
-    .profile-box {
-        width: 250px;
-        float: left;
-    }
-
-    .profile-box>div {
-        text-align: center;
-        margin: 0 auto;
-    }
-
     .board-wrap {
         width: 800px;
         margin: 0 auto;
@@ -35,54 +24,8 @@
         height: 45px;
         border: 1px solid rgb(224, 224, 224);
     }
-
-    .container-box {
-        margin-top: 20px;
-        width: 800px;
-        height: 1000px;
-    }
-
-    .switch {
-        height: 31px;
-        margin-bottom: 30px;
-        color: rgb(49, 76, 131);
-        background-color:white;
-        border: 1px solid rgb(49, 76, 131);
-    }
-
-    .switch:hover {
-        background-color: rgb(49, 76, 131);
-        color: white;
-        border: 1px solid rgb(49, 76, 131);
-    }
-
-    .menu{
-        padding: 0;
-        list-style: none;
-    }
-    .menu>li{
-        margin-bottom: 20px;
-    }
-    .menu>li>img{
-        display: none;
-    }
-    .menu>li:hover>img{
-        display: inline;
-    }
-    .menu>li:hover>a{
-        margin-left: 5px;
-        font-weight: bold; 
-    }
-    .menu>li>a{
-        text-decoration: none;
-        color: rgb(51, 51, 51);
-    }
-
-    .profile-box>p {
-        font-size: 18px;
-        font-weight: bold;
-        color: rgb(49, 76, 131);
-    }
+    
+ 
 
     .board-box>span {
         font-size: 18px;
@@ -90,6 +33,11 @@
         color: rgb(49, 76, 131);
         line-height: 45px;
         margin-left: 30px;
+    }
+    .container-box {
+        margin-top: 20px;
+        width: 800px;
+        height: 1000px;
     }
     .container-box>div:first-child{
         height: 37px;
@@ -237,18 +185,8 @@
 		<%@ include file="/WEB-INF/views/common/header.jsp"%>
 	</div>
     <div class="page-wrap">
-        <div class="profile-box">
-            <div><img src="/img/icon/mypage_person.png" style="width: 147px; height: 147px"></div>
-            <div style="margin-top: 10px;">${loginMember.MId }님</div>
-            <div style="margin-top: 5px;"><button class="switch">프리랜서로 전환</button></div>
-            <p>MY PAGE</p>
-            <hr>
-            <ul class="menu">
-                <li><img src="/img/icon/circle_navy.png"><a href="/userMypage.do?MNo=${loginMember.MNo}">나의 프로필</a></li>
-                <li><img src="/img/icon/circle_navy.png"><a href="/userHeartList.do?mNo=${loginMember.MNo }&order=all">찜한 내역</a></li>
-                <li><img src="/img/icon/circle_navy.png" style="display: inline;"><a href="#"  style="margin-left: 5px; font-weight: bold; ">거래 내역</a></li>
-            </ul>
-        </div>
+        <!-- 사이드메뉴 -->
+        <jsp:include page="/WEB-INF/views/member/mypage-side.jsp" />
         
         <div class="board-wrap">
             <div class="board-box">
@@ -283,16 +221,16 @@
 	                    </div>
 	                    <div>
 	                        <div>
-	                            <div><a href="#"><img src="/upload/service/${ serviceList[status.index].SImg}" width="175px" height="103px" style="border-radius:5px;"></a></div>
+	                            <div><a href="/serviceView.do?sNo=${serviceList[status.index].SNo}&reqPage=1"><img src="/upload/service/${ serviceList[status.index].SImg}" width="175px" height="103px" style="border-radius:5px;"></a></div>
 	                            <div style="color:#8a8a8a;">
 	                                사용자 ID
 	                                <div>
-	                                    <div><a href="#">${serviceList[status.index].MId }</a></div>
-	                                    <div><a href="#"><img src="/img/icon/home.png"></a></div>
+	                                    <div><a href="/introduceFrm.do?mId=${serviceList[status.index].MId}&reqPage=1">${serviceList[status.index].MId }</a></div>
+	                                    <div><a href="/introduceFrm.do?mId=${serviceList[status.index].MId}&reqPage=1"><img src="/img/icon/home.png"></a></div>
 	                                    <div><a href="#"><img src="/img/icon/message.png"></a></div>
 	                                </div>
 	                            </div>
-	                            <div><a href="#">${serviceList[status.index].SContent }</a></div>
+	                            <div><a href="/serviceView.do?sNo=${serviceList[status.index].SNo}&reqPage=1">${serviceList[status.index].SContent }</a></div>
 	                        </div>
 	                    </div>
 	                    <div>
@@ -358,8 +296,13 @@
 	
 	<script>
 		$(document).ready(function(){
+			//페이지 높이 동적 적용
 			var containerHeight = $(".container-box").height();
 			$(".page-wrap").height(containerHeight+600);
+			
+			//메뉴 고정
+	   		 $(".menu").children().eq(2).find('a').css({'margin-left':'5px', 'font-weight':'bold'});
+	   		 $(".menu").children().eq(2).find('img').css({'display':'inline'});
 		});
 
 		
@@ -427,6 +370,11 @@
 				
 			}
 		});
+		
+		//거래상세보기 창에서 서비스 상세보기를 누르면
+		function gotoServiceView(sNo){
+			location.href="/serviceView.do?sNo="+sNo+"&reqPage=1";
+		}
 	</script>
 
 </body>
