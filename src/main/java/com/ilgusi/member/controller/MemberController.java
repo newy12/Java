@@ -132,7 +132,7 @@ public class MemberController {
 
 	// (도현) 로그인
 	@RequestMapping("/login.do")
-	public String login(HttpServletRequest req, String id, String pw, Model model) {
+	public String login(HttpServletRequest req, String id, String pw, Model model,String loc) {
 		System.out.println("로그인 시도");
 		System.out.println("id" + id + " pw:" + pw);
 		Member m = service.loginMember(id, pw);
@@ -144,7 +144,7 @@ public class MemberController {
 		} else {
 			model.addAttribute("msg", "로그인 실패");
 		}
-		model.addAttribute("loc", "/");
+		model.addAttribute("loc", loc);
 		return "common/msg";
 	}
 

@@ -50,7 +50,7 @@
         .dh-header-container {
             position: relative;
             width: 100%;
-            border-bottom: 1px solid gray;
+            border-bottom: 1px solid lightgray;
             z-index: 100;
             font-family: "Arita-dotum-Medium";
         }
@@ -82,11 +82,14 @@
             width: 60%;
             text-align: center;
         }
-
+        
         .dh-header .header-top-center>.header-search {
             margin-top: 50px;
+            text-align: right;
         }
-
+        .dh-header .header-top-center>.header-search>input {
+            
+            }
         .dh-header .header-top-right {
             float: left;
             width: 25%;
@@ -293,13 +296,15 @@
 
                 for (let i = 0; i < data.length; i++) {
                     if (data[i].cDivision == 'm') {
-                        $navUl.append("<li><a href='/serviceList.do?cNo="+data[i].cNo+"&reqPage=1&order=new'>" + data[i].cName + "</a> <ul></ul></li>")
+                        $navUl.append("<li><a href='/serviceList.do?cNo=" + data[i].cNo +
+                            "&reqPage=1&order=new'>" + data[i].cName + "</a> <ul></ul></li>")
                         console.log(data[i].cNo)
 
                     }
                     if (data[i].cDivision == 's') {
                         $(".nav>ul>li:eq(" + (parseInt(data[i].cNo / 10) - 1) + ")>ul").append(
-                            "<li><a href='/serviceList.do?cNo="+data[i].cNo+"&reqPage=1&order=new'>" + data[i].cName + "</a></li>")
+                            "<li><a href='/serviceList.do?cNo=" + data[i].cNo +
+                            "&reqPage=1&order=new'>" + data[i].cName + "</a></li>")
                         // console.log(data[i]);
                     }
                 }
@@ -411,6 +416,9 @@
         $(".ul-user").on("hover", function (e) {
             $(".ul-user").css("display", "block");
         })
+
+        // 로그인 후 원래 있던 페이지로 돌아가기 위한 코드
+        $("#login-loc").val(location.href);
     });
 </script>
 <div class="background-screen"></div>
@@ -432,6 +440,7 @@
                     <input type="password" name="pw" id="pw" placeholder="비밀번호를 입력해주세요."><br>
                     <input type="submit" id="btnLogin" value="로그인">
                     <a href="/forgot_pwd.do">아이디·비밀번호 찾기</a>
+                    <input type="hidden" name="loc" id="login-loc">
                 </form>
             </div>
         </div>
@@ -454,13 +463,15 @@
             </div>
             <div class="header-top-center">
                 <div class="header-search">
-                    <input type="text" name="searach" id="search">
-                    <button>검색</button>
+                    <form action=".do" method="get">
+                        <input type="text" name="keyword" id="h-search">
+                        <button>검색</button>
+                    </form>
                 </div>
             </div>
             <div class="header-top-right">
                 <div class="header-menu">
-                    <span id="c-center">고객센터</span>
+                    <span id="c-center">공지사항</span>
                     <c:if test="${empty loginMember}">
                         <span id="login">로그인</span>
                         <a href="/join.do" id="join-btn" class="btn-deepblue"><span>무료 회원가입</span></a>
@@ -474,7 +485,7 @@
                                         <a href="/userMypage.do">마이페이지</a>
                                     </li>
                                     <li>
-                                        <a href="qna.do?pageNum=1">1:1 문의</a>
+                                        <a href="qna.do?page=1">1:1 문의</a>
                                     </li>
                                     <li>
                                         <span id="logout"><a href="/logout.do">로그아웃</a></span>

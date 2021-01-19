@@ -57,10 +57,10 @@
 	</select>
 	<insert id="insertQuestion" parameterType="q">
 		insert into question
-		values(question_seq.nextval,#{mNo},#{qTitle},#{qContent},0,sysdate,0,null,null,#{filePath})
+		values(question_seq.nextval,#{mNo},#{qTitle},#{qContent},#{secretStatus},sysdate,0,null,null,#{filePath})
 	</insert>
 	<update id="updateQuestion" parameterType="q">
-		update question set q_title = #{qTitle},q_content = #{qContent},filepath = #{filePath} where q_no = #{qNo}
+		update question set q_title = #{qTitle},q_content = #{qContent},secret_status = #{secretStatus},filepath = #{filePath} where q_no = #{qNo}
 	</update>
 	<update id="updateAnswer" parameterType="q">
 		update question set answer_status = 1,answer_contnet = #{qContent},answer_date = sysdate where q_no = #{qNo}

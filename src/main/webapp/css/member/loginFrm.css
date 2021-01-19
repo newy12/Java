@@ -1,3 +1,10 @@
+@font-face {
+    font-family: 'Arita-dotum-Medium';
+    src:
+        url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Arita-dotum-Medium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
 .background-screen {
     display: none;
     position: absolute;
@@ -9,6 +16,7 @@
 }
 
 .login-form-container {
+    font-family: 'Arita-dotum-Medium';
     display: none;
     position: absolute;
     top: calc(50% - 250px);
