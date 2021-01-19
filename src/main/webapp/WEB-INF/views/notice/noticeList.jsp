@@ -124,7 +124,7 @@
 
         <div class="search-box">
             <div class="container" style="width:81%;">
-                <input type="text" class="form-control word searchInput" placeholder="검색어를 입력해주세요" name="word" style="width:377px;">
+                <input type="text" class="form-control word searchInput keyword" placeholder="검색어를 입력해주세요" name="word" style="width:377px;">
                 <input type="submit" class="btn btn-md btn-search" value="검색">
             </div>
         </div>
@@ -168,5 +168,43 @@
     	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
     </footer>
  
+ <script>
+ 	$(function () {
+		$(".btn-search").click(function() {
+			var search = $("#search-subject").val;
+			var keyword = $(".keyword").val();
+			location.href = "/noticeList.do?reqPage=1&keyword="+keyword;
+		})
+	})
+ 
+ </script>
+ 
+ 
+ 
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

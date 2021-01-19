@@ -14,7 +14,7 @@ public class NoticeService {
 	@Autowired
 	private NoticeDao dao;
 
-	public NoticePageData selectNoticeList(int reqPage) {
+	public NoticePageData selectNoticeList(int reqPage, String keyword) {
 		NoticePageData npd = new NoticePageData();
 		
 		int numPerPage = 12;
@@ -38,7 +38,7 @@ public class NoticeService {
 		
 		//이전 버튼 
 		if(pageNo != 1) {
-			pageNavi += "<li class='page-item'><a class='page-link' href='/noticeList.do?reqPage="+(pageNo-1)+"'>pre</a></li>";
+			pageNavi += "<li class='page-item'><a class='page-link' href='/noticeList.do?reqPage="+(pageNo-1)+"&keyword="+keyword+"'>pre</a></li>";
 		}
 		//페이지 네비 버튼
 		for(int i =0; i<pageNaviSize; i++) {
@@ -47,7 +47,7 @@ public class NoticeService {
 						+ "<span class='page-link selected'>"+pageNo+"</span></li>";
 			}else {
 				pageNavi += "<li class='page-item'>"
-						+ "<a class='page-link' href='/noticeList.do?reqPage="+(pageNo)+"'>"+pageNo+"</a></li>";
+						+ "<a class='page-link' href='/noticeList.do?reqPage="+(pageNo)+"&keyword="+keyword+"'>"+pageNo+"</a></li>";
 			}
 			pageNo++;
 			
@@ -58,14 +58,14 @@ public class NoticeService {
 		
 		if(reqPage <= (totalPage/pageNaviSize)) {
 			pageNavi += "<li class='page-item'>"
-					+ "<a class='page-link' href='/noticeList.do?reqPage="+(pageNo+1)+"'> next </a></li>";
+					+ "<a class='page-link' href='/noticeList.do?reqPage="+(pageNo+1)+"&keyword="+keyword+"'> next </a></li>";
 		}
 		
 		if(totalCount <= numPerPage) {
 			pageNavi = "</ul>";
 		}
 	
-		ArrayList<Notice> list = dao.selectNoticeList(start,end);
+		ArrayList<Notice> list = dao.selectNoticeList(start,end,keyword);
 		npd.setList(list);
 		npd.setPageNavi(pageNavi);
 		

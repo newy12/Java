@@ -28,17 +28,16 @@
 	<a href="/manageMember.do?reqPage=1&grade=all&keyword=&order=new">관리자-회원관리+페이징+검색+정렬</a>
 	<a href="/manageService.do?reqPage=1&status=waiting&keyword1=&keyword2=&order=old">관리자-서비스관리+페이징+검색+정렬</a>
 	<br> 영재
-	<a href="/introduceFrm.do?mId=newy10&reqPage=1">프리랜서소개글</a>
+	<a href="/introduceFrm.do?mId=${loginMember.MId}&reqPage=1">프리랜서소개글</a>
 	<a href="/serviceJoinFrm.do?MId=${loginMember.MId}">서비스등록</a>
 	<a href="/freelancerMypage.do?MNo=${loginMember.MNo}">프리랜서 마이페이지</a>
 	<br> 문정
 	<a href="/requestList.do?reqPage=1&order=new&subject=all&keyword=">의뢰게시판 리스트 </a> /
 	<a href="/userMypage.do">사용자 마이페이지</a>
 	<br> 다솜
-	<a href="/noticeList.do?reqPage=1&order=new">공지사항 게시판</a> /
-	<a href="/serviceList.do">서비스리스트</a> /
+	<a href="/noticeList.do?reqPage=1&keyword=">공지사항 게시판</a> /
+	<a href="/serviceList.do?sNo=10&reqPage=1&order=new&keyword=">서비스리스트</a> /
 	<a href="/serviceView.do?sNo=44">서비스 상세보기</a> <br>
-	<a href="/serviceList.do?cNo=10&reqPage=1">리스트테스트</a>
 	<br> 도현
 	<a href="/indexTest.jsp">인덱스 페이지 테스트</a>
 

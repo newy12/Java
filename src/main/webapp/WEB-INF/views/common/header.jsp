@@ -296,15 +296,13 @@
 
                 for (let i = 0; i < data.length; i++) {
                     if (data[i].cDivision == 'm') {
-                        $navUl.append("<li><a href='/serviceList.do?cNo=" + data[i].cNo +
-                            "&reqPage=1&order=new'>" + data[i].cName + "</a> <ul></ul></li>")
+                        $navUl.append("<li><a href='/serviceList.do?cNo="+data[i].cNo+"&reqPage=1&order=new&keyword='>" + data[i].cName + "</a> <ul></ul></li>")
                         console.log(data[i].cNo)
 
                     }
                     if (data[i].cDivision == 's') {
                         $(".nav>ul>li:eq(" + (parseInt(data[i].cNo / 10) - 1) + ")>ul").append(
-                            "<li><a href='/serviceList.do?cNo=" + data[i].cNo +
-                            "&reqPage=1&order=new'>" + data[i].cName + "</a></li>")
+                            "<li><a href='/serviceList.do?cNo="+data[i].cNo+"&reqPage=1&order=new&keyword='>" + data[i].cName + "</a></li>")
                         // console.log(data[i]);
                     }
                 }

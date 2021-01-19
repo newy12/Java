@@ -18,11 +18,11 @@
 		where m_id =#{mId}
 	</select>
 
-	<select id="selectTotalCount" resultType="_int">
+	<select id="selectTotalCount" parameterType="String" resultType="_int">
 		select
-		count(*) cnt
+		sum(count(*)) cnt
 		from
-		service_review
+		service_review group by s_no having s_no in(select s_no from service where m_id=#{mId})
 	</select>
 
 	<!-- (영재)소개글 중 리뷰 리스트 불러오기 쿼리 -->
@@ -184,10 +184,8 @@
 	<!--(영재) 평가 개수 -->
 	<select id="reviewListSize" parameterType="String"
 		resultType="_int">
-		select
-		count(*)
-		from service_review
-		where m_id = #{mId}
+	select sum(count(*)) from service_review group by s_no having s_no in(select s_no from service where m_id=#{mId})
+	<!-- select count(*) from service_review where s_no in (select s_no from service where service.m_id = #{mId}); -->
 	</select>
 	<!--(영재) 평점평균매기기 -->
 	<select id="sRateAVG" parameterType="String" resultType="float">
@@ -265,8 +263,25 @@
 			<if test="sub != null and sub != 0">
 				and sub_category= #{sub} 
 			</if>
-		order by 1 desc)s)
-				where rnum between #{start} and #{end} 
+			<if test="keyword != null">
+				and s_title like '%'|| #{keyword}||'%'
+			</if>
+			
+		order by 
+			<choose>
+				<when test="order == 'popular'">
+					s_rate, s_no desc
+				</when>
+				<when test="order == 'review'">
+					working_count, s_no desc
+				</when>
+				<when test="order == 'new'">
+					s_no desc
+				</when>
+			</choose>
+		
+		)s) where rnum between #{start} and #{end} 
+				
 
 	</select>
 	
@@ -282,7 +297,6 @@
 		<if test="sub != null and sub != 0">
 			and sub_category= #{sub}
 		</if>
-
 	</select> 
 
 	<!-- (소현)서비스-페이징 totalCount -->

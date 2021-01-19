@@ -19,8 +19,8 @@
 			<div class="title">
 				<div class="title2"></div>
 				<p class="tt" >${j.brandName}<br> ${j.MName}</p>
-				<p class="tt" id="sRate" ></p>
-				<p class="tt" id="listSize"></p>
+				<p class="tt" id="sRate" >평점 ${list}</p>
+				<p class="tt" id="listSize">리스트 사이즈</p>
 				<form action="#">
 					<button type="submit"
 						style="float: right; margin-right: 50px; width: 200px; height: 40px; margin-top: 20px;";>문의하기</button>
@@ -79,7 +79,7 @@
 					<h2>평가</h2>
 				</div>
 				<br>
-				<p class="tt" style="margin-left:-3px;" id="sRate2">★★★★★/ 0 </p>
+				<p class="tt" style="margin-left:-3px;" id="sRate2">평점 ${list } </p>
 				<p class="tt" id="listSize2"></p>
 				<br> <br>
 				<p>실제 구매한 이용자들이 남긴 평가입니다.</p>
@@ -225,21 +225,21 @@ $(function(){
     	} 	
     });
      //평점 평균 구하기 ajax
-    $.ajax({
+ /*    $.ajax({
     	type : "get",
     	url : "/sRateAVG.do",
     	data : {mId : mId},
     	success : function(result){
     		if(result='null'){
-    			$('#sRate').html("평점[0.0]").css("color","gray");	
-    			$('#sRate2').html("평점[0.0]").css("color","gray");
+    			$('#sRate').html("평점0.0").css("color","gray");	
+    			$('#sRate2').html("평점0.0").css("color","gray");
     		}else{
     			$('#sRate').html("평점"+result).css("color","gray");	
     			$('#sRate2').html("평점"+result).css("color","gray");
     		}
     				
     	}   	
-    });
+    }); */
     
      
     

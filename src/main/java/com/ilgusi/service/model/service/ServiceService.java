@@ -53,7 +53,7 @@ public class ServiceService {
 			int end = reqPage * numPerPage;//1보내면 end=4
 			int start = end - numPerPage + 1;//
 			List<ServiceReview> j = dao.selectReviewList(mId,start,end);
-			int totalCount = dao.totalCount();
+			int totalCount = dao.totalCount(mId);
 			System.out.println("end<<>>>>>>>>>>>>>"+end);
 			System.out.println("totalCount<<>>>>>>>>>>>>>"+totalCount);
 			int totalPage = 0;
@@ -124,31 +124,17 @@ public class ServiceService {
 		public int serviceTradeStatusUpdate(int tNo) {
 			return dao.serviceTradeStatusUpdate(tNo);
 		}
-
-		/*
-		 * public ArrayList<Category> selectCategory(int cNO) { return
-		 * dao.selectCategory(cNO); }
-		 */
-
-
-		
+	
 		//(다솜) 카테고리 리스트 불러오기
 		public ArrayList<Category> categoryList(int cNo) {
 			return dao.categoryList(cNo);
 		}
 
-		/*
-		 * //(다솜) 서비스 리스트 불러오기 public ArrayList<com.ilgusi.service.model.vo.Service>
-		 * selectServiceList(HashMap<String, Integer> map) {
-		 * ArrayList<com.ilgusi.service.model.vo.Service>list =
-		 * dao.selectServiceList(map); return list; }
-		 */
-		
 		//(다솜)서비스 리스트 
-		public ServicePageData servicePageList(HashMap<String, Integer> map) {
-			
+		public ServicePageData servicePageList(HashMap<String, Object> map, int reqPage, int cNo) {
 			ArrayList<com.ilgusi.service.model.vo.Service>list = dao.selectServiceList(map);
 			
+			String keyword = String (map.get("keyword"));
 			int numPerPage = 12;
 			int totalCount = dao.serviceTotalCount(map);
 			
@@ -159,10 +145,7 @@ public class ServiceService {
 				totalPage = totalCount/numPerPage;
 			}else {
 				totalPage = totalCount/numPerPage+1;
-			}
-			
-			int reqPage = map.get("reqPage");
-			
+			}	
 			//페이지 네비 길이
 			int pageNaviSize = 5;
 			int pageNo = ((reqPage-1)/pageNaviSize)*pageNaviSize +1; //페이지 네비가 시작하는 페이지 번호
@@ -170,15 +153,15 @@ public class ServiceService {
 			//페이지 네비 작성
 			String pageNavi = "<ul class='pagination justify-content-center'>";
 			
-			int cNo = map.get("cNo");
+			
 			
 			//이전버튼 생성
 			if(pageNo != 1) {
-				pageNavi += "<li class='page=item'><a class='pageNavi page-link' href='/serviceList.do?cNo="+cNo+"&reqPage="+(pageNo-1)+"'> pre </a></li>";
+				pageNavi += "<li class='page=item'><a class='pageNavi page-link' href='/serviceList.do?cNo="+cNo+"&reqPage="+(pageNo-1)+"&keyword="+keyword+"'> pre </a></li>";
 			}
 			for(int i=0; i<pageNaviSize; i++) {
 				if(pageNo != reqPage) {
-					pageNavi += "<li class='page=item'><a class='pageNavi page-link' href='/serviceList.do?cNo="+cNo+"&reqPage="+(pageNo)+"'>"+pageNo+"</a></li>";
+					pageNavi += "<li class='page=item'><a class='pageNavi page-link' href='/serviceList.do?cNo="+cNo+"&reqPage="+(pageNo)+"&keyword="+keyword+"'>"+pageNo+"</a></li>";
 				}else {
 					pageNavi += "<li class='page=item'><span class='selectedPage pageNavi page-link'>"+pageNo+"</span></li>";
 				}
@@ -191,17 +174,24 @@ public class ServiceService {
 			
 			//다음 버튼 
 			if(pageNo <= totalPage) {
-				pageNavi += "<li class='page=item'><a href='/serviceList.do?cNo="+cNo+"&reqPage="+pageNo+"'> next </a></li>";
+				pageNavi += "<li class='page=item'><a href='/serviceList.do?cNo="+cNo+"&reqPage="+pageNo+"&keyword="+keyword+"'> next </a></li>";
 			}
 			
 			pageNavi += "</ul>";
 			
-			ServicePageData spd = new ServicePageData(list,pageNavi);
+			ServicePageData spd = new ServicePageData();
+			spd.setList(list);
+			spd.setPageNavi(pageNavi);
 			
 			return spd;
 		}
 		
 		
+		private String String (Object object) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
 		//(다솜) 브랜드 이름 불러오기
 		public ArrayList<String> brandList(com.ilgusi.service.model.vo.Service s) {
 			return dao.brandList(s);

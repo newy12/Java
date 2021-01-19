@@ -101,4 +101,9 @@ public class ChatDao {
 		return (ArrayList<ServiceTrade>) list;
 	}
 
+	//(소현)메세지 삭제
+	public void deleteMsg(int ccNo) {
+		session.delete("chat.deleteMsg",ccNo);
+	}
+
 }

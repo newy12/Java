@@ -110,7 +110,7 @@ a:hover {
 	color: white;
 	font-weight: bold;
 	border-radius: 3px;
-	height: 30px;
+	height: 34px;
 	width: 55px;
 }
 
@@ -144,8 +144,9 @@ a:hover {
 }
 
 .serviceCon >a{
-	font-size: 12pt;
+	font-size: 11pt;
 	margin: 0;
+	color: gray;
 }
 
 .price {
@@ -216,51 +217,62 @@ a:hover {
 			<div class="searchDiv">
 				<div class="searchBox">
 					<input type="hidden" id="order" value="${order }">
-					<select class="selectBox subject array">
+					<select class="selectBox subject form-control array subject array" id="search-subject" style="width: 100px; float: left; margin-right: 10px;">
+						<option value="new">최신순</option>
 						<option value="popular">인기순</option>
 						<option value="review">평점순</option>
-						<option value="new">최신순</option>
-					</select> <input type="text" name="searchKeyword">
-					<button>검색</button>
+					</select> 
+					<c:choose>
+	                	<c:when test="${keyword == 'null' }">
+	                		<input type="text" class="form-control keyword" placeholder="검색어를 입력해주세요" style="width:200px; float: left; margin-right: 10px;">
+	                	</c:when>
+	                	<c:otherwise>
+	                		<input type="text" class="form-control keyword" style="width:200px; float: left; margin-right: 10px;" value="${keyword }">
+	                	</c:otherwise>
+	                </c:choose>
+					<button type="submit" class="search-btn">검색</button>
 				</div>
 			</div>
 			<div class="tableContainer">
 
-				<c:if test="${noServiceList != null }">
+				<c:if test="${noserviceList != null }">
 					<p class="noService">등록된 서비스가 없습니다.</p>
 				</c:if>
+				<c:if test="${serviceList != null }">
+					<c:forEach items="${serviceList }" var="s" varStatus="status">
+						<div class="serviceBox">
+							<img src="upload/service/${s.SImg }"><br> <span
+								class="preName">${brandName[status.index] }</span><br>
+							<p class="serviceCon" style="height: 30px;"><a href="/serviceView.do?sNo=${s.SNo}&reqPage=1"> ${s.STitle } </a></p>
+							<p class="price">${s.SPriceTxt }원~</p>
+							<p class="score">
+								평점 ${s.SRate }.0
+	
+								<c:if test="${s.SRate == 5}">
+									<span class="star"> ★★★★★ </span>
+								</c:if>
+	
+								<c:if test="${s.SRate == 4}">
+									<span class="star"> ☆★★★★ </span>
+								</c:if>
+								<c:if test="${s.SRate == 3}">
+									<span class="star"> ☆☆★★★ </span>
+								</c:if>
+								<c:if test="${s.SRate == 2}">
+									<span class="star"> ☆☆☆★★ </span>
+								</c:if>
+								<c:if test="${s.SRate == 1}">
+									<span class="star"> ☆☆☆☆★ </span>
+								</c:if>
+								<c:if test="${s.SRate == 0}">
+									<span class="star"> ☆☆☆☆☆ </span>
+								</c:if>
+							</p>
+						</div>
+					</c:forEach>
+				</c:if>
 
-				<c:forEach items="${serviceList }" var="s" varStatus="status">
-					<div class="serviceBox">
-						<img src="upload/service/${s.SImg }"><br> <span
-							class="preName">${brandName[status.index] }</span><br>
-						<p class="serviceCon" style="height: 30px;"><a href="/serviceView.do?sNo=${s.SNo}&reqPage=1"> ${s.STitle } </a></p>
-						<p class="price">${s.SPriceTxt }원~</p>
-						<p class="score">
-							평점 ${s.SRate }.0
-
-							<c:if test="${s.SRate == 5}">
-								<span class="star"> ★★★★★ </span>
-							</c:if>
-
-							<c:if test="${s.SRate == 4}">
-								<span class="star"> ☆★★★★ </span>
-							</c:if>
-							<c:if test="${s.SRate == 3}">
-								<span class="star"> ☆☆★★★ </span>
-							</c:if>
-							<c:if test="${s.SRate == 2}">
-								<span class="star"> ☆☆☆★★ </span>
-							</c:if>
-							<c:if test="${s.SRate == 1}">
-								<span class="star"> ☆☆☆☆★ </span>
-							</c:if>
-							<c:if test="${s.SRate == 0}">
-								<span class="star"> ☆☆☆☆☆ </span>
-							</c:if>
-						</p>
-					</div>
-				</c:forEach>
+				
 			</div>
 
 
@@ -279,7 +291,7 @@ a:hover {
 			var order = $("#order").val();
 			var subject = $("#subject").val();
 			var cNo = $(".pageNo").val();
-			console.log("페이지번호"+cNo);
+			var keyword = $("keyword").val;
 			
 			if(order == "new"){
 				$(".array").val("new").prop("selected",true);
@@ -291,8 +303,15 @@ a:hover {
 			
 			$(".array").change(function(){
 				var order = $(".array").val();
-				location.href = "/serviceList.do?cNo="+cNo+"&reqPage=1&order="+order;
+				console.log("url이 문제야??");
+				location.href = "/serviceList.do?cNo="+cNo+"&reqPage=1&order="+order+"&keyword="+keyword;			
+				
 			});
+			
+			$(".search-btn").click(function () {
+				var keyword = $(".keyword").val();
+				location.href="/serviceList.do?cNo="+cNo+"&reqPage=1&order=new&keyword="+keyword;
+			})
 	
 		});
 	</script>

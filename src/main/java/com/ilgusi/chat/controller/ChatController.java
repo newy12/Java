@@ -94,7 +94,7 @@ public class ChatController {
 
 	// (소현)채팅방 리스트 불러오기
 	@RequestMapping("/chatList.do")
-	public String chatList(Model model, String mGrade, String mId) {
+	public String chatList(HttpServletRequest req, Model model, String mGrade, String mId) {
 
 		ArrayList<Chat> roomList = new ArrayList<Chat>();
 		ArrayList<Map<String, Object>> roomInfo = new ArrayList<Map<String, Object>>();
@@ -106,6 +106,11 @@ public class ChatController {
 			myInfo.put("user", mId);
 			roomList = service.selectRoomList(myInfo);
 
+			// 견적서 작성여부
+			// yourId:상대 아이디, myId:내아이디
+			HttpSession session = req.getSession();
+			Member loginMember = (Member) session.getAttribute("loginMember");
+
 			// 채팅방의 chat_content 불러와서 마지막 채팅내용,시간 조회
 			for (int i = 0; i < roomList.size(); i++) {
 				Chat oneRoom = roomList.get(i);
@@ -122,17 +127,40 @@ public class ChatController {
 					ArrayList<ServiceInfo> serviceList = service.selectService(sNo);
 					ServiceInfo oneService = serviceList.get(0);
 					String serviceTitle = oneService.getSTitle();
+
+					///////////////////////////////////////////////////////////////////////////////////////////////
+
+					int status = -1;
+
+					HashMap<String, Integer> tradeInfo = new HashMap<String, Integer>();
+
+					// 내 회원번호로 견적서 작성 여부 확인
+					int mNo = loginMember.getMNo();
+					tradeInfo.put("sNo", sNo);
+					tradeInfo.put("mNo", mNo);
+
+					ArrayList<ServiceTrade> tradeList = service.tradeList(tradeInfo);
+					if (tradeList.size() != 0) {
+						if (tradeList.get(0) != null) { // 제일 최신 거래내역
+							status = tradeList.get(0).getTStatus();
+							System.out.println("거래상태 :" + status);
+						}
+					}
+					/////////////////////////////////////////////////////////////////////////////////////////////////
+
 					HashMap<String, Object> room = new HashMap<String, Object>();
 					room.put("cNo", cNo);
 					room.put("sNo", sNo);
 					room.put("userId", mId);
 					room.put("freeId", freeId);
 					room.put("lastMsg", lastMsg.getCContent());
+					room.put("lastDate", lastMsg.getCDate());
 					room.put("lastTime", lastMsg.getCTime());
 					room.put("read", lastMsg.getReadStatus());
 					room.put("sender", lastMsg.getMId());
 					room.put("brandName", brandName);
 					room.put("serviceTitle", serviceTitle);
+					room.put("status", status);
 					roomInfo.add(room);
 				}
 			}
@@ -140,6 +168,11 @@ public class ChatController {
 			myInfo.put("free", mId);
 			roomList = service.selectRoomList(myInfo);
 
+			// 견적서 작성여부
+			// yourId:상대 아이디, myId:내아이디
+			HttpSession session = req.getSession();
+			Member loginMember = (Member) session.getAttribute("loginMember");
+
 			// 채팅방의 chat_content 불러와서 마지막 채팅내용,시간 조회
 			for (int i = 0; i < roomList.size(); i++) {
 				Chat oneRoom = roomList.get(i);
@@ -155,6 +188,29 @@ public class ChatController {
 					ArrayList<ServiceInfo> serviceList = service.selectService(sNo);
 					ServiceInfo oneService = serviceList.get(0);
 					String serviceTitle = oneService.getSTitle();
+
+					///////////////////////////////////////////////////////////////////////////////////////////////
+
+					int status = -1;
+
+					HashMap<String, Integer> tradeInfo = new HashMap<String, Integer>();
+
+					// 프리랜서로 로그인했을때
+
+					// 상대방번호,서비스번호로 거래 견적서 작성 여부 확인
+					Member oneUser = service.selectOneMember(mId);
+					int mNo = oneUser.getMNo();
+					tradeInfo.put("sNo", sNo);
+					tradeInfo.put("mNo", mNo);
+
+					ArrayList<ServiceTrade> tradeList = service.tradeList(tradeInfo);
+					if (tradeList.size() != 0) {
+						if (tradeList.get(0) != null) { // 제일 최신 거래내역
+							status = tradeList.get(0).getTStatus();
+							System.out.println("거래상태 :" + status);
+						}
+					}
+					/////////////////////////////////////////////////////////////////////////////////////////////////
 
 					HashMap<String, Object> room = new HashMap<String, Object>();
 					room.put("cNo", cNo);
@@ -167,6 +223,7 @@ public class ChatController {
 					room.put("sender", lastMsg.getMId());
 					room.put("brandName", brandName);
 					room.put("serviceTitle", serviceTitle);
+					room.put("status", status);
 					roomInfo.add(room);
 				}
 			}
@@ -212,6 +269,13 @@ public class ChatController {
 					int mNo = oneUser.getMNo();
 					tradeInfo.put("sNo", sNo);
 					tradeInfo.put("mNo", mNo);
+
+					// 의뢰인의 신고횟수가 4이상인지 확인
+					int warningCount = oneUser.getWarningCount();
+					System.out.println("myId_warningcount:" + warningCount);
+					if (warningCount > 3) {
+						model.addAttribute("black", "black");
+					}
 
 				} else {// 일반회원으로 로그인했을때
 					// 내 회원번호로 견적서 작성 여부 확인
@@ -269,11 +333,10 @@ public class ChatController {
 			}
 		} else { // mGrade값을 주면
 
-			
 			// 문의하려는 서비스정보 가져오기
 			ArrayList<ServiceInfo> serviceList = service.selectService(sNo);
 			ServiceInfo oneService = serviceList.get(0);
-			
+
 			// 채팅방 정보
 			HashMap<String, Object> room = new HashMap<String, Object>();
 			room.put("sNo", sNo);
@@ -283,8 +346,8 @@ public class ChatController {
 			// 만든 방 가져오기
 			Chat oneRoom = service.selectOneRoom(room);
 			int rNo = oneRoom.getCNo();
-			
-			if (mGrade.equals("1")) { 
+
+			if (mGrade.equals("1")) {
 				// 상대가 보낸 메세지 읽음으로 update
 				HashMap<String, Object> roomAndId = new HashMap<String, Object>();
 				roomAndId.put("mId", yourId);
@@ -295,17 +358,19 @@ public class ChatController {
 				// 상대가 보낸 메세지 읽음으로 update
 				HashMap<String, Object> roomAndId = new HashMap<String, Object>();
 				roomAndId.put("mId", myId);
-				roomAndId.put("rNo", rNo);	
+				roomAndId.put("rNo", rNo);
 				service.updateReadStatus(roomAndId);
-				//의뢰인의 신고횟수가 4이상인지 확인
-				Member oneMember=service.selectOneMember(myId);
-				int warningCount=oneMember.getWarningCount();
-				if(warningCount>3) {
-					model.addAttribute("black","black");
+				// 의뢰인의 신고횟수가 4이상인지 확인
+				Member oneMember = service.selectOneMember(myId);
+				int warningCount = oneMember.getWarningCount();
+				System.out.println("mId_warningcount:" + warningCount);
+
+				if (warningCount > 3) {
+					model.addAttribute("black", "black");
 				}
 
 			}
-			
+
 			// 채팅방 번호로 채팅내용 불러오기
 			ArrayList<ChatContent> content = service.chatContentList(rNo);
 
@@ -336,8 +401,16 @@ public class ChatController {
 	// (소현)채팅방 삭제
 	@ResponseBody
 	@RequestMapping("/deleteChat.do")
-	public String deleteChat(Model model, int cNo) {
+	public String deleteChat(int cNo) {
 		service.deleteChat(cNo);
+		return "";
+	}
+	
+	//(소현)메세지 삭제
+	@ResponseBody
+	@RequestMapping("/deleteMsg.do")
+	public String deleteMsg(int ccNo) {
+		service.deleteMsg(ccNo);
 		return "";
 	}
 

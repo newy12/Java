@@ -6,9 +6,10 @@
 <head>
 <meta charset="UTF-8">
 <title>19시 :: 문의하기</title>
- <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.js"
-        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.js"
+	integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+	crossorigin="anonymous"></script>
 <style>
 .messages .date {
 	border: 1px solid orange;
@@ -38,9 +39,8 @@
 
 .adminBox .adminMsg {
 	padding: 10px;
-	background-color: #FF8F3F;
+	border:2px solid #6A85C3;
 	border-radius: 10px;
-	color: white;
 	width: 80%;
 	margin: 8px;
 }
@@ -100,8 +100,15 @@
 									<c:if test="${message.CContent ne '문의를 시작합니다!' }">
 										<div class="adminBox">
 											<br>
-											<p class="date">${message.CDate }</p>
-											<p class="adminMsg">${message.CContent }</p>
+											
+												<!-- 이전 메세지의 보낸날짜와 다르면 출력 -->
+								<c:if
+									test="${message.CDate ne content.get(status.index-1).CDate }">
+									<br>
+									<p class="date" style="margin:0 auto; margin-bottom:20px;">${message.CDate }</p>
+								</c:if>
+											
+											<p class="adminMsg" style="margin:0 auto">${message.CContent }</p>
 										</div>
 									</c:if>
 								</c:if>
@@ -123,35 +130,43 @@
 				<!-- 일반 채팅일때 -->
 				<c:if test="${service.SNo ne 0 }">
 					<div id="chat-profile">
-					
-						<span>${freeId }<c:if test="${sessionScope.loginMember.MGrade==2 }">
-						<c:if test="${not empty black }"><img src="/img/icon/warning.png" width="20px;"></c:if>
-						</c:if> - ${service.STitle}</span>
+						<div id="profile-info">
+							<div>${service.STitle}</div>
+							<div>${freeId }<c:if
+									test="${sessionScope.loginMember.MGrade==2 }">
+									<c:if test="${not empty black }">
+										<img src="/img/icon/warning.png" width="10px;">
+									</c:if>
+								</c:if>
+							</div>
+						</div>
+
 						<div id="option-box">
 							<!-- 아직 견적서 작성 전 -->
 							<c:if test="${empty status }">
-								<a href="#" onclick="deleteChat();">대화 나가기</a>
-								<br>
+
 								<c:if test="${sessionScope.loginMember.MGrade==2 }">
 									<a
 										href="/quotationFrm.do?sNo=${service.SNo}&sTitle=${service.STitle }&userId=${freeId}&freeId=${loginMember.MId}"
 										onClick="window.open(this.href, '', 'width=800, height=800, left=1000, scrollbars=no,location=no, resizable=no'); return false;">
 										견적서 작성</a>
+									<br>
 								</c:if>
+								<a href="#" onclick="deleteChat();">대화 나가기</a>
 							</c:if>
 							<!-- 견적서 작성&결제 전 -->
 							<c:if test="${status eq 0 }">
-								<a href="#" onclick="deleteChat();">대화 나가기</a>
+								<c:if test="${sessionScope.loginMember.MGrade==2 }"> 결제 대기 중 </c:if>
 								<br>
-								<c:if test="${sessionScope.loginMember.MGrade==2 }">
-									결제 대기 중
-								</c:if>
+								<a href="#" onclick="deleteChat();">대화 나가기</a>
 							</c:if>
 							<!-- 결제 완료&진행 중 -->
 							<c:if test="${status eq 1 }">작업 진행중</c:if>
 							<!-- 작업완료 -->
-							<a href="#" onclick="deleteChat();">대화 나가기</a><br>
-							<c:if test="${status eq 2 }">작업 완료</c:if>
+							<c:if test="${status eq 2 }">
+							작업 완료<br>
+								<a href="#" onclick="deleteChat();">대화 나가기</a>
+							</c:if>
 						</div>
 					</div>
 
@@ -181,7 +196,7 @@
 									<p class="sent">
 										${message.CContent }
 										<c:if test="${message.readStatus eq 1}">
-											<a href="#">× </a>
+											<a href="#" onclick="deleteMsg('${message.ccNo }')">× </a>
 										</c:if>
 										<br> <span class="chat-time"> <c:if
 												test="${message.readStatus eq 1}">
@@ -207,7 +222,7 @@
 							<!-- 알림창 -->
 							<c:if test="${service.SNo eq 0 }">
 								<!-- 문의사항페이지로 이동 -->
-								<button class="bigBtn" onclick="qnaPage();">관리자에게 문의하기 </button>
+								<a href="#" class="bigBtn" onclick="qnaPage()">관리자에게 문의하기</a>
 							</c:if>
 						</div>
 					</div>
@@ -226,17 +241,31 @@
 	<!--전체 wrap-->
 
 	<script>
-	
 		$(function() {
 			$(".messages").scrollTop($(".messages")[0].scrollHeight);
-			
+
 		});
-		
-		function qnaPage(){
+
+		function qnaPage() {
 			console.log("click!");
 			/* opener.parent.location.href="/qna.do?pageNum=1"; */
 			/* window.close(); */
 		}
+		
+		function deleteMsg(ccNo) {
+			console.log("delete!");
+			$.ajax({
+				url : "/deleteMsg.do",
+				type : "post",
+				async : false,
+				data : {
+					ccNo : ccNo
+				},
+				success : function(data) {
+					location.reload();
+				}
+			});
+			}
 
 		function sendMsg(myId, cNo) {
 			// 현재 시간 구하기
