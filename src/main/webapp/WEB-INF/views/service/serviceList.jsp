@@ -99,11 +99,16 @@ a:hover {
 }
 
 .searchBox {
-	font-family: 'Arita-dotum-Medium';
-	float: right;
+	font-family: 'Arita-dotum-Medium';	
 }
 
-.searchBox>button {
+.search-cover{
+	float: right;
+
+}
+
+
+.search-cover>button {
 	outline: none;
 	border: 1px solid #314C83;
 	background-color: #314C83;
@@ -128,12 +133,16 @@ a:hover {
 	height: 340px;
 	display: inline-block;
 	float: left;
+	overflow: hidden;
 }
 
 .serviceBox img {
 	border-radius: 5px;
-	width: 225px;
+	width: 210px;
 	height: 180px;
+}
+.serviceBox img:hover{
+	width: 
 }
 
 .preName {
@@ -217,22 +226,31 @@ a:hover {
 			<div class="searchDiv">
 				<div class="searchBox">
 					<input type="hidden" id="order" value="${order }">
-					<select class="selectBox subject form-control array subject array" id="search-subject" style="width: 100px; float: left; margin-right: 10px;">
-						<option value="new">최신순</option>
+					<select class="selectBox subject form-control array subject array" id="search-subject" style="width: 120px; margin-right: 10px; float: left;">
+						<option value="new" selected="selected">최신순</option>
 						<option value="popular">인기순</option>
 						<option value="review">평점순</option>
+						<option value="rowPrice">낮은 가격순 </option>
 					</select> 
-					<c:choose>
-	                	<c:when test="${keyword == 'null' }">
-	                		<input type="text" class="form-control keyword" placeholder="검색어를 입력해주세요" style="width:200px; float: left; margin-right: 10px;">
-	                	</c:when>
-	                	<c:otherwise>
-	                		<input type="text" class="form-control keyword" style="width:200px; float: left; margin-right: 10px;" value="${keyword }">
-	                	</c:otherwise>
-	                </c:choose>
-					<button type="submit" class="search-btn">검색</button>
+					<div class="search-cover">
+						<c:choose>
+		                	<c:when test="${keyword == 'null' }">
+		                		<input type="text" class="form-control keyword" placeholder="검색어를 입력해주세요" style="width:200px; float: left; margin-right: 10px;">
+		                	</c:when>
+		                	<c:otherwise>
+		                		<input type="text" class="form-control keyword" style="width:200px; float: left; margin-right: 10px;" value="${keyword }">
+		                	</c:otherwise>
+		                </c:choose>
+						<button type="submit" class="search-btn">검색</button>
+					</div>
+					
+					
+					
 				</div>
 			</div>
+			<br> <br>
+			
+			
 			<div class="tableContainer">
 
 				<c:if test="${noserviceList != null }">
@@ -241,8 +259,9 @@ a:hover {
 				<c:if test="${serviceList != null }">
 					<c:forEach items="${serviceList }" var="s" varStatus="status">
 						<div class="serviceBox">
-							<img src="upload/service/${s.SImg }"><br> <span
-								class="preName">${brandName[status.index] }</span><br>
+							<img src="upload/service/${s.SImg }"><br> <br> 
+							<span class="preName">${brandName[status.index] }</span>
+							<br>
 							<p class="serviceCon" style="height: 30px;"><a href="/serviceView.do?sNo=${s.SNo}&reqPage=1"> ${s.STitle } </a></p>
 							<p class="price">${s.SPriceTxt }원~</p>
 							<p class="score">
@@ -292,6 +311,7 @@ a:hover {
 			var subject = $("#subject").val();
 			var cNo = $(".pageNo").val();
 			var keyword = $("keyword").val;
+			console.log("order : " + order +"/ cNo : "+cNo);
 			
 			if(order == "new"){
 				$(".array").val("new").prop("selected",true);
@@ -299,12 +319,15 @@ a:hover {
 				$(".array").val("popular").prop("selected",true);
 			}else if (order == "review"){
 				$(".array").val("review").prop("selected",true);
+			}else if (order == "rowPrice"){
+				$(".array").val("rowPrice").prop("selected",true);
 			}
+			
 			
 			$(".array").change(function(){
 				var order = $(".array").val();
-				console.log("url이 문제야??");
-				location.href = "/serviceList.do?cNo="+cNo+"&reqPage=1&order="+order+"&keyword="+keyword;			
+				console.log("아예 안되는건가?");
+				location.href = "/serviceList.do?cNo="+cNo+"&reqPage=1&order="+order+"&keyword=";			
 				
 			});
 			

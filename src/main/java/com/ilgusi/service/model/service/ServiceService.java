@@ -156,11 +156,21 @@ public class ServiceService {
 			
 			//이전버튼 생성
 			if(pageNo != 1) {
-				pageNavi += "<li class='page=item'><a class='pageNavi page-link' href='/serviceList.do?cNo="+cNo+"&reqPage="+(pageNo-1)+"order="+order+"&keyword="+keyword+"'> pre </a></li>";
+				if(keyword == null) {
+					pageNavi += "<li class='page=item'><a class='pageNavi page-link' href='/serviceList.do?cNo="+cNo+"&reqPage="+(pageNo-1)+"&order="+order+"&keyword='> pre </a></li>";
+				}else {
+					pageNavi += "<li class='page=item'><a class='pageNavi page-link' href='/serviceList.do?cNo="+cNo+"&reqPage="+(pageNo-1)+"&order="+order+"&keyword="+keyword+"'> pre </a></li>";
+				}
+				
 			}
 			for(int i=0; i<pageNaviSize; i++) {
 				if(pageNo != reqPage) {
-					pageNavi += "<li class='page=item'><a class='pageNavi page-link' href='/serviceList.do?cNo="+cNo+"&reqPage="+(pageNo)+"order="+order+"&keyword="+keyword+"'>"+pageNo+"</a></li>";
+					if(keyword == null) {
+						pageNavi += "<li class='page=item'><a class='pageNavi page-link' href='/serviceList.do?cNo="+cNo+"&reqPage="+(pageNo)+"&order="+order+"&keyword='>"+pageNo+"</a></li>";
+					}else {
+						pageNavi += "<li class='page=item'><a class='pageNavi page-link' href='/serviceList.do?cNo="+cNo+"&reqPage="+(pageNo)+"&order="+order+"&keyword="+keyword+"'>"+pageNo+"</a></li>";
+					}
+					
 				}else {
 					pageNavi += "<li class='page=item'><span class='selectedPage pageNavi page-link'>"+pageNo+"</span></li>";
 				}
@@ -173,7 +183,10 @@ public class ServiceService {
 			
 			//다음 버튼 
 			if(pageNo <= totalPage) {
-				pageNavi += "<li class='page=item'><a href='/serviceList.do?cNo="+cNo+"&reqPage="+pageNo+"order="+order+"&keyword="+keyword+"'> next </a></li>";
+				if(keyword == null) {
+					pageNavi += "<li class='page=item'><a href='/serviceList.do?cNo="+cNo+"&reqPage="+pageNo+"&order="+order+"&keyword='> next </a></li>";	
+				}
+				pageNavi += "<li class='page=item'><a href='/serviceList.do?cNo="+cNo+"&reqPage="+pageNo+"&order="+order+"&keyword="+keyword+"'> next </a></li>";
 			}
 			
 			pageNavi += "</ul>";
