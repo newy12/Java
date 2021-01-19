@@ -192,6 +192,11 @@ public class ServiceDao {
 		return session.selectOne("service.selectServiceCount",keyword);
 	}
 	
+	//프리랜서마이페이지 서비스 삭제			
+	public int deleteService(int sNo) {
+		return session.update("service.delService",sNo);
+	}
+	
 	
 
 

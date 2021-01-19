@@ -134,12 +134,14 @@ public class ServiceController {
 	public String freelancerServiceList(String mId,Model model) {
 		Join j = new Join();
 		System.out.println("mid : "+mId);
+		Member m = service.selectMemberName(mId);
+		model.addAttribute("name", m.getMName());
+		
 		j.setServiceList(service.serviceList(mId));
 		model.addAttribute("j",j);
 		System.out.println("test"+j.getServiceList().size());
 		return "freelancer/freelancerServiceList";
 	}
-
 
 
 	// 프리랜서 마이페이지 정보수정(소개글,연락가능시간,브랜드명 추가)
@@ -152,6 +154,17 @@ public class ServiceController {
 			model.addAttribute("msg", "수정실패하였습니다.");
 		}
 		model.addAttribute("loc", "/");
+		return "common/msg";
+	}
+	
+	//프리랜서 마이페이지 - 서비스 삭제하기 
+	@RequestMapping("/delService.do")
+	public String deleteService(int sNo, Model model) {
+		int result = service.deleteService(sNo);
+		if(result != 0) {
+			model.addAttribute("msg", "서비스가 삭제되었습니다.");
+		}
+		model.addAttribute("loc","/");
 		return "common/msg";
 	}
 

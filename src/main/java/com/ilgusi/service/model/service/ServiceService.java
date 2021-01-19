@@ -337,6 +337,12 @@ public class ServiceService {
 			return maxPageCount;
 		}
 		
+		//프리랜서 마이페이지 서비스 삭제 
+		public int deleteService(int sNo) {
+			
+			return dao.deleteService(sNo);
+		}
+		
 
 		
 

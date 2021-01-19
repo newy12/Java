@@ -140,9 +140,19 @@ a:hover {
 	border-radius: 5px;
 	width: 210px;
 	height: 180px;
+	transform: scale(1);
+    transition: transform 0.1s linear;
+}
+
+.imgBox{
+	overflow: hidden;
+	width: 210px;
+	height: 180px;
+	border-radius: 5px;
 }
 .serviceBox img:hover{
-	width: 
+	transform: scale(1.03);
+    overflow: hidden;
 }
 
 .preName {
@@ -259,7 +269,7 @@ a:hover {
 				<c:if test="${serviceList != null }">
 					<c:forEach items="${serviceList }" var="s" varStatus="status">
 						<div class="serviceBox">
-							<img src="upload/service/${s.SImg }"><br> <br> 
+							<div class="imgBox"><img src="upload/service/${s.SImg }" onclick="location.href='/serviceView.do?sNo=${s.SNo}&reqPage=1'"></div><br> <br> 
 							<span class="preName">${brandName[status.index] }</span>
 							<br>
 							<p class="serviceCon" style="height: 30px;"><a href="/serviceView.do?sNo=${s.SNo}&reqPage=1"> ${s.STitle } </a></p>
