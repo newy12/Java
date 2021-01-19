@@ -9,6 +9,19 @@
 <script src="https://code.jquery.com/jquery-3.5.1.js"
 	integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
 	crossorigin="anonymous"></script>
+<style>
+.green {
+	color:#3FC32C;
+}
+
+.blue {
+	color:#2C8BC3;
+}
+
+.red {
+	color:#B31E1E;
+}
+</style>
 </head>
 
 <body>
@@ -46,10 +59,21 @@
 												<p>
 													<b id="name"> <c:if test="${r.freeId eq null }">(탈퇴한 회원)</c:if>
 														<c:if test="${r.freeId ne null }">
-															<c:if test="${ loginMember.MGrade eq 1}">${r.brandName }(${r.freeId})<br>${r.serviceTitle }</c:if>
+															<c:if test="${ loginMember.MGrade eq 1}">[${r.brandName }]<br>${r.serviceTitle }</c:if>
 															<c:if test="${ loginMember.MGrade eq 2}">${r.freeId}-${r.serviceTitle }</c:if>
+															<span id="tradeStatus"> <c:if
+																	test="${r.status eq -1 }">
+																	<span class="green">(문의중)</span>
+																</c:if> <c:if test="${r.status eq 0 }">
+																	<span class="green">(결제전)</span>
+																</c:if> <c:if test="${r.status eq 1 }">
+																	<span class="blue">(진행중)</span>
+																</c:if> <c:if test="${r.status eq 2 }">
+																	<span class="red">(작업완료)</span>
+																</c:if>
+															</span>
 														</c:if>
-													</b><span id="time">${r.lastTime}</span>
+													</b><span id="time" style="float: right;">${r.lastDate }<br>${r.lastTime}</span>
 												</p>
 												<p id="preview">${r.lastMsg }</p>
 												<input type="hidden" class="cNo" value="${r.cNo }">
