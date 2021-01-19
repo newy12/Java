@@ -93,4 +93,10 @@ public class ChatService {
 		return dao.tradeList(tradeInfo);
 	}
 
+	//(소현)메세지 삭제
+	public void deleteMsg(int ccNo) {
+		dao.deleteMsg(ccNo);
+		
+	}
+
 }

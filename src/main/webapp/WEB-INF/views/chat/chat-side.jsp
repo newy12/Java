@@ -60,9 +60,8 @@ ul {
 	margin: 0 auto;
 	margin-bottom: 3px;
 	padding: 5px;
-	background-color: orange;
+	background-color: #FFBD3E;
 	border-radius: 30px;
-	background-color: orange;
 	padding: 5px;
 	padding: 5px;
 }
@@ -182,7 +181,7 @@ ul {
 	width: 100%;
 	margin: 0 auto;
 	overflow: hidden;
-	padding-left:10px;
+	padding-left: 10px;
 }
 
 .new {
@@ -192,7 +191,7 @@ ul {
 	border-radius: 50%;
 	background: transparent;
 	margin-top: 25px;
-	background-color:orange;
+	background-color: orange;
 }
 
 #chat-preview, #service-preview {
@@ -234,7 +233,7 @@ ul {
 	width: 100%;
 	height: 10%;
 	padding: 15px;
-	font-size: 20px;
+	font-size: 15px;
 	font-weight: bold;
 	background-color: #2c3e50;
 	color: ivory;
@@ -245,9 +244,15 @@ ul {
 	color: white;
 }
 
+#profile-info {
+	float: left;
+	font-size: 15px;
+	width:280px;
+}
+
 #option-box {
 	float: right;
-	font-size: 12px;
+	font-size: 11px;
 }
 
 .messages {
@@ -416,8 +421,9 @@ textarea::-webkit-scrollbar-thumb {
 								test="${sessionScope.loginMember.MGrade eq 2 }">프리랜서</c:if>
 					</a></li>
 				</ul>
+				<c:if test="${sessionScope.loginMember.MGrade eq 1 }"><b>${ sessionScope.loginMember.MName }</b></c:if> 
+				<c:if test="${sessionScope.loginMember.MGrade eq 2 }"><b>${ sessionScope.loginMember.brandName }</b></c:if> 
 
-				<b>${ sessionScope.loginMember.MName }</b>
 			</div>
 		</div>
 		<div id="side-menu">
@@ -438,10 +444,10 @@ textarea::-webkit-scrollbar-thumb {
 							src="/img/icon/heart_white.png" width="40px;"><br>찜</a></li>
 				</c:if>
 				<!-- 프리랜서일때 -->
-				<c:if test="${sessionScope.loginMember.MGrade eq 2}">
+				<%-- <c:if test="${sessionScope.loginMember.MGrade eq 2}">
 					<li><a href="#"><img src="/img/icon/list_white.png"
 							width="35px;"><br>진행중</a></li>
-				</c:if>
+				</c:if> --%>
 				<!-- 고객일때 -->
 				<!-- 프리랜서일때 <li>서비스</li>-->
 			</ul>
@@ -453,11 +459,11 @@ textarea::-webkit-scrollbar-thumb {
 	</div>
 
 	<script>
-	function mypage(){
-		opener.parent.location.href="/userMypage.do";
-		window.close();
-	}
-	
+		function mypage() {
+			opener.parent.location.href = "/userMypage.do";
+			window.close();
+		}
+
 		// 일반회원 - 프리랜서 전환 
 		function switchAccount() {
 			var mId = "${loginMember.MId}";
@@ -466,31 +472,32 @@ textarea::-webkit-scrollbar-thumb {
 
 			console.log(mId);
 			console.log(mGrade);
-			
-			$.ajax({
-				url : "/switchAccount.do",
-				type : "post",
-				async : false,
-				data : {
-					mId : mId,
-					mGrade : mGrade
-				},
-				success : function(data) {
-					// -1이 리턴되면 alert:프리랜서로 전환한적없습니다 
-					if (data == -1) {
-						alert("프리랜서 계정이 없습니다!");
-					} else if(data==1){
-						alert("일반회원으로 전환!");
-						location.href="/chatList.do?mGrade=1&mId=${loginMember.MId}";
-					}else if(data==2){
-						alert("프리랜서로 전환!");
-						location.href="/chatList.do?mGrade=2&mId=${loginMember.MId}";
-					}
-				},
-				error : function() {
 
-				}
-			});
+			$
+					.ajax({
+						url : "/switchAccount.do",
+						type : "post",
+						async : false,
+						data : {
+							mId : mId,
+							mGrade : mGrade
+						},
+						success : function(data) {
+							// -1이 리턴되면 alert:프리랜서로 전환한적없습니다 
+							if (data == -1) {
+								alert("프리랜서 계정이 없습니다!");
+							} else if (data == 1) {
+								alert("일반회원으로 전환!");
+								location.href = "/chatList.do?mGrade=1&mId=${loginMember.MId}";
+							} else if (data == 2) {
+								alert("프리랜서로 전환!");
+								location.href = "/chatList.do?mGrade=2&mId=${loginMember.MId}";
+							}
+						},
+						error : function() {
+
+						}
+					});
 		}
 	</script>
 </body>
