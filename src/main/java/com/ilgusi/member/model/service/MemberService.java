@@ -69,4 +69,14 @@ public class MemberService {
 		return dao.deleteMember(mId, mPw);
 	}
 
+	//(문정) 마이페이지에서 사용자-프리랜서 전환
+	public int changeGrade(String mId,  int grade) {
+		return dao.changeGrade(mId, grade);
+	}
+
+	//(문정) 로그인하면 grade를 1로 셋팅
+	public int settingMemberGrade(Member m) {
+		return dao.settingMemberGrade(m);
+	}
+
 }

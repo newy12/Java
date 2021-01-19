@@ -186,4 +186,19 @@
 		contact_time contactTime
 		from member where m_id=#{parameter}
 	</select>
+	
+	<!-- (문정) 마이페이지에서 사용자 등급 바꿀 때  -->
+	<update id="changeGrade" parameterType="map" >
+		update member set 
+			<choose>
+				<when test='grade == 1'> m_grade = 2</when>
+				<otherwise> m_grade = 1 </otherwise>
+			</choose>
+		where m_id = #{mId}
+	</update>
+	
+	<!-- (문정) 로그인하면 등급은 무조건 1로 바꿈 -->
+	<update id="settingMemberGrade" parameterType="m">
+		update member set m_grade = 1 where m_no = #{mNo}
+	</update>
 </mapper>

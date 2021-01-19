@@ -64,6 +64,13 @@ public class ServiceTradeController {
 		ArrayList<ServiceTrade> tradeList = service.selectTradeList2(mNo); //거래내역 불러옴
 		ArrayList<Service> serviceList = service.selectServiceList2(mNo);  //거래에 해당하는 서비스 불러옴
 		ArrayList<String> payDate = service.selectPayDateList2(mNo);       //결제 날짜 불러옴
+		
+		//천원단위로 수정
+		DecimalFormat df = new DecimalFormat("###,###");
+		for(int i=0; i<tradeList.size();i++) {
+			tradeList.get(i).setTPriceTxt(df.format(tradeList.get(i).getTPrice())+"원");
+		}
+		
 		model.addAttribute("tradeList", tradeList);
 		model.addAttribute("serviceList",serviceList);
 		model.addAttribute("payDate",payDate);
@@ -100,5 +107,11 @@ public class ServiceTradeController {
 	model.addAttribute("loc","/");
 	return "common/msg";
 
+	}
+	
+	//(문정) 팝업창 닫고 페이지 이동만
+	@RequestMapping("/goToPage.do")
+	public String goToPage(int sNo) {
+		return "redirect:/serviceView.do?sNo="+sNo+"&reqPage=1";
 	}
 }
