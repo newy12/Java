@@ -9,7 +9,15 @@
     <title>Insert title here</title>
 
     <style>
+        @font-face {
+            font-family: 'Arita-dotum-Medium';
+            src:
+                url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Arita-dotum-Medium.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
         .qna-section {
+            font-family: 'Arita-dotum-Medium';
             margin: 0 auto;
             width: 1200px;
         }
@@ -36,11 +44,15 @@
 
         .qna-top>.title>.title-main {
             font-size: 30px;
+            border-left: 4px solid #314C83;
+            padding-left: 10px;
+            margin-bottom: 10px;
         }
 
         .qna-center {
             margin: 0 auto;
             width: fit-content;
+            margin-bottom: 10px;
         }
 
         .qna-center table {
@@ -98,16 +110,27 @@
         .qna-bottom>.paging {
             display: inline-block;
         }
+        .btn-write{
 
-        .btn-write {
-            display: inline-block;
             float: right;
+        }
+        .btn-write>a {
+            display:block;
+            width: 60px;
+            height: 30px;
+            line-height: 30px;
+            background-color: #314C83;
+            color: white;
+            border-radius: 5px;
+            border: 2px solid #314C83;
+            font-size: 16px;
+            text-decoration: none;
         }
 
         .btn-answer {
             width: 50px;
-            height: 20px;
-            line-height: 20px;
+            height: 25px;
+            line-height: 23px;
             margin-left: 5px;
             outline: none;
             background-color: white;
@@ -124,19 +147,43 @@
         }
         .btn-update{
             width: 50px;
-            height: 20px;
-            line-height: 20px;
+            height: 25px;
+            line-height: 25px;
             margin-left: 5px;
             outline: none;
             background-color: #314C83;
             color: white;
             border-radius: 5px;
-            border: 2px solid #314C83;
             display: inline-block;
             text-decoration: none;
             font-size: small;
         }
         .btn-update:hover{            
+            color: white;
+            text-decoration: none;
+        }
+
+        .page-num{
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+            border-radius: 4px;
+            color: #282828;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .page-num:not(.page-selected):hover{
+            text-decoration: none;
+            color: #282828;
+            background-color: #ff8f3f85;
+        }
+        .page-selected{
+            background-color: #FF8F3F;
+            color: white;
+        }
+        .page-selected:hover{
             color: white;
             text-decoration: none;
         }
@@ -194,6 +241,7 @@
                                     <td>
                                         관리자
                                     </td>
+                                    <td>${qList.answerDate}</td>
                                 </tr>
                             </c:if>
                         </c:forEach>
@@ -206,7 +254,7 @@
             <div class="qna-bottom">
                 <div class="paging">
                     <c:forEach var="i" begin="${not empty param.page ?  begin : 1}" end="${end}" step="1">
-                        <a
+                        <a class="page-num ${param.page==i || (empty param.page && i == 1) ? 'page-selected' : ''}"
                             href="?page=${i}${not empty param.qna_type ? '&qna_type='+=param.qna_type : ''}${not empty param.qna_keyword ? '&qna_keyword='+=param.qna_keyword : ''}">${i}</a>
                     </c:forEach>
                 </div>

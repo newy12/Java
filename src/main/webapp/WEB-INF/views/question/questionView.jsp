@@ -35,11 +35,45 @@
 
         .qna-top>.title>.title-main {
             font-size: 30px;
+            border-left: 4px solid #314C83;
+            padding-left: 10px;
+            margin-bottom: 10px;
         }
 
         .qna-center {
             margin: 0 auto;
+            width: 90%;
+        }
+        .qna-center>table{
+            width: 100%;
+            height: 600px;
+            border-top: 2px solid #314C83;
+            border-bottom: 2px solid #314C83;
+        }
+        .qna-center>table>thead{
+            background-color: rgb(224, 224, 224, 0.5);
+        }
+        .qna-center .qna-col1{
+            width: 100px;
+            height: 40px;
+            text-align: center;
+            font-size: 15px;
+        }
+        .qna-center .qna-col2>input{
+            width: 700px;
+            height: 30px;
+            border-radius: 4px;
+            outline: none;
+            border: 1px solid lightgray;
+        }
+        .qna-bottom {
+            margin: 10px auto;
             width: fit-content;
+        }
+        #qContent{
+            width: 100%;
+            height: 95%;
+            resize: none;
         }
     </style>
 </head>
@@ -63,13 +97,13 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>제목</th>
-                            <th><span>답변 : ${question.QTitle}</span></th>
+                            <th class="qna-col1">제목</th>
+                            <th class="qna-col2"><span>답변 : ${question.QTitle}</span></th>
                         </tr>
                         <c:if test="${empty param.answer || param.answer == false}">
                             <tr>
-                                <th>첨부파일</th>
-                                <th><a href="#">${question.filePath}</a></th>
+                                <th class="qna-col1">첨부파일</th>
+                                <th class="qna-col2"><a href="#">${question.filePath}</a></th>
                             </tr>
                         </c:if>
                     </thead>

@@ -129,25 +129,40 @@
     }
 
     /* 랭킹관련 css */
+
+    .rank-description {
+      margin-bottom: 20px;
+    }
+
+    .rank-description>div:first-child {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
     .rank-container {
       height: 500px;
       width: 100%;
       margin-top: 200px;
     }
-
     .rank-content {
       margin: 0 auto;
       width: fit-content;
     }
 
     .rank-list {
+      transition: 0.3s;
       float: left;
+      border: 1px solid transparent;
+      border-radius: 5px;
+      box-sizing: border-box;
     }
 
     .rank-list:not(:nth-child(1)) {
       margin-left: 20px;
     }
-
+    .rank-list:hover{
+      border: 1px solid #ff8f3f73;
+    }
     .rank-top-background {
       background-color: #62A6A9;
       width: 380px;
@@ -205,12 +220,24 @@
       padding: 0 10px;
     }
 
+    .free-id>a {
+      color: gray;
+      text-decoration: none;
+    }
+
+    .free-id>a:hover {
+      color: gray;
+    }
+
     .rank-row {
       margin: 0 auto;
       height: 60px;
       width: 350px;
       line-height: 60px;
       border-bottom: 1px solid lightgray;
+    }
+    .rank-row:last-child{
+      border: none;
     }
 
     .rank-col-1 {
@@ -237,6 +264,54 @@
     .r-col {
       float: left;
     }
+
+    /* 배너 부분 css */
+    .banner-container{
+      margin: 40px 0;
+      margin-bottom: 80px;
+      position: relative;
+      height: fit-content;
+    }
+    .bannerArrow{
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      z-index: 1;
+    }
+    .banner-slider {
+      width: 100%;
+    }
+    .banner-prev,
+    .banner-next {
+      display: inline-block;
+      width: 100px;
+      height: 100%;
+      line-height: 540px;
+      text-align: center;
+      /* border: 1px solid lightgray; */
+      border-radius: 1px;
+      transition: 0.3s;
+      color: #314C83;
+      font-weight: bold;
+      font-size: x-large;
+    }
+    .banner-prev{
+      float: left;
+    }
+    .banner-next{
+      float: right;
+    }
+
+    .banner-prev:hover,
+    .banner-next:hover {
+      cursor: pointer;
+    }
+    .banner-prev:hover{
+      background:linear-gradient(to left,transparent,rgba(0, 0, 0, 0.125));
+    }
+    .banner-next:hover{
+      background:linear-gradient(to right,transparent,rgba(0, 0, 0, 0.125));
+    }
   </style>
 
 </head>
@@ -245,6 +320,17 @@
   <jsp:include page="/WEB-INF/views/common/header.jsp" />
   <script>
     $(document).ready(function () {
+      // 배너 슬라이더 부분
+      $('.banner-slider').slick({
+        infinite: true,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        draggable: false,
+        autoplay: true,
+        autoplaySpeed: 3000,
+        prevArrow: $("#arrow_prev"),
+        nextArrow: $("#arrow_next")
+      });
       // 슬라이더 부분
       $.each($('.famous-category-list'), function (index, valueOfElement) {
         $(valueOfElement).slick({
@@ -270,7 +356,8 @@
           $(".sumPrice:eq(0)").empty
           console.log(response["sump"]);
           $(".sumPrice:eq(0)").text(response[0].sumPrice + "원");
-          $(".free-id:eq(0)").text(response[0].mId);
+          $(".free-id:eq(0)").append("<a href='/introduceFrm.do?mId=" + response[0].mId + "&reqPage=1'>" +
+            response[0].mId + "</a>");
         }
       });
       $(".category-title").hover(function (e) {
@@ -281,6 +368,19 @@
     });
   </script>
   <section class="main-section">
+    <div class="banner-container">
+      <div class="bannerArrow">
+        <span class="banner-prev" id="arrow_prev">&lt;</span>
+        <span class="banner-next" id="arrow_next">&gt;</span>
+      </div>
+      <div class="banner-slider">
+        <div class="banner-item">
+          <img src="img/index/banner/banner1.png" alt="">
+        </div>
+        <img src="img/index/banner/banner2.png" alt="">
+        <img src="img/index/banner/banner3.png" alt="">
+      </div>
+    </div>
     <div class="slider-container">
       <div class="famous-category-slider">
         <div class="slider-top">
@@ -306,25 +406,29 @@
               <div class="category-title-background"></div>
               <div class="category-title">로고·브랜딩</div>
             </a>
-          </div><div class="category-item">
+          </div>
+          <div class="category-item">
             <a href="/serviceList.do?cNo=10&reqPage=1">
               <img src="img/index/carousel/category-107.png" alt="">
               <div class="category-title-background"></div>
               <div class="category-title">캘리그라피·폰트</div>
             </a>
-          </div><div class="category-item">
+          </div>
+          <div class="category-item">
             <a href="/serviceList.do?cNo=10&reqPage=1">
               <img src="img/index/carousel/category-101.png" alt="">
               <div class="category-title-background"></div>
               <div class="category-title">캘리그라피·폰트</div>
             </a>
-          </div><div class="category-item">
+          </div>
+          <div class="category-item">
             <a href="/serviceList.do?cNo=10&reqPage=1">
               <img src="img/index/carousel/category-113.png" alt="">
               <div class="category-title-background"></div>
               <div class="category-title">캘리그라피·폰트</div>
             </a>
-          </div><div class="category-item">
+          </div>
+          <div class="category-item">
             <a href="/serviceList.do?cNo=10&reqPage=1">
               <img src="img/index/carousel/category-107.png" alt="">
               <div class="category-title-background"></div>
@@ -339,8 +443,8 @@
             <span>디자인 카테고리</span>에서 인기있어요!
           </div>
           <div class="arrowSlider">
-            <span class="prev" id="arrow1_prev">&lt;</span>
-            <span class="next" id="arrow1_next">&gt;</span>
+            <span class="prev" id="arrow2_prev">&lt;</span>
+            <span class="next" id="arrow2_next">&gt;</span>
           </div>
         </div>
         <div class="famous-category-list">
@@ -357,25 +461,29 @@
               <div class="category-title-background"></div>
               <div class="category-title">로고·브랜딩</div>
             </a>
-          </div><div class="category-item">
+          </div>
+          <div class="category-item">
             <a href="/serviceList.do?cNo=10&reqPage=1">
               <img src="img/index/carousel/category-107.png" alt="">
               <div class="category-title-background"></div>
               <div class="category-title">캘리그라피·폰트</div>
             </a>
-          </div><div class="category-item">
+          </div>
+          <div class="category-item">
             <a href="/serviceList.do?cNo=10&reqPage=1">
               <img src="img/index/carousel/category-101.png" alt="">
               <div class="category-title-background"></div>
               <div class="category-title">캘리그라피·폰트</div>
             </a>
-          </div><div class="category-item">
+          </div>
+          <div class="category-item">
             <a href="/serviceList.do?cNo=10&reqPage=1">
               <img src="img/index/carousel/category-113.png" alt="">
               <div class="category-title-background"></div>
               <div class="category-title">캘리그라피·폰트</div>
             </a>
-          </div><div class="category-item">
+          </div>
+          <div class="category-item">
             <a href="/serviceList.do?cNo=10&reqPage=1">
               <img src="img/index/carousel/category-107.png" alt="">
               <div class="category-title-background"></div>
@@ -390,8 +498,8 @@
             <span>디자인 카테고리</span>에서 인기있어요!
           </div>
           <div class="arrowSlider">
-            <span class="prev" id="arrow1_prev">&lt;</span>
-            <span class="next" id="arrow1_next">&gt;</span>
+            <span class="prev" id="arrow3_prev">&lt;</span>
+            <span class="next" id="arrow3_next">&gt;</span>
           </div>
         </div>
         <div class="famous-category-list">
@@ -408,25 +516,29 @@
               <div class="category-title-background"></div>
               <div class="category-title">로고·브랜딩</div>
             </a>
-          </div><div class="category-item">
+          </div>
+          <div class="category-item">
             <a href="/serviceList.do?cNo=10&reqPage=1">
               <img src="img/index/carousel/category-107.png" alt="">
               <div class="category-title-background"></div>
               <div class="category-title">캘리그라피·폰트</div>
             </a>
-          </div><div class="category-item">
+          </div>
+          <div class="category-item">
             <a href="/serviceList.do?cNo=10&reqPage=1">
               <img src="img/index/carousel/category-101.png" alt="">
               <div class="category-title-background"></div>
               <div class="category-title">캘리그라피·폰트</div>
             </a>
-          </div><div class="category-item">
+          </div>
+          <div class="category-item">
             <a href="/serviceList.do?cNo=10&reqPage=1">
               <img src="img/index/carousel/category-113.png" alt="">
               <div class="category-title-background"></div>
               <div class="category-title">캘리그라피·폰트</div>
             </a>
-          </div><div class="category-item">
+          </div>
+          <div class="category-item">
             <a href="/serviceList.do?cNo=10&reqPage=1">
               <img src="img/index/carousel/category-107.png" alt="">
               <div class="category-title-background"></div>
@@ -453,7 +565,6 @@
                   <div>총 판매 금액</div>
                   <div class="sumPrice"></div>
                   <div class="free-id">
-                    프리랜서아이디
                   </div>
                 </div>
               </div>

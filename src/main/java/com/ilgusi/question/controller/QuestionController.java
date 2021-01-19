@@ -105,11 +105,15 @@ public class QuestionController {
 	public String registerQuestion(HttpServletRequest req, MultipartFile file, Model model,
 			@RequestParam(value = "answer_No", defaultValue = "-1") int answerNo,
 			@RequestParam(value = "q_No", defaultValue = "-1") int qNo,
-			@RequestParam(value="loc",required = false) String loc) {
+			@RequestParam(value="loc",required = false) String loc,
+			@RequestParam(value="isPrivacy",required = false) String isPrivacy) {
 
 		Question q = new Question();
 		String qTitle = req.getParameter("qTitle");
 		String qContent = req.getParameter("qContent");
+		System.out.println(isPrivacy +"비밀여부");
+		if(isPrivacy != null && isPrivacy.equals("on"))
+			q.setSecretStatus(1);
 		if (answerNo == -1
 				&& (qTitle == null || qTitle.equals("") == true || qContent == null || qContent.equals("") == true)) {
 			model.addAttribute("msg", "등록 실패!");
