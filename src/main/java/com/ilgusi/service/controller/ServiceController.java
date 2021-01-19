@@ -263,7 +263,7 @@ public class ServiceController {
 		spd.setCNo(cNo);
 		
 		//서비스 리스트 불러오기+페이징 
-		spd = service.servicePageList(map, reqPage, cNo);
+		spd = service.servicePageList(map, reqPage, cNo, order);
 		ArrayList<Service> serList = spd.getList();
 
 		//가격 => 천단위 콤마 찍기

@@ -320,6 +320,14 @@
                 	border: none;
              
                 }
+                
+                .heart:hover{
+                	cursor: pointer;
+                }
+                
+                 .fas{
+			       	color: #ef4f4f;
+			     }
 
 
 
@@ -336,14 +344,15 @@
         </div>
         <div class="serviceContent">
             <div class="leftContent">
-                <!-- 캐러셀 시작  -->
+            
+            <!-- 캐러셀 시작  -->
                 <div id="demo" class="carousel slide" data-ride="carousel">
-				
+
                     <!-- Indicators -->
-                    <ul class="carousel-indicators">
-                    	<c:forEach items="fileList" varStatus="status" >
+                     <ul class="carousel-indicators">
+                    	<c:forEach items="${fileList }" varStatus="status" >
                     		<c:if test="${status.index == 0 }">
-                    			<li data-target="#demo" data-slide-to="${status.index }" class="active"></li>
+                    			<li data-target="#demo" class="active" data-slide-to="${status.index }" ></li>
                     		</c:if>
                     		<c:if test="${status.index != 0 }">
                     			<li data-target="#demo" data-slide-to="${status.index }"></li>
@@ -351,21 +360,23 @@
                     	</c:forEach>
                         
                     </ul>
-
+                                        
                     <!-- The slideshow -->
                     <div class="carousel-inner">
-                    	<c:forEach items="fileList" var="sf">
-                    		<div class="carousel-item active">
-                           		 <img src="/upload/service/testImg1.jpg" alt="test1">
-                        	</div>
+                    	<c:forEach items="${fileList }" var="sf" varStatus="status">
+                    		<c:if test="${status.index == 0 }">
+                    			<div class="carousel-item active">
+                           		 	<img src="upload/service/${sf.filepath }" alt="test${status.index+1 }">
+                        		</div>
+                    		</c:if>
+                    		<c:if test="${status.index != 0 }">
+                    			<div class="carousel-item">
+                           		 	<img src="upload/service/${sf.filepath }" alt="test${status.index+1 }">
+                        		</div>
+                    		</c:if>
+                    		
+                    		
                     	</c:forEach>
-                        
-                        <!-- <div class="carousel-item">
-                            <img src="img/test/testImg2.jpg" alt="test2">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="img/test/testImg4.jpg" alt="test3">
-                        </div> -->
                     </div>
 
                     <!-- Left and right controls -->
@@ -377,6 +388,7 @@
                     </a>
                 </div>
                 <!-- 캐러셀 끝  -->
+
 
                 <br><br><br>
 
@@ -524,13 +536,22 @@
                     <div class="contentTitle bold-font">${s.STitle }</div>
                     <p class="titlePrice">${s.SPriceTxt }원~</p>
                     <div class="heart">
-                        <i class="far fa-heart"></i>
-                        이 서비스 찜하기
+                        <c:choose>
+                        	<c:when test="${loginMember != null }">
+                        		<input type="hidden" value="${loginMember.MNo }" id="m_no">
+                        		<a href="javascript:like_func();" style="color: gray;"><i class="full-heart far fa-heart"></i> 이 서비스 찜하기</a>
+                        	</c:when>
+                        	<c:otherwise>
+                        		<a href="javascript: login_need();" style="color: gray;"><i class="full-heart far fa-heart"></i> 이 서비스 찜하기 </a>
+                        	</c:otherwise>
+                        </c:choose>
+                        
                     </div>
                 </div>
                 <div class="rightInfo">
                     <div class="Infocon conFirst">
                         <p>서비스 종류</p>
+                        <input type="hidden" value="${s.SNo }" id="s_no">
                         <span>${s.mainCategoryName }</span> <span> > </span> <span>${s.subCategoryName }</span>
                     </div>
                     <div class="Infocon othercon">
@@ -576,6 +597,8 @@
     </div>
 
     <script>
+    
+    	// 서비스 상세보기 탭 구현 
         $(function() {
             var tab = $(".tab");
             var content = $(".tabcontent");
@@ -606,6 +629,29 @@
                 $(this)
             })
         });
+        
+    	// 좋아요 클릭시 찜하기 insert 
+        function like_func() {
+        	var m_no = $("#m_no").val();
+        	var s_no = $("#s_no").val();
+        	console.log("m_no:"+m_no+"s_no:"+s_no);
+        	
+        	$.ajax({
+        		url:"/insertHeart.do",
+        		type:"post",
+        		data:{mNo:m_no, 
+        			sNo:s_no},
+        			
+        		success:function(){
+        			$(".full-heart").addClass("fas");
+        		}
+        	})
+
+		}
+        function login_need() {
+			alert("로그인이 필요합니다.");
+		}
+        
     </script>
     
 

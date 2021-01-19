@@ -280,6 +280,9 @@
 				<when test="order == 'new'">
 					s_no desc
 				</when>
+				<otherwise>
+					s_no desc
+				</otherwise>
 			</choose>
 		
 		)s) where rnum between #{start} and #{end} 

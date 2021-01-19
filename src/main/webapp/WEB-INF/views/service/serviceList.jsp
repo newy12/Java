@@ -286,7 +286,7 @@ a:hover {
 
 
 	<script>
-		$(function() {
+		$(document).ready(function() {
 
 			var order = $("#order").val();
 			var subject = $("#subject").val();
