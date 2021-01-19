@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ilgusi.category.model.vo.Category;
@@ -41,6 +42,9 @@ public class ServiceController {
 		Join join = service.selectReviewList(mId, reqPage);
 		j.setServiceList(service.serviceList(mId));
 		j.setReviewList(join.getReviewList());
+		List<Service> list = service.sRateAVG(mId);
+		model.addAttribute("list",list);
+		System.out.println("리뷰리스트"+join.getReviewList());
 		model.addAttribute("pageNavi",join.getPageNavi());
 		model.addAttribute("j", j);
 		return "freelancer/introduce";
@@ -50,17 +54,16 @@ public class ServiceController {
 	public void reviewListSize(String mId,Model model) {
 		List<ServiceReview> list = service.reviewListSize(mId);
 		System.out.println("mid>>>>>"+mId);
-		model.addAttribute("list",list.size());
+		model.addAttribute("list",list);
 		System.out.println("list>>>>>>평점"+list);
 	}
 	  //(영재) 평점 평균 구하기
-	  
 	  @RequestMapping("/sRateAVG.do") 
 	  public void sRateAVG(String mId,Model model) {
 		  System.out.println("midRate>>>>>>>>전>"+mId);
 	  List<Service> list = service.sRateAVG(mId);
 	  System.out.println("midRate>>>>>>>>>"+mId);
-	  model.addAttribute("list",list.size());
+	  model.addAttribute("list",list);
 	  System.out.println("list>>>>>>평균점수"+list);
 	  }
 	  //(영재) 

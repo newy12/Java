@@ -274,11 +274,16 @@
             $(".email-form input").on("keyup", (function (e) {
                 // m_email          VARCHAR2(30)
                 let regExp = /^\w+@(\w+\.\w+){1,}$/;
-                if (regExp.exec($(this).val())) {
+                if($(this).val().length >30){
+                    console.log("초과");
+                    $("#email_validation").show();
+                    $(this).css("border-color", "red");
+                }
+                else if (regExp.exec($(this).val())) {
                     console.log("이메일조건 통과함: " + $(this).val())
                     $("#email_validation").hide();
                     $(this).removeAttr("style");
-                } else {
+                }else {
                     $("#email_validation").show();
                     $(this).css("border-color", "red");
                 }
@@ -557,7 +562,7 @@ l 제2조(개인정보의 수집∙이용 및 보유)
                         <div id="name_validation">* 이름은 1~6글자 한글로 입력해주세요.</div>
                     </div>
                     <div class="email-form">
-                        <span class="form-title">이메일 (30자)</span><br>
+                        <span class="form-title">이메일 (30자 이하)</span><br>
                         <input type="text" name="mEmail" id="email" placeholder="이메일을 입력해주세요">
                         <div id="email_validation">* 이메일 형식이 유효하지 않습니다.</div>
                     </div>

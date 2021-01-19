@@ -8,7 +8,15 @@
     <title>Insert title here</title>
 
     <style>
+        @font-face {
+            font-family: 'Arita-dotum-Medium';
+            src:
+                url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Arita-dotum-Medium.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
         .dh-footer {
+            font-family: 'Arita-dotum-Medium';
             margin-top: 100px;
             width: 100%;
             height: 300px;
@@ -124,7 +132,7 @@
                         <span><a href="#">이용약관</a></span>
                     </li>
                     <li>
-                        <span><a href="qna.do?pageNum=1">1:1 문의</a></span>
+                        <span><a href="qna.do?page=1">1:1 문의</a></span>
                     </li>
                     <li>
                         <span><a href="#">FAQ</a></span>

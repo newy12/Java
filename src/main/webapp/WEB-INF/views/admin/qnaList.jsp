@@ -19,11 +19,6 @@
         }
 
         .qna-top {
-            margin: 50px auto;
-            width: 90%;
-            height: 300px;
-            padding: 1px;
-            background-color: rgb(224, 224, 224, 0.5);
         }
 
         .qna-top>.title {
@@ -223,6 +218,33 @@
             resize: none;
             border-radius: 5px;
         }
+        
+        .page-num{
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+            border-radius: 4px;
+            color: #282828;
+            font-weight: bold;
+            margin-bottom: 10px;
+            margin-top: 10px;
+            text-decoration: none;
+        }
+        .page-num:not(.page-selected):hover{
+            text-decoration: none;
+            color: #282828;
+            background-color: #ff8f3f85;
+        }
+        .page-selected{
+            background-color: #FF8F3F;
+            color: white;
+        }
+        .page-selected:hover{
+            color: white;
+            text-decoration: none;
+        }
     </style>
 </head>
 
@@ -309,6 +331,11 @@
                 e.stopPropagation();
             });
             $("#loc").val(window.location.href);
+
+            // 셀렉트 박스 부분
+            $("select").on("change", function () {
+                location.href = "/manageQnA.do?list_num="+$("select>option:selected").val();
+            });
         });
     </script>
 
@@ -357,12 +384,16 @@
     <!-- 메인섹션부분 -->
     <section class="qna-section">
         <div class="qna-container">
-            <select name="list_num">
-                <option value="10">10개</option>
-                <option value="20">20개</option>
-                <option value="30">30개</option>
-            </select>
-            <div class="qna-center">
+            <div class="qna-top">
+
+                <select name="list_num">
+                    <option value="10" ${param.list_num == 10 ? 'selected' : ''}>10개</option>
+                    <option value="20" ${param.list_num == 20 ? 'selected' : ''}>20개</option>
+                    <option value="30" ${param.list_num == 30 ? 'selected' : ''}>30개</option>
+                </select>
+                <input type="button" value="삭제">
+            </div>
+                <div class="qna-center">
                 <table>
                     <thead>
                         <tr>
@@ -403,6 +434,7 @@
                                     <td>
                                         관리자
                                     </td>
+                                    <td>${qList.answerDate}</td>
                                 </tr>
                             </c:if>
                         </c:forEach>
@@ -415,7 +447,7 @@
             <div class="qna-bottom">
                 <div class="paging">
                     <c:forEach var="i" begin="${not empty param.page ?  begin : 1}" end="${end}" step="1">
-                        <a
+                        <a class="page-num ${param.page==i || (empty param.page && i == 1) ? 'page-selected' : ''}"
                             href="?page=${i}${not empty param.qna_type ? '&qna_type='+=param.qna_type : ''}${not empty param.qna_keyword ? '&qna_keyword='+=param.qna_keyword : ''}">${i}</a>
                     </c:forEach>
                 </div>

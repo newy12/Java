@@ -17,10 +17,10 @@
 		from
 		chat
 		<if test="cNo==null">
-			where s_no=#{sNo} and user_id=#{userId}
+			where s_no=#{sNo} and user_id=#{userId} order by c_no desc
 		</if>
 		<if test="cNo!=null">
-			where c_no=#{cNo}
+			where c_no=#{cNo} order by c_no desc
 		</if>
 	</select>
 
@@ -73,6 +73,12 @@
 	<delete id="deleteChat" parameterType="_int">
 		delete from chat where
 		c_no=#{_parameter}
+	</delete>
+	
+	<!-- (소현)메세지 삭제 -->
+	<delete id="deleteMsg" parameterType="_int">
+		delete from chat_content where
+		cc_no=#{_parameter}
 	</delete>
 
 	<!-- (소현)관리자가 보낸 메세지 불러오기 -->

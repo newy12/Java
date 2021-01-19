@@ -36,16 +36,83 @@
 
         .qna-top>.title>.title-main {
             font-size: 30px;
+            border-left: 4px solid #314C83;
+            padding-left: 10px;
+            margin-bottom: 10px;
         }
 
         .qna-center {
             margin: 0 auto;
+            width: 90%;
+        }
+        .qna-center>table{
+            width: 100%;
+            height: 600px;
+            border-top: 2px solid #314C83;
+            border-bottom: 2px solid #314C83;
+        }
+        .qna-center>table>thead{
+            background-color: rgb(224, 224, 224, 0.5);
+        }
+        .qna-center .qna-col1{
+            width: 100px;
+            height: 40px;
+            text-align: center;
+            font-size: 15px;
+        }
+        .qna-center .qna-col2>input{
+            width: 700px;
+            height: 30px;
+            border-radius: 4px;
+            outline: none;
+            border: 1px solid lightgray;
+        }
+        .qna-bottom {
+            margin: 10px auto;
             width: fit-content;
         }
+        #qContent{
+            width: 100%;
+            height: 95%;
+            resize: none;
+        }
 
-        .qna-bottom {
-            margin: 0 auto;
-            width: fit-content;
+        .btn-answer {
+            width: 80px;
+            height: 35px;
+            line-height: 35px;
+            margin-left: 5px;
+            outline: none;
+            background-color: white;
+            color: #314C83;
+            border-radius: 5px;
+            border: 2px solid #314C83;
+            display: inline-block;
+            text-decoration: none;
+            font-size: small;
+            text-align: center;
+        }
+        .btn-answer:hover{
+            text-decoration: none;
+            color: #314C83;
+        }
+        .btn-update{
+            width: 80px;
+            height: 35px;
+            line-height: 35px;
+            margin-left: 5px;
+            outline: none;
+            background-color: #314C83;
+            color: white;
+            border-radius: 5px;
+            display: inline-block;
+            border: none;
+            text-decoration: none;
+            font-size: small;
+        }
+        .btn-update:hover{            
+            color: white;
+            text-decoration: none;
         }
     </style>
 </head>
@@ -88,20 +155,24 @@
                         <thead>
                             <c:if test="${empty param.answerNo}">
                             <tr>
-                                <th>제목</th>
-                                <th><input type="text" name="qTitle" id="qTitle" placeholder="내용을 입력해주세요." value="${not empty question ? question.QTitle : ''}"></th>
+                                <th class="qna-col1">제목</th>
+                                <th class="qna-col2"><input type="text" name="qTitle" id="qTitle" placeholder="내용을 입력해주세요." value="${not empty question ? question.QTitle : ''}"></th>
+                                <th></th>
                             </tr>
                                 <tr>
-                                    <th>첨부파일</th>
-                                    <th><input type="file" name="file" id="file"></th>
+                                    <th class="qna-col1">첨부파일</th>
+                                    <th class="qna-col2"><input type="file" name="file" id="file"></th>
+                                    <th>
+                                        <input type="checkbox" name="isPrivacy" id="isPrivacy">
+                                        <label for="isPrivacy"> 비밀글 여부</label>
+                                    </th>
                                 </tr>
                             </c:if>
                         </thead>
                         <tbody>
-                            
                             <tr>
-                                <td colspan="2">
-                                    <textarea name="qContent" id="qContent" cols="30" rows="10">${not empty question ? question.QContent : ''}</textarea>
+                                <td colspan="3">
+                                    <textarea name="qContent" id="qContent" cols="30" rows="10" r>${not empty question ? question.QContent : ''}</textarea>
                                 </td>
                             </tr>
                         </tbody>
@@ -113,8 +184,8 @@
                 <div class="qna-bottom">
                     <div class="submit">
 
-                        <input type="submit" value="등록하기">
-                        <a href="/qna.do">목록으로</a>
+                        <input type="submit" class="btn-update" value="등록하기">
+                        <a href="/qna.do" class="btn-answer">목록으로</a>
                     </div>
                 </div>
             </form>
