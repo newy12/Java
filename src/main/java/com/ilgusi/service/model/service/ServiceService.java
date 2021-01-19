@@ -41,6 +41,7 @@ public class ServiceService {
 			return result;
 		}
 
+		// 프리랜서 마이페이지 정보 수정
 		public int updateFreelancer(Member m) {
 			return dao.updateFreelancer(m);
 		}

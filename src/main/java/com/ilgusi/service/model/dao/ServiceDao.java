@@ -33,6 +33,7 @@ public class ServiceDao {
 		return session.insert("service.insertService", join);
 	}
 
+	// 프리랜서 마이페이지 정보 수정
 	public int updateFreelancer(Member m) {
 		return session.update("service.updateFreelancer", m);
 	}
