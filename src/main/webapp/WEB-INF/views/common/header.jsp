@@ -108,8 +108,8 @@
             box-sizing: border-box;
         }
         .dh-header .header-top-right {
-            float: left;
-            width: 25%;
+            float: right;
+            width: fit-content;
             height: 100%;
             text-align: center;
         }

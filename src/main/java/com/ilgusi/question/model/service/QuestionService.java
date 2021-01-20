@@ -51,4 +51,7 @@ public class QuestionService {
 	public int updateQuestion(Question q) {
 		return dao.updateQuestion(q);
 	}
+	public int deleteQuestion(int qNo) {
+		return dao.deleteQuestion(qNo);
+	}
 }

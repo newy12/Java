@@ -136,7 +136,17 @@
             text-decoration: none;
             font-size: small;
         }
-
+        .btn-submit{
+            outline: none;
+            background-color: #314C83;
+            color: white;
+            border-radius: 5px;
+            width: 100%;
+            border: 1px solid #314C83;
+            box-sizing: border-box;
+            height: 40px;
+            line-height: 40px;
+        }
         .background-screen {
             display: none;
             position: absolute;
@@ -160,7 +170,9 @@
             top: calc(50% - 350px);
             /* box-sizing: border-box; */
         }
-
+        .qna-view-container-answer {
+            height: 550px;
+        }
         .qna-view-main {
             width: 90%;
             height: 90%;
@@ -218,7 +230,38 @@
             resize: none;
             border-radius: 5px;
         }
-        
+        .qna-view-content-answer{
+            margin: 20px auto;
+            width: 90%;
+            
+        }
+        .qna-view-content-answer textarea{
+            width: 100%;
+            height: 400px;
+            resize: none;
+        }
+        .qna-view-action{
+            margin: 0 auto;
+            width: 90%;
+        }
+        .page-next:hover,
+        .page-prev:hover{
+            text-decoration: none;
+            color: #282828;
+            background-color: #ff8f3f85;
+        }
+        .page-next,
+        .page-prev{
+            display: inline-block;
+            width: 50px;
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+            border-radius: 4px;
+            color: #282828;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
         .page-num{
             display: inline-block;
             width: 25px;
@@ -293,6 +336,7 @@
                         $(".qna-view-title").empty();
                         $(".qna-view-title").append("제목: " + response.qTitle);
                         $(".qna-view-file").empty();
+                        $(".qna-view-file").show();
                         $(".qna-view-file").append("파일: " + response.filePath);
                         $(".qna-view-content:eq(0)").empty();
                         $(".qna-view-content:eq(0)").append(response.qContent);
@@ -324,12 +368,21 @@
                 $(".qna-view-container").show();
                 e.stopPropagation();
             });
+            // 답변창
             $(".btn-answer").on("click", function (e) {
                 $("#answer_No").val($(this).siblings("input:hidden").val());
                 $(".background-screen").show();
                 $(".qna-view-container-answer").show();
                 e.stopPropagation();
             });
+            // 수정창
+            $(".btn-update").on("click", function (e) {
+                $("#answer_No").val($(this).siblings("input:hidden").val());
+                $(".background-screen").show();
+                $(".qna-view-container-answer").show();
+                e.stopPropagation();
+            });
+            // 
             $("#loc").val(window.location.href);
 
             // 셀렉트 박스 부분
@@ -367,12 +420,12 @@
                 </div>
             </div>
         </div>
-        <div class="qna-view-main">
+        <div class="qna-view-main-answer">
             <form id="qna-reg-form" action="registerQuestion.do" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="loc" id="loc">
                 <input type="hidden" name="answer_No" id="answer_No">
-                <div class="qna-view-content">
-                    <textarea name="qContent" id=""></textarea>
+                <div class="qna-view-content-answer">
+                    <textarea name="qContent" id="">${not empty param.answerNo ? question.answerContent : ''}</textarea>
                 </div>
                 <div class="qna-view-action">
                     <input type="submit" class="btn-submit" value="등록하기">
@@ -429,7 +482,7 @@
                                     <td>
                                         <input type="hidden" value="${qList.QNo}">
                                         <a href="#" class="answer-list-title">&#10551; 답변입니다.</a>
-                                        <a href="questionFrm.do?answerNo=${qList.QNo}" class="btn-update">수정</a>
+                                        <a href="#" class="btn-update">수정</a>
                                     </td>
                                     <td>
                                         관리자
@@ -446,10 +499,18 @@
             </div>
             <div class="qna-bottom">
                 <div class="paging">
+                     <c:if test="${begin != 1}">
+                        <a class="page-prev"
+                            href="?page=${begin-1}${not empty param.qna_type ? '&qna_type='+=param.qna_type : ''}${not empty param.qna_keyword ? '&qna_keyword='+=param.qna_keyword : ''}${not empty param.list_num ? '&list_num='+=param.list_num : ''}">이전</a>
+                    </c:if>
                     <c:forEach var="i" begin="${not empty param.page ?  begin : 1}" end="${end}" step="1">
                         <a class="page-num ${param.page==i || (empty param.page && i == 1) ? 'page-selected' : ''}"
-                            href="?page=${i}${not empty param.qna_type ? '&qna_type='+=param.qna_type : ''}${not empty param.qna_keyword ? '&qna_keyword='+=param.qna_keyword : ''}">${i}</a>
+                            href="?page=${i}${not empty param.qna_type ? '&qna_type='+=param.qna_type : ''}${not empty param.qna_keyword ? '&qna_keyword='+=param.qna_keyword : ''}${not empty param.list_num ? '&list_num='+=param.list_num : ''}">${i}</a>
                     </c:forEach>
+                    <c:if test="${end < maxPageCount}">
+                        <a class="page-next"
+                            href="?page=${end+1}${not empty param.qna_type ? '&qna_type='+=param.qna_type : ''}${not empty param.qna_keyword ? '&qna_keyword='+=param.qna_keyword : ''}${not empty param.list_num ? '&list_num='+=param.list_num : ''}">다음</a>
+                    </c:if>
                 </div>
                 <div class="qna-search">
                     <form action="" method="get">

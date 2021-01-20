@@ -9,7 +9,16 @@
     <title>Insert title here</title>
 
     <style>
+        @font-face {
+            font-family: 'Arita-dotum-Medium';
+            src:
+                url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Arita-dotum-Medium.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         .qna-section {
+            font-family: 'Arita-dotum-Medium';
             margin: 0 auto;
             width: 1200px;
         }
@@ -45,33 +54,39 @@
             margin: 0 auto;
             width: 90%;
         }
-        .qna-center>table{
+
+        .qna-center>table {
             width: 100%;
             height: 600px;
             border-top: 2px solid #314C83;
             border-bottom: 2px solid #314C83;
         }
-        .qna-center>table>thead{
+
+        .qna-center>table>thead {
             background-color: rgb(224, 224, 224, 0.5);
         }
-        .qna-center .qna-col1{
+
+        .qna-center .qna-col1 {
             width: 100px;
             height: 40px;
             text-align: center;
             font-size: 15px;
         }
-        .qna-center .qna-col2>input{
+
+        .qna-center .qna-col2>input {
             width: 700px;
             height: 30px;
             border-radius: 4px;
             outline: none;
             border: 1px solid lightgray;
         }
+
         .qna-bottom {
             margin: 10px auto;
             width: fit-content;
         }
-        #qContent{
+
+        #qContent {
             width: 100%;
             height: 95%;
             resize: none;
@@ -92,11 +107,13 @@
             font-size: small;
             text-align: center;
         }
-        .btn-answer:hover{
+
+        .btn-answer:hover {
             text-decoration: none;
             color: #314C83;
         }
-        .btn-update{
+
+        .btn-update {
             width: 80px;
             height: 35px;
             line-height: 35px;
@@ -110,7 +127,8 @@
             text-decoration: none;
             font-size: small;
         }
-        .btn-update:hover{            
+
+        .btn-update:hover {
             color: white;
             text-decoration: none;
         }
@@ -153,12 +171,22 @@
                 <div class="qna-center">
                     <table>
                         <thead>
+                            <c:if test="${not empty param.answerNo}">
+                                <tr>
+                                    <th class="qna-col1">제목</th>
+                                    <th class="qna-col2"><input type="text" name="qTitle" id="qTitle"
+                                            value="답변입니다." disabled></th>
+                                    <th></th>
+                                </tr>
+                            </c:if>
                             <c:if test="${empty param.answerNo}">
-                            <tr>
-                                <th class="qna-col1">제목</th>
-                                <th class="qna-col2"><input type="text" name="qTitle" id="qTitle" placeholder="내용을 입력해주세요." value="${not empty question ? question.QTitle : ''}"></th>
-                                <th></th>
-                            </tr>
+                                <tr>
+                                    <th class="qna-col1">제목</th>
+                                    <th class="qna-col2"><input type="text" name="qTitle" id="qTitle"
+                                            placeholder="내용을 입력해주세요."
+                                            value="${not empty question ? question.QTitle : ''}"></th>
+                                    <th></th>
+                                </tr>
                                 <tr>
                                     <th class="qna-col1">첨부파일</th>
                                     <th class="qna-col2"><input type="file" name="file" id="file"></th>
@@ -172,7 +200,8 @@
                         <tbody>
                             <tr>
                                 <td colspan="3">
-                                    <textarea name="qContent" id="qContent" cols="30" rows="10" r>${not empty question ? question.QContent : ''}</textarea>
+                                    <textarea name="qContent" id="qContent" cols="30" rows="10"
+                                        r>${(not empty question and empty param.answerNo) ? question.QContent : ''}${not empty param.answerNo ? question.answerContent : ''}</textarea>
                                 </td>
                             </tr>
                         </tbody>

@@ -45,15 +45,32 @@ public class ServiceController {
 
 	@RequestMapping("/introduceFrm.do")
 	public String introduceFrm(String mId,int reqPage, Model model) {
-	System.out.println("ㅇㅇ"+reqPage);
+		System.out.println("ㅇㅇ" + reqPage);
 		Join j = service.selectOneMember(mId);
 		Join join = service.selectReviewList(mId, reqPage);
-		j.setServiceList(service.serviceList(mId));
+		// 승인된 서비스만 가져오기
+		// 전체 서비스리스트
+		List<Service> serviceList = service.serviceList(mId);
+		// 승인된 서비스 리스트
+		List<Service> approvedList = new ArrayList<Service>();
+
+		for (int i = 0; i < serviceList.size(); i++) {
+			char approval = serviceList.get(i).getAdminApproval();
+			char deleted = serviceList.get(i).getDeleteStatus();
+
+			if (approval == 'y' && deleted == 'n') {
+				approvedList.add(serviceList.get(i));
+			}
+		}
+
+		j.setServiceList(approvedList);
 		j.setReviewList(join.getReviewList());
-		List<Service> list = service.sRateAVG(mId);
-		model.addAttribute("list",list);
-		System.out.println("리뷰리스트"+join.getReviewList());
-		model.addAttribute("pageNavi",join.getPageNavi());
+
+		float avg = service.sRateAVG(mId);
+		model.addAttribute("avg", avg);
+		// System.out.println(list);
+		// System.out.println("리뷰리스트" + join.getReviewList());
+		model.addAttribute("pageNavi", join.getPageNavi());
 		model.addAttribute("j", j);
 		return "freelancer/introduce";
 	}
@@ -66,14 +83,14 @@ public class ServiceController {
 		System.out.println("list>>>>>>평점"+list);
 	}
 	  //(영재) 평점 평균 구하기
-	  @RequestMapping("/sRateAVG.do") 
+	  /*@RequestMapping("/sRateAVG.do") 
 	  public void sRateAVG(String mId,Model model) {
 		  System.out.println("midRate>>>>>>>>전>"+mId);
 	  List<Service> list = service.sRateAVG(mId);
 	  System.out.println("midRate>>>>>>>>>"+mId);
 	  model.addAttribute("list",list);
 	  System.out.println("list>>>>>>평균점수"+list);
-	  }
+	  }*/
 	  //(영재) 
 	  
 	 
@@ -425,7 +442,7 @@ public class ServiceController {
 					maxListCount - ((page - 1) * listPerPage),keyword);
 			int maxPrintPageCount = 5;
 			int maxPageCount = service.selectMaxPageCount(listPerPage, maxListCount);
-			int begin = maxPrintPageCount * (page / maxPrintPageCount) + 1; // 네비 시작
+			int begin = maxPrintPageCount * (page / (maxPrintPageCount+1)) + 1; // 네비 시작
 			int end = (begin + 4) < maxPageCount ? begin + 4 : maxPageCount; // 네비 끝
 			
 			//천단위 컴마 찍기
@@ -437,6 +454,7 @@ public class ServiceController {
 			model.addAttribute("begin", begin);
 			model.addAttribute("end", end);
 			model.addAttribute("maxListCount", formatter.format(maxListCount));
+			model.addAttribute("maxPageCount", maxPageCount);
 		}
 		return "/service/serviceAllList";
 	}
