@@ -171,25 +171,8 @@
 		<%@ include file="/WEB-INF/views/common/header.jsp"%>
 	</div>
     <div class="page-wrap">
-<<<<<<< HEAD
-        <div class="profile-box">
-            <div><img src="/img/icon/mypage_person.png" style="width: 147px; height: 147px"></div>
-			<input type="hidden" class="memberId" value="${loginMember.MId }">
-			<div style="margin-top: 10px;"> [${loginMember.MId}]님</div>
-            <div style="margin-top: 5px;"><button class="switch">일반회원으로 전환</button></div>
-            <p>MY PAGE</p>
-            <hr>
-            <ul class="menu">
-                <li><img src="/img/icon/circle_navy.png" ><a href="/freelancerMypage.do?MNo=${loginMember.MNo}">나의 프로필</a></li>
-                <li><img src="/img/icon/circle_navy.png" style="display: inline;"><a href="#" style="margin-left: 5px; font-weight: bold; ">서비스 내역</a></li>
-                <li><img src="/img/icon/circle_navy.png"><a href="/freelancerTradeHistory.do?mNo=${loginMember.MNo}">거래 내역</a></li>
-            </ul>
-        </div>
-        
-=======
         <!-- 사이드메뉴 -->
         <jsp:include page="/WEB-INF/views/freelancer/freelancer-side.jsp" />
->>>>>>> 817c4f9ffdff5ec04d5e91834f893040a68a019c
 	     <div class="board-wrap">
 	        <div class="board-box">
 	            <span>서비스 내역</span>
@@ -243,8 +226,7 @@
 			 $(".menu").children().eq(2).find('a').css({'margin-left':'5px', 'font-weight':'bold'});
 			 $(".menu").children().eq(2).find('img').css({'display':'inline'});
 		});
-    
-<<<<<<< HEAD
+
     $(document).ready(function () {
 		var order = $(".array").val();
 		var id = $(".memberId").val;
@@ -259,16 +241,7 @@
 			var order = $(".array").val();
 			console.log("mId:"+ mId);
 			location.href="freelancerServiceList.do?mId="+mId+"&order="+order;
-		})
-		
-		
-    
-    
-=======
-    $(function () {
-
->>>>>>> 817c4f9ffdff5ec04d5e91834f893040a68a019c
-    })
+		})	
     
     function del(){
     		var sNo = $("#sNo").val();
