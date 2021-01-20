@@ -101,11 +101,12 @@
 									<c:if test="${message.CContent ne '문의를 시작합니다!' }">
 										<div class="adminBox">
 											<br>
-
+											<c:if test="${status.index eq 0 }">
+											<div class="date" style="margin: 0 auto; margin-bottom:10px;">${message.CDate }</div>
+											</c:if>
 											<c:if test="${status.index ne 0 }">
 												<!-- 이전 메세지의 보낸날짜와 다르면 출력 -->
-												<c:if
-													test="${message.CDate ne content.get(status.index-1).CDate }">
+												<c:if test="${message.CDate ne content.get(status.index-1).CDate }">
 													<br>
 													<div class="date" style="margin: 0 auto; margin-bottom:10px;">${message.CDate }</div>
 												</c:if></c:if>
@@ -218,14 +219,14 @@
 
 							<!-- 일반채팅창 -->
 							<c:if test="${service.SNo ne 0 }">
-								<textarea class="message"></textarea>
+								<textarea class="message" autofocus="autofocus"></textarea>
 								<button class="submit"
 									onclick="sendMsg('${sessionScope.loginMember.MId}');">전송</button>
 							</c:if>
 							<!-- 알림창 -->
 							<c:if test="${service.SNo eq 0 }">
 								<!-- 문의사항페이지로 이동 -->
-								<a href="#" class="bigBtn" onclick="qnaPage()">관리자에게 문의하기</a>
+								<button class="bigBtn" onclick="qnaPage()">관리자에게 문의하기</button>
 							</c:if>
 						</div>
 					</div>
@@ -251,8 +252,8 @@
 
 		function qnaPage() {
 			console.log("click!");
-			/* opener.parent.location.href="/qna.do?pageNum=1"; */
-			/* window.close(); */
+			 opener.parent.location.href="/qna.do?pageNum=1"; 
+			window.close(); 
 		}
 
 		function deleteMsg(ccNo) {
@@ -341,11 +342,13 @@
 		}
 
 		// 엔터 누르면 전송 
-		/* $(".message").keyup(function(e) {
+		 $(".message").keyup(function(e) {
+			var cNo = ${cNo}; //방번호 
+			cNo = Number(cNo);
 			if (e.keyCode == 13)
-				sendMsg();
+				sendMsg('${sessionScope.loginMember.MId}',cNo);
 		});
-		 */
+		 
 		function deleteChat() {
 			var cNo = ${cNo}; //방번호 
 			cNo = Number(cNo);

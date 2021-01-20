@@ -60,7 +60,7 @@
 													<b id="name"> <c:if test="${r.freeId eq null }">(탈퇴한 회원)</c:if>
 														<c:if test="${r.freeId ne null }">
 															<c:if test="${ loginMember.MGrade eq 1}">[${r.brandName }]<br>${r.serviceTitle }</c:if>
-															<c:if test="${ loginMember.MGrade eq 2}">${r.freeId}-${r.serviceTitle }</c:if>
+															<c:if test="${ loginMember.MGrade eq 2}"> ${r.serviceTitle }<br> ${r.freeId}</span></c:if>
 															<span id="tradeStatus"> <c:if
 																	test="${r.status eq -1 }">
 																	<span class="green">(문의중)</span>

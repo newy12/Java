@@ -196,7 +196,6 @@ public class ChatController {
 					HashMap<String, Integer> tradeInfo = new HashMap<String, Integer>();
 
 					// 프리랜서로 로그인했을때
-
 					// 상대방번호,서비스번호로 거래 견적서 작성 여부 확인
 					Member oneUser = service.selectOneMember(mId);
 					int mNo = oneUser.getMNo();
@@ -357,11 +356,11 @@ public class ChatController {
 			} else if (mGrade.equals("2")) {///////////////////////////////////////// 프리랜서가 의뢰글보고 채팅시작할때
 				// 상대가 보낸 메세지 읽음으로 update
 				HashMap<String, Object> roomAndId = new HashMap<String, Object>();
-				roomAndId.put("mId", myId);
-				roomAndId.put("rNo", rNo);
+				roomAndId.put("mId", yourId);
+				roomAndId.put("rNo", yourId);
 				service.updateReadStatus(roomAndId);
 				// 의뢰인의 신고횟수가 4이상인지 확인
-				Member oneMember = service.selectOneMember(myId);
+				Member oneMember = service.selectOneMember(yourId);
 				int warningCount = oneMember.getWarningCount();
 				System.out.println("mId_warningcount:" + warningCount);
 

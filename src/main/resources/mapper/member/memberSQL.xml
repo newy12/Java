@@ -2,8 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="member">
 	<!-- 도현 -->
-	<select id="selectBuyingCount" parameterType="_int" resultType="_int">
-		select count(*) from service_trade where m_no = #{mNo} and t_status = 0
+	<select id="selectBuyingCount" parameterType="_int"
+		resultType="_int">
+		select count(*) from service_trade where m_no = #{mNo} and
+		t_status = 0
 	</select>
 	<select id="loginMember" parameterType="HashMap" resultType="m">
 		select
@@ -64,7 +66,8 @@
 
 	<insert id="registerMember" parameterType="m">
 		insert into member
-		values(member_SEQ.nextval,#{mId},#{mPw},#{mName},#{mEmail},#{mPhone},1,0,null,TO_CHAR(SYSDATE, 'YY-MM-DD'),null,null)
+		values(member_SEQ.nextval,#{mId},#{mPw},#{mName},#{mEmail},#{mPhone},1,0,null,TO_CHAR(SYSDATE,
+		'YY-MM-DD'),null,null)
 	</insert>
 
 	<!--(소현)관리자전체회원조회 -->
@@ -77,8 +80,7 @@
 		m_name mName ,
 		m_email mEmail ,
 		m_phone mPhone ,
-		m_grade
-		mGrade,
+		m_grade mGrade,
 		warning_count warningCount ,
 		introduce ,
 		enroll_date enrollDate ,
@@ -103,38 +105,49 @@
 			</when>
 			<when test='grade == "black"'>
 				where warning_count>3
-				<if test="keyword != null">
-					and (m_id = #{keyword} or brand_name like
+				<choose>
+					<when test='keyword !=""'>
+						and (m_id = #{keyword} or brand_name like
 					'%'||#{keyword}||'%')
-				</if>
+					</when>
+				</choose>	
 			</when>
-			<otherwise>
-				where (m_id = #{keyword} or brand_name like
-				'%'||#{keyword}||'%')
-			</otherwise>
+			<when test='grade == "all"'>
+				where (m_grade=1 or m_grade=2)
+				<choose>
+					<when test='keyword !=""'>
+						and (m_id = #{keyword} or brand_name like
+						'%'||#{keyword}||'%')
+					</when>
+				</choose>				
+			</when>
 		</choose>
 	</select>
 
 	<!--(소현)관리자전체회원조회-페이징추가 -->
-	<select id="selectAllMemberPaging" parameterType="map"
-		resultType="m">
+	<select id="selectAllMemberPaging" parameterType="map" resultType="m">
 		select
-		m_no mNo,
-		m_id mId,
-		m_pw mPw ,
-		m_name mName ,
-		m_email mEmail ,
-		m_phone mPhone ,
-		m_grade
-		mGrade,
-		warning_count warningCount ,
-		introduce ,
-		enroll_date enrollDate ,
-		brand_name brandName ,
-		contact_time contactTime
+		m_no as mNo,
+		m_id as mId,
+		m_name as mName ,
+		m_email as mEmail ,
+		m_phone as mPhone ,
+		m_grade as mGrade,
+		warning_count as warningCount ,
+		enroll_date as enrollDate ,
+		brand_name as brandName 
 		from (select rownum as rnum,m.* from(select * from member
 
 		<choose>
+			<when test='grade == "all"'>
+			where (m_grade=1 or m_grade=2)
+				<choose>
+					<when test='keyword !=""'>
+						and (m_id = #{keyword} or brand_name like
+						'%'||#{keyword}||'%')
+					</when>
+				</choose>				
+			</when>
 			<when test='grade == "free"'>
 				where m_grade=2
 				<if test="keyword != null">
@@ -144,15 +157,13 @@
 			</when>
 			<when test='grade == "black"'>
 				where warning_count>3
-				<if test="keyword != null">
-					and (m_id = #{keyword} or brand_name like
+				<choose>
+					<when test='keyword !=""'>
+						and (m_id = #{keyword} or brand_name like
 					'%'||#{keyword}||'%')
-				</if>
+					</when>
+				</choose>				
 			</when>
-			<otherwise>
-				where (m_id = #{keyword} or brand_name like
-				'%'||#{keyword}||'%')
-			</otherwise>
 		</choose>
 
 		<choose>
@@ -172,7 +183,7 @@
 	</select>
 
 
-	<!-- (다솜) 서비스상세보기 브랜드 정보 가져오기-->
+	<!-- (다솜) 서비스상세보기 브랜드 정보 가져오기 -->
 	<select id="selectBrand" resultType="m" parameterType="string">
 		select
 		m_no mNo,
@@ -180,7 +191,8 @@
 		m_pw mPw ,
 		m_name mName ,
 		m_email mEmail ,
-		m_phone mPhone ,
+		m_phone
+		mPhone ,
 		m_grade mGrade,
 		warning_count warningCount ,
 		introduce ,
@@ -189,19 +201,20 @@
 		contact_time contactTime
 		from member where m_id=#{parameter}
 	</select>
-	
-	<!-- (문정) 마이페이지에서 사용자 등급 바꿀 때  -->
-	<update id="changeGrade" parameterType="map" >
-		update member set 
-			<choose>
-				<when test='grade == 1'> m_grade = 2</when>
-				<otherwise> m_grade = 1 </otherwise>
-			</choose>
+
+	<!-- (문정) 마이페이지에서 사용자 등급 바꿀 때 -->
+	<update id="changeGrade" parameterType="map">
+		update member set
+		<choose>
+			<when test='grade == 1'> m_grade = 2</when>
+			<otherwise> m_grade = 1 </otherwise>
+		</choose>
 		where m_id = #{mId}
 	</update>
-	
+
 	<!-- (문정) 로그인하면 등급은 무조건 1로 바꿈 -->
 	<update id="settingMemberGrade" parameterType="m">
-		update member set m_grade = 1 where m_no = #{mNo}
+		update member set
+		m_grade = 1 where m_no = #{mNo}
 	</update>
 </mapper>
