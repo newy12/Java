@@ -242,7 +242,7 @@
 			 $(".menu").children().eq(2).find('img').css({'display':'inline'});
 			 
 			var order = $(".array").val();
-			var id = $(".memberId").val;
+			var id = "${loginMember.MId}";
 			console.log("order : "+order);
 			console.log("memberId : "+ id);
 			
@@ -253,8 +253,7 @@
 			
 			$(".array").change(function () {
 				var order = $(".array").val();
-				console.log("mId:"+ mId);
-				location.href="freelancerServiceList.do?mId="+mId+"&order="+order;
+				location.href="/freelancerServiceList.do?mId="+id+"&order="+order;
 			})
 			 
 		});
