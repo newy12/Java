@@ -105,14 +105,20 @@ public class ServiceDao {
 		return (ArrayList<Category>) list;
 	}
 
-	public ArrayList<String> brandList(com.ilgusi.service.model.vo.Service s) {
-		List<String> list = session.selectList("service.brandList", s);
+	public ArrayList<String> brandList(com.ilgusi.service.model.vo.Service s, String order, String keyword) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("s_no", s.getSNo());
+		map.put("mainCategory", s.getMainCategory());
+		map.put("subCategory", s.getSubCategory());
+		map.put("order", order);
+		map.put("keyword", keyword);
+		List<String> list = session.selectList("service.brandList", map);
 		return (ArrayList<String>) list;
 	}
 
 	// (다솜)서비스 리스트 페이징
 	public ArrayList<com.ilgusi.service.model.vo.Service> selectServiceList(HashMap<String, Object> map) {
-		List<com.ilgusi.service.model.vo.Service> list = session.selectList("service.serviceListPage", map);
+			List<com.ilgusi.service.model.vo.Service> list = session.selectList("service.serviceListPage", map);
 		return (ArrayList<com.ilgusi.service.model.vo.Service>) list;
 	}
 
@@ -161,10 +167,6 @@ public class ServiceDao {
 		return (ArrayList<ServiceFile>) list;
 	}
 
-	/*
-	 * public ArrayList<Category> selectCategory(int cNO) { List<Category> list =
-	 * session.selectList("") return null; }
-	 */
 	// (영재)review총 갯수 구하기
 	public List<ServiceReview> reviewListSize(String mId) {
 		List<ServiceReview> list = session.selectList("service.reviewListSize", mId);
@@ -205,7 +207,8 @@ public class ServiceDao {
 	public int deleteService(int sNo) {
 		return session.update("service.delService", sNo);
 	}
-
+	
+	
 	public ArrayList<com.ilgusi.service.model.vo.Service> selectServiceList(String mId, String order) {
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("id", mId);
@@ -217,6 +220,11 @@ public class ServiceDao {
 	// (문정) 리뷰 작성하면 서비스테이블 s_rate에 평점 넣어줌
 	public int serviceUpdateSRate(int sNo) {
 		return session.update("review.serviceUpdateSRate", sNo);
+	}
+
+	//(문정) 프리랜서가 등록한 총 서비스 개수
+	public int selectFreeServiceCount(String mId) {
+		return session.selectOne("service.selectFreeServiceCount", mId);
 	}
 
 }

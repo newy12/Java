@@ -160,6 +160,12 @@
 	font-size: 20px;
 	font-weight: bold;
 }
+.cate{
+	margin-top : 10px;
+	font-size: 9pt;
+	color: gray;
+	font-weight: bold;
+}
 
 .del-btn {
 	height: 30px;
@@ -212,6 +218,9 @@
 
 									</div>
 									<div class="empty"></div>
+									<div class="cate">
+										${s.mainCategoryName } / ${s.subCategoryName }
+									</div>
 									<div class="title">${s.STitle}</div>
 									<a href="#">
 										<div class="content" style="font-size: 12pt; float: right; width: 200px; text-align: right;"  >${s.SPriceTxt }원~</div>

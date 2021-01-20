@@ -32,7 +32,9 @@
         color: white;
         border: 1px solid rgb(49, 76, 131);
     }
-
+    .switch:focus{
+    	outline: none;
+    }
     .menu{
         padding: 0;
         list-style: none;

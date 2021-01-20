@@ -25,6 +25,9 @@ public class Service {
 	private String subCategoryName;
 	private String sPriceTxt;    //천원단위로 ,찍은 텍스트 저장
 	
+	//(다솜)추가
+	private String brandName;
+	
 	//줄바꿈
 	public String getSContentBr() {
 		return sContent.replaceAll("\r\n", "<br>");

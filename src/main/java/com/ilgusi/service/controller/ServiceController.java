@@ -146,7 +146,9 @@ public class ServiceController {
 	@RequestMapping("/freelancerMypage.do")
 	public String selectfreelancerMypage(int MNo, Model model) {
 		Member m = service.selectOneMember(MNo);
+		int serviceCount = service.selectFreeServiceCount(m.getMId());
 		model.addAttribute("m", m);
+		model.addAttribute("serviceCount", serviceCount);
 		return "freelancer/freelancerMypage";
 	}
 
@@ -166,6 +168,10 @@ public class ServiceController {
 		System.out.println("list사이즈 : " + list.size());
 		model.addAttribute("j",j);
 		System.out.println("test"+j.getServiceList().size());
+		if(list.size() != 0) {
+			System.out.println("메인카테고리이름:"+list.get(0).getMainCategoryName());	
+		}
+		
 		model.addAttribute("order", order);
 		return "freelancer/freelancerServiceList";
 	}
@@ -176,7 +182,7 @@ public class ServiceController {
 		int result = service.updateFreelancer(m);
 		if (result > 0) {
 			Member member = memberService.loginMember(m.getMId(), m.getMPw());
-			model.addAttribute("msg", "수정되었습니다.");
+			model.addAttribute("msg", "등록되었습니다.");
 			if (member != null) {
 				HttpSession session = req.getSession();
 				session.setAttribute("loginMember", member);
@@ -343,7 +349,9 @@ public class ServiceController {
 		if(serList.size() > 0 ) {
 			System.out.println("serList 사이즈 : " + serList.size());
 			System.out.println("serList.get(0) : "+ serList.get(0));
+			System.out.println("serList.get(0).brandName : " + serList.get(0).getBrandName());
 			model.addAttribute("serviceList", spd.getList());
+			
 		}else if(serList.size() == 0){
 			System.out.println("serList 사이즈 : "+ serList.size());
 			model.addAttribute("noServiceList", "noServiceList");
@@ -355,7 +363,8 @@ public class ServiceController {
 			model.addAttribute("c_no",serList.get(0).getSubCategory());
 		}
 		
-		ArrayList<String> brandName = service.brandList(s);
+		ArrayList<String> brandName = service.brandList(s,order,keyword);
+		
 		switch(maincateNum) {
 			case 10: model.addAttribute("mainCate", "디자인");
 				break;
