@@ -136,8 +136,13 @@ public class MemberController {
 		System.out.println("로그인 시도");
 		System.out.println("id" + id + " pw:" + pw);
 		Member m = service.loginMember(id, pw);
-
+		
 		if (m != null) {
+			//로그인하면 grade를 1로 셋팅해줌
+			if(m.getMGrade() ==2) {
+				int result = service.settingMemberGrade(m);
+			}
+			m = service.loginMember(id, pw);
 			HttpSession session = req.getSession();
 			session.setAttribute("loginMember", m);
 			model.addAttribute("msg", "로그인 성공");
@@ -163,8 +168,14 @@ public class MemberController {
 
 	// (문정)사용자 마이페이지 이동
 	@RequestMapping("/userMypage.do")
-	public String userMypage() {
-		return "member/userMypage";
+	public String userMypage(int mNo, int grade) {
+		System.out.println("마이페이지 이동"+mNo+"/"+grade);
+		if(grade == 1) {
+			return "member/userMypage";
+		}else if(grade == 2) {
+			return "redirect:/freelancerMypage.do?MNo="+mNo;
+		}
+		return "";
 	}
 
 	// (문정)사용자 마이페이지-이메일, 폰번호 변경
@@ -212,4 +223,22 @@ public class MemberController {
 		return "common/msg";
 	}
 
+	//(문정) 마이페이지에서 사용자-프리랜서 전환
+	@RequestMapping("/changeGrade.do")
+	public String changeGrade(String mId, String mPw, int grade, Model model, HttpServletRequest req) {
+		int result = service.changeGrade(mId, grade);
+		if(result>0){
+			Member m = service.loginMember(mId, mPw);
+			if (m != null) {
+				HttpSession session = req.getSession();
+				session.setAttribute("loginMember", m);
+			}
+			if(m.getMGrade() == 1) {
+				return "member/userMypage";
+			}else{
+				return "redirect:/freelancerMypage.do?MNo="+m.getMNo();
+			}
+		}
+		return "";
+	}
 }

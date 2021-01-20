@@ -105,6 +105,7 @@
 		<div class="btn-wrap">
 			<input type="text" style="display:none" value="${review.TNo}" id="tNo">
 			<input type="text" style="display:none" value="${review.RNo}" id="rNo">
+			<input type="text" style="display:none" value="${review.SNo}" id="sNo">
 			<button class="btn2 delete" id="delete_btn">삭제</button>
         	<button class="btn2 change" id="update_btn">수정</button>
         	<button class="btn2 delete" id="close_btn">닫기</button>
@@ -162,16 +163,18 @@
 			}else{
 				var rateTxt = $("#rate").html().split("/");
 				var rNo = $("#rNo").val();
+				var sNo = $("#sNo").val();
 				var rate = rateTxt[0];
 				var content = $("#review").val();
-				location.href="/serviceReviewUpdate.do?rNo="+rNo+"&rRate="+rate+"&rContent="+content;
+				location.href="/serviceReviewUpdate.do?rNo="+rNo+"&rRate="+rate+"&rContent="+content+"&sNo="+sNo;
 			}
 		});
 		
 		$("#delete_btn").click(function(){
 			var rNo = $("#rNo").val();
 			var tNo = $("#tNo").val();
-			location.href="/serviewReviewDelete.do?rNo="+rNo+"&tNo="+tNo;
+			var sNo = $("#sNo").val();
+			location.href="/serviewReviewDelete.do?rNo="+rNo+"&tNo="+tNo+"&sNo="+sNo;
 		});
 	</script>
 </body>

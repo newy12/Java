@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ilgusi.category.model.vo.Category;
+import com.ilgusi.member.model.service.MemberService;
 import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.question.model.vo.Question;
 import com.ilgusi.service.model.service.ServiceService;
@@ -36,6 +39,9 @@ import common.FileNameOverlap;
 public class ServiceController {
 	@Autowired
 	private ServiceService service;
+	
+	@Autowired
+	private MemberService memberService;
 
 	@RequestMapping("/introduceFrm.do")
 	public String introduceFrm(String mId,int reqPage, Model model) {
@@ -123,35 +129,47 @@ public class ServiceController {
 	@RequestMapping("/freelancerMypage.do")
 	public String selectfreelancerMypage(int MNo, Model model) {
 		Member m = service.selectOneMember(MNo);
-		System.out.println("MNo>>>>>" + m.getMNo() + MNo);
 		model.addAttribute("m", m);
-		System.out.println("소개값>>>>>>>>>" + m.getIntroduce());
 		return "freelancer/freelancerMypage";
 	}
 
 	// 프리랜서 마이페이지 -> 서비스 리스트 이동
 	@RequestMapping("/freelancerServiceList.do")
-	public String freelancerServiceList(String mId,Model model) {
+	public String freelancerServiceList(String mId,Model model,String order) {
 		Join j = new Join();
-		System.out.println("mid : "+mId);
 		j.setServiceList(service.serviceList(mId));
+		ArrayList<Service> list = service.selectMyList(mId,order);
+		model.addAttribute("list",list);
+		System.out.println("list사이즈 : " + list.size());
 		model.addAttribute("j",j);
 		System.out.println("test"+j.getServiceList().size());
 		return "freelancer/freelancerServiceList";
 	}
 
-
-
 	// 프리랜서 마이페이지 정보수정(소개글,연락가능시간,브랜드명 추가)
 	@RequestMapping("/updateFreelancer.do")
-	public String updateFreelancer(Member m, Model model) {
+	public String updateFreelancer(Member m, Model model,  HttpServletRequest req) {
 		int result = service.updateFreelancer(m);
 		if (result > 0) {
+			Member member = memberService.loginMember(m.getMId(), m.getMPw());
 			model.addAttribute("msg", "수정되었습니다.");
-		} else {
-			model.addAttribute("msg", "수정실패하였습니다.");
+			if (member != null) {
+				HttpSession session = req.getSession();
+				session.setAttribute("loginMember", member);
+			}
 		}
-		model.addAttribute("loc", "/");
+		model.addAttribute("loc", "/freelancerMypage.do?MNo="+m.getMNo());
+		return "common/msg";
+	}
+	
+	//프리랜서 마이페이지 - 서비스 삭제하기 
+	@RequestMapping("/delService.do")
+	public String deleteService(int sNo, Model model) {
+		int result = service.deleteService(sNo);
+		if(result != 0) {
+			model.addAttribute("msg", "서비스가 삭제되었습니다.");
+		}
+		model.addAttribute("loc","/");
 		return "common/msg";
 	}
 
@@ -175,6 +193,8 @@ public class ServiceController {
 			result = service.serviceReviewSuccess(data.getTNo());
 			if(result>0) {
 				model.addAttribute("msg","리뷰를 등록하였습니다.");
+				result = service.serviceUpdateSRate(data.getSNo());
+				if(result>0) System.out.println("[등록]서비스테이블에 s_rate 수정 성공");
 			}
 		}
 		return "/service/reviewDone";
@@ -194,18 +214,22 @@ public class ServiceController {
 		int result = service.serviceReviewUpdate(review);
 		if(result>0) {
 			model.addAttribute("msg","리뷰를 수정하였습니다.");
+			result = service.serviceUpdateSRate(review.getSNo());
+			if(result>0) System.out.println("[수정]서비스테이블에 s_rate 수정 성공");
 		}
 		return "/service/reviewDone";
 	}
 	
 	//(문정) 서비스 리뷰 삭제
 	@RequestMapping("/serviewReviewDelete.do")
-	public String serviewReviewDelete(int rNo, int tNo, Model model) {
+	public String serviewReviewDelete(int rNo, int tNo, int sNo, Model model) {
 		int result = service.serviceReviewDelete(rNo);
 		if(result>0) {
 			result = service.serviceTradeStatusUpdate(tNo);
 			if(result>0) {
 				model.addAttribute("msg", "리뷰를 삭제했습니다.");
+				result = service.serviceUpdateSRate(sNo);
+				if(result>0) System.out.println("[삭제]서비스테이블에 s_rate 수정 성공");
 			}
 		}
 		return "/service/reviewDone";

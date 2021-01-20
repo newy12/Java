@@ -17,6 +17,11 @@ public class MemberDao {
 	@Autowired
 	private SqlSessionTemplate session;
 
+	// (도현)메인페이지에 판매진행,구매진행중 정보 전달
+	public int selectBuyingCount(int mNo) {
+		return session.selectOne("member.selectBuyingCount", mNo);
+	}
+	
 	// (도현) 로그인 기능
 	public Member loginMember(String id, String pw) {
 		HashMap<String, String> map = new HashMap<String, String>();
@@ -63,9 +68,17 @@ public class MemberDao {
 		return session.delete("member.deleteMember", map);
 	}
 
-	// (도현)메인페이지에 판매진행,구매진행중 정보 전달
-	public int selectBuyingCount(int mNo) {
-		return session.selectOne("member.selectBuyingCount", mNo);
+	//(문정) 마이페이지에서 사용자-프리랜서 전환
+	public int changeGrade(String mId, int grade) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("mId", mId);
+		map.put("grade", grade);
+		return session.update("member.changeGrade", map);
+	}
+
+	//(문정) 로그인하면 grade를 1로 셋팅
+	public int settingMemberGrade(Member m) {
+		return session.update("member.settingMemberGrade",m);
 	}
 
 }

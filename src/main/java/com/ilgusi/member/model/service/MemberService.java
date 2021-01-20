@@ -27,7 +27,10 @@ public class MemberService {
 		}
 		return pw;
 	}
-
+	// (도현)메인페이지에 판매진행,구매진행중 정보 전달
+	public int selectBuyingCount(int mNo) {
+		return dao.selectBuyingCount(mNo);
+	}
 	// (도현) 로그인기능
 	public Member loginMember(String id, String pw) {
 		// 비번 암호화
@@ -68,10 +71,15 @@ public class MemberService {
 	public int deleteMember(String mId, String mPw) {
 		return dao.deleteMember(mId, mPw);
 	}
+	
+	//(문정) 마이페이지에서 사용자-프리랜서 전환
+	public int changeGrade(String mId,  int grade) {
+		return dao.changeGrade(mId, grade);
+	}
 
-	// (도현)메인페이지에 판매진행,구매진행중 정보 전달
-	public int selectBuyingCount(int mNo) {
-		return dao.selectBuyingCount(mNo);
+	//(문정) 로그인하면 grade를 1로 셋팅
+	public int settingMemberGrade(Member m) {
+		return dao.settingMemberGrade(m);
 	}
 
 }

@@ -140,9 +140,19 @@ a:hover {
 	border-radius: 5px;
 	width: 210px;
 	height: 180px;
+	transform: scale(1);
+    transition: transform 0.1s linear;
+}
+
+.imgBox{
+	overflow: hidden;
+	width: 210px;
+	height: 180px;
+	border-radius: 5px;
 }
 .serviceBox img:hover{
-	width: 
+	transform: scale(1.03);
+    overflow: hidden;
 }
 
 .preName {
@@ -226,7 +236,7 @@ a:hover {
 			<div class="searchDiv">
 				<div class="searchBox">
 					<input type="hidden" id="order" value="${order }">
-					<select class="selectBox subject form-control array subject array" id="search-subject" style="width: 120px; margin-right: 10px; float: left;">
+					<select class="selectBox subject form-control array" id="search-subject" style="width: 120px; margin-right: 10px; float: left;">
 						<option value="new" selected="selected">최신순</option>
 						<option value="popular">인기순</option>
 						<option value="review">평점순</option>
@@ -259,7 +269,7 @@ a:hover {
 				<c:if test="${serviceList != null }">
 					<c:forEach items="${serviceList }" var="s" varStatus="status">
 						<div class="serviceBox">
-							<img src="upload/service/${s.SImg }"><br> <br> 
+							<div class="imgBox"><img src="upload/service/${s.SImg }" onclick="location.href='/serviceView.do?sNo=${s.SNo}&reqPage=1'"></div><br> <br> 
 							<span class="preName">${brandName[status.index] }</span>
 							<br>
 							<p class="serviceCon" style="height: 30px;"><a href="/serviceView.do?sNo=${s.SNo}&reqPage=1"> ${s.STitle } </a></p>

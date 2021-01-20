@@ -9,63 +9,16 @@
 <style>
     .page-wrap{
         width: 1104px;
-        height:700px;
         margin: 0 auto;
         margin-top:50px;
     }
-	.profile-box{
-        width: 250px;
-        float: left;
-	}
-    .profile-box>div{
-        text-align: center;
-        margin: 0 auto;
-    }
     .board-box{
         width: 800px;
-        height:1200px;
+        height:750px;
         float: left;
         margin-top: 40px;
         margin-left: 30px;
         border: 1px solid rgb(224, 224, 224);
-    }
-    .switch{
-        height: 31px;
-        margin-bottom: 30px;
-        background-color: white;
-        color: rgb(49, 76, 131);
-        border: 1px solid rgb(49, 76, 131);
-    }
-    .switch:hover{
-        background-color: rgb(49, 76, 131);
-        color: white;
-        border: 1px solid rgb(49, 76, 131);
-    }
-    .menu{
-        padding: 0;
-        list-style: none;
-    }
-    .menu>li{
-        margin-bottom: 20px;
-    }
-    .menu>li>img{
-        display: none;
-    }
-    .menu>li:hover>img{
-        display: inline;
-    }
-    .menu>li:hover>a{
-        margin-left: 5px;
-        font-weight: bold; 
-    }
-    .menu>li>a{
-        text-decoration: none;
-        color: rgb(51, 51, 51);
-    }
-    .profile-box>p{
-        font-size: 18px;
-        font-weight: bold;
-        color: rgb(49, 76, 131);
     }
     .board-box>p{
         font-size: 18px;
@@ -73,6 +26,8 @@
         color: rgb(49, 76, 131);
         margin-top: 20px;
         margin-left: 30px;
+        float:left;
+        height:20px;
     }
     .board-box>div{
         margin-top: 30px;
@@ -81,7 +36,7 @@
     .board-box>div>div{
         margin-bottom: 40px;
     }
-    .board-box>div:last-child{
+    .btn-box{
         text-align: center;
     }
     .form-box{
@@ -89,7 +44,10 @@
         height: 31px;
         border-radius: 3px;
         border: 1px solid rgb(204, 204, 204);
-        background-color: rgba(224, 224, 224, 0.4);
+    }
+    .form-text{
+    	border-radius: 3px;
+    	border: 1px solid rgb(204, 204, 204);
     }
     .tel{
         width: 90px;
@@ -107,10 +65,34 @@
         border: 1px solid rgb(49, 76, 131);
         background-color: rgb(49, 76, 131);
     }
-    .delete{
-        color: rgb(49, 76, 131);
-        border: 1px solid rgb(49, 76, 131);
-        background-color: white;
+    .form-group{
+    	margin-top: 40px;
+    }
+    .noticeTxt{
+    	color:#c22517;
+    	font-size: 12px;
+    }
+    .brand{
+    	margin-top: 70px;
+    }
+    .introduce-btn:focus { 
+    	outline:none; 
+    }
+    .introduce-btn{
+        width: 150px;
+        height: 27px;
+    	float:right;
+    	font-size:12px;
+    	line-height:27px;
+    	font-weight:bold;
+    	color:rgb(49, 76, 131);
+    	margin : 15px 15px 0 0;
+    	background-color: white;
+    	border-radius:15px;
+    	border: 1px solid rgb(49, 76, 131);
+    }
+    .introduce-btn:hover{
+    	box-shadow: 1px 1px 5px 1px #e8e8e8;
     }
 </style>
 </head>
@@ -119,61 +101,62 @@
 		<%@ include file="/WEB-INF/views/common/header.jsp"%>
 	</div>
     <div class="page-wrap">
-        <div class="profile-box">
-            <div><img src="/img/icon/mypage_person.png" style="width: 147px; height: 147px"></div>
-            <div style="margin-top: 10px;">${loginMember.MName }</div>
-            <div style="margin-top: 5px;"><button class="switch">사용자로 전환</button></div>
-            <p>MY PAGE</p>
-            <hr>
-            <ul class="menu">
-                <li><img src="/img/icon/circle_navy.png" style="display: inline;"><a href="#" style="margin-left: 5px; font-weight: bold; ">나의 프로필</a></li>
-                <li><img src="/img/icon/circle_navy.png"><a href="/freelancerServiceList.do?mId=${loginMember.MId}">서비스 내역</a></li>
-                <li><img src="/img/icon/circle_navy.png"><a href="/freelancerTradeHistory.do?mNo=${loginMember.MNo}">거래 내역</a></li>
-            </ul>
-        </div>
-        
+
+        <!-- 사이드메뉴 -->
+        <jsp:include page="/WEB-INF/views/freelancer/freelancer-side.jsp" />
+
         <div class="board-box">
-            <p>나의 프로필</p>
+            <p>프리랜서의 프로필 <span class="noticeTxt">※아래 정보를 입력해야 서비스를 등록할 수 있습니다.</span></p><button class="introduce-btn">나의 소개페이지 보기</button>
             <div>
             <form action="/updateFreelancer.do" method="post">
-                <div class="form-group">
-                    <label for="id-label">아이디</label><br>
-                    <input type="text" class="form-box" id="id-label" value="${loginMember.MId}" name="mId" readonly>
+                <div class="form-group brand">
+                    <label for="tel-label">브랜드 명</label><br>
+                    <input type="hidden" value="${loginMember.MId }" name="mId" id="mId">
+                    <input type="hidden" value="${loginMember.MPw }" name="mPw">
+                    <input type="text" class="form-box" placeholder="브랜드명을 입력해주세요." value="${loginMember.brandName }" name="brandName" maxlength="10" required="required">
                 </div>
                 <div class="form-group">
-                    <label for="name-label">프리랜서명</label><br>
-                    <input type="text" class="form-box" id="name-label" value="${loginMember.MName}" name="mName" readonly>
+                    <label for="tel-label">연락 가능한 시간</label><br>
+                    <input type="text" class="form-box" placeholder="ex)16:00~20:00" name="contactTime" value="${loginMember.contactTime}"  maxlength="20" required="required">
                 </div>
                 <div class="form-group">
-                    <label for="email-label">이메일</label><br>
-                    <input type="email" class="form-box" id="email-label" value="${loginMember.MEmail}" name="mEmail" readonly>&nbsp;&nbsp;<a href="#"></a>
+                    <label for="tel-label">소개</label><br>
+                    <textarea rows="17" cols="93" class="form-text" name="introduce"  maxlength="1333" required="required">${loginMember.introduce}</textarea>
                 </div>
-     
-      
-                <div class="form-group">
-                    <label for="tel-label">연락처</label><br>
-                    <input type="tel" class="form-box tel" id="tel-label" style="width:300px;" value="${loginMember.MPhone}" name="mPhone"  readonly> 
-                
-                </div>
-                
-                	<label for="tel-label">브랜드 명</label><br>
-                	<input type="text" placeholder="브랜드명을 입력해주세요." value="${m.brandName }" name="brandName"><br><br>
-                	<label for="tel-label">연락 가능한 시간</label><br>
-                	<input type="text" placeholder="ex)1시간 내외" name="contactTime" value="${m.contactTime}"><br><br>
-               		 <label for="tel-label">소개</label><br>
-              <%-- <textarea name="introduce" cols="82" rows="7" placeholder="50자내외" value="${m.introduce}"></textarea> --%>
-                	<input type="text" style="width:635px ; height:325px;" name="introduce" value="${m.introduce}"><br><br>
-
-            </div>
-            <br><br><br><br><br><br><br><br><br><br>
-            <div>
-                <button class="btn2 change" type="submit">정보 수정하기</button></form>&nbsp;&nbsp;
-            </div>
+	            <div class="btn-box">
+	            	<button class="btn2 change" type="submit">
+	            	<c:choose>
+	            		<c:when test="${loginMember.brandName == null }">프로필 등록하기</c:when>
+	            		<c:otherwise>수정하기</c:otherwise>
+	            	</c:choose>
+	                </button>
+	            </div>
+            </form>
         </div>
     </div>
-<br><br><br><br><br><br><br><br><br><br><br><br>
-	<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+</div>
+	
     <jsp:include page="/WEB-INF/views/common/footer.jsp" />
+
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		//메뉴 고정
+		 $(".menu").children().eq(0).find('a').css({'margin-left':'5px', 'font-weight':'bold'});
+		 $(".menu").children().eq(0).find('img').css({'display':'inline'});
+		 
+		 //높이 조절
+		 var containerHeight = $(".board-box").height();
+		 $(".page-wrap").height(containerHeight+300);
+	});
+	
+	//소개글로 이동
+	$(".introduce-btn").click(function(){
+		var mId = $("#mId").val();
+		location.href = "/introduceFrm.do?mId="+mId+"&reqPage=1";
+	});
+		
+
+</script>
 
 </body>
 </html>

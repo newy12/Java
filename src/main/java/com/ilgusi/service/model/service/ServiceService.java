@@ -41,6 +41,7 @@ public class ServiceService {
 			return result;
 		}
 
+		// 프리랜서 마이페이지 정보 수정
 		public int updateFreelancer(Member m) {
 			return dao.updateFreelancer(m);
 		}
@@ -319,6 +320,11 @@ public class ServiceService {
 			return dao.updateTradeStatus(tNo);
 		}
 
+		//(문정) 리뷰 작성하면 서비스테이블 s_rate에 평점 넣어줌
+		public int serviceUpdateSRate(int sNo) {
+			return dao.serviceUpdateSRate(sNo);
+		}
+
 		// (도현) search service
 		public List<com.ilgusi.service.model.vo.Service> searchService(int begin,int end, java.lang.String keyword) {
 			return dao.searchService(begin,end,keyword);
@@ -336,6 +342,18 @@ public class ServiceService {
 			
 			return maxPageCount;
 		}
+		
+		//프리랜서 마이페이지 서비스 삭제 
+		public int deleteService(int sNo) {
+			
+			return dao.deleteService(sNo);
+		}
+
+
+		public ArrayList<com.ilgusi.service.model.vo.Service> selectMyList(java.lang.String mId, java.lang.String order) {
+			return dao.selectServiceList(mId,order);
+		}
+
 		
 
 		

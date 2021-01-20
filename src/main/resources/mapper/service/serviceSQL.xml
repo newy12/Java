@@ -84,14 +84,16 @@
 		write_date
 		as writeDate
 		from service
-		where m_id = #{mId}
+		where delete_status = 'n' and m_id = #{mId}
 	</select>
+	
 	<!--(영재!!) 서비스 등록 쿼리 -->
 	<insert id="insertService" parameterType="j">
 		insert into service
 		values
 		(service_seq.nextval,#{mId},#{sTitle},#{sPrice},#{sContent},#{sArea},#{sImg},#{sRate},#{mainCategory},#{subCategory},#{workingDate},0,to_char(sysdate,'yyyy-mm-dd'),'n','n')
 	</insert>
+	
 
 	<!-- (소현)서비스불러오기,동적쿼리-sNo로 service 불러오기 -->
 	<!-- <select id="selectService" parameterType="_int" resultType="s"> select 
@@ -469,5 +471,39 @@
 	<select id="selectServiceCount" parameterType="string" resultType="_int">
 		select count(*) from service where s_title like '%'||#{keyword}||'%' and delete_status = 'n' and admin_approval = 'y'
 	</select>
+	
+	
+	<!-- (다솜) 프리랜서 마이페이지 서비스 삭제 -->
+	<update id="delService" parameterType="_int">
+		update service set delete_status = 'y' where s_no = #{parameter}
+	</update>
+	
+	<!--(다솜) 프리랜서 마이페이지 서비스정렬 -->
+	<select id="selectMyList" parameterType="map" resultType="s">
+		select
+		s_no as sNo,
+		m_id as mId,
+		s_title as sTitle,
+		s_price as
+		sPrice,
+		s_content as sContent,
+		s_area as sArea,
+		s_img as sImg,
+		working_date as workingDate,
+		working_count as workingCount,
+		write_date
+		as writeDate
+		from service
+		where m_id = #{id} and delete_status= 'n'
+		<if test="order == 'agree'">
+			and admin_approval = 'y'
+		</if>
+		<if test="order == 'refuse'">
+			and admin_approval = 'n'
+		</if>
+			
+		
+	</select>
+	
 </mapper>
 

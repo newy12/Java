@@ -33,6 +33,7 @@ public class ServiceDao {
 		return session.insert("service.insertService", join);
 	}
 
+	// 프리랜서 마이페이지 정보 수정
 	public int updateFreelancer(Member m) {
 		return session.update("service.updateFreelancer", m);
 	}
@@ -190,6 +191,23 @@ public class ServiceDao {
 	// (도현) search serviceCount
 	public int selectServiceCount(String keyword) {
 		return session.selectOne("service.selectServiceCount",keyword);
+	}
+	
+	//프리랜서마이페이지 서비스 삭제			
+	public int deleteService(int sNo) {
+		return session.update("service.delService",sNo);
+	}
+	public ArrayList<com.ilgusi.service.model.vo.Service> selectServiceList(String mId, String order) {
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("id", mId);
+		map.put("order", order);
+		List<com.ilgusi.service.model.vo.Service> list = session.selectList("service.selectMyList",map);
+		return (ArrayList<com.ilgusi.service.model.vo.Service>)list;
+	}
+	
+	//(문정) 리뷰 작성하면 서비스테이블 s_rate에 평점 넣어줌
+	public int serviceUpdateSRate(int sNo) {
+		return session.update("review.serviceUpdateSRate", sNo);
 	}
 	
 	

@@ -13,16 +13,6 @@
         margin-top:50px;
     }
 
-    .profile-box {
-        width: 250px;
-        float: left;
-    }
-
-    .profile-box>div {
-        text-align: center;
-        margin: 0 auto;
-    }
-
     .board-wrap {
         width: 800px;
         margin: 0 auto;
@@ -41,49 +31,7 @@
         width: 800px;
         height: 1000px;
     }
-
-    .switch {
-        height: 31px;
-        margin-bottom: 30px;
-        color: rgb(49, 76, 131);
-        background-color:white;
-        border: 1px solid rgb(49, 76, 131);
-    }
-
-    .switch:hover {
-        background-color: rgb(49, 76, 131);
-        color: white;
-        border: 1px solid rgb(49, 76, 131);
-    }
-
-    .menu{
-        padding: 0;
-        list-style: none;
-    }
-    .menu>li{
-        margin-bottom: 20px;
-    }
-    .menu>li>img{
-        display: none;
-    }
-    .menu>li:hover>img{
-        display: inline;
-    }
-    .menu>li:hover>a{
-        margin-left: 5px;
-        font-weight: bold; 
-    }
-    .menu>li>a{
-        text-decoration: none;
-        color: rgb(51, 51, 51);
-    }
-
-.profile-box>p {
-    font-size: 18px;
-    font-weight: bold;
-    color: rgb(49, 76, 131);
-}
-
+    
 .board-box>span {
     font-size: 18px;
     font-weight: bold;
@@ -204,18 +152,8 @@
 		<%@ include file="/WEB-INF/views/common/header.jsp"%>
 	</div>
     <div class="page-wrap">
-        <div class="profile-box">
-            <div><img src="/img/icon/mypage_person.png" style="width: 147px; height: 147px"></div>
-            <div style="margin-top: 10px;">${loginMember.MId }님</div>
-            <div style="margin-top: 5px;"><button class="switch">프리랜서로 전환</button></div>
-            <p>MY PAGE</p>
-            <hr>
-            <ul class="menu">
-                <li><img src="/img/icon/circle_navy.png" ><a href="/userMypage.do?MNo=${loginMember.MNo}">나의 프로필</a></li>
-                <li><img src="/img/icon/circle_navy.png" style="display: inline;"><a href="#" style="margin-left: 5px; font-weight: bold; ">찜한 내역</a></li>
-                <li><img src="/img/icon/circle_navy.png"><a href="/userTradeHistory.do?mNo=${loginMember.MNo }">거래 내역</a></li>
-            </ul>
-        </div>
+        <!-- 사이드메뉴 -->
+        <jsp:include page="/WEB-INF/views/member/mypage-side.jsp" />
         
 	     <div class="board-wrap">
 	        <div class="board-box">
@@ -240,7 +178,7 @@
 		            <c:forEach items="${list }" var="s" varStatus="status">
 		            <div>
 		                <div>
-		                    <a href="#">
+		                    <a href="/serviceView.do?sNo=${s.SNo }&reqPage=1">
 		                        <div class="title-img">
 		                            <div class="back-img">
 		                            	<img src="/img/icon/img.jpg" width="225x" height="133px">
@@ -255,7 +193,7 @@
 		                </div>
 		                <div class="empty"></div>
 		                <div class="title">${brandList[status.index] }</div>
-		                <a href="#" id="serviceContent">
+		                <a href="/serviceView.do?sNo=${s.SNo }&reqPage=1" id="serviceContent">
 		                    <div class="content">${s.STitle } </div>
 		                    <div class="price">${s.SPriceTxt }</div>
 		                    <div class="rate"><span>평점 </span><span>${s.SRate }</span><span>.0점</span><span>★★★★★</span>
@@ -332,6 +270,10 @@
         }
         
         $(document).ready(function(){
+        	//메뉴 고정
+	   		 $(".menu").children().eq(1).find('a').css({'margin-left':'5px', 'font-weight':'bold'});
+	   		 $(".menu").children().eq(1).find('img').css({'display':'inline'});
+   		 
         	$('.rate').each(function(index){
        			var rate = $('.rate').eq(index).children().eq(1).html();
        			var rateText = "";
