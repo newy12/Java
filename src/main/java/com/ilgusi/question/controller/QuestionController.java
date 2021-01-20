@@ -53,6 +53,10 @@ public class QuestionController {
 
 		List<Question> list = service.selectQuestionList(maxListCount - ((page) * listPerPage) + 1,
 				maxListCount - ((page - 1) * listPerPage), type, keyword);
+		//날짜형식 변경
+		for(int i =0;i<list.size();i++) {
+			list.get(i).setWriteDate(list.get(i).getWriteDate().replace("/", "-"));
+		}
 		int maxPrintPageCount = 5;
 		int maxPageCount = service.selectMaxPageCount(listPerPage, maxListCount);
 		int begin = maxPrintPageCount * (page / (maxPrintPageCount+1)) + 1; // 네비 시작
