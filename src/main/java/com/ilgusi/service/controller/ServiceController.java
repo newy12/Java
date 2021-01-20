@@ -104,11 +104,11 @@ public class ServiceController {
 		String root = request.getSession().getServletContext().getRealPath("/");
 		String path = root + "/upload/service/";
 		System.out.println("경로는 : " + path);
-		System.out.println("값러ㅏㅇㄴ러ㅏ : " + request.getParameter("sContent"));
 		ArrayList<ServiceFile> fileList = new ArrayList<ServiceFile>();
 
 		for (MultipartFile file : ssImg) { // 파일이 여러개라 반복문으로 처리
 			String filename = file.getOriginalFilename();
+			System.out.println("파일 이름"+filename);
 			String filepath = new FileNameOverlap().rename(path, filename);
 			System.out.println("filename : " + filename);
 			System.out.println("filepath : " + filepath);
@@ -181,11 +181,11 @@ public class ServiceController {
 	public String updateFreelancer(Member m, Model model,  HttpServletRequest req) {
 		int result = service.updateFreelancer(m);
 		if (result > 0) {
-			Member member = memberService.loginMember(m.getMId(), m.getMPw());
+			m = memberService.loginMember(m.getMId(), m.getMPw());
 			model.addAttribute("msg", "등록되었습니다.");
-			if (member != null) {
+			if (m != null) {
 				HttpSession session = req.getSession();
-				session.setAttribute("loginMember", member);
+				session.setAttribute("loginMember", m);
 			}
 		}
 		model.addAttribute("loc", "/freelancerMypage.do?MNo="+m.getMNo());
@@ -471,5 +471,12 @@ public class ServiceController {
 			model.addAttribute("maxPageCount", maxPageCount);
 		}
 		return "/service/serviceAllList";
+	}
+	
+	@ResponseBody
+	@RequestMapping
+	public int isPossibleMakeService(String mId) {
+		int count = service.selectFreeServiceCount(mId);
+		return count;
 	}
 }

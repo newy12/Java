@@ -103,7 +103,13 @@
                 </tr>
                 <tr>
                     <th style="border-top: 0px" class="th-text">작성자</th>
-                    <th style="border-top: 0px">${req.MId } &nbsp;&nbsp;&nbsp;<button class="contact-user" value="${req.MId }">고객에게 연락하기</button></th>
+                    <th style="border-top: 0px">${req.MId } &nbsp;&nbsp;&nbsp;
+                    	<c:if test="${not empty loginMember}">
+                    		<c:if test="${loginMember.MId != req.MId and loginMember.brandName != null}">
+                    			<button class="contact-user" value="${req.MId }">고객에게 연락하기</button>
+                    		</c:if>
+                    	</c:if>
+                    </th>
                     <th style="border-top: 0px"></th>
                 </tr>
                 <tr>

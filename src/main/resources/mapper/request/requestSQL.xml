@@ -3,7 +3,7 @@
 <mapper namespace="request">
 	<!-- (문정) 의뢰글 작성 -->
 	<insert id="insertBoard" parameterType="req">
-		insert into request_board values(REQUEST_BOARD_SEQ.nextval, #{mId},#{reqTitle},#{reqContent},0,#{filename}, #{filepath},to_char(sysdate,'yy-mm-dd')) 
+		insert into request_board values(REQUEST_BOARD_SEQ.nextval, #{mId},#{reqTitle},#{reqContent},0,#{filename}, #{filepath},to_char(sysdate,'yyyy-mm-dd')) 
 	</insert>
 
 	<!-- (문정) 의뢰게시글 총 개수 -->
@@ -98,6 +98,6 @@
 		s.s_img as sImg,
 	   (select c_name from category  where c_no = s.main_category) as mainCategoryName, 
 	   (select c_name from category where c_no = s.sub_category) as subCategoryName 
-	from service s where m_id = #{_parameter}
+	from service s where m_id = #{_parameter} and admin_approval='y' and delete_status='n'
 	</select>
 </mapper>

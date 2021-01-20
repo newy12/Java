@@ -115,7 +115,7 @@
 	                        <div><img src="/upload/service/${s.SImg }" width="80px" height="50px" style="border-radius:10px;" alt="${s.SImg }"></div>
 	                        <div>
 	                            <div style="margin-top: 10px;font-weight: bold;font-size: 12px;">${s.mainCategoryName } > ${s.subCategoryName }</div>
-	                            <div><a href="#" class="title">${s.STitle }</a></div>
+	                            <div><a href="javascript:openService(${s.SNo });" class="title">${s.STitle }</a></div>
 	                        </div>
 	                    </div>
 	                </td>
@@ -168,6 +168,11 @@
 			});
   
     	});
+    	
+    	//서비스 누르면 새 창으로 연결
+    	function openService(sNo){
+    		var win = window.open("/serviceView.do?sNo="+sNo+"&reqPage=1", "serviceView", "width="+(window.screen.width)+",height="+(window.screen.height));
+    	}
     </script>
 </body>
 </html>

@@ -238,6 +238,7 @@
 	                    		<c:when test="${t.TStatus == 0 }">
 	                    			<div style="color: rgb(255, 143, 63);font-size: 20px;margin-top: 5px;font-weight: bold;">결제 전</div>
 			                        <div>
+			                        	<input type="text" style="display:none" value="${serviceList[status.index].STitle }">
 			                        	<input type="text" style="display:none" value="${loginMember.MNo }">
 			                        	<input type="text" style="display:none" value="${loginMember.MName }">
 			                        	<input type="text" style="display:none" value="${loginMember.MPhone }">
@@ -343,6 +344,7 @@
 			var mPhone = $(this).prev().prev().prev().prev().val();
 			var mName = $(this).prev().prev().prev().prev().prev().val();
 			var mNo = $(this).prev().prev().prev().prev().prev().prev().val();
+			var sTitle = $(this).prev().prev().prev().prev().prev().prev().prev().val();
 			var d = new Date();
 			var date = d.getFullYear()+''+(d.getMonth()+1)+''+d.getDate()+''+d.getHours()+''+d.getMinutes()+''+d.getSeconds();
 			
@@ -354,7 +356,7 @@
 		  		IMP.init("imp45748539");
 		  		IMP.request_pay({
 		  			merchant_uid : date, //거래ID(고유)
-		  			name : tNo, //결제이름(거래번호)
+		  			name : sTitle, //결제이름(거래번호)
 		  			amount : tPrice, //결제금액
 		  			buyer_email : mEmail,//구매자email
 		  			buyer_name : mName, //구매자이름
