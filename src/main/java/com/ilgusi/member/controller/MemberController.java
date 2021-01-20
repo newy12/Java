@@ -42,7 +42,7 @@ public class MemberController {
 		System.out.println("result: " + result);
 
 		if (result == null) {
-			model.addAttribute("msg", "못찾음");
+			model.addAttribute("msg", "일치하는 회원 정보가 없습니다.");
 			model.addAttribute("loc", "/forgot_pwd.do");
 		} else if (m.getMName() != null) {
 			model.addAttribute("msg", "아이디: " + result.getMId());
@@ -62,7 +62,7 @@ public class MemberController {
 
 		HttpSession session = req.getSession();
 		if (result == null) {
-			model.addAttribute("msg", "못찾음");
+			model.addAttribute("msg", "일치하는 회원 정보가 없습니다.");
 			model.addAttribute("exit", true);
 			return "common/msg2";
 		} else {

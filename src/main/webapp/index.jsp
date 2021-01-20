@@ -27,6 +27,17 @@
 			width: 20%;
 			float: left;
 		}
+		.top-info-left-title{
+			margin: 0 auto;
+			margin-top: 20px;
+			margin-bottom: 30px;
+			width: 200px;
+			font-size: 16px;
+		}
+		.top-info-left-title>span{
+			font-weight: bold;
+		}
+		
 
 		.main-top-info-container .bannerArrow {
 			/* height: 200px; */
@@ -58,7 +69,7 @@
 		.member-info-container {
 			margin-top: 15px;
 			margin-left: 20px;
-
+			padding-right: 20px;
 		}
 
 		.member-info-name {
@@ -68,14 +79,30 @@
 		.member-info-name>span {
 			font-weight: bold;
 		}
-
+		.member-info-buying{
+			font-size: 14px;
+			margin: 10px 0;
+		}
+		.member-info-buying>span,
+		.member-info-selling>span{
+			display: inline-block;
+			float: right;
+		}
+		
+		.member-info-buying>span>span,
+		.member-info-selling>span>span{
+			color: #314C83;
+			font-weight: bold;
+			font-size: 15px;
+		}
 		.request-container {
-			text-align: center;
+			text-align: left;
+			padding-left: 15px;
 			margin: 0 auto;
 			border-radius: 5px;
-			width: 160px;
-			height: 45px;
-			line-height: 45px;
+			width: 200px;
+			height: 60px;
+			line-height: 60px;
 			font-size: 15px;
 			font-weight: bold;
 			background-color: white;
@@ -87,6 +114,18 @@
 			height: 100%;
 			text-decoration: none;
 			color: #282828;
+		}
+
+		.single-banner1{
+			margin-top: 80px;
+			width: 100%;
+			/* height: 300px; */
+		}
+		.single-banner1>img{
+			width: 100%;
+			height: 190px;
+			object-fit:cover;
+			object-position: 50% 10%;
 		}
 	</style>
 </head>
@@ -179,8 +218,15 @@
 		<c:if test="${not empty loginMember}">
 			<div class="main-top-info-container">
 				<div class="top-info-left">
+					<div class="top-info-left-title">
+						<span>다양한 방법으로</span><br>
+						전문가를 만나보세요!
+					</div>
 					<div class="request-container">
-						<a href="/requestList.do?reqPage=1&order=new&subject=all&keyword=">맞춤 견적</a>
+						<a href="/requestList.do?reqPage=1&order=new&subject=all&keyword=">
+							<img src="img/index/banner/custom.png" width="50px" alt="">
+							맞춤 견적
+						</a>
 					</div>
 				</div>
 				<div class="banner-container">
@@ -199,10 +245,10 @@
 						반가워요<br><span>${loginMember.MId}</span>님!
 					</div>
 					<div class="member-info-buying">
-						구매 진행 중<span>${loginMember.buyingCount} 건</span>
+						구매 진행 중<span><span>${loginMember.buyingCount}</span> 건</span>
 					</div>
 					<div class="member-info-selling">
-						판매 진행 중<span>0 건</span>
+						판매 진행 중<span><span>152</span> 건</span>
 					</div>
 				</div>
 			</div>
@@ -388,6 +434,9 @@
 					</div>
 				</div>
 			</div>
+		</div>
+		<div class="single-banner1">
+			<img src="img/index/banner/banner4.png" alt="">
 		</div>
 		<!-- 랭크 부분 -->
 		<div class="rank-container">
