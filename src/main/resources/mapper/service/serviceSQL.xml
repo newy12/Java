@@ -451,7 +451,7 @@
 		working_date as workingDate,
 		working_count as workingCount,
 		write_date as writeDate
-		from service,
+		from service
 		where
 		s_no = #{parameter}
 
