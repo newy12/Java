@@ -64,7 +64,7 @@
 
 	<insert id="registerMember" parameterType="m">
 		insert into member
-		values(member_SEQ.nextval,#{mId},#{mPw},#{mName},#{mEmail},#{mPhone},1,0,null,TO_CHAR(SYSDATE, 'YY-MM-DD'),null,null)
+		values(member_SEQ.nextval,#{mId},#{mPw},#{mName},#{mEmail},#{mPhone},1,0,null,TO_CHAR(SYSDATE, 'YYYY-MM-DD'),null,null)
 	</insert>
 
 	<!--(소현)관리자전체회원조회 -->
