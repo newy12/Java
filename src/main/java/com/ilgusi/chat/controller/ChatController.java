@@ -58,6 +58,7 @@ public class ChatController {
 				return result;
 			} else {////////////////////////////////////////////////////////// 회원이 프리랜서에게 문의버튼 눌렀는데
 					////////////////////////////////////////////////////////// 원래 있는 방일때
+				return result;
 
 			}
 		} else {
@@ -346,18 +347,18 @@ public class ChatController {
 			Chat oneRoom = service.selectOneRoom(room);
 			int rNo = oneRoom.getCNo();
 
+			
+			HashMap<String, Object> roomAndId = new HashMap<String, Object>();
 			if (mGrade.equals("1")) {
 				// 상대가 보낸 메세지 읽음으로 update
-				HashMap<String, Object> roomAndId = new HashMap<String, Object>();
 				roomAndId.put("mId", yourId);
 				roomAndId.put("rNo", rNo);
 				service.updateReadStatus(roomAndId);
 
 			} else if (mGrade.equals("2")) {///////////////////////////////////////// 프리랜서가 의뢰글보고 채팅시작할때
 				// 상대가 보낸 메세지 읽음으로 update
-				HashMap<String, Object> roomAndId = new HashMap<String, Object>();
 				roomAndId.put("mId", yourId);
-				roomAndId.put("rNo", yourId);
+				roomAndId.put("rNo", rNo);
 				service.updateReadStatus(roomAndId);
 				// 의뢰인의 신고횟수가 4이상인지 확인
 				Member oneMember = service.selectOneMember(yourId);
@@ -441,15 +442,6 @@ public class ChatController {
 		service.updateWorkingCount(sNo);
 
 	}
-
-	/*
-	 * // (소현)service working_conut 1증가
-	 * 
-	 * @ResponseBody
-	 * 
-	 * @RequestMapping("/updateCount.do") public void updateWorkingCount(int sNo) {
-	 * service.updateWorkingCount(sNo); }
-	 */
 
 	// (소현)일반회원-프리랜서 전환
 	@ResponseBody

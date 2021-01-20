@@ -55,6 +55,14 @@
 	color: white;
 	font-size: 20px;
 }
+
+.servie-title{
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	}
+
+
 </style>
 </head>
 
@@ -135,7 +143,7 @@
 				<c:if test="${service.SNo ne 0 }">
 					<div id="chat-profile">
 						<div id="profile-info">
-							<div>${service.STitle}</div>
+							<div class="servie-title">${service.STitle}</div>
 							<div>${freeId }<c:if
 									test="${sessionScope.loginMember.MGrade==2 }">
 									<c:if test="${not empty black }">
