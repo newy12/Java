@@ -106,7 +106,10 @@
         <jsp:include page="/WEB-INF/views/freelancer/freelancer-side.jsp" />
 
         <div class="board-box">
-            <p>프리랜서의 프로필 <span class="noticeTxt">※아래 정보를 입력해야 서비스를 등록할 수 있습니다.</span></p><button class="introduce-btn">나의 소개페이지 보기</button>
+            <p>프리랜서의 프로필 <span class="noticeTxt">※아래 정보를 입력해야 서비스를 등록할 수 있습니다.</span></p>
+            <c:if test="${loginMember.brandName != null and serviceCount != 0 }">
+            	<button class="introduce-btn">나의 소개페이지 보기</button>
+            </c:if>
             <div>
             <form action="/updateFreelancer.do" method="post">
                 <div class="form-group brand">

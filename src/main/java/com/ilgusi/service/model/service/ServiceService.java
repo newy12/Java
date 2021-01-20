@@ -357,4 +357,9 @@ public class ServiceService {
 		return dao.selectServiceList(mId, order);
 	}
 
+	//(문정) 프리랜서가 등록한 총 서비스 개수
+	public int selectFreeServiceCount(String mId) {
+		return dao.selectFreeServiceCount(mId);
+	}
+
 }

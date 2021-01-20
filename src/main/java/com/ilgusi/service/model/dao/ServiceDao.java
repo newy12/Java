@@ -219,4 +219,9 @@ public class ServiceDao {
 		return session.update("review.serviceUpdateSRate", sNo);
 	}
 
+	//(문정) 프리랜서가 등록한 총 서비스 개수
+	public int selectFreeServiceCount(String mId) {
+		return session.selectOne("service.selectFreeServiceCount", mId);
+	}
+
 }

@@ -146,7 +146,9 @@ public class ServiceController {
 	@RequestMapping("/freelancerMypage.do")
 	public String selectfreelancerMypage(int MNo, Model model) {
 		Member m = service.selectOneMember(MNo);
+		int serviceCount = service.selectFreeServiceCount(m.getMId());
 		model.addAttribute("m", m);
+		model.addAttribute("serviceCount", serviceCount);
 		return "freelancer/freelancerMypage";
 	}
 
@@ -170,7 +172,7 @@ public class ServiceController {
 		int result = service.updateFreelancer(m);
 		if (result > 0) {
 			Member member = memberService.loginMember(m.getMId(), m.getMPw());
-			model.addAttribute("msg", "수정되었습니다.");
+			model.addAttribute("msg", "등록되었습니다.");
 			if (member != null) {
 				HttpSession session = req.getSession();
 				session.setAttribute("loginMember", member);
