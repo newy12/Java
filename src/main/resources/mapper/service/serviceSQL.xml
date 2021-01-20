@@ -235,26 +235,32 @@
 		where s_no=#{_parameter}
 	</update>
 
-	<!-- (다솜)서비스 리스트 불러오기 <select id="serviceList" parameterType="s" resultType="s"> 
-		select s_no as sNo, m_id as mId, s_title as sTitle, s_price as sPrice, s_img 
-		as sImg, main_category as mainCategory, sub_category as subCategory, s_rate 
-		as sRate from service where delete_status = 'n' <if test="mainCategory != 
-		0 "> and main_category = #{mainCategory} </if> <if test="subCategory != 0 
-		"> and sub_category= #{subCategory} </if> </select> -->
-
 	<!--(다솜) 브랜드 이름 불러오기 -->
-	<select id="brandList" parameterType="s" resultType="string">
+	<select id="brandList" parameterType="map" resultType="string">
 		SELECT brand_name FROM member
 		JOIN service USING (m_id) where
-		delete_status = 'n'
-
-		<if test="mainCategory != 0 ">
-			and main_category = #{mainCategory}
-		</if>
+		delete_status = 'n' and main_category = #{mainCategory}
 		<if test="subCategory != 0 ">
 			and sub_category= #{subCategory}
 		</if>
-
+		<if test="keyword != null">
+			and s_title like '%'|| #{keyword}||'%'
+		</if>
+		order by
+		<choose>
+			<when test="order == 'review'">
+				s_rate desc
+			</when>
+			<when test="order == 'popular'">
+				working_count desc
+			</when>
+			<when test="order == 'rowPrice'">
+				s_price
+			</when>
+			<otherwise>
+				s_no desc
+			</otherwise>
+		</choose>
 	</select>
 
 	<!-- (다솜)서비스 리스트 불러오기 -->
@@ -268,7 +274,8 @@
 		main_category as mainCategory,
 		sub_category as
 		subCategory,
-		s_rate as sRate
+		s_rate as sRate,
+		(select brand_name from member m where m.m_id = ss.m_id) as brandName
 		from (select rownum as rnum, s. * from
 		(select*from service where delete_status = 'n' and main_category =
 		#{main}
@@ -294,7 +301,7 @@
 			</otherwise>
 		</choose>
 
-		)s) where rnum between #{start} and #{end}
+		)s)ss where rnum between #{start} and #{end}
 
 
 	</select>
@@ -434,22 +441,17 @@
 		s_no as sNo,
 		m_id as mId,
 		s_title as sTitle,
-		s_price as
-		sPrice,
+		s_price as sPrice,
 		s_content as sContent,
 		s_area as sArea,
 		s_img as sImg,
-		s_rate as
-		sRate,
-		(select c_name from category where c_no = main_category) as
-		mainCategoryName,
-		(select c_name from category where c_no =
-		sub_category) as subCategoryName,
+		s_rate as sRate,
+		(select c_name from category where c_no = main_category) as mainCategoryName,
+		(select c_name from category where c_no = sub_category) as subCategoryName,
 		working_date as workingDate,
 		working_count as workingCount,
-		write_date
-		as writeDate
-		from service
+		write_date as writeDate
+		from service,
 		where
 		s_no = #{parameter}
 
@@ -515,22 +517,22 @@
 	<!--(다솜) 프리랜서 마이페이지 서비스정렬 -->
 	<select id="selectMyList" parameterType="map" resultType="s">
 		select
-		s_no as sNo,
-		m_id as mId,
-		s_title as sTitle,
-		s_price as
-		sPrice,
-		s_content as sContent,
-		s_area as sArea,
-		s_img as sImg,
-		working_date as
-		workingDate,
-		working_count as workingCount,
-		write_date
-		as writeDate
-		from
-		service
-		where m_id = #{id} and delete_status= 'n'
+			s_no as sNo,
+			m_id as mId,
+			s_title as sTitle,
+			s_price as
+			sPrice,
+			s_content as sContent,
+			s_area as sArea,
+			s_img as sImg,
+			working_date as workingDate,
+			(select c_name from category where c_no = main_category) as mainCategoryName,
+			(select c_name from category where c_no = sub_category) as subCategoryName,
+			working_count as workingCount,
+			write_date
+			as writeDate
+		from service
+			where m_id = #{id} and delete_status= 'n'
 		<if test="order == 'agree'">
 			and admin_approval = 'y'
 		</if>

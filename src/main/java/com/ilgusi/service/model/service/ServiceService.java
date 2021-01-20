@@ -210,8 +210,8 @@ public class ServiceService {
 	}
 
 	// (다솜) 브랜드 이름 불러오기
-	public ArrayList<String> brandList(com.ilgusi.service.model.vo.Service s) {
-		return dao.brandList(s);
+	public ArrayList<String> brandList(com.ilgusi.service.model.vo.Service s ,String order,String keyword) {
+		return dao.brandList(s,order,keyword);
 	}
 
 	// (다솜) Servie View 불러오기

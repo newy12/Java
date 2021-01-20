@@ -139,7 +139,7 @@ a:hover {
 .serviceBox img {
 	border-radius: 5px;
 	width: 210px;
-	height: 180px;
+	height: 150px;
 	transform: scale(1);
     transition: transform 0.1s linear;
 }
@@ -147,7 +147,7 @@ a:hover {
 .imgBox{
 	overflow: hidden;
 	width: 210px;
-	height: 180px;
+	height: 150px;
 	border-radius: 5px;
 }
 .serviceBox img:hover{
@@ -268,9 +268,8 @@ a:hover {
 				<c:if test="${serviceList != null }">
 					<c:forEach items="${serviceList }" var="s" varStatus="status">
 						<div class="serviceBox">
-							<div class="imgBox"><img src="upload/service/${s.SImg }" onclick="location.href='/serviceView.do?sNo=${s.SNo}&reqPage=1'"></div><br> <br> 
-							<span class="preName">${brandName[status.index] }</span>
-							<br>
+							<div class="imgBox"><img src="upload/service/${s.SImg }" onclick="location.href='/serviceView.do?sNo=${s.SNo}&reqPage=1'"></div><br> 
+							<span class="preName">${s.brandName }</span>
 							<p class="serviceCon" style="height: 30px;"><a href="/serviceView.do?sNo=${s.SNo}&reqPage=1"> ${s.STitle } </a></p>
 							<p class="price">${s.SPriceTxt }원~</p>
 							<p class="score">
