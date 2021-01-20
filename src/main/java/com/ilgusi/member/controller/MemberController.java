@@ -142,6 +142,7 @@ public class MemberController {
 			if(m.getMGrade() ==2) {
 				int result = service.settingMemberGrade(m);
 			}
+			m.setBuyingCount(service.selectBuyingCount(m.getMNo()));
 			HttpSession session = req.getSession();
 			session.setAttribute("loginMember", m);
 			model.addAttribute("msg", "로그인 성공");

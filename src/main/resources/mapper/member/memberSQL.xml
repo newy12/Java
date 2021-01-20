@@ -3,7 +3,7 @@
 <mapper namespace="member">
 	<!-- 도현 -->
 	<select id="selectBuyingCount" parameterType="_int" resultType="_int">
-		select * from service_trade where m_no = #{mNo} and t_status = 0
+		select count(*) from service_trade where m_no = #{mNo} and t_status = 0
 	</select>
 	<select id="loginMember" parameterType="HashMap" resultType="m">
 		select
