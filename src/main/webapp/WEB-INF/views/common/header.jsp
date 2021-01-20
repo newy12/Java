@@ -496,11 +496,11 @@
                     </c:if>
                     <c:if test="${not empty loginMember}">
                         <ul class="ul-user">
-                            <a href="/userMypage.do" id="user_name">${loginMember.MName}</a>
+                            <a href="${loginMember.MGrade != 0 ? '/userMypage.do' : '/manageMember.do?reqPage=1&grade=all&keyword=&order=new'}" id="user_name">${loginMember.MName}</a>
                             <li>
                                 <ul>
                                     <li>
-                                        <a href="/userMypage.do">마이페이지</a>
+                                        <a href="${loginMember.MGrade != 0 ? '/userMypage.do' : '/manageMember.do?reqPage=1&grade=all&keyword=&order=new'}">${loginMember.MGrade != 0 ? '마이페이지' : '관리페이지'}</a>
                                     </li>
                                     <li>
                                         <a href="qna.do?page=1">1:1 문의</a>
