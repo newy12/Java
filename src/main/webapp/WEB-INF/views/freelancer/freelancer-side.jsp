@@ -19,16 +19,21 @@
     }
     .switch {
         height: 31px;
+        width:125px;
         margin-bottom: 30px;
         color: rgb(49, 76, 131);
         background-color:white;
         border: 1px solid rgb(49, 76, 131);
+        border-radius: 3px;
     }
 
     .switch:hover {
         background-color: rgb(49, 76, 131);
         color: white;
         border: 1px solid rgb(49, 76, 131);
+    }
+    .switch:active{
+    	outline: none;
     }
 
     .menu{
