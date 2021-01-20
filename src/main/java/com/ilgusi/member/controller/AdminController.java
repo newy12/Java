@@ -340,12 +340,12 @@ public class AdminController {
 				maxListCount - ((page - 1) * listPerPage), type, keyword);
 		int maxPrintPageCount = 5;
 		int maxPageCount = service.selectMaxPageCount(listPerPage, maxListCount);
-		int begin = maxPrintPageCount * (page / maxPrintPageCount) + 1; // 네비 시작
+		int begin = maxPrintPageCount * (page / (maxPrintPageCount+1)) + 1; // 네비 시작
 		int end = (begin + 4) < maxPageCount ? begin + 4 : maxPageCount; // 네비 끝
 		model.addAttribute("questionList", list);
 		model.addAttribute("begin", begin);
 		model.addAttribute("end", end);
-
+		model.addAttribute("maxPageCount", maxPageCount);
 		return "/admin/qnaList";
 	}
 

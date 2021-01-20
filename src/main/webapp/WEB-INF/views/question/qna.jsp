@@ -16,6 +16,7 @@
             font-weight: normal;
             font-style: normal;
         }
+
         .qna-section {
             font-family: 'Arita-dotum-Medium';
             margin: 0 auto;
@@ -110,12 +111,14 @@
         .qna-bottom>.paging {
             display: inline-block;
         }
-        .btn-write{
+
+        .btn-write {
 
             float: right;
         }
+
         .btn-write>a {
-            display:block;
+            display: block;
             width: 60px;
             height: 30px;
             line-height: 30px;
@@ -141,11 +144,13 @@
             text-decoration: none;
             font-size: small;
         }
-        .btn-answer:hover{
+
+        .btn-answer:hover {
             text-decoration: none;
             color: #314C83;
         }
-        .btn-update{
+
+        .btn-update {
             width: 50px;
             height: 25px;
             line-height: 25px;
@@ -158,12 +163,31 @@
             text-decoration: none;
             font-size: small;
         }
-        .btn-update:hover{            
+
+        .btn-update:hover {
             color: white;
             text-decoration: none;
         }
 
-        .page-num{
+        .page-next:hover,
+        .page-prev:hover{
+            text-decoration: none;
+            color: #282828;
+            background-color: #ff8f3f85;
+        }
+        .page-next,
+        .page-prev{
+            display: inline-block;
+            width: 50px;
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+            border-radius: 4px;
+            color: #282828;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .page-num {
             display: inline-block;
             width: 25px;
             height: 25px;
@@ -174,16 +198,19 @@
             font-weight: bold;
             margin-bottom: 10px;
         }
-        .page-num:not(.page-selected):hover{
+
+        .page-num:not(.page-selected):hover {
             text-decoration: none;
             color: #282828;
             background-color: #ff8f3f85;
         }
-        .page-selected{
+
+        .page-selected {
             background-color: #FF8F3F;
             color: white;
         }
-        .page-selected:hover{
+
+        .page-selected:hover {
             color: white;
             text-decoration: none;
         }
@@ -236,7 +263,7 @@
                                     <td></td>
                                     <td>
                                         <a href="/questionView.do?qNo=${qList.QNo}&answer=true">&#10551; 답변입니다.</a>
-                                        <a href="questionFrm.do?answerNo=${qList.QNo}" class="btn-update">수정</a>
+                                        <a href="questionFrm.do?answerNo=${qList.QNo}&q_No=${qList.QNo}" class="btn-update">수정</a>
                                     </td>
                                     <td>
                                         관리자
@@ -253,10 +280,18 @@
             </div>
             <div class="qna-bottom">
                 <div class="paging">
+                    <c:if test="${begin != 1}">
+                        <a class="page-prev"
+                            href="?page=${begin-1}${not empty param.qna_type ? '&qna_type='+=param.qna_type : ''}${not empty param.qna_keyword ? '&qna_keyword='+=param.qna_keyword : ''}">이전</a>
+                    </c:if>
                     <c:forEach var="i" begin="${not empty param.page ?  begin : 1}" end="${end}" step="1">
                         <a class="page-num ${param.page==i || (empty param.page && i == 1) ? 'page-selected' : ''}"
                             href="?page=${i}${not empty param.qna_type ? '&qna_type='+=param.qna_type : ''}${not empty param.qna_keyword ? '&qna_keyword='+=param.qna_keyword : ''}">${i}</a>
                     </c:forEach>
+                    <c:if test="${end < maxPageCount}">
+                        <a class="page-next"
+                            href="?page=${end+1}${not empty param.qna_type ? '&qna_type='+=param.qna_type : ''}${not empty param.qna_keyword ? '&qna_keyword='+=param.qna_keyword : ''}">다음</a>
+                    </c:if>
                 </div>
                 <div class="btn-write">
                     <a href="/questionFrm.do">글쓰기</a>

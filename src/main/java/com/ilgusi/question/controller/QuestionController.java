@@ -2,17 +2,21 @@ package com.ilgusi.question.controller;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -51,11 +55,12 @@ public class QuestionController {
 				maxListCount - ((page - 1) * listPerPage), type, keyword);
 		int maxPrintPageCount = 5;
 		int maxPageCount = service.selectMaxPageCount(listPerPage, maxListCount);
-		int begin = maxPrintPageCount * (page / maxPrintPageCount) + 1; // 네비 시작
+		int begin = maxPrintPageCount * (page / (maxPrintPageCount+1)) + 1; // 네비 시작
 		int end = (begin + 4) < maxPageCount ? begin + 4 : maxPageCount; // 네비 끝
 		model.addAttribute("questionList", list);
 		model.addAttribute("begin", begin);
 		model.addAttribute("end", end);
+		model.addAttribute("maxPageCount", maxPageCount);
 
 		return "/question/qna";
 	}
@@ -100,6 +105,52 @@ public class QuestionController {
 		return "/question/registerQuestionFrm";
 	}
 
+	//	(도현) 파일다운 기능
+	@GetMapping("questionDown.do")
+	public void download(HttpServletRequest req,HttpServletResponse resp,String fileName) {
+        // saveFileName을 만든다.
+        String root = req.getSession().getServletContext().getRealPath("upload");
+        String path = root + "/question/";
+        String saveFileName = path+fileName;
+ 
+        File file = new File(saveFileName);
+        long fileLength = file.length();
+ 
+        // reponse의 Header에 세팅
+        resp.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\";");
+        resp.setHeader("Content-Transfer-Encoding", "binary"); 
+        resp.setHeader("Content-Type", "application/octet-stream;charset=utf-8");
+        resp.setHeader("Content-Length", "" + fileLength);
+        resp.setHeader("Pragma", "no-cache;");
+        resp.setHeader("Expires", "-1;");
+        
+        // saveFileName을 파라미터로 넣어 inputStream 객체를 만들고 
+        // response에서 파일을 내보낼 OutputStream을 가져옴  
+        try (FileInputStream fis = new FileInputStream(saveFileName); OutputStream out = resp.getOutputStream();) {
+            int readCount = 0;
+            // 파일 읽을 만큼 크기의 buffer를 생성
+            byte[] buffer = new byte[3096];
+            while ((readCount = fis.read(buffer)) != -1) {
+                out.write(buffer, 0, readCount);
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException("file Load Error");
+        }
+	}
+	// (도현) question 삭제 기능
+	@RequestMapping("deleteQuestion.do")
+	public String deleteQuestion(Model model,int qNo,String loc) {
+		int result = service.deleteQuestion(qNo);
+		
+		if(result > 0 ){
+			model.addAttribute("msg", "삭제성공");
+		}else {
+			model.addAttribute("msg", "삭제실패");
+		}
+		model.addAttribute("loc", loc);
+		return "/common/msg";
+		
+	}
 	// (도현) question 작성 기능
 	@RequestMapping("registerQuestion.do")
 	public String registerQuestion(HttpServletRequest req, MultipartFile file, Model model,

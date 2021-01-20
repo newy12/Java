@@ -56,4 +56,7 @@ public class QuestionDao {
 	public int updateQuestion(Question q) {
 		return session.update("question.updateQuestion",q);
 	}
+	public int deleteQuestion(int qNo) {
+		return session.delete("question.deleteQuestion", qNo);
+	}
 }

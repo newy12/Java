@@ -48,6 +48,7 @@
 		}
 
 		.search-list>a {
+			display: inline-block;
 			text-decoration: none;
 		}
 
@@ -67,6 +68,7 @@
 
 		.list-item>.item-img>img {
 			width: 100%;
+			height: 160px;
 			object-fit: cover;
 			border-radius: 4px;
 		}
@@ -139,7 +141,7 @@
 						<a href="/serviceView.do?sNo=${item.SNo}&reqPage=1">
 							<div class="list-item">
 								<div class="item-img">
-									<img src="img/index/carousel/category-101.png" alt="">
+									<img src="upload/service/${item.SImg}" alt="">
 								</div>
 								<div class="item-freeid">
 									${item.MId}
