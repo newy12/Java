@@ -363,8 +363,6 @@ public class ServiceController {
 			model.addAttribute("c_no",serList.get(0).getSubCategory());
 		}
 		
-		ArrayList<String> brandName = service.brandList(s,order,keyword);
-		
 		switch(maincateNum) {
 			case 10: model.addAttribute("mainCate", "디자인");
 				break;
@@ -383,7 +381,6 @@ public class ServiceController {
 		}
 	
 		model.addAttribute("catList",catList);
-		model.addAttribute("brandName", brandName);
 		model.addAttribute("pageNavi", spd.getPageNavi());
 		model.addAttribute("order", order);
 		
