@@ -104,6 +104,8 @@ public class ChatController {
 		HashMap<String, String> myInfo = new HashMap<String, String>();
 
 		if (mGrade.equals("1")) {///////////////////////////////////////////////////// 일반회원일때
+			System.out.println("나는 일반회원");
+			System.out.println(mId);
 			myInfo.put("user", mId);
 			roomList = service.selectRoomList(myInfo);
 
@@ -144,7 +146,7 @@ public class ChatController {
 					if (tradeList.size() != 0) {
 						if (tradeList.get(0) != null) { // 제일 최신 거래내역
 							status = tradeList.get(0).getTStatus();
-							System.out.println("거래상태 :" + status);
+							System.out.println("나는 일반회원--거래상태 :" + status);
 						}
 					}
 					/////////////////////////////////////////////////////////////////////////////////////////////////
@@ -166,13 +168,9 @@ public class ChatController {
 				}
 			}
 		} else if (mGrade.equals("2")) {////////////////////////////////////////////// 프리랜서일때
+			System.out.println("나는 프리랜서");
 			myInfo.put("free", mId);
 			roomList = service.selectRoomList(myInfo);
-
-			// 견적서 작성여부
-			// yourId:상대 아이디, myId:내아이디
-			HttpSession session = req.getSession();
-			Member loginMember = (Member) session.getAttribute("loginMember");
 
 			// 채팅방의 chat_content 불러와서 마지막 채팅내용,시간 조회
 			for (int i = 0; i < roomList.size(); i++) {
@@ -183,7 +181,9 @@ public class ChatController {
 					ArrayList<ChatContent> content = service.chatContentList(cNo);
 					int last = content.size() - 1;
 					ChatContent lastMsg = content.get(last);
-					String freeId = oneRoom.getFreelancerId();
+					/* String freeId = oneRoom.getFreelancerId(); */
+					String userId=oneRoom.getUserId();
+					String freeId = mId;
 					Member oneMember = service.selectOneMember(freeId);
 					String brandName = oneMember.getBrandName();
 					ArrayList<ServiceInfo> serviceList = service.selectService(sNo);
@@ -198,7 +198,7 @@ public class ChatController {
 
 					// 프리랜서로 로그인했을때
 					// 상대방번호,서비스번호로 거래 견적서 작성 여부 확인
-					Member oneUser = service.selectOneMember(mId);
+					Member oneUser = service.selectOneMember(userId);
 					int mNo = oneUser.getMNo();
 					tradeInfo.put("sNo", sNo);
 					tradeInfo.put("mNo", mNo);
@@ -207,7 +207,7 @@ public class ChatController {
 					if (tradeList.size() != 0) {
 						if (tradeList.get(0) != null) { // 제일 최신 거래내역
 							status = tradeList.get(0).getTStatus();
-							System.out.println("거래상태 :" + status);
+							System.out.println("나는 프리랜서--거래상태 :" + status);
 						}
 					}
 					/////////////////////////////////////////////////////////////////////////////////////////////////

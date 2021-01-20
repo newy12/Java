@@ -564,7 +564,7 @@
 
                     </div>
                     <br>
-                    <button class="centerBtn">전문가에게 문의하기</button>
+                    <button class="centerBtn" onclick="startChat('${s.SNo }','${sessionScope.loginMember.MId }','${s.MId}','${sessionScope.loginMember.MNo }','${sessionScope.loginMember.MGrade}');">전문가에게 문의하기</button>
                 </div>
                 <br>
                 <div class="secu">
@@ -650,6 +650,32 @@
 		}
         function login_need() {
 			alert("로그인이 필요합니다.");
+		}
+        
+        function startChat(sNo, userId, freeId, mNo, mGrade) {
+			$.ajax({
+				url : "/makeRoom.do",
+				type : "post",
+				async : false,
+				data : {
+					sNo : sNo,
+					userId : userId,
+					freeId : freeId,
+					mNo : mNo,
+					mGrade : mGrade
+				},
+				success : function(data) {
+					/* location.href = "/enterRoom.do?cNo=-1&sNo=" + sNo
+							+ "&myId=" + userId + "&yourId=" + freeId
+							+ "&mGrade=" + mGrade */
+					var loc="/enterRoom.do?cNo=-1&sNo=" + sNo + "&myId="+ userId + "&yourId=" + freeId+"&mGrade="+mGrade
+					var _left = Math.ceil(( window.screen.width - 530 )/2);
+					window.open(loc, '', 'width=530, height=630, left='+_left+', top=50, location=no,scrollbars=no,location=no, resizable=no'); 
+				},
+				error : function() {
+
+				}
+			});
 		}
         
     </script>

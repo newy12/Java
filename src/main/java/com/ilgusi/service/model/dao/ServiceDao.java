@@ -65,8 +65,11 @@ public class ServiceDao {
 	}
 
 	public int totalCount(String mId) {
-		return session.selectOne("service.selectTotalCount", mId);
-
+		if(session.selectOne("service.selectTotalCount", mId)==null) {
+			return 0;
+		}
+	else {
+		return session.selectOne("service.selectTotalCount", mId);}
 	}
 
 	// (문정) 마이페이지 - 서비스 후기 등록
@@ -118,7 +121,7 @@ public class ServiceDao {
 
 	// (다솜)서비스 리스트 페이징
 	public ArrayList<com.ilgusi.service.model.vo.Service> selectServiceList(HashMap<String, Object> map) {
-			List<com.ilgusi.service.model.vo.Service> list = session.selectList("service.serviceListPage", map);
+		List<com.ilgusi.service.model.vo.Service> list = session.selectList("service.serviceListPage", map);
 		return (ArrayList<com.ilgusi.service.model.vo.Service>) list;
 	}
 
@@ -207,8 +210,7 @@ public class ServiceDao {
 	public int deleteService(int sNo) {
 		return session.update("service.delService", sNo);
 	}
-	
-	
+
 	public ArrayList<com.ilgusi.service.model.vo.Service> selectServiceList(String mId, String order) {
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("id", mId);
@@ -222,7 +224,7 @@ public class ServiceDao {
 		return session.update("review.serviceUpdateSRate", sNo);
 	}
 
-	//(문정) 프리랜서가 등록한 총 서비스 개수
+	// (문정) 프리랜서가 등록한 총 서비스 개수
 	public int selectFreeServiceCount(String mId) {
 		return session.selectOne("service.selectFreeServiceCount", mId);
 	}

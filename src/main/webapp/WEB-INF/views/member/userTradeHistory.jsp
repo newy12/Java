@@ -227,7 +227,7 @@
 	                                <div>
 	                                    <div><a href="/introduceFrm.do?mId=${serviceList[status.index].MId}&reqPage=1">${serviceList[status.index].MId }</a></div>
 	                                    <div><a href="/introduceFrm.do?mId=${serviceList[status.index].MId}&reqPage=1"><img src="/img/icon/home.png"></a></div>
-	                                    <div><a href="#"><img src="/img/icon/message.png"></a></div>
+	                                    <div><a href="#" onclick="startChat('${serviceList[status.index].SNo}','${sessionScope.loginMember.MId }','${serviceList[status.index].MId}','${sessionScope.loginMember.MNo }','${sessionScope.loginMember.MGrade}');"><img src="/img/icon/message.png"></a></div>
 	                                </div>
 	                            </div>
 	                            <div><a href="/serviceView.do?sNo=${serviceList[status.index].SNo}&reqPage=1">${serviceList[status.index].SContent }</a></div>
@@ -374,6 +374,32 @@
 		//거래상세보기 창에서 서비스 상세보기를 누르면
 		function gotoServiceView(sNo){
 			location.href="/serviceView.do?sNo="+sNo+"&reqPage=1";
+		}
+		
+	    function startChat(sNo, userId, freeId, mNo, mGrade) {
+			$.ajax({
+				url : "/makeRoom.do",
+				type : "post",
+				async : false,
+				data : {
+					sNo : sNo,
+					userId : userId,
+					freeId : freeId,
+					mNo : mNo,
+					mGrade : mGrade
+				},
+				success : function(data) {
+					/* location.href = "/enterRoom.do?cNo=-1&sNo=" + sNo
+							+ "&myId=" + userId + "&yourId=" + freeId
+							+ "&mGrade=" + mGrade */
+					var loc="/enterRoom.do?cNo=-1&sNo=" + sNo + "&myId="+ userId + "&yourId=" + freeId+"&mGrade="+mGrade
+					var _left = Math.ceil(( window.screen.width - 530 )/2);
+					window.open(loc, '', 'width=530, height=630, left='+_left+', top=50, location=no,scrollbars=no,location=no, resizable=no'); 
+				},
+				error : function() {
+
+				}
+			});
 		}
 	</script>
 
