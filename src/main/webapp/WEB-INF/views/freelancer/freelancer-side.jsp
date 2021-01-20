@@ -32,7 +32,7 @@
         color: white;
         border: 1px solid rgb(49, 76, 131);
     }
-    .switch:active{
+    .switch:focus{
     	outline: none;
     }
 
