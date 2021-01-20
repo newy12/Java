@@ -62,6 +62,9 @@
 	<update id="updateQuestion" parameterType="q">
 		update question set q_title = #{qTitle},q_content = #{qContent},secret_status = #{secretStatus},filepath = #{filePath} where q_no = #{qNo}
 	</update>
+	<delete id="deleteQuestion" parameterType="_int">
+		delete from question where q_no=#{qNo} 
+	</delete>
 	<update id="updateAnswer" parameterType="q">
 		update question set answer_status = 1,answer_contnet = #{qContent},answer_date = sysdate where q_no = #{qNo}
 	</update>

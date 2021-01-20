@@ -15,44 +15,80 @@
 
 	<link rel="stylesheet" href="css/index/indexStyle.css">
 	<style>
-		.main-top-info-container{
-		  margin-top: 40px;
-		  padding: 20px 0;
-		  width: 1200px;
-		  overflow: hidden;
-		  background-color: #F2F3F7;
+		.main-top-info-container {
+			margin-top: 40px;
+			padding: 20px 0;
+			width: 1200px;
+			overflow: hidden;
+			background-color: #F2F3F7;
 		}
-		.top-info-left{
-		  width: 20%;
-		  float: left;
+
+		.top-info-left {
+			width: 20%;
+			float: left;
 		}
-		.main-top-info-container .bannerArrow{
-		  /* height: 200px; */
+
+		.main-top-info-container .bannerArrow {
+			/* height: 200px; */
 		}
-		.main-top-info-container>.banner-container{
-		  margin: 0;
-		  width: 60%;
-		  float: left;
+
+		.main-top-info-container>.banner-container {
+			margin: 0;
+			width: 60%;
+			float: left;
+			border-radius: 5px;
 		}
-		.main-top-info-container .banner-container img{
-		  height: 250px;
+
+		.main-top-info-container .banner-container img {
+			height: 250px;
+			border-radius: 5px;
 		}
+
 		.main-top-info-container .banner-prev,
 		.main-top-info-container .banner-next {
-		  line-height: 250px;
+			line-height: 250px;
 		}
-		.main-top-info-container>.member-info-container{
-		  width: 20%;
-		  height: 250px;
-		  float: left;
+
+		.main-top-info-container>.member-info-container {
+			width: 18%;
+			height: 230px;
+			float: left;
 		}
-		.member-info-name{
-		  font-size: large;
+
+		.member-info-container {
+			margin-top: 15px;
+			margin-left: 20px;
+
 		}
-		.member-info-name>span{
-		  font-weight: bold;
+
+		.member-info-name {
+			font-size: large;
 		}
-	  </style>
+
+		.member-info-name>span {
+			font-weight: bold;
+		}
+
+		.request-container {
+			text-align: center;
+			margin: 0 auto;
+			border-radius: 5px;
+			width: 160px;
+			height: 45px;
+			line-height: 45px;
+			font-size: 15px;
+			font-weight: bold;
+			background-color: white;
+		}
+
+		.request-container>a {
+			display: inline-block;
+			width: 100%;
+			height: 100%;
+			text-decoration: none;
+			color: #282828;
+		}
+	</style>
 </head>
 
 <body>
@@ -64,21 +100,21 @@
 		<h3>본인 페이지 테스트</h3>
 		소현
 		<a href="/chatList.do?mGrade=${loginMember.MGrade}&mId=${loginMember.MId}"
-		onClick="window.open(this.href, '', 'width=530, height=630, left=1000,location=no,scrollbars=no,location=no, resizable=no'); return false;">채팅하기</a>
-	<a href="/manageMember.do?reqPage=1&grade=all&keyword=&order=new">관리자-회원관리+페이징+검색+정렬</a>
-	<a href="/manageService.do?reqPage=1&status=waiting&keyword1=&keyword2=&order=old">관리자-서비스관리+페이징+검색+정렬</a>
-	<br> 영재
-	<a href="/introduceFrm.do?mId=${loginMember.MId}&reqPage=1">프리랜서소개글</a>
-	<a href="/serviceJoinFrm.do?MId=${loginMember.MId}">서비스등록</a>
-	<a href="/freelancerMypage.do?MNo=${loginMember.MNo}">프리랜서 마이페이지</a>
-	<br> 문정
-	<a href="/requestList.do?reqPage=1&order=new&subject=all&keyword=">의뢰게시판 리스트 </a> /
-	<br> 다솜
-	<a href="/noticeList.do?reqPage=1&keyword=">공지사항 게시판</a> /
-	<a href="/serviceList.do?sNo=10&reqPage=1&order=new&keyword=">서비스리스트</a> /
-	<a href="/serviceView.do?sNo=44">서비스 상세보기</a> <br>
-	<br> 도현
-	<a href="/indexTest.jsp">인덱스 페이지 테스트</a>
+			onClick="window.open(this.href, '', 'width=530, height=630, left=1000,location=no,scrollbars=no,location=no, resizable=no'); return false;">채팅하기</a>
+		<a href="/manageMember.do?reqPage=1&grade=all&keyword=&order=new">관리자-회원관리+페이징+검색+정렬</a>
+		<a href="/manageService.do?reqPage=1&status=waiting&keyword1=&keyword2=&order=old">관리자-서비스관리+페이징+검색+정렬</a>
+		<br> 영재
+		<a href="/introduceFrm.do?mId=${loginMember.MId}&reqPage=1">프리랜서소개글</a>
+		<a href="/serviceJoinFrm.do?MId=${loginMember.MId}">서비스등록</a>
+		<a href="/freelancerMypage.do?MNo=${loginMember.MNo}">프리랜서 마이페이지</a>
+		<br> 문정
+		<a href="/requestList.do?reqPage=1&order=new&subject=all&keyword=">의뢰게시판 리스트 </a> /
+		<br> 다솜
+		<a href="/noticeList.do?reqPage=1&keyword=">공지사항 게시판</a> /
+		<a href="/serviceList.do?sNo=10&reqPage=1&order=new&keyword=">서비스리스트</a> /
+		<a href="/serviceView.do?sNo=44">서비스 상세보기</a> <br>
+		<br> 도현
+		<a href="/indexTest.jsp">인덱스 페이지 테스트</a>
 
 	</div>
 	<script>
@@ -90,7 +126,7 @@
 				slidesToScroll: 1,
 				draggable: false,
 				autoplay: true,
-				autoplaySpeed: 3000,
+				autoplaySpeed: 5000,
 				prevArrow: $("#arrow_prev"),
 				nextArrow: $("#arrow_next")
 			});
@@ -122,6 +158,14 @@
 					$(".free-id:eq(0)").append("<a href='/introduceFrm.do?mId=" + response[0].mId +
 						"&reqPage=1'>" +
 						response[0].mId + "</a>");
+					for (let i = 1; i < response.length; i++) {
+						$(".rank-list:eq(0)").find(".rank-col-2:eq(" + (i-1) + ")").text(response[i]
+							.sumPrice + "원");
+						$(".rank-list:eq(0) .rank-col-3:eq(" + (i-1) + ")").append(
+							"<a href='/introduceFrm.do?mId=" + response[i].mId +
+							"&reqPage=1'>" +
+							response[i].mId + "</a>");
+					}
 				}
 			});
 			$(".category-title").hover(function (e) {
@@ -135,7 +179,9 @@
 		<c:if test="${not empty loginMember}">
 			<div class="main-top-info-container">
 				<div class="top-info-left">
-					d
+					<div class="request-container">
+						<a href="/requestList.do?reqPage=1&order=new&subject=all&keyword=">맞춤 견적</a>
+					</div>
 				</div>
 				<div class="banner-container">
 					<div class="bannerArrow">
@@ -367,8 +413,8 @@
 					</div>
 					<div class="rank-row">
 						<div class="rank-col-1 r-col">2위</div>
-						<div class="rank-col-2 r-col">123,123,123원</div>
-						<div class="rank-col-3 r-col">프리랜서아이디</div>
+						<div class="rank-col-2 r-col"></div>
+						<div class="rank-col-3 r-col"></div>
 					</div>
 					<div class="rank-row">
 						<div class="rank-col-1 r-col">3위</div>

@@ -101,10 +101,11 @@
         .dh-header .header-top-center>.header-search button{
             height: 40px;
             width: 50px;
-            background-color: white;
-            border: 2px solid #314c83;
+            background-color: #314c83;
+            color: white;
             border-radius: 4px;
             outline: none;
+            border: none;
             box-sizing: border-box;
         }
         .dh-header .header-top-right {
@@ -488,7 +489,7 @@
             </div>
             <div class="header-top-right">
                 <div class="header-menu">
-                    <span id="c-center">공지사항</span>
+                    <a href="/noticeList.do?reqPage=1"><span id="c-center">공지사항</span></a>
                     <c:if test="${empty loginMember}">
                         <span id="login">로그인</span>
                         <a href="/join.do" id="join-btn" class="btn-deepblue"><span>무료 회원가입</span></a>

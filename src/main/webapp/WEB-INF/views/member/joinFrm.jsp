@@ -309,7 +309,7 @@
                 if (valid) {
                     $("#phone_validation").hide();
                     $(".phone-form input").removeAttr("style");
-                    let phoneStr = $("#phone1").val() + $("#phone2").val() + $("#phone3").val();
+                    let phoneStr = $("#phone1").val() +"-"+ $("#phone2").val() +"-"+ $("#phone3").val();
                     $("[name=mPhone]").val(phoneStr);
                     console.log("phoneStr : " + phoneStr);
                 } else {

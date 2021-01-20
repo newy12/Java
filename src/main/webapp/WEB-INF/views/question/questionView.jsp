@@ -15,6 +15,7 @@
             font-weight: normal;
             font-style: normal;
         }
+
         .qna-section {
             font-family: 'Arita-dotum-Medium';
             margin: 0 auto;
@@ -52,43 +53,87 @@
             margin: 0 auto;
             width: 90%;
         }
-        .qna-center>table{
+
+        .qna-center>table {
             width: 100%;
             height: 600px;
             border-top: 2px solid #314C83;
             border-bottom: 2px solid #314C83;
         }
-        .qna-center>table>thead{
+
+        .qna-center>table>thead {
             background-color: rgb(224, 224, 224, 0.5);
         }
-        .qna-center .qna-col1{
+
+        .qna-center .qna-col1 {
             width: 100px;
             height: 40px;
             text-align: center;
             font-size: 15px;
         }
-        .qna-center .qna-col2>input{
+
+        .qna-center .qna-col2>input {
             width: 700px;
             height: 30px;
             border-radius: 4px;
             outline: none;
             border: 1px solid lightgray;
         }
+
         .qna-bottom {
             margin: 10px auto;
             width: fit-content;
         }
-        #qContent{
+
+        #qContent {
             width: 100%;
             height: 95%;
             resize: none;
+        }
+
+        .btn-quest {
+            display: inline-block;
+            outline: none;
+            border: none;
+            width: 70px;
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+        }
+
+        .btn-quest:hover {
+            color: white;
+            text-decoration: none;
+        }
+
+        .btn-white {
+            display: inline-block;
+            outline: none;
+            width: 70px;
+            height: 25px;
+            line-height: 25px;
+            text-align: center;
+            background-color: white;
+            border: 2px solid #314C83;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #314C83;
         }
     </style>
 </head>
 
 <body>
     <jsp:include page="/WEB-INF/views/common/header.jsp" />
-
+    <c:if test="${loginMember.MGrade != 0}">
+        <c:if test="${question.secretStatus == 1 and loginMember.MNo != question.MNo}">
+            <script>
+                alert("권한이 없습니다.");
+                location.href = "/qna.do?page=1";
+            </script>
+        </c:if>
+    </c:if>
     <section class="qna-section">
         <div class="qna-container">
             <div class="qna-top">
@@ -111,7 +156,9 @@
                         <c:if test="${empty param.answer || param.answer == false}">
                             <tr>
                                 <th class="qna-col1">첨부파일</th>
-                                <th class="qna-col2"><a href="/questionDown.do?fileName=${question.filePath}">${question.filePath}</a></th>
+                                <th class="qna-col2"><a
+                                        href="/questionDown.do?fileName=${question.filePath}">${question.filePath}</a>
+                                </th>
                             </tr>
                         </c:if>
                     </thead>
@@ -130,10 +177,15 @@
             </div>
             <div class="qna-bottom">
                 <div class="submit">
-                    <c:if test="${question.MNo == loginMember.MNo}">
-                        <a href="/questionFrm.do?q_No=${question.QNo}" class="btn-deepblue">수정하기</a>
+                    <c:if test="${question.MNo == loginMember.MNo and empty param.answer}">
+                        <a href="/questionFrm.do?q_No=${question.QNo}" class="btn-deepblue btn-quest">수정하기</a>
+                        <form action="deleteQuestion.do" method="post" style="display: inline-block;">
+                            <input type="hidden" name="qNo" value="${param.qNo}">
+                            <input type="hidden" name="loc" id="delete_loc" value="/qna.do">
+                            <button class="btn-deepblue btn-quest">삭제하기</button>
+                        </form>
                     </c:if>
-                    <a href="/qna.do">목록으로</a>
+                    <a href="/qna.do" class="btn-white">목록으로</a>
                 </div>
             </div>
         </div>

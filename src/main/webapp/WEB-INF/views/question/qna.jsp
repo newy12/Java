@@ -65,6 +65,15 @@
             text-align: center;
         }
 
+        td>a {
+            color: #282828;
+        }
+
+        td>a:hover {
+            text-decoration: none;
+            color: #282828;
+        }
+
         .qna-center table tr {
             border-top: 1px solid lightgray;
         }
@@ -130,6 +139,10 @@
             text-decoration: none;
         }
 
+        .btn-write>a:hover {
+            color: white;
+        }
+
         .btn-answer {
             width: 50px;
             height: 25px;
@@ -170,13 +183,14 @@
         }
 
         .page-next:hover,
-        .page-prev:hover{
+        .page-prev:hover {
             text-decoration: none;
             color: #282828;
             background-color: #ff8f3f85;
         }
+
         .page-next,
-        .page-prev{
+        .page-prev {
             display: inline-block;
             width: 50px;
             height: 25px;
@@ -187,6 +201,7 @@
             font-weight: bold;
             margin-bottom: 10px;
         }
+
         .page-num {
             display: inline-block;
             width: 25px;
@@ -251,8 +266,10 @@
                                     <c:if test="${qList.secretStatus == 1}">
                                         <span>&#128274;</span>
                                     </c:if>
-                                    <c:if test="${qList.answerStatus == 0}">
-                                        <a href="questionFrm.do?answerNo=${qList.QNo}" class="btn-answer">답변</a>
+                                    <c:if test="${not empty loginMember and loginMember.MGrade == 0}">
+                                        <c:if test="${qList.answerStatus == 0}">
+                                            <a href="questionFrm.do?answerNo=${qList.QNo}" class="btn-answer">답변</a>
+                                        </c:if>
                                     </c:if>
                                 </td>
                                 <td>${qList.MId}</td>
@@ -263,7 +280,10 @@
                                     <td></td>
                                     <td>
                                         <a href="/questionView.do?qNo=${qList.QNo}&answer=true">&#10551; 답변입니다.</a>
-                                        <a href="questionFrm.do?answerNo=${qList.QNo}&q_No=${qList.QNo}" class="btn-update">수정</a>
+                                        <c:if test="${not empty loginMember and loginMember.MGrade == 0}">
+                                            <a href="questionFrm.do?answerNo=${qList.QNo}&q_No=${qList.QNo}"
+                                                class="btn-update">수정</a>
+                                        </c:if>
                                     </td>
                                     <td>
                                         관리자
