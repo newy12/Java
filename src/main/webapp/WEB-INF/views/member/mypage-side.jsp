@@ -18,11 +18,13 @@
         margin: 0 auto;
     }
     .switch {
+    	width:125px;
         height: 31px;
         margin-bottom: 30px;
         color: rgb(49, 76, 131);
         background-color:white;
         border: 1px solid rgb(49, 76, 131);
+        border-radius: 3px;
     }
 
     .switch:hover {
