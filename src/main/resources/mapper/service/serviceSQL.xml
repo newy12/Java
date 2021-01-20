@@ -542,6 +542,11 @@
 
 
 	</select>
+	
+	<!-- (문정) 프리랜서가 등록한 총 서비스 개수(삭제 제외, 승인된거만) -->
+	<select id="selectFreeServiceCount" parameterType="string" resultType="_int">
+		select count(*) from service where m_id = #{_parameter} and delete_status = 'n' and admin_approval = 'y' 
+	</select>
 
 </mapper>
 
