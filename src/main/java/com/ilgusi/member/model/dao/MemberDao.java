@@ -63,4 +63,17 @@ public class MemberDao {
 		return session.delete("member.deleteMember", map);
 	}
 
+	//(문정) 마이페이지에서 사용자-프리랜서 전환
+	public int changeGrade(String mId, int grade) {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("mId", mId);
+		map.put("grade", grade);
+		return session.update("member.changeGrade", map);
+	}
+
+	//(문정) 로그인하면 grade를 1로 셋팅
+	public int settingMemberGrade(Member m) {
+		return session.update("member.settingMemberGrade",m);
+	}
+
 }

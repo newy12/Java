@@ -22,16 +22,6 @@
 	margin-top: 50px;
 }
 
-.profile-box {
-	width: 250px;
-	float: left;
-}
-
-.profile-box>div {
-	text-align: center;
-	margin: 0 auto;
-}
-
 .board-wrap {
 	width: 800px;
 	margin: 0 auto;
@@ -49,53 +39,6 @@
 	margin-top: 20px;
 	width: 800px;
 	height: 1000px;
-}
-
-.switch {
-	height: 31px;
-	margin-bottom: 30px;
-	color: rgb(49, 76, 131);
-	background-color: white;
-	border: 1px solid rgb(49, 76, 131);
-}
-
-.switch:hover {
-	background-color: rgb(49, 76, 131);
-	color: white;
-	border: 1px solid rgb(49, 76, 131);
-}
-
-.menu {
-	padding: 0;
-	list-style: none;
-}
-
-.menu>li {
-	margin-bottom: 20px;
-}
-
-.menu>li>img {
-	display: none;
-}
-
-.menu>li:hover>img {
-	display: inline;
-}
-
-.menu>li:hover>a {
-	margin-left: 5px;
-	font-weight: bold;
-}
-
-.menu>li>a {
-	text-decoration: none;
-	color: rgb(51, 51, 51);
-}
-
-.profile-box>p {
-	font-size: 18px;
-	font-weight: bold;
-	color: rgb(49, 76, 131);
 }
 
 .board-box>span {
@@ -229,33 +172,13 @@
 		<%@ include file="/WEB-INF/views/common/header.jsp"%>
 	</div>
 	<div class="page-wrap">
-		<div class="profile-box">
-			<div>
-				<img src="/img/icon/mypage_person.png"
-					style="width: 147px; height: 147px">
-			</div>
-			<div style="margin-top: 10px;">김영재님</div>
-			<div style="margin-top: 5px;">
-				<button class="switch">프리랜서로 전환</button>
-			</div>
-			<p>MY PAGE</p>
-			<hr>
-			<ul class="menu">
-				<li><img src="/img/icon/circle_navy.png"><a
-					href="/freelancerMypage.do?MNo=${loginMember.MNo}">나의 프로필</a></li>
-				<li><img src="/img/icon/circle_navy.png"><a
-					href="/freelancerServiceList.do?mId=${loginMember.MId}">서비스 내역</a></li>
-				<li><img src="/img/icon/circle_navy.png"
-					style="display: inline;"><a href="#"
-					style="margin-left: 5px; font-weight: bold;">거래 내역</a></li>
-			</ul>
-		</div>
+		<!-- 사이드메뉴 -->
+        <jsp:include page="/WEB-INF/views/freelancer/freelancer-side.jsp" />
 
 		<div class="board-wrap">
 			<div class="board-box">
 				<span>거래 내역</span>
 			</div>
-
 			<div class="container-box">
 				<div>
 					<ul>
@@ -272,109 +195,70 @@
 					<c:forEach items="${tradeList}" var="t" varStatus="status">
 						<div class="content-box">
 							<div>
-								<div style="color: rgb(51, 51, 51); font-size: 15px;">거래
-									번호</div>
-								<div
-									style="color: rgb(51, 51, 51); font-size: 15px; margin-top: 5px; font-weight: bold;">
-									<a href="#">${t.TNo}</a>
-
+								<div style="color: rgb(51, 51, 51); font-size: 15px;">거래번호</div>
+								<div style="color: rgb(51, 51, 51); font-size: 15px; margin-top: 5px; font-weight: bold;">
+									<a href="javascript:void(0)" onclick="trade_open(this)">${t.TNo}</a>
 								</div>
-								<div
-									style="color: rgb(51, 51, 51); font-size: 15px; margin-top: 20px;">거래
-									금액</div>
-								<div
-									style="color: rgb(255, 143, 63); font-size: 20px; margin-top: 5px; font-weight: bold;">${t.TPrice }원</div>
+								<div style="color: rgb(51, 51, 51); font-size: 15px; margin-top: 20px;">거래금액</div>
+								<div style="color: rgb(255, 143, 63); font-size: 20px; margin-top: 5px; font-weight: bold;">${t.TPriceTxt }</div>
 							</div>
 							<div>
 								<div>
 									<div>
-								
-										<a href="#"><img src="/img/icon/img.jpg" width="175px"
-											height="103px"></a>
+										<a href="/serviceView.do?sNo=${serviceList[status.index].SNo}&reqPage=1"><img src="/upload/service/${ serviceList[status.index].SImg}" width="175px" height="103px" style="border-radius:5px;"></a>
 									</div>
 									<div style="color: #8a8a8a;">
 										사용자 ID
 										<div>
 											<div>
-												<a href="#">${serviceList[status.index].MId }</a>
+												<a href="/introduceFrm.do?mId=${loginMember.MId}&reqPage=1">${serviceList[status.index].MId }</a>
 											</div>
 											<div>
-												<a href="#"><img src="/img/icon/home.png"></a>
-											</div>
-											<div>
-												<a href="#"><img src="/img/icon/message.png"></a>
+												<a href="/introduceFrm.do?mId=${loginMember.MId}&reqPage=1"><img src="/img/icon/home.png"></a>
 											</div>
 										</div>
 									</div>
 									<div>
-										<a href="#">${serviceList[status.index].SContent }</a>
+										<a href="/serviceView.do?sNo=${serviceList[status.index].SNo }&reqPage=1">${serviceList[status.index].SContent }</a>
 									</div>
 								</div>
 							</div>
 							<div>
 								<c:choose>
 									<c:when test="${t.TStatus == 0 }">
-										<div
-											style="color: rgb(255, 143, 63); font-size: 20px; margin-top: 5px; font-weight: bold;">결제
-											전</div>
+										<div style="color: rgb(255, 143, 63); font-size: 20px; margin-top: 5px; font-weight: bold;">결제 전</div>
 										<div style="color: rgb(51, 51, 51); font-size: 15px;"></div>
-										<div
-											style="color: rgb(51, 51, 51); font-size: 15px; margin-top: 20px;">예상
-											마감일</div>
-										<div
-											style="color: rgb(51, 51, 51); font-size: 15px; margin-top: 5px; font-weight: bold;">${t.endDate }</div>
+										<div style="color: rgb(51, 51, 51); font-size: 15px; margin-top: 20px;">예상 마감일</div>
+										<div style="color: rgb(51, 51, 51); font-size: 15px; margin-top: 5px; font-weight: bold;">${t.endDate }</div>
 									</c:when>
 									<c:when test="${t.TStatus == 1 }">
-										<div
-											style="color: rgb(255, 143, 63); font-size: 20px; margin-top: 5px; font-weight: bold;">결제
-											완료</div>
+										<div style="color: rgb(255, 143, 63); font-size: 20px; margin-top: 5px; font-weight: bold;">결제 완료</div>
 										<div style="color: rgb(51, 51, 51); font-size: 15px;">${payDate[status.index] }</div>
-										<div
-											style="color: rgb(51, 51, 51); font-size: 15px; margin-top: 20px;">예상
-											마감일</div>
-										<div
-											style="color: rgb(51, 51, 51); font-size: 15px; margin-top: 5px; font-weight: bold;">${t.endDate }</div>
+										<div style="color: rgb(51, 51, 51); font-size: 15px; margin-top: 20px;">예상 마감일</div>
+										<div style="color: rgb(51, 51, 51); font-size: 15px; margin-top: 5px; font-weight: bold;">${t.endDate }</div>
 									</c:when>
 									<c:when test="${t.TStatus ==2 }">
-										<div
-											style="color: rgb(224, 224, 224); font-size: 20px; margin-top: 5px; font-weight: bold;">작업
-											완료</div>
+										<div style="color: rgb(224, 224, 224); font-size: 20px; margin-top: 5px; font-weight: bold;">작업 완료</div>
 										<div style="color: rgb(51, 51, 51); font-size: 15px;">${payDate[status.index] }</div>
-										<div
-											style="color: rgb(51, 51, 51); font-size: 15px; margin-top: 20px;">작업
-											종료일</div>
-										<div
-											style="color: rgb(51, 51, 51); font-size: 15px; margin-top: 5px; font-weight: bold;">${t.endDate }</div>
+										<div style="color: rgb(51, 51, 51); font-size: 15px; margin-top: 20px;">작업 종료일</div>
+										<div style="color: rgb(51, 51, 51); font-size: 15px; margin-top: 5px; font-weight: bold;">${t.endDate }</div>
 									</c:when>
 								</c:choose>
-
 							</div>
 							<div>
 								<c:choose>
-									<c:when test="${t.TStatus == 0 }">
-	                    		작업전
-	                    	</c:when>
+									<c:when test="${t.TStatus == 0 }">작업전</c:when>
 									<c:when test="${t.TStatus == 1 }">
 										<input type="hidden" value="${t.MNo}" />
 										<input id="tnoId" type="hidden" value="${t.TNo}" />
 										<button class="review-btn" id="ajax_button" onclick="ajax_click(this)">작업 완료</button>
 									</c:when>
-									<c:when test="${t.TStatus == 2}">
-	               				작업 완료
-	                    	</c:when>
-
+									<c:when test="${t.TStatus == 2}">작업 완료</c:when>
 								</c:choose>
-
 							</div>
 						</div>
-
 					</c:forEach>
-
 				</c:if>
-
-
-
-
 			</div>
 		</div>
 	</div>
@@ -386,6 +270,12 @@
 
 
 <script>
+	$(document).ready(function(){
+		//메뉴 고정
+		 $(".menu").children().eq(3).find('a').css({'margin-left':'5px', 'font-weight':'bold'});
+		 $(".menu").children().eq(3).find('img').css({'display':'inline'});
+	});
+
 	function ajax_click(obj) {
 		var tnovalue = $(obj).prev().val(); //tno값
 		var mNo = $(obj).prev().prev().val(); //mNo값
@@ -410,7 +300,14 @@
 				/* location.reload(); */
 			}
 		});
-
+	}
+	
+	//거래 세부 내역 확인
+	function trade_open(obj){
+		var tNo = $(obj).html();
+		var _left = Math.ceil(( window.screen.width - 473 )/2);
+		window.open('/serviceTradeView.do?tNo='+tNo, '거래 내용 확인', 'width=473, height=480, left='+_left+', top=50, scrollbars=no, location=no, resizable=no');
+		return false;
 	}
 </script>
 </html>

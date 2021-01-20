@@ -14,16 +14,6 @@
         margin-top:50px;
     }
 
-    .profile-box {
-        width: 250px;
-        float: left;
-    }
-
-    .profile-box>div {
-        text-align: center;
-        margin: 0 auto;
-    }
-
     .board-wrap {
         width: 800px;
         margin: 0 auto;
@@ -42,49 +32,6 @@
         width: 795px;
         height: 1000px;
     }
-
-    .switch {
-        height: 31px;
-        margin-bottom: 30px;
-        color: rgb(49, 76, 131);
-        background-color:white;
-        border: 1px solid rgb(49, 76, 131);
-        border-radius: 3px;
-    }
-
-    .switch:hover {
-        background-color: rgb(49, 76, 131);
-        color: white;
-        border: 1px solid rgb(49, 76, 131);
-    }
-
-    .menu{
-        padding: 0;
-        list-style: none;
-    }
-    .menu>li{
-        margin-bottom: 20px;
-    }
-    .menu>li>img{
-        display: none;
-    }
-    .menu>li:hover>img{
-        display: inline;
-    }
-    .menu>li:hover>a{
-        margin-left: 5px;
-        font-weight: bold; 
-    }
-    .menu>li>a{
-        text-decoration: none;
-        color: rgb(51, 51, 51);
-    }
-
-.profile-box>p {
-    font-size: 18px;
-    font-weight: bold;
-    color: rgb(49, 76, 131);
-}
 
 .board-box>span {
     font-size: 18px;
@@ -224,6 +171,7 @@
 		<%@ include file="/WEB-INF/views/common/header.jsp"%>
 	</div>
     <div class="page-wrap">
+<<<<<<< HEAD
         <div class="profile-box">
             <div><img src="/img/icon/mypage_person.png" style="width: 147px; height: 147px"></div>
 			<input type="hidden" class="memberId" value="${loginMember.MId }">
@@ -238,6 +186,10 @@
             </ul>
         </div>
         
+=======
+        <!-- 사이드메뉴 -->
+        <jsp:include page="/WEB-INF/views/freelancer/freelancer-side.jsp" />
+>>>>>>> 817c4f9ffdff5ec04d5e91834f893040a68a019c
 	     <div class="board-wrap">
 	        <div class="board-box">
 	            <span>서비스 내역</span>
@@ -286,7 +238,13 @@
 
 
     <script>
+		$(document).ready(function(){
+			//메뉴 고정
+			 $(".menu").children().eq(2).find('a').css({'margin-left':'5px', 'font-weight':'bold'});
+			 $(".menu").children().eq(2).find('img').css({'display':'inline'});
+		});
     
+<<<<<<< HEAD
     $(document).ready(function () {
 		var order = $(".array").val();
 		var id = $(".memberId").val;
@@ -306,6 +264,10 @@
 		
     
     
+=======
+    $(function () {
+
+>>>>>>> 817c4f9ffdff5ec04d5e91834f893040a68a019c
     })
     
     function del(){
@@ -318,9 +280,6 @@
     		}
     		
     	};
-	
-    	
-
     </script>
 </body>
 </html>

@@ -85,8 +85,7 @@
 	</select>
 
 	<!-- (문정)사용자 마이페이지 거래 세부 내용에 해당하는 서비스 불러오기 -->
-	<select id="selectOneService" parameterType="_int"
-		resultType="s">
+	<select id="selectOneService" parameterType="_int" resultType="s">
 		select
 		s.s_no as sNo,
 		s.m_id as mId,
@@ -97,8 +96,7 @@
 	</select>
 
 	<!-- (영재) 프리랜서 기준 거래내역 불러오기 -->
-	<select id="selectTradeList2" parameterType="_int"
-		resultType="trade">
+	<select id="selectTradeList2" parameterType="_int" resultType="trade">
 		select
 		t_no as tNo,
 		s_no as sNo,
@@ -113,8 +111,8 @@
 		member where m_no = #{_parameter})) order by t_status,t_no
 	</select>
 
-	<select id="selectPayDateList2" parameterType="_int"
-		resultType="string">
+	<!-- (영재) 프리랜서 기준 거래내역 불러오기 -->
+	<select id="selectPayDateList2" parameterType="_int" resultType="string">
 		select p.p_date
 		from
 		(select t_no from service_trade where s_no in (select s_no from service where
@@ -124,9 +122,15 @@
 		(select * from service_pay) p on t.t_no=p.t_no
 	</select>
 
-	<select id="selectServiceList2" parameterType="_int"
-		resultType="s">
-		select s.*
+	<!-- (영재) 프리랜서 기준 거래내역 불러오기 -->
+	<select id="selectServiceList2" parameterType="_int" resultType="s">
+		select 
+		s.s_no as sNo,
+		s.m_id as mId,
+		s.s_title as sTitle,
+		s.s_price as sPrice,
+		s.s_content as sContent,
+		s.s_img as sImg 
 		from
 		(select s_no from service_trade where s_no in (select s_no from service where
 		m_id= (select m_id from member where m_no = #{_parameter} )) order by

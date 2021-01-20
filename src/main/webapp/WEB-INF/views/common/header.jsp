@@ -497,7 +497,7 @@
                     </c:if>
                     <c:if test="${not empty loginMember}">
                         <ul class="ul-user">
-                            <a href="/userMypage.do" id="user_name">${loginMember.MName}</a>
+                            <a href="javascript:gotoMypage(${loginMember.MNo },${loginMember.MGrade });" id="user_name">${loginMember.MName}</a>
                             <li>
                                 <ul>
                                     <li>
@@ -525,4 +525,29 @@
     </header>
 </div>
 
+	<!-- (문정) post로 마이페이지 연결을 위함 -->
+	<script>
+		function gotoMypage(mNo, grade){	
+			//post로 넘기기 
+			var form = document.createElement("form");
+			form.action = "/userMypage.do";
+			form.method = "post";
+			
+			//mNo 추가
+			var input_mNo = document.createElement("input");
+			input_mNo.setAttribute("type", "hidden");
+			input_mNo.setAttribute("name", "mNo");
+			input_mNo.setAttribute("value", mNo);
+		    form.appendChild(input_mNo);
+		    //grade 추가
+		    var input_grade = document.createElement("input");
+			input_grade.setAttribute("type", "hidden");
+			input_grade.setAttribute("name", "grade");
+			input_grade.setAttribute("value", grade);
+		    form.appendChild(input_grade);
+		
+			document.body.appendChild(form);
+			form.submit();
+		}
+	</script>
 </html>
