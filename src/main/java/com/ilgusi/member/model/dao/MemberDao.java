@@ -63,4 +63,9 @@ public class MemberDao {
 		return session.delete("member.deleteMember", map);
 	}
 
+	// (도현)메인페이지에 판매진행,구매진행중 정보 전달
+	public int selectBuyingCount(int mNo) {
+		return session.selectOne("member.selectBuyingCount", mNo);
+	}
+
 }

@@ -12,8 +12,48 @@
   <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
 
-<link rel="stylesheet" href="css/index/indexStyle.css">
+  <link rel="stylesheet" href="css/index/indexStyle.css">
 
+
+  <style>
+    .main-top-info-container{
+      margin-top: 40px;
+      padding: 20px 0;
+      width: 1200px;
+      overflow: hidden;
+      background-color: #F2F3F7;
+    }
+    .top-info-left{
+      width: 20%;
+      float: left;
+    }
+    .main-top-info-container .bannerArrow{
+      /* height: 200px; */
+    }
+    .main-top-info-container>.banner-container{
+      margin: 0;
+      width: 60%;
+      float: left;
+    }
+    .main-top-info-container .banner-container img{
+      height: 250px;
+    }
+    .main-top-info-container .banner-prev,
+    .main-top-info-container .banner-next {
+      line-height: 250px;
+    }
+    .main-top-info-container>.member-info-container{
+      width: 20%;
+      height: 250px;
+      float: left;
+    }
+    .member-info-name{
+      font-size: large;
+    }
+    .member-info-name>span{
+      font-weight: bold;
+    }
+  </style>
 </head>
 
 <body>
@@ -68,19 +108,48 @@
     });
   </script>
   <section class="main-section">
-    <div class="banner-container">
-      <div class="bannerArrow">
-        <span class="banner-prev" id="arrow_prev">&lt;</span>
-        <span class="banner-next" id="arrow_next">&gt;</span>
-      </div>
-      <div class="banner-slider">
-        <div class="banner-item">
-          <img src="img/index/banner/banner1.png" alt="">
+    <c:if test="${not empty loginMember}">
+      <div class="main-top-info-container">
+        <div class="top-info-left">
+          d
         </div>
-        <img src="img/index/banner/banner2.png" alt="">
-        <img src="img/index/banner/banner3.png" alt="">
+        <div class="banner-container">
+          <div class="bannerArrow">
+            <span class="banner-prev" id="arrow_prev">&lt;</span>
+            <span class="banner-next" id="arrow_next">&gt;</span>
+          </div>
+          <div class="banner-slider">
+            <img src="img/index/banner/banner1.png" alt="">
+            <img src="img/index/banner/banner2.png" alt="">
+            <img src="img/index/banner/banner3.png" alt="">
+          </div>
+        </div>
+        <div class="member-info-container">
+          <div class="member-info-name">
+            반가워요<br><span>이도현</span>님!
+          </div>
+          <div class="member-info-buying">
+            구매 진행 중<span>0 건</span>
+          </div>
+          <div class="member-info-selling">
+            판매 진행 중<span>0 건</span>
+          </div>
+        </div>
       </div>
-    </div>
+    </c:if>
+    <c:if test="${empty loginMember}">
+      <div class="login-banner-container">
+        <div class="bannerArrow">
+          <span class="banner-prev" id="arrow_prev">&lt;</span>
+          <span class="banner-next" id="arrow_next">&gt;</span>
+        </div>
+        <div class="banner-slider">
+            <img src="img/index/banner/banner1.png" alt="">
+          <img src="img/index/banner/banner2.png" alt="">
+          <img src="img/index/banner/banner3.png" alt="">
+        </div>
+      </div>
+    </c:if>
     <div class="slider-container">
       <div class="famous-category-slider">
         <div class="slider-top">

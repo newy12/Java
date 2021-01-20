@@ -17,7 +17,8 @@ public class Member {
 	private String enrollDate;
 	private String brandName;
 	private String contactTime;
-
+	private int buyingCount;
+	private int sellingCount;
 	// 줄바꿈
 	public String getIntroduceBr() {
 		return introduce.replaceAll("\r\n", "<br>");

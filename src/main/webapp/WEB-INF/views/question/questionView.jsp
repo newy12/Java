@@ -8,7 +8,15 @@
     <meta charset="UTF-8">
     <title>Insert title here</title>
     <style>
+        @font-face {
+            font-family: 'Arita-dotum-Medium';
+            src:
+                url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Arita-dotum-Medium.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
         .qna-section {
+            font-family: 'Arita-dotum-Medium';
             margin: 0 auto;
             width: 1200px;
         }
@@ -103,7 +111,7 @@
                         <c:if test="${empty param.answer || param.answer == false}">
                             <tr>
                                 <th class="qna-col1">첨부파일</th>
-                                <th class="qna-col2"><a href="#">${question.filePath}</a></th>
+                                <th class="qna-col2"><a href="/questionDown.do?fileName=${question.filePath}">${question.filePath}</a></th>
                             </tr>
                         </c:if>
                     </thead>

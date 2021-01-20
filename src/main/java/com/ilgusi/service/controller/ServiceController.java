@@ -401,7 +401,7 @@ public class ServiceController {
 					maxListCount - ((page - 1) * listPerPage),keyword);
 			int maxPrintPageCount = 5;
 			int maxPageCount = service.selectMaxPageCount(listPerPage, maxListCount);
-			int begin = maxPrintPageCount * (page / maxPrintPageCount) + 1; // 네비 시작
+			int begin = maxPrintPageCount * (page / (maxPrintPageCount+1)) + 1; // 네비 시작
 			int end = (begin + 4) < maxPageCount ? begin + 4 : maxPageCount; // 네비 끝
 			
 			//천단위 컴마 찍기
@@ -413,6 +413,7 @@ public class ServiceController {
 			model.addAttribute("begin", begin);
 			model.addAttribute("end", end);
 			model.addAttribute("maxListCount", formatter.format(maxListCount));
+			model.addAttribute("maxPageCount", maxPageCount);
 		}
 		return "/service/serviceAllList";
 	}

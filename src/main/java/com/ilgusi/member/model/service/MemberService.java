@@ -69,4 +69,9 @@ public class MemberService {
 		return dao.deleteMember(mId, mPw);
 	}
 
+	// (도현)메인페이지에 판매진행,구매진행중 정보 전달
+	public int selectBuyingCount(int mNo) {
+		return dao.selectBuyingCount(mNo);
+	}
+
 }
