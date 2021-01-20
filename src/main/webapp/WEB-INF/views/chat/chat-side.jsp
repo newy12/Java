@@ -195,8 +195,9 @@ ul {
 }
 
 #chat-preview, #service-preview {
-	float: left;
+	overflow: hidden; float : left;
 	width: 95%;
+	float: left;
 }
 
 #time {
@@ -247,7 +248,7 @@ ul {
 #profile-info {
 	float: left;
 	font-size: 15px;
-	width:280px;
+	width: 280px;
 }
 
 #option-box {
@@ -421,8 +422,12 @@ textarea::-webkit-scrollbar-thumb {
 								test="${sessionScope.loginMember.MGrade eq 2 }">프리랜서</c:if>
 					</a></li>
 				</ul>
-				<c:if test="${sessionScope.loginMember.MGrade eq 1 }"><b>${ sessionScope.loginMember.MName }</b></c:if> 
-				<c:if test="${sessionScope.loginMember.MGrade eq 2 }"><b>${ sessionScope.loginMember.brandName }</b></c:if> 
+				<c:if test="${sessionScope.loginMember.MGrade eq 1 }">
+					<b>${ sessionScope.loginMember.MName }</b>
+				</c:if>
+				<c:if test="${sessionScope.loginMember.MGrade eq 2 }">
+					<b>${ sessionScope.loginMember.brandName }</b>
+				</c:if>
 
 			</div>
 		</div>
@@ -443,13 +448,7 @@ textarea::-webkit-scrollbar-thumb {
 					<li><a href="/chatHeartList.do?mNo=${loginMember.MNo}"><img
 							src="/img/icon/heart_white.png" width="40px;"><br>찜</a></li>
 				</c:if>
-				<!-- 프리랜서일때 -->
-				<%-- <c:if test="${sessionScope.loginMember.MGrade eq 2}">
-					<li><a href="#"><img src="/img/icon/list_white.png"
-							width="35px;"><br>진행중</a></li>
-				</c:if> --%>
-				<!-- 고객일때 -->
-				<!-- 프리랜서일때 <li>서비스</li>-->
+
 			</ul>
 		</div>
 		<div id="side-bottom">
@@ -473,8 +472,7 @@ textarea::-webkit-scrollbar-thumb {
 			console.log(mId);
 			console.log(mGrade);
 
-			$
-					.ajax({
+			$.ajax({
 						url : "/switchAccount.do",
 						type : "post",
 						async : false,

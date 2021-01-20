@@ -39,15 +39,15 @@ import common.FileNameOverlap;
 public class ServiceController {
 	@Autowired
 	private ServiceService service;
-	
+
 	@Autowired
 	private MemberService memberService;
 
 	@RequestMapping("/introduceFrm.do")
-	public String introduceFrm(String mId,int reqPage, Model model) {
+	public String introduceFrm(String mId, int reqPage, Model model) {
 		System.out.println("ㅇㅇ" + reqPage);
 		Join j = service.selectOneMember(mId);
-		Join join = service.selectReviewList(mId, reqPage);
+
 		// 승인된 서비스만 가져오기
 		// 전체 서비스리스트
 		List<Service> serviceList = service.serviceList(mId);
@@ -62,9 +62,15 @@ public class ServiceController {
 				approvedList.add(serviceList.get(i));
 			}
 		}
-
 		j.setServiceList(approvedList);
-		j.setReviewList(join.getReviewList());
+
+		// 후기리스트
+
+		Join join = new Join();
+		if (service.selectReviewList(mId, reqPage) != null) {
+			join = service.selectReviewList(mId, reqPage);
+			j.setReviewList(join.getReviewList());
+		}
 
 		float avg = service.sRateAVG(mId);
 		model.addAttribute("avg", avg);
@@ -74,26 +80,24 @@ public class ServiceController {
 		model.addAttribute("j", j);
 		return "freelancer/introduce";
 	}
-	//(영재) 리뷰갯수 구하기
+
+	// (영재) 리뷰갯수 구하기
 	@RequestMapping("/reviewListSize.do")
-	public void reviewListSize(String mId,Model model) {
+	public void reviewListSize(String mId, Model model) {
 		List<ServiceReview> list = service.reviewListSize(mId);
-		System.out.println("mid>>>>>"+mId);
-		model.addAttribute("list",list);
-		System.out.println("list>>>>>>평점"+list);
+		System.out.println("mid>>>>>" + mId);
+		model.addAttribute("list", list);
+		System.out.println("list>>>>>>평점" + list);
 	}
-	  //(영재) 평점 평균 구하기
-	  /*@RequestMapping("/sRateAVG.do") 
-	  public void sRateAVG(String mId,Model model) {
-		  System.out.println("midRate>>>>>>>>전>"+mId);
-	  List<Service> list = service.sRateAVG(mId);
-	  System.out.println("midRate>>>>>>>>>"+mId);
-	  model.addAttribute("list",list);
-	  System.out.println("list>>>>>>평균점수"+list);
-	  }*/
-	  //(영재) 
-	  
-	 
+	// (영재) 평점 평균 구하기
+	/*
+	 * @RequestMapping("/sRateAVG.do") public void sRateAVG(String mId,Model model)
+	 * { System.out.println("midRate>>>>>>>>전>"+mId); List<Service> list =
+	 * service.sRateAVG(mId); System.out.println("midRate>>>>>>>>>"+mId);
+	 * model.addAttribute("list",list); System.out.println("list>>>>>>평균점수"+list); }
+	 */
+	// (영재)
+
 	@RequestMapping("/serviceJoinFrm.do")
 	public String serviceJoinFrm() {
 		return "freelancer/servicejoin";
@@ -154,31 +158,31 @@ public class ServiceController {
 
 	// 프리랜서 마이페이지 -> 서비스 리스트 이동
 	@RequestMapping("/freelancerServiceList.do")
-	public String freelancerServiceList(String mId,Model model,String order) {
+	public String freelancerServiceList(String mId, Model model, String order) {
 		Join j = new Join();
 		j.setServiceList(service.serviceList(mId));
-		ArrayList<Service> list = service.selectMyList(mId,order);
-		
+		ArrayList<Service> list = service.selectMyList(mId, order);
+
 		DecimalFormat formatter = new DecimalFormat("###,###");
-		for (int i = 0; i<list.size(); i++) {
+		for (int i = 0; i < list.size(); i++) {
 			list.get(i).setSPriceTxt(formatter.format(list.get(i).getSPrice()));
 		}
 
-		model.addAttribute("list",list);
+		model.addAttribute("list", list);
 		System.out.println("list사이즈 : " + list.size());
-		model.addAttribute("j",j);
-		System.out.println("test"+j.getServiceList().size());
-		if(list.size() != 0) {
-			System.out.println("메인카테고리이름:"+list.get(0).getMainCategoryName());	
+		model.addAttribute("j", j);
+		System.out.println("test" + j.getServiceList().size());
+		if (list.size() != 0) {
+			System.out.println("메인카테고리이름:" + list.get(0).getMainCategoryName());
 		}
-		
+
 		model.addAttribute("order", order);
 		return "freelancer/freelancerServiceList";
 	}
 
 	// 프리랜서 마이페이지 정보수정(소개글,연락가능시간,브랜드명 추가)
 	@RequestMapping("/updateFreelancer.do")
-	public String updateFreelancer(Member m, Model model,  HttpServletRequest req) {
+	public String updateFreelancer(Member m, Model model, HttpServletRequest req) {
 		int result = service.updateFreelancer(m);
 		if (result > 0) {
 			m = memberService.loginMember(m.getMId(), m.getMPw());
@@ -188,25 +192,24 @@ public class ServiceController {
 				session.setAttribute("loginMember", m);
 			}
 		}
-		model.addAttribute("loc", "/freelancerMypage.do?MNo="+m.getMNo());
+		model.addAttribute("loc", "/freelancerMypage.do?MNo=" + m.getMNo());
 		return "common/msg";
 	}
-	
-	//프리랜서 마이페이지 - 서비스 삭제하기 
+
+	// 프리랜서 마이페이지 - 서비스 삭제하기
 	@RequestMapping("/delService.do")
 	public String deleteService(int sNo, Model model) {
 		int result = service.deleteService(sNo);
-		if(result != 0) {
+		if (result != 0) {
 			model.addAttribute("msg", "서비스가 삭제되었습니다.");
 		}
-		model.addAttribute("loc","/");
+		model.addAttribute("loc", "/");
 		return "common/msg";
 	}
 
-
-	//(문정)사용자 마이페이지 - 거래후기 쓰기
+	// (문정)사용자 마이페이지 - 거래후기 쓰기
 	@RequestMapping("/serviceReviewWrite.do")
-	public String serviceReviewWrite( int tNo, int sNo, String mId, String sImg, String sContent, Model model) {
+	public String serviceReviewWrite(int tNo, int sNo, String mId, String sImg, String sContent, Model model) {
 		model.addAttribute("tNo", tNo);
 		model.addAttribute("sNo", sNo);
 		model.addAttribute("mId", mId);
@@ -214,154 +217,186 @@ public class ServiceController {
 		model.addAttribute("sContent", sContent);
 		return "service/serviceReviewWrite";
 	}
-	
-	//(문정) 마이페이지 - 서비스 후기 등록
+
+	// (문정) 마이페이지 - 서비스 후기 등록
 	@RequestMapping("/serviceReviewInsert.do")
-	public String serviceReviewInsert( ServiceReview data , Model model) {
+	public String serviceReviewInsert(ServiceReview data, Model model) {
 		int result = service.serviceReviewInsert(data);
-		if(result>0) {
+		if (result > 0) {
 			result = service.serviceReviewSuccess(data.getTNo());
-			if(result>0) {
-				model.addAttribute("msg","리뷰를 등록하였습니다.");
+			if (result > 0) {
+				model.addAttribute("msg", "리뷰를 등록하였습니다.");
 				result = service.serviceUpdateSRate(data.getSNo());
-				if(result>0) System.out.println("[등록]서비스테이블에 s_rate 수정 성공");
+				if (result > 0)
+					System.out.println("[등록]서비스테이블에 s_rate 수정 성공");
 			}
 		}
 		return "/service/reviewDone";
 	}
 
-	//(문정) 마이페이지 - 거래 후기 작성한거 확인
+	// (문정) 마이페이지 - 거래 후기 작성한거 확인
 	@RequestMapping("/serviceReviewView.do")
-	public String serviceReviewView(ServiceReview data , Model model) {
+	public String serviceReviewView(ServiceReview data, Model model) {
 		ServiceReview sr = service.serviceReviewView(data);
-		model.addAttribute("review",sr);
+		model.addAttribute("review", sr);
 		return "/service/serviceReviewUpdate";
 	}
-	
-	//(문정) 서비스 리뷰 수정
+
+	// (문정) 서비스 리뷰 수정
 	@RequestMapping("/serviceReviewUpdate.do")
 	public String serviceReviewUpdate(ServiceReview review, Model model) {
 		int result = service.serviceReviewUpdate(review);
-		if(result>0) {
-			model.addAttribute("msg","리뷰를 수정하였습니다.");
+		if (result > 0) {
+			model.addAttribute("msg", "리뷰를 수정하였습니다.");
 			result = service.serviceUpdateSRate(review.getSNo());
-			if(result>0) System.out.println("[수정]서비스테이블에 s_rate 수정 성공");
+			if (result > 0)
+				System.out.println("[수정]서비스테이블에 s_rate 수정 성공");
 		}
 		return "/service/reviewDone";
 	}
-	
-	//(문정) 서비스 리뷰 삭제
+
+	// (문정) 서비스 리뷰 삭제
 	@RequestMapping("/serviewReviewDelete.do")
 	public String serviewReviewDelete(int rNo, int tNo, int sNo, Model model) {
 		int result = service.serviceReviewDelete(rNo);
-		if(result>0) {
+		if (result > 0) {
 			result = service.serviceTradeStatusUpdate(tNo);
-			if(result>0) {
+			if (result > 0) {
 				model.addAttribute("msg", "리뷰를 삭제했습니다.");
 				result = service.serviceUpdateSRate(sNo);
-				if(result>0) System.out.println("[삭제]서비스테이블에 s_rate 수정 성공");
+				if (result > 0)
+					System.out.println("[삭제]서비스테이블에 s_rate 수정 성공");
 			}
 		}
 		return "/service/reviewDone";
 	}
-	
-	//(다솜)serviceList 
+
+	// (다솜)serviceList
 	@RequestMapping("/serviceList.do")
-	public String serviceList (int cNo, int reqPage, String order, Model model, String keyword) { 
-		
+	public String serviceList(int cNo, int reqPage, String order, Model model, String keyword) {
+
 		int numPerPage = 12;
 		int end = reqPage * numPerPage;
-		int start = end-numPerPage+1;
-		
+		int start = end - numPerPage + 1;
+
 		Service s = new Service();
 		System.out.println("cNo : " + cNo);
 		int maincateNum = 0;
 		int subNo = 0;
-		
+
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		
-		if(cNo%10 == 0 ) {
+
+		if (cNo % 10 == 0) {
 			maincateNum = cNo;
 			s.setSubCategory(subNo);
 			map.put("sub", 0);
-			
-		}else {
-			maincateNum = (cNo/10)*10;
+
+		} else {
+			maincateNum = (cNo / 10) * 10;
 			subNo = cNo;
 			map.put("sub", subNo);
 		}
-		
+
 		map.put("main", maincateNum);
 		map.put("start", start);
 		map.put("end", end);
 		map.put("reqPage", reqPage);
-		map.put("cNo",cNo);
+		map.put("cNo", cNo);
 		map.put("keyword", keyword);
 		map.put("order", order);
-		
-		
+
 		/* map.put("order", order); */
-		
+
 		s.setMainCategory(maincateNum);
 		s.setSubCategory(subNo);
 		System.out.println("메인카테고리 : " + maincateNum);
 		System.out.println("서브카테고리 : " + subNo);
-		
-		//카테고리 리스트 불러오기
+
+		// 카테고리 리스트 불러오기
 		ArrayList<Category> catList = service.categoryList(maincateNum);
 		System.out.println("카테고리 리스트 사이즈 : " + catList.size());
 		System.out.println("catList(1)값 : " + catList.get(1));
-		
-		//서비스 리스트 불러오기		
-		
+
+		// 서비스 리스트 불러오기
+
 		ServicePageData spd = new ServicePageData();
 		spd.setEnd(end);
 		spd.setKeyword(keyword);
 		spd.setReqPage(reqPage);
 		spd.setStart(start);
 		spd.setCNo(cNo);
-		
-		//서비스 리스트 불러오기+페이징 
+
+		// 서비스 리스트 불러오기+페이징
 		spd = service.servicePageList(map, reqPage, cNo, order);
 		ArrayList<Service> serList = spd.getList();
 
-		//가격 => 천단위 콤마 찍기
+		// 가격 => 천단위 콤마 찍기
 		DecimalFormat formatter = new DecimalFormat("###,###");
-		for (int i = 0; i<serList.size(); i++) {
+		for (int i = 0; i < serList.size(); i++) {
 			serList.get(i).setSPriceTxt(formatter.format(serList.get(i).getSPrice()));
 		}
-		
-		//맵 확인용 ArrayList 
-		ArrayList<HashMap<String, Object>> mapList = new ArrayList<HashMap<String,Object>>();
+
+		// 맵 확인용 ArrayList
+		ArrayList<HashMap<String, Object>> mapList = new ArrayList<HashMap<String, Object>>();
 		mapList.add(map);
-		
-		if(mapList.size() != 0) {
+
+		if (mapList.size() != 0) {
 			System.out.println("mapList(0) : " + mapList.get(0));
 		}
-		
-		
-		if(cNo%10 == 0) {
-			for(int i = 0; i < serList.size(); i++) {
+
+		if (cNo % 10 == 0) {
+			for (int i = 0; i < serList.size(); i++) {
 				serList.get(i).setSubCategory(0);
 			}
 		}
 
-		if(serList.size() > 0 ) {
+		if (serList.size() > 0) {
 			System.out.println("serList 사이즈 : " + serList.size());
-			System.out.println("serList.get(0) : "+ serList.get(0));
+			System.out.println("serList.get(0) : " + serList.get(0));
 			System.out.println("serList.get(0).brandName : " + serList.get(0).getBrandName());
 			model.addAttribute("serviceList", spd.getList());
-			
-		}else if(serList.size() == 0){
-			System.out.println("serList 사이즈 : "+ serList.size());
+
+		} else if (serList.size() == 0) {
+			System.out.println("serList 사이즈 : " + serList.size());
 			model.addAttribute("noServiceList", "noServiceList");
 		}
-		
-		if(cNo%10 == 0) {
-			model.addAttribute("c_no",serList.get(0).getMainCategory());
-		}else {
-			model.addAttribute("c_no",serList.get(0).getSubCategory());
+
+		if (cNo % 10 == 0) {
+			model.addAttribute("c_no", serList.get(0).getMainCategory());
+		} else {
+			model.addAttribute("c_no", serList.get(0).getSubCategory());
 		}
+/*<<<<<<< HEAD 충돌~~~~~ 이게 지우는거 맞죠???
+
+		ArrayList<String> brandName = service.brandList(s, order, keyword);
+
+		switch (maincateNum) {
+		case 10:
+			model.addAttribute("mainCate", "디자인");
+			break;
+		case 20:
+			model.addAttribute("mainCate", "ITㆍ프로그래밍");
+			break;
+		case 30:
+			model.addAttribute("mainCate", "영상ㆍ사진ㆍ음향");
+			break;
+		case 40:
+			model.addAttribute("mainCate", "교육");
+			break;
+		case 50:
+			model.addAttribute("mainCate", "문서ㆍ글쓰기");
+			break;
+		case 60:
+			model.addAttribute("mainCate", "비즈니스컨설팅");
+			break;
+		case 70:
+			model.addAttribute("mainCate", "주문제작");
+			break;
+		}
+
+		model.addAttribute("catList", catList);
+		model.addAttribute("brandName", brandName);
+=======*/
 		
 		switch(maincateNum) {
 			case 10: model.addAttribute("mainCate", "디자인");
@@ -381,87 +416,87 @@ public class ServiceController {
 		}
 	
 		model.addAttribute("catList",catList);
+		/* >>>>>>> master */
 		model.addAttribute("pageNavi", spd.getPageNavi());
 		model.addAttribute("order", order);
-		
+
 		return "/service/serviceList";
 	}
-	
 
-	//(다솜) serviceView 페이지 이동 
-		@RequestMapping("/serviceView.do")
-		public String serviceView(int sNo, Model model,int reqPage) {
-			System.out.println("서비스 컨트롤러-serviceView");
-			System.out.println("서비스 상세보기 sNo: " + sNo);
-			
-			//해당 서비스 정보 불러오기
-			Service s = service.selectServiceView(sNo);
-			
-			DecimalFormat formatter = new DecimalFormat("###,###");
-			s.setSPriceTxt(formatter.format(s.getSPrice()));
-	
-			System.out.println("메인카테고리 이름 : " + s.getMainCategoryName());
-			System.out.println("서브카테고리 이름 : " + s.getSubCategoryName());
-			
-			if( s != null) {
-				model.addAttribute("s", s);
-			}
-			
-			//브랜드 정보 불러오기 
-			String memberId = s.getMId();
-			
-			Member m = service.selectMemberName(memberId);
-			model.addAttribute("m", m);
-			
-			//서비스 파일 불러오기
-			ArrayList<ServiceFile>fileList = service.fileList(sNo);
-			System.out.println("fileList 사이즈 :" + fileList.size() );
-			System.out.println("fileList값:" + fileList.get(0));
-			model.addAttribute("fileList", fileList);
-			
-			
-			//해당 유저가 등록한 다른서비스 불러오기 
-			ArrayList<Service> sList = service.userService(memberId);
-			model.addAttribute("sList", sList);
-			
-			//리뷰 리스트 불러오기 + 페이징
-			ReviewPageData rpd = service.selectReviewList(sNo,reqPage);
-			System.out.println(rpd.getPageNavi());
-			model.addAttribute("reviewList",rpd.getList());
-			model.addAttribute("pageNavi", rpd.getPageNavi());
-			
-			return "/service/serviceView";
+	// (다솜) serviceView 페이지 이동
+	@RequestMapping("/serviceView.do")
+	public String serviceView(int sNo, Model model, int reqPage) {
+		System.out.println("서비스 컨트롤러-serviceView");
+		System.out.println("서비스 상세보기 sNo: " + sNo);
+
+		// 해당 서비스 정보 불러오기
+		Service s = service.selectServiceView(sNo);
+
+		DecimalFormat formatter = new DecimalFormat("###,###");
+		s.setSPriceTxt(formatter.format(s.getSPrice()));
+
+		System.out.println("메인카테고리 이름 : " + s.getMainCategoryName());
+		System.out.println("서브카테고리 이름 : " + s.getSubCategoryName());
+
+		if (s != null) {
+			model.addAttribute("s", s);
 		}
-		
-	//(문정) 결제 진행
+
+		// 브랜드 정보 불러오기
+		String memberId = s.getMId();
+
+		Member m = service.selectMemberName(memberId);
+		model.addAttribute("m", m);
+
+		// 서비스 파일 불러오기
+		ArrayList<ServiceFile> fileList = service.fileList(sNo);
+		System.out.println("fileList 사이즈 :" + fileList.size());
+		System.out.println("fileList값:" + fileList.get(0));
+		model.addAttribute("fileList", fileList);
+
+		// 해당 유저가 등록한 다른서비스 불러오기
+		ArrayList<Service> sList = service.userService(memberId);
+		model.addAttribute("sList", sList);
+
+		// 리뷰 리스트 불러오기 + 페이징
+		ReviewPageData rpd = service.selectReviewList(sNo, reqPage);
+		System.out.println(rpd.getPageNavi());
+		model.addAttribute("reviewList", rpd.getList());
+		model.addAttribute("pageNavi", rpd.getPageNavi());
+
+		return "/service/serviceView";
+	}
+
+	// (문정) 결제 진행
 	@RequestMapping("/insertServicePay.do")
 	public String insertServicePay(ServicePay pay) {
 		int result = service.insertServicePay(pay);
-		if(result>0) {
+		if (result > 0) {
 			result = service.updateTradeStatus(pay.getTNo());
 		}
-		return "redirect:/userTradeHistory.do?mNo="+pay.getPNo();
+		return "redirect:/userTradeHistory.do?mNo=" + pay.getPNo();
 	}
 
 	// (도현)serviceList
 	@RequestMapping("/serviceSearch.do")
-	public String serviceSearch(@RequestParam(value="page",defaultValue = "1") int page, String order, Model model, String keyword) {
+	public String serviceSearch(@RequestParam(value = "page", defaultValue = "1") int page, String order, Model model,
+			String keyword) {
 		if (!(keyword == null || keyword.equals(""))) {
 			// 네비 기능
 			int listPerPage = 20;
 			int maxListCount;
 			maxListCount = service.selectServiceCount(keyword);
-			
+
 			List<Service> list = service.searchService(maxListCount - ((page) * listPerPage) + 1,
-					maxListCount - ((page - 1) * listPerPage),keyword);
+					maxListCount - ((page - 1) * listPerPage), keyword);
 			int maxPrintPageCount = 5;
 			int maxPageCount = service.selectMaxPageCount(listPerPage, maxListCount);
-			int begin = maxPrintPageCount * (page / (maxPrintPageCount+1)) + 1; // 네비 시작
+			int begin = maxPrintPageCount * (page / (maxPrintPageCount + 1)) + 1; // 네비 시작
 			int end = (begin + 4) < maxPageCount ? begin + 4 : maxPageCount; // 네비 끝
-			
-			//천단위 컴마 찍기
+
+			// 천단위 컴마 찍기
 			DecimalFormat formatter = new DecimalFormat("###,###");
-			for (int i = 0; i<list.size(); i++) {
+			for (int i = 0; i < list.size(); i++) {
 				list.get(i).setSPriceTxt(formatter.format(list.get(i).getSPrice()));
 			}
 			model.addAttribute("list", list);

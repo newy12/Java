@@ -157,7 +157,7 @@
 				},
 				success : function(data) {
 					var loc="/enterRoom.do?cNo=-1&sNo=" + sNo + "&myId="+ userId + "&yourId=" + freeId+"&mGrade="+mGrade
-					var _left = Math.ceil(( window.screen.width - 473 )/2);
+					var _left = Math.ceil(( window.screen.width - 530 )/2);
 					window.open(loc, '', 'width=530, height=630, left='+_left+', top=50, location=no,scrollbars=no,location=no, resizable=no'); 
 					window.close();
 					

@@ -11,15 +11,22 @@
 	crossorigin="anonymous"></script>
 <style>
 .green {
-	color:#3FC32C;
+	color: #3FC32C;
 }
 
 .blue {
-	color:#2C8BC3;
+	color: #2C8BC3;
 }
 
 .red {
-	color:#B31E1E;
+	color: #B31E1E;
+}
+
+.service-title {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	background-color:yellow;
 }
 </style>
 </head>
@@ -59,8 +66,9 @@
 												<p>
 													<b id="name"> <c:if test="${r.freeId eq null }">(탈퇴한 회원)</c:if>
 														<c:if test="${r.freeId ne null }">
-															<c:if test="${ loginMember.MGrade eq 1}">[${r.brandName }]<br>${r.serviceTitle }</c:if>
-															<c:if test="${ loginMember.MGrade eq 2}">${r.freeId}-${r.serviceTitle }</c:if>
+														<c:if test="${ loginMember.MGrade eq 2}">
+																<span class="service-title">${r.serviceTitle }</span><br>
+															</c:if>
 															<span id="tradeStatus"> <c:if
 																	test="${r.status eq -1 }">
 																	<span class="green">(문의중)</span>
@@ -72,8 +80,16 @@
 																	<span class="red">(작업완료)</span>
 																</c:if>
 															</span>
+															<c:if test="${ loginMember.MGrade eq 1}">[${r.brandName }]<span id="time" style="float: right;"><%-- ${r.lastDate } --%>${r.lastTime}</span><br>
+																<span class="service-title">${r.serviceTitle }</span>
+															</c:if>
+															<c:if test="${ loginMember.MGrade eq 2}">
+															${r.freeId}
+															<span id="time" style="float: right;"><%-- ${r.lastDate } --%>${r.lastTime}</span>
+															</c:if>
+
 														</c:if>
-													</b><span id="time" style="float: right;">${r.lastDate }<br>${r.lastTime}</span>
+													</b>
 												</p>
 												<p id="preview">${r.lastMsg }</p>
 												<input type="hidden" class="cNo" value="${r.cNo }">
@@ -102,8 +118,12 @@
 						<h3>
 							아직 문의 내역이 <br>없습니다!
 						</h3>
-						<c:if test="${loginMember.MGrade eq 1 }"><a href="#"><u>나에게 맞는 서비스 검색 ></u></a></c:if>
-						<c:if test="${loginMember.MGrade eq 2 }"><a href="#"><u>의뢰서 보러가기 ></u></a></c:if>
+						<c:if test="${loginMember.MGrade eq 1 }">
+							<a href="#"><u>나에게 맞는 서비스 검색 ></u></a>
+						</c:if>
+						<c:if test="${loginMember.MGrade eq 2 }">
+							<a href="#"><u>의뢰서 보러가기 ></u></a>
+						</c:if>
 					</div>
 				</div>
 			</c:if>

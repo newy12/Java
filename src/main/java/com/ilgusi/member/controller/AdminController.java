@@ -47,7 +47,7 @@ public class AdminController {
 
 		// 3. 의뢰글 총 몇개?
 		int totalCount = service.totalMemberCount(grade, keyword);
-
+		
 		// 4. 페이지가 총 몇 개?
 		int totalPage = 0;
 		if (totalCount % numPerPage == 0) {
