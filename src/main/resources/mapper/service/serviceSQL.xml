@@ -277,7 +277,7 @@
 		s_rate as sRate,
 		(select brand_name from member m where m.m_id = ss.m_id) as brandName
 		from (select rownum as rnum, s. * from
-		(select*from service where delete_status = 'n' and main_category =
+		(select*from service where delete_status = 'n' and admin_approval='y' and main_category =
 		#{main}
 		<if test="sub != null and sub != 0">
 			and sub_category= #{sub}
@@ -318,6 +318,8 @@
 		<if test="sub != null and sub != 0">
 			and sub_category= #{sub}
 		</if>
+		
+		
 	</select>
 
 	<!-- (소현)서비스-페이징 totalCount -->
