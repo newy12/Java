@@ -156,6 +156,12 @@ public class ServiceController {
 		Join j = new Join();
 		j.setServiceList(service.serviceList(mId));
 		ArrayList<Service> list = service.selectMyList(mId,order);
+		
+		DecimalFormat formatter = new DecimalFormat("###,###");
+		for (int i = 0; i<list.size(); i++) {
+			list.get(i).setSPriceTxt(formatter.format(list.get(i).getSPrice()));
+		}
+
 		model.addAttribute("list",list);
 		System.out.println("list사이즈 : " + list.size());
 		model.addAttribute("j",j);

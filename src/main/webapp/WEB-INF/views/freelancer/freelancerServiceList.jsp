@@ -214,7 +214,7 @@
 									<div class="empty"></div>
 									<div class="title">${s.STitle}</div>
 									<a href="#">
-										<div class="content">${s.SContent }</div>
+										<div class="content" style="font-size: 12pt; float: right; width: 200px; text-align: right;"  >${s.SPriceTxt }원~</div>
 									</a>
 									<button class="del-btn" value="삭제하기" onclick="del();">삭제하기</button>
 								</div>

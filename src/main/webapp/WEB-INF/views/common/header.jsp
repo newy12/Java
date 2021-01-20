@@ -489,7 +489,7 @@
             </div>
             <div class="header-top-right">
                 <div class="header-menu">
-                    <a href="/noticeList.do?reqPage=1"><span id="c-center">공지사항</span></a>
+                    <a href="/noticeList.do?reqPage=1&keyword="><span id="c-center">공지사항</span></a>
                     <c:if test="${empty loginMember}">
                         <span id="login">로그인</span>
                         <a href="/join.do" id="join-btn" class="btn-deepblue"><span>무료 회원가입</span></a>
