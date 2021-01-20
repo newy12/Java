@@ -184,12 +184,10 @@
 		<input type="hidden" value="${loginMember.MName }" class="memberId">
 		<div class="board-wrap">
 			<div class="board-box">
-				<span>서비스 내역</span> <input type="hidden" id="order"
-					value="${order }"> <select
-					class="selectBox form-control array" id="search-subject"
-					style="width: 180px;">
+				<span>서비스 내역</span>
+				<select class="selectBox form-control array" id="search-subject" style="width: 150px;">
 					<option value="agree">승인된 서비스</option>
-					<option value="refuse">승인 거절된 서비스</option>
+					<option value="refuse">미등록 서비스</option>
 				</select>
 			</div>
 			<div class="inner">
@@ -241,15 +239,15 @@
 			 $(".menu").children().eq(2).find('a').css({'margin-left':'5px', 'font-weight':'bold'});
 			 $(".menu").children().eq(2).find('img').css({'display':'inline'});
 			 
-			var order = $(".array").val();
+			var order = "${order}";
 			var id = "${loginMember.MId}";
 			console.log("order : "+order);
 			console.log("memberId : "+ id);
 			
 			if(order == "agree"){
-				$(".array").val("agree").prop("selected",true);
+				$(".array").val("agree").prop("select","seleted");
 			}else if ( order == "refuse")
-				$(".array").val("refuse").prop("selected",true);
+				$(".array").val("refuse").prop("select","seleted");
 			
 			$(".array").change(function () {
 				var order = $(".array").val();

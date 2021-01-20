@@ -160,6 +160,7 @@ public class ServiceController {
 		System.out.println("list사이즈 : " + list.size());
 		model.addAttribute("j",j);
 		System.out.println("test"+j.getServiceList().size());
+		model.addAttribute("order", order);
 		return "freelancer/freelancerServiceList";
 	}
 
@@ -369,6 +370,7 @@ public class ServiceController {
 		model.addAttribute("catList",catList);
 		model.addAttribute("brandName", brandName);
 		model.addAttribute("pageNavi", spd.getPageNavi());
+		model.addAttribute("order", order);
 		
 		return "/service/serviceList";
 	}

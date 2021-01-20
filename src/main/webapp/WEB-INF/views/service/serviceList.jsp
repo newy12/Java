@@ -235,7 +235,6 @@ a:hover {
 		<div class="serviceList">
 			<div class="searchDiv">
 				<div class="searchBox">
-					<input type="hidden" id="order" value="${order }">
 					<select class="selectBox subject form-control array" id="search-subject" style="width: 120px; margin-right: 10px; float: left;">
 						<option value="new" selected="selected">최신순</option>
 						<option value="popular">인기순</option>
@@ -317,7 +316,7 @@ a:hover {
 	<script>
 		$(document).ready(function() {
 
-			var order = $("#order").val();
+			var order = "${order}";
 			var subject = $("#subject").val();
 			var cNo = $(".pageNo").val();
 			var keyword = $("keyword").val;
