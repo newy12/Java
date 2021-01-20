@@ -108,17 +108,6 @@ public class ServiceDao {
 		return (ArrayList<Category>) list;
 	}
 
-	public ArrayList<String> brandList(com.ilgusi.service.model.vo.Service s, String order, String keyword) {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("s_no", s.getSNo());
-		map.put("mainCategory", s.getMainCategory());
-		map.put("subCategory", s.getSubCategory());
-		map.put("order", order);
-		map.put("keyword", keyword);
-		List<String> list = session.selectList("service.brandList", map);
-		return (ArrayList<String>) list;
-	}
-
 	// (다솜)서비스 리스트 페이징
 	public ArrayList<com.ilgusi.service.model.vo.Service> selectServiceList(HashMap<String, Object> map) {
 		List<com.ilgusi.service.model.vo.Service> list = session.selectList("service.serviceListPage", map);

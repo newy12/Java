@@ -366,6 +366,7 @@ public class ServiceController {
 		} else {
 			model.addAttribute("c_no", serList.get(0).getSubCategory());
 		}
+/*<<<<<<< HEAD 충돌~~~~~ 이게 지우는거 맞죠???
 
 		ArrayList<String> brandName = service.brandList(s, order, keyword);
 
@@ -395,6 +396,27 @@ public class ServiceController {
 
 		model.addAttribute("catList", catList);
 		model.addAttribute("brandName", brandName);
+=======*/
+		
+		switch(maincateNum) {
+			case 10: model.addAttribute("mainCate", "디자인");
+				break;
+			case 20: model.addAttribute("mainCate", "ITㆍ프로그래밍");
+				break;
+			case 30: model.addAttribute("mainCate", "영상ㆍ사진ㆍ음향");
+				break;
+			case 40: model.addAttribute("mainCate", "교육");
+				break;
+			case 50: model.addAttribute("mainCate", "문서ㆍ글쓰기");
+				break;
+			case 60: model.addAttribute("mainCate", "비즈니스컨설팅");
+				break;
+			case 70: model.addAttribute("mainCate", "주문제작");
+				break;
+		}
+	
+		model.addAttribute("catList",catList);
+		/* >>>>>>> master */
 		model.addAttribute("pageNavi", spd.getPageNavi());
 		model.addAttribute("order", order);
 

@@ -202,6 +202,9 @@
 		.anCon>p{
 			font-size: 12pt;
 		}
+		.conView{
+			white-space: pre-line;
+		}
 		
         /*.................... ▲ 왼쪽 컨텐츠...........................*/
 
@@ -328,7 +331,7 @@
                  .fas{
 			       	color: #ef4f4f;
 			     }
-
+				
 
 
         /*.................... ▲ 오른쪽 컨텐츠...........................*/
@@ -408,7 +411,7 @@
 
                         <h2>서비스 설명</h2>
                         <hr>
-                        <pre>${s.SContent }</pre>
+                        <pre class="conView">${s.SContent }</pre>
                     </div>
                     <div class="tabcontent">
 
@@ -583,7 +586,7 @@
                     <hr>
                     <div class="Intro-detail">
                         <p class="introTitle bold-font">전문가 소개</p>
-                        <Pre> ${m.introduce } </Pre>
+                        <Pre style="white-space: pre-line; padding: 20px;" > ${m.introduce } </Pre>
 
                     </div>
 
