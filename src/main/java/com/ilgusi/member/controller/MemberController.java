@@ -138,11 +138,8 @@ public class MemberController {
 		Member m = service.loginMember(id, pw);
 		
 		if (m != null) {
-			//로그인하면 grade를 1로 셋팅해줌
-			if(m.getMGrade() ==2) {
-				int result = service.settingMemberGrade(m);
-			}
 			m.setBuyingCount(service.selectBuyingCount(m.getMNo()));
+			m.setMGrade(1);
 			HttpSession session = req.getSession();
 			session.setAttribute("loginMember", m);
 			model.addAttribute("msg", "로그인 성공");
@@ -227,19 +224,22 @@ public class MemberController {
 	//(문정) 마이페이지에서 사용자-프리랜서 전환
 	@RequestMapping("/changeGrade.do")
 	public String changeGrade(String mId, String mPw, int grade, Model model, HttpServletRequest req) {
-		int result = service.changeGrade(mId, grade);
-		if(result>0){
-			Member m = service.loginMember(mId, mPw);
-			if (m != null) {
-				HttpSession session = req.getSession();
-				session.setAttribute("loginMember", m);
-			}
-			if(m.getMGrade() == 1) {
-				return "member/userMypage";
-			}else{
-				return "redirect:/freelancerMypage.do?MNo="+m.getMNo();
-			}
+		HttpSession session = req.getSession();
+		Member m = (Member)session.getAttribute("loginMember");
+		
+		//프리랜서로 전환한 적이 없으면 -> db에 2를 넣어줌
+		if(grade==1) {
+			int result = service.changeGrade(mId, grade);
+			if(result>0)System.out.println("프리랜서로 잘 바꿈");
+			m.setMGrade(2);
+			session.setAttribute("loginMember", m);
+			return "redirect:/freelancerMypage.do?MNo="+m.getMNo();
+		}else {
+			//프리랜서 -> 사용자로 전환하면(session만 바꿔줌)
+			System.out.println("사용자로 sessio만 바꿈");
+			m.setMGrade(1);
+			session.setAttribute("loginMember", m);
+			return "member/userMypage";
 		}
-		return "";
 	}
 }
