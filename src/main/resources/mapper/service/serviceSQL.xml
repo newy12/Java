@@ -202,6 +202,7 @@
 		ROUND(AVG(s_rate),1)
 		from service
 		where m_id = #{mId}
+		and admin_approval='y' and delete_status='n'
 	</select>
 	<!-- (소현)관리자-서비스 승인 -->
 	<update parameterType="_int" id="acceptService">
