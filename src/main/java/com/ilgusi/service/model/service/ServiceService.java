@@ -210,8 +210,8 @@ public class ServiceService {
 	}
 
 	// (다솜) 브랜드 이름 불러오기
-	public ArrayList<String> brandList(com.ilgusi.service.model.vo.Service s) {
-		return dao.brandList(s);
+	public ArrayList<String> brandList(com.ilgusi.service.model.vo.Service s ,String order,String keyword) {
+		return dao.brandList(s,order,keyword);
 	}
 
 	// (다솜) Servie View 불러오기
@@ -355,6 +355,11 @@ public class ServiceService {
 
 	public ArrayList<com.ilgusi.service.model.vo.Service> selectMyList(java.lang.String mId, java.lang.String order) {
 		return dao.selectServiceList(mId, order);
+	}
+
+	//(문정) 프리랜서가 등록한 총 서비스 개수
+	public int selectFreeServiceCount(String mId) {
+		return dao.selectFreeServiceCount(mId);
 	}
 
 }

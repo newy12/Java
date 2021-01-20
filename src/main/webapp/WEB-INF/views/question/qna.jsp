@@ -27,13 +27,21 @@
             margin: 0 auto;
             width: 90%;
         }
-
+        
         .qna-top {
+            position: relative;
             margin: 50px auto;
             width: 90%;
             height: 300px;
             padding: 1px;
             background-color: rgb(224, 224, 224, 0.5);
+        }
+        #qna-img{
+            position: absolute;
+            width:100%;
+            height: 300px;
+            object-fit: cover;
+            z-index: -1;
         }
 
         .qna-top>.title {
@@ -238,6 +246,7 @@
     <section class="qna-section">
         <div class="qna-container">
             <div class="qna-top">
+                <img id="qna-img" src="img/question/6.jpg" alt="">
                 <div class="title">
                     <div class="title-main">
                         문의사항
