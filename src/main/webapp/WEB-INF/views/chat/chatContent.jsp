@@ -39,7 +39,7 @@
 
 .adminBox .adminMsg {
 	padding: 10px;
-	border:2px solid #6A85C3;
+	border: 2px solid #6A85C3;
 	border-radius: 10px;
 	width: 80%;
 	margin: 8px;
@@ -95,20 +95,22 @@
 						<div class="messages">
 							<!-- 이전 대화내용 db에서 불러오기 -->
 							<c:forEach items="${content }" var="message" varStatus="status">
+
 								<!-- 관리자와의 채팅방 -->
 								<c:if test="${service.SNo eq 0 }">
 									<c:if test="${message.CContent ne '문의를 시작합니다!' }">
 										<div class="adminBox">
 											<br>
-											
+
+											<c:if test="${status.index ne 0 }">
 												<!-- 이전 메세지의 보낸날짜와 다르면 출력 -->
-								<c:if
-									test="${message.CDate ne content.get(status.index-1).CDate }">
-									<br>
-									<p class="date" style="margin:0 auto; margin-bottom:20px;">${message.CDate }</p>
-								</c:if>
-											
-											<p class="adminMsg" style="margin:0 auto">${message.CContent }</p>
+												<c:if
+													test="${message.CDate ne content.get(status.index-1).CDate }">
+													<br>
+													<div class="date" style="margin: 0 auto; margin-bottom:10px;">${message.CDate }</div>
+												</c:if></c:if>
+
+												<p class="adminMsg" style="margin: 0 auto;">${message.CContent }</p>
 										</div>
 									</c:if>
 								</c:if>
@@ -123,6 +125,7 @@
 							</div>
 						</div>
 					</c:if>
+
 
 				</c:if>
 				<!-- 관리자 알림일때 -->
@@ -251,7 +254,7 @@
 			/* opener.parent.location.href="/qna.do?pageNum=1"; */
 			/* window.close(); */
 		}
-		
+
 		function deleteMsg(ccNo) {
 			console.log("delete!");
 			$.ajax({
@@ -265,7 +268,7 @@
 					location.reload();
 				}
 			});
-			}
+		}
 
 		function sendMsg(myId, cNo) {
 			// 현재 시간 구하기
