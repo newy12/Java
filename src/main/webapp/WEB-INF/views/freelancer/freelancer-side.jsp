@@ -68,7 +68,7 @@
 	    <div style="margin-top: 10px;">${loginMember.MId }님</div>
 	    <div style="margin-top: 5px;">
 	    	<input type="hidden" value="${loginMember.MPw }">
-	    	<input type="hidden" value="${loginMember.MId }">
+	    	<input type="hidden" value="${loginMember.MId }" id="memberId">
 	    	<input type="hidden" value="${loginMember.MGrade }">
 	    	<button class="switch">사용자로 전환</button>
 	    </div>
@@ -87,7 +87,7 @@
 	        <li><img src="/img/icon/circle_navy.png">
 	        	<c:choose>
 	        		<c:when test="${loginMember.brandName == null }"><a href="javascript:errorMsg();">등록한 서비스 확인</a></c:when>
-	        		<c:otherwise><a href="/freelancerServiceList.do?mId=${loginMember.MId}">등록한 서비스 확인</a></c:otherwise>
+	        		<c:otherwise><a href="/freelancerServiceList.do?mId=${loginMember.MId}&order=agree">등록한 서비스 확인</a></c:otherwise>
 	        	</c:choose>
 	        </li>
 	        <li><img src="/img/icon/circle_navy.png">
