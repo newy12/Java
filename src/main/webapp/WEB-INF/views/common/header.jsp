@@ -495,7 +495,7 @@
                     </c:if>
                     <c:if test="${not empty loginMember}">
                         <ul class="ul-user">
-                            <a href="/userMypage.do?mNo=${loginMember.MNo }&grade=${loginMember.MGrade}" id="user_name">${loginMember.MName}</a>
+                            <a href="/userMypage.do" id="user_name">${loginMember.MName}</a>
                             <li>
                                 <ul>
                                     <li>
@@ -522,5 +522,4 @@
         </div>
     </header>
 </div>
-	</script>
 </html>

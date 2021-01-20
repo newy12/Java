@@ -168,12 +168,13 @@ public class MemberController {
 
 	// (문정)사용자 마이페이지 이동
 	@RequestMapping("/userMypage.do")
-	public String userMypage(int mNo, int grade) {
-		System.out.println("마이페이지 이동"+mNo+"/"+grade);
-		if(grade == 1) {
+	public String userMypage( HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		Member m = (Member)session.getAttribute("loginMember");
+		if(m.getMGrade() == 1) {
 			return "member/userMypage";
-		}else if(grade == 2) {
-			return "redirect:/freelancerMypage.do?MNo="+mNo;
+		}else if(m.getMGrade() == 2) {
+			return "redirect:/freelancerMypage.do?MNo="+m.getMNo();
 		}
 		return "";
 	}
