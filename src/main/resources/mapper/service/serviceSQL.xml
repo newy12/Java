@@ -473,11 +473,37 @@
 	</select>
 	
 	
-	<!-- 프리랜서 마이페이지 서비스 삭제 -->
+	<!-- (다솜) 프리랜서 마이페이지 서비스 삭제 -->
 	<update id="delService" parameterType="_int">
 		update service set delete_status = 'y' where s_no = #{parameter}
 	</update>
 	
+	<!--(다솜) 프리랜서 마이페이지 서비스정렬 -->
+	<select id="selectMyList" parameterType="map" resultType="s">
+		select
+		s_no as sNo,
+		m_id as mId,
+		s_title as sTitle,
+		s_price as
+		sPrice,
+		s_content as sContent,
+		s_area as sArea,
+		s_img as sImg,
+		working_date as workingDate,
+		working_count as workingCount,
+		write_date
+		as writeDate
+		from service
+		where m_id = #{id} and delete_status= 'n'
+		<if test="order == 'agree'">
+			and admin_approval = 'y'
+		</if>
+		<if test="order == 'refuse'">
+			and admin_approval = 'n'
+		</if>
+			
+		
+	</select>
 	
 </mapper>
 

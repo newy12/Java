@@ -196,6 +196,13 @@ public class ServiceDao {
 	public int deleteService(int sNo) {
 		return session.update("service.delService",sNo);
 	}
+	public ArrayList<com.ilgusi.service.model.vo.Service> selectServiceList(String mId, String order) {
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("id", mId);
+		map.put("order", order);
+		List<com.ilgusi.service.model.vo.Service> list = session.selectList("service.selectMyList",map);
+		return (ArrayList<com.ilgusi.service.model.vo.Service>)list;
+	}
 	
 	
 

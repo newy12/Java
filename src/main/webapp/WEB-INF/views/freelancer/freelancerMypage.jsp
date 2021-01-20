@@ -127,7 +127,7 @@
             <hr>
             <ul class="menu">
                 <li><img src="/img/icon/circle_navy.png" style="display: inline;"><a href="#" style="margin-left: 5px; font-weight: bold; ">나의 프로필</a></li>
-                <li><img src="/img/icon/circle_navy.png"><a href="/freelancerServiceList.do?mId=${loginMember.MId}">서비스 내역</a></li>
+                <li><img src="/img/icon/circle_navy.png"><a href="/freelancerServiceList.do?mId=${loginMember.MId}&order=agree">서비스 내역</a></li>
                 <li><img src="/img/icon/circle_navy.png"><a href="/freelancerTradeHistory.do?mNo=${loginMember.MNo}">거래 내역</a></li>
             </ul>
         </div>

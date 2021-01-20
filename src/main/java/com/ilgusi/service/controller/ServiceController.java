@@ -131,13 +131,12 @@ public class ServiceController {
 
 	// 프리랜서 마이페이지 -> 서비스 리스트 이동
 	@RequestMapping("/freelancerServiceList.do")
-	public String freelancerServiceList(String mId,Model model) {
+	public String freelancerServiceList(String mId,Model model,String order) {
 		Join j = new Join();
-		System.out.println("mid : "+mId);
-		Member m = service.selectMemberName(mId);
-		model.addAttribute("name", m.getMName());
-		
 		j.setServiceList(service.serviceList(mId));
+		ArrayList<Service> list = service.selectMyList(mId,order);
+		model.addAttribute("list",list);
+		System.out.println("list사이즈 : " + list.size());
 		model.addAttribute("j",j);
 		System.out.println("test"+j.getServiceList().size());
 		return "freelancer/freelancerServiceList";

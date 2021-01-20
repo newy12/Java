@@ -207,9 +207,9 @@
 .del-btn{
 	height: 30px;
 	width: 100px;
-	border: 2px solid #FF8F3F;
+	border: 2px solid #314C83;
 	background-color: transparent;
-	color: #FF8F3F;
+	color: #314C83;
 	font-weight: bold;
 	border-radius: 5px;
 	float: right;
@@ -226,7 +226,8 @@
     <div class="page-wrap">
         <div class="profile-box">
             <div><img src="/img/icon/mypage_person.png" style="width: 147px; height: 147px"></div>
-            <div style="margin-top: 10px;">[${name }]님</div>
+			<input type="hidden" class="memberId" value="${loginMember.MId }">
+			<div style="margin-top: 10px;"> [${loginMember.MId}]님</div>
             <div style="margin-top: 5px;"><button class="switch">일반회원으로 전환</button></div>
             <p>MY PAGE</p>
             <hr>
@@ -240,8 +241,10 @@
 	     <div class="board-wrap">
 	        <div class="board-box">
 	            <span>서비스 내역</span>
-	            <select name="array" class="array">
-	                <option value="content">최신순</option>
+	            <input type="hidden" id="order" value="${order }">
+	            <select class="selectBox form-control array" id="search-subject" style="width: 180px;">
+	                <option value="agree">승인된 서비스</option>
+	                <option value="refuse">승인 거절된 서비스</option>
 	            </select>
 	        </div>
 			<div class="inner">
@@ -251,28 +254,26 @@
 			        	<div class="noList" style="width:800px">등록된 서비스가 없습니다.</div>
 			        </c:when>
 			        <c:otherwise>
-				        <c:forEach items="${j.serviceList}" var ="a" begin="0" end="4" >
+				        <c:forEach items="${list}" var ="s" begin="0" end="4" >
 				            <div>
 				                <div>
-				                	<input type="hidden" value="${a.SNo }" id="sNo">
+				                	<input type="hidden" value="${s.SNo }" id="sNo">
 				                    <a href="#">
 				                        <div class="title-img">
-				                            <div class="back-img"><img src="/upload/service/${a.SImg}" width="225x" height="133px"></div>
+				                            <div class="back-img"><img src="/upload/service/${s.SImg}" width="225x" height="133px"></div>
 				                        </div>
 				                    </a>
 				                   
 				                </div>
 				                <div class="empty"></div>
-				                <div class="title"> ${a.STitle}</div>
+				                <div class="title"> ${s.STitle}</div>
 				                <a href="#">
-				                    <div class="content"> ${a.SContent } </div>
+				                    <div class="content"> ${s.SContent } </div>
 				                </a>
 				                <button  class="del-btn" value="삭제하기" onclick="del();">삭제하기</button>
 				            </div>
 				         </c:forEach>
-				    
 			        </c:otherwise>
-			        
 		        </c:choose>
 		        
 		        </div>
@@ -286,7 +287,21 @@
 
     <script>
     
-    $(function () {
+    $(document).ready(function () {
+		var order = $(".array").val();
+		var id = $(".memberId").val;
+		console.log("order:"+order+"/id:"+m_id);
+		
+		if(order == "agree"){
+			$(".array").val("agree").prop("selected",true);
+		}else if ( order == "refuse")
+			$(".array").val("refuse").prop("selected",true);
+		
+		$(".array").change(function () {
+			var order = $(".array").val();
+			console.log("mId:"+ mId);
+			location.href="freelancerServiceList.do?mId="+mId+"&order="+order;
+		})
 		
 		
     

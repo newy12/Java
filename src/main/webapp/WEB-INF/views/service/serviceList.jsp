@@ -236,7 +236,7 @@ a:hover {
 			<div class="searchDiv">
 				<div class="searchBox">
 					<input type="hidden" id="order" value="${order }">
-					<select class="selectBox subject form-control array subject array" id="search-subject" style="width: 120px; margin-right: 10px; float: left;">
+					<select class="selectBox subject form-control array" id="search-subject" style="width: 120px; margin-right: 10px; float: left;">
 						<option value="new" selected="selected">최신순</option>
 						<option value="popular">인기순</option>
 						<option value="review">평점순</option>

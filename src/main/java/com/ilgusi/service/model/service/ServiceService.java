@@ -342,6 +342,10 @@ public class ServiceService {
 			
 			return dao.deleteService(sNo);
 		}
+
+		public ArrayList<com.ilgusi.service.model.vo.Service> selectMyList(java.lang.String mId, java.lang.String order) {
+			return dao.selectServiceList(mId,order);
+		}
 		
 
 		
