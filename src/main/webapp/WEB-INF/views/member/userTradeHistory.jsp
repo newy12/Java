@@ -230,7 +230,7 @@
 	                                    <div><a href="#" onclick="startChat('${serviceList[status.index].SNo}','${sessionScope.loginMember.MId }','${serviceList[status.index].MId}','${sessionScope.loginMember.MNo }','${sessionScope.loginMember.MGrade}');"><img src="/img/icon/message.png"></a></div>
 	                                </div>
 	                            </div>
-	                            <div><a href="/serviceView.do?sNo=${serviceList[status.index].SNo}&reqPage=1">${serviceList[status.index].SContent }</a></div>
+	                            <div><a href="/serviceView.do?sNo=${serviceList[status.index].SNo}&reqPage=1">${serviceList[status.index].STitle }</a></div>
 	                        </div>
 	                    </div>
 	                    <div>
@@ -268,7 +268,7 @@
 	                    <div>
 	                    <c:choose>
 	                    	<c:when test="${t.TStatus == 2 }">
-	                    		<input type="text" style="display:none" value="${serviceList[status.index].SContent }">
+	                    		<input type="text" style="display:none" value="${serviceList[status.index].STitle }">
 	                    		<input type="text" style="display:none" value="${serviceList[status.index].SImg }">
 	                    		<input type="text" style="display:none" value="${t.TNo }">
 	                    		<input type="text" style="display:none" value="${t.SNo }">
