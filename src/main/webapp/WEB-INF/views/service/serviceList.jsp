@@ -230,8 +230,8 @@ a:hover {
 						href="/serviceList.do?cNo=${c.CNo }&reqPage=1&order=new"> ${c.CName } </a></li>
 				</c:forEach>
 			</ul>
-
 		</div>
+		
 		<div class="serviceList">
 			<div class="searchDiv">
 				<div class="searchBox">
@@ -268,9 +268,18 @@ a:hover {
 				<c:if test="${serviceList != null }">
 					<c:forEach items="${serviceList }" var="s" varStatus="status">
 						<div class="serviceBox">
-							<div class="imgBox"><img src="upload/service/${s.SImg }" onclick="location.href='/serviceView.do?sNo=${s.SNo}&reqPage=1'"></div><br> 
+							<div class="imgBox"><img src="upload/service/${s.SImg }" onclick="location.href='/serviceView.do?sNo=${s.SNo}&reqPage=1&mNo=${loginMember.MNo }'"></div><br> 
 							<span class="preName">${s.brandName }</span>
-							<p class="serviceCon" style="height: 30px;"><a href="/serviceView.do?sNo=${s.SNo}&reqPage=1"> ${s.STitle } </a></p>
+							<p class="serviceCon" style="height: 30px;">
+							
+								<input type="hidden" id="loginMNo" value="${loginMember.MNo }">
+								<c:if test="${loginMember.MNo == 0 }">
+									<a href="/serviceView.do?sNo=${s.SNo}&reqPage=1&mNo=${loginMember.MNo}"> ${s.STitle } </a>
+								</c:if>
+								<c:if test="${loginMember.MNo != 0 }">
+									<a href="/serviceView.do?sNo=${s.SNo}&reqPage=1&mNo=${loginMember.MNo }"> ${s.STitle } </a>
+								</c:if>
+							</p>
 							<p class="price">${s.SPriceTxt }원~</p>
 							<p class="score">
 								평점 ${s.SRate }.0
@@ -314,6 +323,16 @@ a:hover {
 
 	<script>
 		$(document).ready(function() {
+			var mNo = "${loginMember.MNo}";
+			var memberNo ;
+			if(mNo == 0){
+				console.log("mNo:0");
+				memberNo = 0;
+			}else{
+				console.log("mNo:"+mNo);
+				membeNo = mNo;
+			}
+			
 
 			var order = "${order}";
 			var subject = $("#subject").val();

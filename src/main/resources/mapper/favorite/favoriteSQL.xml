@@ -97,4 +97,11 @@
 	<insert id="insertHeart" parameterType="f">
 		insert into favorite values (favorite_seq.nextval, #{mNo}, #{sNo})
 	</insert>
+	
+	
+	<!-- (다솜) 해당서비스 찜한내역 확인하기 -->
+	<select id="searchMyFavorite" parameterType="map" resultType="f">
+		select f_no as fNo , m_no as mNo, s_no as sNo from favorite where s_no=#{sNo} and m_no=#{mNo}
+	</select>
+	
 </mapper>
