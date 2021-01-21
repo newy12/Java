@@ -27,7 +27,7 @@
     	color:rgb(49, 76, 131);
         padding-top: 70px;
         font-size: 30px;
-        font-weight: bold;
+        line-height: 35px;
     }
     .search-box{
 		height : 65px;

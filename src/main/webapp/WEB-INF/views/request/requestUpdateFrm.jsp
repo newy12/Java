@@ -28,8 +28,10 @@
         padding-top: 30px;
     }
     .text-box>div:last-child{
+    	color:rgb(49, 76, 131);
         padding-top: 70px;
         font-size: 30px;
+        line-height: 35px;
     }
     .form-control{
         float: left;
@@ -128,8 +130,8 @@
             </div>
          
             <div>
-            	<button class="back-btn save" id="updatebutton">수정완료</button>
-            	<button class="back-btn" onclick="history.back()">목록으로</button>
+            	<input type="button" class="back-btn save" id="updatebutton" value="수정완료">
+            	<input type="button" class="back-btn" onclick="history.back()" value="목록으로">
             </div>
             </form>
         </div>
@@ -168,12 +170,13 @@
 	    			return; 
 	    			} 
 	    		var result = confirm("수정 하시겠습니까?"); 
+	    		console.log(result);
 	    		if(result){
 	    			$("#reqForm").submit(); 
 	   			}
-	    		else{ 
-	    			return; 
-	    			} 
+	    		if(!result){
+	    			return;
+	    		}
 	    	});
     	});
     </script>

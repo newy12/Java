@@ -138,11 +138,11 @@ public class ServiceController {
 		join.setSImg(fileList.get(0).getFilepath());
 		int result = service.insertService(join);
 		if (result > 0) {
-			model.addAttribute("msg", "서비스등록완료");
+			model.addAttribute("msg", "서비스를 등록하였습니다");
 		} else {
 			model.addAttribute("msg", "서비스등록실패");
 		}
-		model.addAttribute("loc", "/");
+		model.addAttribute("loc", "/freelancerServiceList.do?mId="+join.getMId()+"&order=refuse");
 		return "common/msg";
 	}
 
