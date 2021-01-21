@@ -153,6 +153,7 @@ a:hover {
 .serviceBox img:hover{
 	transform: scale(1.03);
     overflow: hidden;
+    cursor: pointer;
 }
 
 .preName {
@@ -166,6 +167,9 @@ a:hover {
 	font-size: 11pt;
 	margin: 0;
 	color: gray;
+}
+.serviceCon>a:hover{
+	text-decoration: none;
 }
 
 .price {
@@ -268,18 +272,28 @@ a:hover {
 				<c:if test="${serviceList != null }">
 					<c:forEach items="${serviceList }" var="s" varStatus="status">
 						<div class="serviceBox">
-							<div class="imgBox"><img src="upload/service/${s.SImg }" onclick="location.href='/serviceView.do?sNo=${s.SNo}&reqPage=1&mNo=${loginMember.MNo }'"></div><br> 
+						
+						<c:if test="${loginMember== null }"> 
+							<div class="imgBox">
+								<img src="upload/service/${s.SImg }" onclick="location.href='/serviceView.do?sNo=${s.SNo}&reqPage=1&mNo=null'">
+							</div>
+							<br> 
 							<span class="preName">${s.brandName }</span>
 							<p class="serviceCon" style="height: 30px;">
-							
-								<input type="hidden" id="loginMNo" value="${loginMember.MNo }">
-								<c:if test="${loginMember.MNo == 0 }">
-									<a href="/serviceView.do?sNo=${s.SNo}&reqPage=1&mNo=${loginMember.MNo}"> ${s.STitle } </a>
-								</c:if>
-								<c:if test="${loginMember.MNo != 0 }">
-									<a href="/serviceView.do?sNo=${s.SNo}&reqPage=1&mNo=${loginMember.MNo }"> ${s.STitle } </a>
-								</c:if>
+								<a href="/serviceView.do?sNo=${s.SNo}&reqPage=1&mNo=null"> ${s.STitle } </a>
 							</p>
+						</c:if>
+						<c:if test="${loginMember != null }">
+							<div class="imgBox">
+								<img src="upload/service/${s.SImg }" onclick="location.href='/serviceView.do?sNo=${s.SNo}&reqPage=1&mNo=${loginMember.MNo }'">
+							</div>
+							<br> 
+							<span class="preName">${s.brandName }</span>
+							<p class="serviceCon" style="height: 30px;">
+								<a href="/serviceView.do?sNo=${s.SNo}&reqPage=1&mNo=${loginMember.MNo }"> ${s.STitle } </a>
+							</p>
+						</c:if>
+						
 							<p class="price">${s.SPriceTxt }원~</p>
 							<p class="score">
 								평점 ${s.SRate }.0
@@ -338,7 +352,6 @@ a:hover {
 			var subject = $("#subject").val();
 			var cNo = $(".pageNo").val();
 			var keyword = $("keyword").val;
-			console.log("order : " + order +"/ cNo : "+cNo);
 			
 			if(order == "new"){
 				$(".array").val("new").prop("selected",true);
@@ -353,7 +366,6 @@ a:hover {
 			
 			$(".array").change(function(){
 				var order = $(".array").val();
-				console.log("아예 안되는건가?");
 				location.href = "/serviceList.do?cNo="+cNo+"&reqPage=1&order="+order+"&keyword=";			
 				
 			});
