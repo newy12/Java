@@ -146,7 +146,6 @@
                 		<td><a href="/noticeView.do?nNo=${n.NNo }" class = "table-title">${n.NTitle } </a> </td>
                 		<td>일.구.시 </td>
                 		<td> ${n.writeDate } </td>
-                		
                 	</tr>
                 </c:forEach>
                 <tr>
@@ -171,7 +170,6 @@
  <script>
  	$(function () {
 		$(".btn-search").click(function() {
-			var search = $("#search-subject").val;
 			var keyword = $(".keyword").val();
 			location.href = "/noticeList.do?reqPage=1&keyword="+keyword;
 		})

@@ -186,6 +186,16 @@ public class NoticeController {
 		
 		return "common/msg";
 	}
+	
+	//관리자 공지사항리스트
+	@RequestMapping("/adminNoticeList.do")
+	public String adminNoticeList ( Model model, int reqPage, String keyword) {
+		NoticePageData npd = service.selectNoticeList(reqPage,keyword);
+		model.addAttribute("list", npd.getList());
+		model.addAttribute("pageNavi", npd.getPageNavi());
+		
+		return "admin/noticeList";
+	}
 }
 
 

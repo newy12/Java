@@ -38,6 +38,9 @@ html{
 	width: 200px;
 	float: left;
 }
+.header>img:hover{
+	cursor: pointer;
+}
 
 .name {
 	float: right;
@@ -218,6 +221,12 @@ html{
 	color: white;
 }
 /* -----------------------------(소현) ------------------------------------*/
+
+
+
+
+
+
 </style>
 
 
@@ -233,7 +242,7 @@ html{
 				href="/manageMember.do?reqPage=1&grade=all&keyword=&order=new">MEMBER</a></li>
 			<li class="navi-link"><a
 				href="/manageService.do?reqPage=1&status=waiting&keyword1=&keyword2=&order=old">SERVICE</a></li>
-			<li class="navi-link"><a href="">NOTICE</a></li>
+			<li class="navi-link"><a href="/adminNoticeList.do?reqPage=1&keyword=">NOTICE</a></li>
 			<li class="navi-link"><a href="/manageQnA.do?list_num=10">FAQ</a></li>
 		</ul>
 	</div>
