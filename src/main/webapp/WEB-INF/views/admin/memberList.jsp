@@ -14,7 +14,8 @@
 	href="favicon_io/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16"
 	href="favicon_io/favicon-16x16.png">
-
+<style>
+</style>
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/admin/adminMainpage.jsp" />
