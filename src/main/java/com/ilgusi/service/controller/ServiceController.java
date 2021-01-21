@@ -210,12 +210,12 @@ public class ServiceController {
 
 	// (문정)사용자 마이페이지 - 거래후기 쓰기
 	@RequestMapping("/serviceReviewWrite.do")
-	public String serviceReviewWrite(int tNo, int sNo, String mId, String sImg, String sContent, Model model) {
+	public String serviceReviewWrite(int tNo, int sNo, String mId, String sImg, Model model) {
 		model.addAttribute("tNo", tNo);
 		model.addAttribute("sNo", sNo);
 		model.addAttribute("mId", mId);
 		model.addAttribute("sImg", sImg);
-		model.addAttribute("sContent", sContent);
+		
 		return "service/serviceReviewWrite";
 	}
 
