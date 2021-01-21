@@ -315,11 +315,7 @@
 				}
 			}
 
-			var cNo = $
-			{
-				cNo
-			}
-			; //방번호 
+			var cNo = ${cNo}; //방번호 
 			cNo = Number(cNo);
 			var date = year + "년 " + month + "월 " + day + "일";
 			var time = ampm + hour + ":" + minute; //보낸 시간
@@ -358,28 +354,16 @@
 
 		// 엔터 누르면 전송 
 		$(".message").keyup(function(e) {
-			var cNo = $
-			{
-				cNo
-			}
-			; //방번호 
+			var cNo = ${cNo}; //방번호 
 			cNo = Number(cNo);
 			if (e.keyCode == 13)
 				sendMsg('${sessionScope.loginMember.MId}', cNo);
 		});
 
 		function deleteChat() {
-			var cNo = $
-			{
-				cNo
-			}
-			; //방번호 
+			var cNo = ${cNo}; //방번호 
 			cNo = Number(cNo);
-			var mGrade = $
-			{
-				loginMember.MGrade
-			}
-			;
+			var mGrade = ${loginMember.MGrade};
 			var mId = "${loginMember.MId}";
 			check = confirm("대화내용이 모두 삭제됩니다");
 			if (check) {
@@ -388,9 +372,7 @@
 					url : "/deleteChat.do",
 					type : "post",
 					async : false,
-					data : {
-						cNo : cNo
-					},
+					data : {cNo : cNo},
 					success : function(data) {
 						console.log("삭제성공");
 						location.href = "/chatList.do?mGrade=" + mGrade
@@ -403,11 +385,7 @@
 		$(".service-title").click(
 				function() {
 					console.log("click!");
-					var sNo = $
-					{
-						service.SNo
-					}
-					;
+					var sNo = ${service.SNo};
 					sNo = Number(sNo);
 					opener.parent.location.href = "/serviceView.do?sNo=" + sNo
 							+ "&reqPage=1";
