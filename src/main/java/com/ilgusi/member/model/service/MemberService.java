@@ -31,6 +31,9 @@ public class MemberService {
 	public int selectBuyingCount(int mNo) {
 		return dao.selectBuyingCount(mNo);
 	}
+	public int selectSellingCount(String mId) {
+		return dao.selectSellingCount(mId);
+	}
 	// (도현) 로그인기능
 	public Member loginMember(String id, String pw) {
 		// 비번 암호화
@@ -81,5 +84,6 @@ public class MemberService {
 	public int settingMemberGrade(Member m) {
 		return dao.settingMemberGrade(m);
 	}
+
 
 }
