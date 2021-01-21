@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ilgusi.category.model.vo.Category;
+import com.ilgusi.favorite.model.vo.Favorite;
 import com.ilgusi.member.model.service.MemberService;
 import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.question.model.vo.Question;
@@ -209,12 +210,12 @@ public class ServiceController {
 
 	// (문정)사용자 마이페이지 - 거래후기 쓰기
 	@RequestMapping("/serviceReviewWrite.do")
-	public String serviceReviewWrite(int tNo, int sNo, String mId, String sImg, String sContent, Model model) {
+	public String serviceReviewWrite(int tNo, int sNo, String mId, String sImg, Model model) {
 		model.addAttribute("tNo", tNo);
 		model.addAttribute("sNo", sNo);
 		model.addAttribute("mId", mId);
 		model.addAttribute("sImg", sImg);
-		model.addAttribute("sContent", sContent);
+		
 		return "service/serviceReviewWrite";
 	}
 
@@ -366,37 +367,7 @@ public class ServiceController {
 		} else {
 			model.addAttribute("c_no", serList.get(0).getSubCategory());
 		}
-/*<<<<<<< HEAD 충돌~~~~~ 이게 지우는거 맞죠???
 
-		ArrayList<String> brandName = service.brandList(s, order, keyword);
-
-		switch (maincateNum) {
-		case 10:
-			model.addAttribute("mainCate", "디자인");
-			break;
-		case 20:
-			model.addAttribute("mainCate", "ITㆍ프로그래밍");
-			break;
-		case 30:
-			model.addAttribute("mainCate", "영상ㆍ사진ㆍ음향");
-			break;
-		case 40:
-			model.addAttribute("mainCate", "교육");
-			break;
-		case 50:
-			model.addAttribute("mainCate", "문서ㆍ글쓰기");
-			break;
-		case 60:
-			model.addAttribute("mainCate", "비즈니스컨설팅");
-			break;
-		case 70:
-			model.addAttribute("mainCate", "주문제작");
-			break;
-		}
-
-		model.addAttribute("catList", catList);
-		model.addAttribute("brandName", brandName);
-=======*/
 		
 		switch(maincateNum) {
 			case 10: model.addAttribute("mainCate", "디자인");
@@ -416,7 +387,6 @@ public class ServiceController {
 		}
 	
 		model.addAttribute("catList",catList);
-		/* >>>>>>> master */
 		model.addAttribute("pageNavi", spd.getPageNavi());
 		model.addAttribute("order", order);
 
@@ -425,7 +395,7 @@ public class ServiceController {
 
 	// (다솜) serviceView 페이지 이동
 	@RequestMapping("/serviceView.do")
-	public String serviceView(int sNo, Model model, int reqPage) {
+	public String serviceView(int sNo, Model model, int reqPage, int mNo) {
 		System.out.println("서비스 컨트롤러-serviceView");
 		System.out.println("서비스 상세보기 sNo: " + sNo);
 
@@ -441,7 +411,8 @@ public class ServiceController {
 		if (s != null) {
 			model.addAttribute("s", s);
 		}
-
+		int serviceNo = s.getSNo();
+		
 		// 브랜드 정보 불러오기
 		String memberId = s.getMId();
 
@@ -460,9 +431,28 @@ public class ServiceController {
 
 		// 리뷰 리스트 불러오기 + 페이징
 		ReviewPageData rpd = service.selectReviewList(sNo, reqPage);
-		System.out.println(rpd.getPageNavi());
+		if(rpd.getList().size() == 0) {
+			System.out.println("리뷰 없음");
+		}else {
+			System.out.println("리뷰있음");
+			System.out.println(rpd.getPageNavi());
+		}
+		
 		model.addAttribute("reviewList", rpd.getList());
 		model.addAttribute("pageNavi", rpd.getPageNavi());
+		
+		//찜한내역 확인하기 
+		
+		 Favorite f = service.searchFavorite(mNo,serviceNo);
+		 if(f != null) {
+			 System.out.println("찜하기 있음 ");
+			 model.addAttribute("favoriteCheck", true);
+		 }else {
+			 System.out.println("찜하기 없음");
+			 model.addAttribute("favoriteCheck", false);
+		 }
+			 
+		
 
 		return "/service/serviceView";
 	}

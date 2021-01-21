@@ -9,6 +9,10 @@
 	integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
 	crossorigin="anonymous"></script>
 <style>
+html {
+	width: 1800px;
+}
+
 @font-face {
 	font-family: 'Arita-dotum-Medium';
 	src:
@@ -26,7 +30,7 @@ html{
 }
 .header {
 	margin: 0 auto;
-	width: 1200px;
+	width: 1800px;
 	height: 100px;
 }
 
@@ -114,11 +118,12 @@ html{
 .adminContent {
 	float: left;
 	padding-left: 50px;
-	padding-top:0;
-	width: 800px;
+	padding-top: 0;
+	width: 80%;
 	height: 100%;
 	margin: 0 auto;
 	text-align: center;
+	height: 100%;
 }
 
 .memberTable a, .serviceTable a {

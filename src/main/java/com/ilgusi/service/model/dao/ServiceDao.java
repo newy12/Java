@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.ilgusi.category.model.vo.Category;
+import com.ilgusi.favorite.model.vo.Favorite;
 import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.service.model.vo.Join;
 import com.ilgusi.service.model.vo.ReviewJoin;
@@ -216,6 +217,13 @@ public class ServiceDao {
 	// (문정) 프리랜서가 등록한 총 서비스 개수
 	public int selectFreeServiceCount(String mId) {
 		return session.selectOne("service.selectFreeServiceCount", mId);
+	}
+
+	public Favorite searchFavorite(int mNo, int sNo) {
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("mNo", mNo);
+		map.put("sNo", sNo);
+		return session.selectOne("favorite.searchMyFavorite",map);
 	}
 
 }

@@ -23,7 +23,7 @@
 .q-wrap {
 	text-align: center;
 	margin: 10px auto;
-	width: 60%;
+	width: 80%;
 	height: 80%;
 }
 
@@ -32,51 +32,93 @@
 	margin: 0 auto;
 }
 
+.table {
+	background-color: #314C83;
+	margin-top:10px;
+	margin-bottom:10px;
+	padding:10px;
+	width: 100%;
+	border-radius:10px;
+}
+
 table {
-	margin: 30px;
+	margin: 0 auto;
+	background-color: white;
+	border-radius:10px;
+}
+
+th {
+	width: 150px;
 }
 
 tr, th {
 	padding: 20px;
 	padding-top: 10px;
 	padding-bottom: 10px;
+	border-bottom:0.5px solid lightgray;
+}
+
+td {
+	width: 700px;
+	font-size: 15px;
+	border-bottom:0.5px solid lightgray;
+	border-left:0.5px solid lightgray;
+}
+
+.btn {
+	text-align: center;
+	width: 50px;
+	border: 3px solid #314C83;
+	background-color: transparent;
+	color: #314C83;
+	border-radius: 5px;
+	height: 35px;
+	font-size: 10.5pt;
+	font-weight: bold;
+}
+
+.color {
+	background-color: #314C83;
+	color: white;
 }
 </style>
 <body>
 	<div class="q-wrap">
 		<img src="img/logo/logo_white.png">
 		<p id="title">견적서</p>
-		<table border="1">
-			<tr>
-				<th>서비스명</th>
-				<td>${sTitle }</td>
-			</tr>
-			<tr>
-				<th>제공자</th>
-				<td>${freeId }</td>
-			</tr>
-			<tr>
-				<th>의뢰인</th>
-				<td>${userId }</td>
-			</tr>
-			<tr>
-				<th>기간</th>
-				<td><input type="date" id="d1"> ~ <input type="date"
-					id="d2"></td>
-			</tr>
-			<tr>
-				<th>금액</th>
-				<td><input type="text" id="price"
-					oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
-					원</td>
-			</tr>
-		</table>
+		<div class="table">
+			<table>
+				<tr>
+					<th>서비스명</th>
+					<td>${sTitle }</td>
+				</tr>
+				<tr>
+					<th>제공자</th>
+					<td>${freeId }</td>
+				</tr>
+				<tr>
+					<th>의뢰인</th>
+					<td>${userId }</td>
+				</tr>
+				<tr>
+					<th>기간</th>
+					<td><input type="date" id="d1"> ~ <input type="date"
+						id="d2"></td>
+				</tr>
+				<tr>
+					<th>금액</th>
+					<td><input type="text" id="price"
+						oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+						원</td>
+				</tr>
+			</table>
+		</div>
 		<h4 id="date"></h4>
 		<h3>
 			위 내용은 수정할 수 없으며,<br> 제출 시 의뢰인에게 전달됩니다.
 		</h3>
-		<button type="submit" id="send">제출</button>
-		<button onclick="window.close();">닫기</button>
+		<button class="btn color" type="submit" id="send">제출</button>
+		<button class="btn empty" onclick="window.close();">닫기</button>
 	</div>
 
 	<script>

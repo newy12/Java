@@ -43,6 +43,7 @@ public class FavoriteController {
 	@ResponseBody
 	@RequestMapping("/deleteHeart.do")
 	public String deleteHeart(int sNo, int mNo) {
+		System.out.println("컨트롤러 들어왔다?");
 		int result = service.deleteHeart(sNo, mNo);
 		if(result>0) {
 			System.out.println("성공");

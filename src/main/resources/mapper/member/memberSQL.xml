@@ -7,6 +7,10 @@
 		select count(*) from service_trade where m_no = #{mNo} and
 		t_status = 0
 	</select>
+	<select id="selectSellingCount" parameterType="string"
+		resultType="_int">
+		select count(*) from service s,service_trade st where s.s_no=st.s_no and st.t_status = 0 and s.m_id = #{mId}
+	</select>
 	<select id="loginMember" parameterType="HashMap" resultType="m">
 		select
 		m_no mNo,
@@ -17,8 +21,7 @@
 		m_phone mPhone ,
 		m_grade mGrade ,
 		warning_count warningCount ,
-		introduce
-		,
+		introduce,
 		enroll_date enrollDate ,
 		brand_name brandName ,
 		contact_time

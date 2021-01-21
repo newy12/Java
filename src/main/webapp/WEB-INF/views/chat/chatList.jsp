@@ -26,7 +26,6 @@
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	background-color:yellow;
 }
 </style>
 </head>
@@ -119,10 +118,10 @@
 							아직 문의 내역이 <br>없습니다!
 						</h3>
 						<c:if test="${loginMember.MGrade eq 1 }">
-							<a href="#"><u>나에게 맞는 서비스 검색 ></u></a>
+							<a href="#" class="goMain"><u>나에게 맞는 서비스 검색 ></u></a>
 						</c:if>
 						<c:if test="${loginMember.MGrade eq 2 }">
-							<a href="#"><u>의뢰서 보러가기 ></u></a>
+							<a href="#" class="goRequest"><u>의뢰글 보러가기 ></u></a>
 						</c:if>
 					</div>
 				</div>
@@ -136,6 +135,17 @@
 	</div>
 	<!-- chat-wrap 끝-->
 	<script>
+	
+	$(".goRequest").click(function(){
+		opener.parent.location.href = "requestList.do?reqPage=1&order=new&subject=all&keyword=";
+		window.close();
+			});
+	
+	$(".goMain").click(function(){
+		opener.parent.location.href = "/";
+		window.close();
+			});
+	
 		$(".list").click(
 				function() {
 					var cNo = $(this).find(".cNo").val();

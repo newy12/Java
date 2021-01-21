@@ -21,6 +21,9 @@ public class MemberDao {
 	public int selectBuyingCount(int mNo) {
 		return session.selectOne("member.selectBuyingCount", mNo);
 	}
+	public int selectSellingCount(String mId) {
+		return session.selectOne("member.selectSellingCount", mId);
+	}
 	
 	// (도현) 로그인 기능
 	public Member loginMember(String id, String pw) {
@@ -80,6 +83,7 @@ public class MemberDao {
 		return session.update("member.settingMemberGrade",m);
 	}
 
+
 	//(문정) 거래중인 서비스가 있는지 확인
 	public int tradeStatus(int mNo) {
 		return session.selectOne("member.tradeStatus",mNo);
@@ -89,5 +93,6 @@ public class MemberDao {
 	public int setDeleteStatusY(String mId) {
 		return session.update("member.setDeleteStatusY",mId);
 	}
+
 
 }

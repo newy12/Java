@@ -43,6 +43,23 @@ fieldset input {
 	margin: 2px;
 	margin-left:90px;
 }
+.btn {
+	text-align: center;
+	width: 50px;
+	border: 3px solid #314C83;
+	background-color: transparent;
+	color: #314C83;
+	border-radius: 5px;
+	height: 30px;
+	font-size: 10.5pt;
+	font-weight: bold;
+}
+
+.color {
+	background-color: #314C83;
+	color: white;
+}
+
 </style>
 
 <body>
@@ -58,8 +75,8 @@ fieldset input {
 				<input type="radio" name="reason" id="r4" checked> <label for="r4">관리자에게 문의하세요.</label>
 		</fieldset>
 		<br> 위의 이유로 서비스 등록을 거절합니다.<br> <br>
-		<button id="submit" onclick="">확인</button>
-		<button id="close" onclick="window.close();">닫기</button>
+		<button class="btn color" id="submit" onclick="">확인</button>
+		<button class="btn" id="close" onclick="window.close();">닫기</button>
 	</div>
 	<script>
 		$("#submit").click(
