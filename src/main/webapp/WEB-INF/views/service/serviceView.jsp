@@ -33,9 +33,10 @@
             font-family: 'Arita-dotum-Medium';
         }
 
+
         .contentWrap {
             width: 1200px;
-            height : 1500px;
+            height : 1800px;
             margin: 0 auto;
             display: block;
         }
@@ -181,7 +182,6 @@
         }
         
         .anotherService{
-        	
         	border-radius:5px;
         	width: 185px;
         	float: left;
@@ -196,7 +196,7 @@
         }
 
 		.anoCon{
-			height: 80px;
+			
 		}
 		
 		.anCon>p{
@@ -217,7 +217,8 @@
                 }
 
                 .titleWrap {
-                    padding: 20px;
+                    padding: 10px;
+                    width: 450px;
 
                 }
 
@@ -331,7 +332,15 @@
                  .fas{
 			       	color: #ef4f4f;
 			     }
-				
+				.contentTitle{
+					border-bottom: 2px solid #314C83; 
+					padding-bottom: 20px; 
+					margin-bottom: 20px;
+					font-size: 12pt;
+					width: 448px;
+					
+					
+				}
 
 
         /*.................... ▲ 오른쪽 컨텐츠...........................*/
@@ -411,7 +420,7 @@
 
                         <h2>서비스 설명</h2>
                         <hr>
-                        <pre class="conView">${s.SContent }</pre>
+                        <pre class="conView" style=" font-family: 'Arita-dotum-Medium';">${s.SContent }</pre>
                     </div>
                     <div class="tabcontent">
 
@@ -520,8 +529,8 @@
                         <c:forEach items="${sList }" var="s" begin="0" end="4">
                         	<div class="anotherService"> 
 	                        	<img class="anoImg" src="/upload/service/${s.SImg }" width="180px;" style="margin: 0 auto;">
-	                        	<div class="anoCon">
-	                        		<p class="anoTitle" style="font-size: 11pt;"> ${s.STitle } </p>
+	                        	<div class="anoCon" style="margin-top: 10px">
+	                        		<a class="anoTitle" style="font-size: 10pt; height: 50px;"> ${s.STitle } </a>
 	                        		<span>${s.mainCategoryName } / ${s.subCategoryName } </span>
 	                        	</div>
                         </div>
@@ -580,27 +589,31 @@
                         <img src="/img/test/icon_profile.svg" width="100px;">
                         <p class="brandName bold-font">${m.brandName }</p>
 
-                        <button class="emptyBtn">[${m.brandName }]의 다른 서비스 보기</button>
+                        <button class="emptyBtn" onclick="location.href='/introduceFrm.do?mId=${m.MId}&reqPage=1'">[${m.brandName }]의 프로필 보기</button>
                     </div>
 
                     <hr>
                     <div class="Intro-detail">
                         <p class="introTitle bold-font">전문가 소개</p>
-                        <Pre style="white-space: pre-line; padding: 20px;" > ${m.introduce } </Pre>
-
+                        <Pre style="white-space: pre-line; padding: 20px;  font-family: 'Arita-dotum-Medium';" > ${m.introduce } </Pre>
                     </div>
-
                 </div>
-
             </div>
-
         </div>
-
-
     </div>
 
     <script>
     
+    $(document).ready (function () {
+		var fCheck = ${favoriteCheck};
+		console.log("favorite:"+fCheck);
+		
+		if(fCheck == true){
+			$(".full-heart").addClass("fas");
+		}
+		
+	
+    })
     	// 서비스 상세보기 탭 구현 
         $(function() {
             var tab = $(".tab");
@@ -637,20 +650,52 @@
         function like_func() {
         	var m_no = $("#m_no").val();
         	var s_no = $("#s_no").val();
+        	var fCheck = ${favoriteCheck};
         	console.log("m_no:"+m_no+"s_no:"+s_no);
         	
-        	$.ajax({
-        		url:"/insertHeart.do",
-        		type:"post",
-        		data:{mNo:m_no, 
-        			sNo:s_no},
-        			
-        		success:function(){
-        			$(".full-heart").addClass("fas");
-        		}
-        	})
+        	if(m_no != null){
+        		if(fCheck == true){
+            		var fCon = confirm("해당 서비스를 찜한 목록에서 제거 할까요?")
+            		if(fCon == true){
+            			$.ajax({
+                			url:"/deleteHeart.do",
+                			type: "post",
+                			data:{mNo:m_no, 
+                    			sNo:s_no},
+                    		error : function () {
+    							alert("제거못함");
+    						},
+                    		success:function(){
+                    			$(".full-heart").removeClass("fas");
+                    			location.reload();
+                    		}
+                    		
+                		})
+            		}
+            	}else{
+            		$.ajax({
+                		url:"/insertHeart.do",
+                		type:"post",
+                		data:{mNo:m_no, 
+                			sNo:s_no},
+                		success:function(){
+                			$(".full-heart").addClass("fas");
+                			location.reload();
+                		}
+                	})
+            	}
+        		
+        	}else{
+        		alert("찜하기는 로그인이 필요합니다.");
+        	}
+        	
+        	
+        	
 
 		}
+    	
+    	
+    
         function login_need() {
 			alert("로그인이 필요합니다.");
 		}
@@ -680,6 +725,14 @@
 				}
 			});
 		}
+        
+ /*        
+        $(function () {
+			var containerHeight = $(".serviceContent").height();
+			$(".contentWrap").height(containerHeight+400);
+		}) */
+        
+        
         
     </script>
     

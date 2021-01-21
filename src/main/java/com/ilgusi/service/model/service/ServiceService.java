@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ilgusi.category.model.vo.Category;
+import com.ilgusi.favorite.model.vo.Favorite;
 import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.service.model.dao.ServiceDao;
 import com.ilgusi.service.model.vo.Join;
@@ -344,7 +345,6 @@ public class ServiceService {
 
 	// 프리랜서 마이페이지 서비스 삭제
 	public int deleteService(int sNo) {
-
 		return dao.deleteService(sNo);
 	}
 
@@ -355,6 +355,10 @@ public class ServiceService {
 	//(문정) 프리랜서가 등록한 총 서비스 개수
 	public int selectFreeServiceCount(String mId) {
 		return dao.selectFreeServiceCount(mId);
+	}
+
+	public Favorite searchFavorite(int mNo, int sNo) {
+		return dao.searchFavorite(mNo,sNo);
 	}
 
 }

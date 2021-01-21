@@ -490,8 +490,11 @@
 
 	<!-- (다솜) 프리랜서 마이페이지 서비스 삭제 -->
 	<update id="delService" parameterType="_int">
-		update service set
-		delete_status = 'y' where s_no = #{parameter}
+		update service 
+		set 
+			s_title = '(삭제)'||s_title, 
+			delete_status = 'y' 
+		where s_no = #{parameter}
 	</update>
 
 	<!--(다솜) 프리랜서 마이페이지 서비스정렬 -->
