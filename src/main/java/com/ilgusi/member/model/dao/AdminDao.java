@@ -148,4 +148,10 @@ public class AdminDao {
 		return session.selectOne("service.totalServiceCount", map);
 	}
 
+	//회원의 서비스개수 구하기
+	public ArrayList<Service> selectServiceList(String mId) {
+		List<Service> serviceList=session.selectList("service.selectServiceList",mId);
+		return (ArrayList<Service>)serviceList;
+	}
+
 }
