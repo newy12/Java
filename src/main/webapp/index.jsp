@@ -132,30 +132,6 @@
 
 <body>
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
-	<div class="test-section">
-		<h1>여러분 화이팅~~!!~</h1>
-		<h2>해피뉴이어~~</h2>
-		<hr>
-		<h3>본인 페이지 테스트</h3>
-		소현
-		<a href="/chatList.do?mGrade=${loginMember.MGrade}&mId=${loginMember.MId}"
-			onClick="window.open(this.href, '', 'width=530, height=630, left=1000,location=no,scrollbars=no,location=no, resizable=no'); return false;">채팅하기</a>
-		<a href="/manageMember.do?reqPage=1&grade=all&keyword=&order=new">관리자-회원관리+페이징+검색+정렬</a>
-		<a href="/manageService.do?reqPage=1&status=waiting&keyword1=&keyword2=&order=old">관리자-서비스관리+페이징+검색+정렬</a>
-		<br> 영재
-		<a href="/introduceFrm.do?mId=${loginMember.MId}&reqPage=1">프리랜서소개글</a>
-		<a href="/serviceJoinFrm.do?MId=${loginMember.MId}">서비스등록</a>
-		<a href="/freelancerMypage.do?MNo=${loginMember.MNo}">프리랜서 마이페이지</a>
-		<br> 문정
-		<a href="/requestList.do?reqPage=1&order=new&subject=all&keyword=">의뢰게시판 리스트 </a> /
-		<br> 다솜
-		<a href="/noticeList.do?reqPage=1&keyword=">공지사항 게시판</a> /
-		<a href="/serviceList.do?sNo=10&reqPage=1&order=new&keyword=">서비스리스트</a> /
-		<a href="/serviceView.do?sNo=44">서비스 상세보기</a> <br>
-		<br> 도현
-		<a href="/indexTest.jsp">인덱스 페이지 테스트</a>
-
-	</div>
 	<script>
 		$(document).ready(function () {
 			// 배너 슬라이더 부분
@@ -281,45 +257,45 @@
 				</div>
 				<div class="famous-category-list">
 					<div class="category-item">
-						<a href="/serviceList.do?cNo=10&reqPage=1">
-							<img src="img/index/carousel/category-104.png" alt="">
-							<div class="category-title-background"></div>
-							<div class="category-title">캘리그라피·폰트</div>
-						</a>
-					</div>
-					<div class="category-item">
-						<a href="/serviceList.do?cNo=10&reqPage=1">
-							<img src="img/index/carousel/category-101.png" alt="">
+						<a href="/serviceList.do?cNo=11&reqPage=1">
+							<img src="img/index/carousel/category-11.png" alt="">
 							<div class="category-title-background"></div>
 							<div class="category-title">로고·브랜딩</div>
 						</a>
 					</div>
 					<div class="category-item">
-						<a href="/serviceList.do?cNo=10&reqPage=1">
-							<img src="img/index/carousel/category-107.png" alt="">
+						<a href="/serviceList.do?cNo=13&reqPage=1">
+							<img src="img/index/carousel/category-13.png" alt="">
 							<div class="category-title-background"></div>
 							<div class="category-title">캘리그라피·폰트</div>
 						</a>
 					</div>
 					<div class="category-item">
-						<a href="/serviceList.do?cNo=10&reqPage=1">
-							<img src="img/index/carousel/category-101.png" alt="">
+						<a href="/serviceList.do?cNo=14&reqPage=1">
+							<img src="img/index/carousel/category-14.png" alt="">
 							<div class="category-title-background"></div>
-							<div class="category-title">캘리그라피·폰트</div>
+							<div class="category-title">일러스트·캐리커쳐</div>
 						</a>
 					</div>
 					<div class="category-item">
-						<a href="/serviceList.do?cNo=10&reqPage=1">
-							<img src="img/index/carousel/category-113.png" alt="">
+						<a href="/serviceList.do?cNo=16&reqPage=1">
+							<img src="img/index/carousel/category-16.png" alt="">
 							<div class="category-title-background"></div>
-							<div class="category-title">캘리그라피·폰트</div>
+							<div class="category-title">이벤트·상세 페이지</div>
 						</a>
 					</div>
 					<div class="category-item">
-						<a href="/serviceList.do?cNo=10&reqPage=1">
-							<img src="img/index/carousel/category-107.png" alt="">
+						<a href="/serviceList.do?cNo=15&reqPage=1">
+							<img src="img/index/carousel/category-15.png" alt="">
 							<div class="category-title-background"></div>
-							<div class="category-title">캘리그라피·폰트</div>
+							<div class="category-title">간판·시공</div>
+						</a>
+					</div>
+					<div class="category-item">
+						<a href="/serviceList.do?cNo=12&reqPage=1">
+							<img src="img/index/carousel/category-12.png" alt="">
+							<div class="category-title-background"></div>
+							<div class="category-title">인쇄·홍보물·배너</div>
 						</a>
 					</div>
 				</div>
@@ -327,7 +303,7 @@
 			<div class="famous-category-slider">
 				<div class="slider-top">
 					<div class="slider-title">
-						<span>디자인 카테고리</span>에서 인기있어요!
+						<span>IT·프로그래밍 카테고리</span>에서 인기있어요!
 					</div>
 					<div class="arrowSlider">
 						<span class="prev" id="arrow2_prev">&lt;</span>
@@ -336,45 +312,45 @@
 				</div>
 				<div class="famous-category-list">
 					<div class="category-item">
-						<a href="/serviceList.do?cNo=10&reqPage=1">
-							<img src="img/index/carousel/category-104.png" alt="">
+						<a href="/serviceList.do?cNo=21&reqPage=1">
+							<img src="img/index/carousel/category-21.png" alt="">
 							<div class="category-title-background"></div>
-							<div class="category-title">캘리그라피·폰트</div>
+							<div class="category-title">워드프레스</div>
 						</a>
 					</div>
 					<div class="category-item">
-						<a href="/serviceList.do?cNo=10&reqPage=1">
-							<img src="img/index/carousel/category-101.png" alt="">
+						<a href="/serviceList.do?cNo=22&reqPage=1">
+							<img src="img/index/carousel/category-22.png" alt="">
 							<div class="category-title-background"></div>
-							<div class="category-title">로고·브랜딩</div>
+							<div class="category-title">웹사이트개발</div>
 						</a>
 					</div>
 					<div class="category-item">
-						<a href="/serviceList.do?cNo=10&reqPage=1">
-							<img src="img/index/carousel/category-107.png" alt="">
+						<a href="/serviceList.do?cNo=23&reqPage=1">
+							<img src="img/index/carousel/category-23.jpg" alt="">
 							<div class="category-title-background"></div>
-							<div class="category-title">캘리그라피·폰트</div>
+							<div class="category-title">프로그램개발</div>
 						</a>
 					</div>
 					<div class="category-item">
-						<a href="/serviceList.do?cNo=10&reqPage=1">
-							<img src="img/index/carousel/category-101.png" alt="">
+						<a href="/serviceList.do?cNo=24&reqPage=1">
+							<img src="img/index/carousel/category-24.png" alt="">
 							<div class="category-title-background"></div>
-							<div class="category-title">캘리그라피·폰트</div>
+							<div class="category-title">데이터베이스</div>
 						</a>
 					</div>
 					<div class="category-item">
-						<a href="/serviceList.do?cNo=10&reqPage=1">
-							<img src="img/index/carousel/category-113.png" alt="">
+						<a href="/serviceList.do?cNo=25&reqPage=1">
+							<img src="img/index/carousel/category-25.png" alt="">
 							<div class="category-title-background"></div>
-							<div class="category-title">캘리그라피·폰트</div>
+							<div class="category-title">게임개발</div>
 						</a>
 					</div>
 					<div class="category-item">
-						<a href="/serviceList.do?cNo=10&reqPage=1">
-							<img src="img/index/carousel/category-107.png" alt="">
+						<a href="/serviceList.do?cNo=27&reqPage=1">
+							<img src="img/index/carousel/category-27.jpg" alt="">
 							<div class="category-title-background"></div>
-							<div class="category-title">캘리그라피·폰트</div>
+							<div class="category-title">파일변환</div>
 						</a>
 					</div>
 				</div>
@@ -382,7 +358,7 @@
 			<div class="famous-category-slider">
 				<div class="slider-top">
 					<div class="slider-title">
-						<span>디자인 카테고리</span>에서 인기있어요!
+						<span>비즈니스컨설팅 카테고리</span>에서 인기있어요!
 					</div>
 					<div class="arrowSlider">
 						<span class="prev" id="arrow3_prev">&lt;</span>
@@ -391,45 +367,45 @@
 				</div>
 				<div class="famous-category-list">
 					<div class="category-item">
-						<a href="/serviceList.do?cNo=10&reqPage=1">
-							<img src="img/index/carousel/category-104.png" alt="">
+						<a href="/serviceList.do?cNo=61&reqPage=1">
+							<img src="img/index/carousel/category-61.jpg" alt="">
 							<div class="category-title-background"></div>
-							<div class="category-title">캘리그라피·폰트</div>
+							<div class="category-title">사업계획서·투자제안서</div>
 						</a>
 					</div>
 					<div class="category-item">
-						<a href="/serviceList.do?cNo=10&reqPage=1">
-							<img src="img/index/carousel/category-101.png" alt="">
+						<a href="/serviceList.do?cNo=62&reqPage=1">
+							<img src="img/index/carousel/category-62.jpg" alt="">
 							<div class="category-title-background"></div>
-							<div class="category-title">로고·브랜딩</div>
+							<div class="category-title">인사·노무</div>
 						</a>
 					</div>
 					<div class="category-item">
-						<a href="/serviceList.do?cNo=10&reqPage=1">
-							<img src="img/index/carousel/category-107.png" alt="">
+						<a href="/serviceList.do?cNo=63&reqPage=1">
+							<img src="img/index/carousel/category-63.jpg" alt="">
 							<div class="category-title-background"></div>
-							<div class="category-title">캘리그라피·폰트</div>
+							<div class="category-title">창업컨설팅</div>
 						</a>
 					</div>
 					<div class="category-item">
-						<a href="/serviceList.do?cNo=10&reqPage=1">
-							<img src="img/index/carousel/category-101.png" alt="">
+						<a href="/serviceList.do?cNo=64&reqPage=1">
+							<img src="img/index/carousel/category-64.jpg" alt="">
 							<div class="category-title-background"></div>
-							<div class="category-title">캘리그라피·폰트</div>
+							<div class="category-title">법률법무</div>
 						</a>
 					</div>
 					<div class="category-item">
-						<a href="/serviceList.do?cNo=10&reqPage=1">
-							<img src="img/index/carousel/category-113.png" alt="">
+						<a href="/serviceList.do?cNo=65&reqPage=1">
+							<img src="img/index/carousel/category-65.jpg" alt="">
 							<div class="category-title-background"></div>
-							<div class="category-title">캘리그라피·폰트</div>
+							<div class="category-title">업무지원·cs</div>
 						</a>
 					</div>
 					<div class="category-item">
-						<a href="/serviceList.do?cNo=10&reqPage=1">
-							<img src="img/index/carousel/category-107.png" alt="">
+						<a href="/serviceList.do?cNo=60&reqPage=1">
+							<img src="img/index/carousel/category-60.jpg" alt="">
 							<div class="category-title-background"></div>
-							<div class="category-title">캘리그라피·폰트</div>
+							<div class="category-title">컨설팅</div>
 						</a>
 					</div>
 				</div>

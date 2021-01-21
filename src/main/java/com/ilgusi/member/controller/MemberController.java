@@ -150,6 +150,9 @@ public class MemberController {
 			model.addAttribute("msg", "로그인 실패");
 		}
 		model.addAttribute("loc", loc);
+		if(m != null && m.getMGrade() == 0)
+			model.addAttribute("loc", "/manageMember.do?reqPage=1&grade=all&keyword=&order=new");
+			
 		return "common/msg";
 	}
 

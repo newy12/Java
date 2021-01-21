@@ -56,10 +56,11 @@
 	font-size: 20px;
 }
 
-.servie-title{
+.service-title{
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	cursor: pointer;
 	}
 
 
@@ -130,7 +131,7 @@
 							<div class="wrap">
 								<!-- 알림창 -->
 								<!-- 문의사항페이지로 이동 -->
-								<a class="bigBtn" href="">관리자에게 문의하기 </a>
+								<a class="bigBtn qna" >관리자에게 문의하기</a>
 							</div>
 						</div>
 					</c:if>
@@ -143,7 +144,7 @@
 				<c:if test="${service.SNo ne 0 }">
 					<div id="chat-profile">
 						<div id="profile-info">
-							<div class="servie-title">${service.STitle}</div>
+							<div class="service-title"><u>${service.STitle}</u></div>
 							<div>${freeId }<c:if
 									test="${sessionScope.loginMember.MGrade==2 }">
 									<c:if test="${not empty black }">
@@ -234,7 +235,7 @@
 							<!-- 알림창 -->
 							<c:if test="${service.SNo eq 0 }">
 								<!-- 문의사항페이지로 이동 -->
-								<button class="bigBtn" onclick="qnaPage()">관리자에게 문의하기</button>
+								<a class="bigBtn qna" >관리자에게 문의하기</a>
 							</c:if>
 						</div>
 					</div>
@@ -257,12 +258,6 @@
 			$(".messages").scrollTop($(".messages")[0].scrollHeight);
 
 		});
-
-		function qnaPage() {
-			console.log("click!");
-			 opener.parent.location.href="/qna.do?pageNum=1"; 
-			window.close(); 
-		}
 
 		function deleteMsg(ccNo) {
 			console.log("delete!");
@@ -380,6 +375,18 @@
 				});
 			}
 		}
+		
+		$(".service-title").click(function(){
+			console.log("click!");
+			var sNo=${service.SNo};
+			sNo=Number(sNo);
+			opener.parent.location.href = "/serviceView.do?sNo="+sNo+"&reqPage=1";
+		});
+		
+		$(".qna").click(function(){
+			console.log("click!!");
+			opener.parent.location.href = "/qna.do?page=1";
+		});
 	</script>
 
 </body>

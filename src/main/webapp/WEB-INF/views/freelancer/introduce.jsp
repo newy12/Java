@@ -264,6 +264,9 @@
 			},
 			success : function(result) {
 				console.log(result);
+				if(result=='[null]'){
+					result=[0];
+				}
 				$('#listSize').html(result + "개의 평가").css("color", "gray");
 				$('#listSize2').html(result + "개의 평가").css("color", "gray")
 						.css("margin-left", "0px");
@@ -440,8 +443,8 @@ div.middle4 {
 
 #topBtn {
 	position: fixed;
-	left: 80px;
-	bottom: 50%;
+	right: 90px;
+	bottom: 13%;
 	z-index: 9;
 	color:white;
 	font-weight: bold;
