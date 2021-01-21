@@ -224,7 +224,7 @@
 						구매 진행 중<span><span>${loginMember.buyingCount}</span> 건</span>
 					</div>
 					<div class="member-info-selling">
-						판매 진행 중<span><span>152</span> 건</span>
+						판매 진행 중<span><span>${loginMember.sellingCount}</span> 건</span>
 					</div>
 				</div>
 			</div>

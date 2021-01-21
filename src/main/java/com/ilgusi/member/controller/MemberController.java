@@ -141,6 +141,7 @@ public class MemberController {
 
 		if (m != null) {
 			m.setBuyingCount(service.selectBuyingCount(m.getMNo()));
+			m.setSellingCount(service.selectSellingCount(m.getMId()));
 			if (m.getMGrade() != 0)
 				m.setMGrade(1);
 			HttpSession session = req.getSession();
