@@ -469,10 +469,12 @@
 </div>
 <div class="dh-header-container">
     <c:if test="${not empty loginMember}">
+    <c:if test="${loginMember.MId ne 'admin'}">
         <div class="chat-remocon">
             <a href="/chatList.do?mGrade=${loginMember.MGrade}&mId=${loginMember.MId}"
-                onClick="window.open(this.href, '', 'width=530, height=630, left=1000,location=no,scrollbars=no,location=no, resizable=no'); return false;">채팅하기</a>
+                onClick="window.open(this.href, '', 'width=530, height=630, left=1000'); return false;">문의하기</a>
         </div>
+         </c:if>
     </c:if>
     <header class="dh-header">
         <div class="header-top">

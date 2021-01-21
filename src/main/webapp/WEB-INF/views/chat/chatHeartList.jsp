@@ -13,21 +13,22 @@
 	text-overflow: ellipsis;
 }
 
-.startChat,.deleteFavorite{
-color:white;
-display:inline-block;
-width:70px;
-height:30px;
-text-align:center;
-line-height:30px;
-border-radius:10px;
+.startChat, .deleteFavorite {
+	color: white;
+	display: inline-block;
+	width: 70px;
+	height: 30px;
+	text-align: center;
+	line-height: 30px;
+	border-radius: 10px;
 }
 
-.navy{
-background-color: #314C83;}
+.navy {
+	background-color: #314C83;
+}
 
-.orange{
-background-color: #FF8F3F;
+.orange {
+	background-color: #FF8F3F;
 }
 </style>
 </head>
@@ -70,7 +71,8 @@ background-color: #FF8F3F;
 														<a class="startChat navy" href="#"
 															onclick="startChat('${s.SNo }','${sessionScope.loginMember.MId }','${s.MId}','${sessionScope.loginMember.MNo }','${sessionScope.loginMember.MGrade}');">문의하기</a>
 													</c:if>
-													<a class="deleteFavorite orange" href="#" onclick="deleteFavorite();">삭제하기</a>
+													<a class="deleteFavorite orange" href="#"
+														onclick="deleteFavorite('${s.SNo }','${sessionScope.loginMember.MNo }');">삭제하기</a>
 												</div>
 											</div>
 										</div>
@@ -94,7 +96,7 @@ background-color: #FF8F3F;
 						<h3>
 							아직 찜한 서비스가 <br>없습니다!
 						</h3>
-						<a href="/"><u>나에게 맞는 서비스 검색 ></u></a>
+						<a href="#" class="goMain"><u>나에게 맞는 서비스 검색 ></u></a>
 					</div>
 				</div>
 			</c:if>
@@ -108,6 +110,28 @@ background-color: #FF8F3F;
 	<!-- chat-wrap 끝-->
 
 	<script>
+		function deleteFavorite(sNo,mNo) {
+			$.ajax({
+				url : "/deleteHeart.do",
+				type : "get",
+				data : {
+					sNo : sNo,
+					mNo : mNo
+				},
+				success : function(data) {
+					location.reload();
+				},
+				error : function() {
+					console.log("오류");
+				}
+			});
+		}
+
+		$(".goMain").click(function() {
+			opener.parent.location.href = "/";
+			window.close();
+		});
+
 		function startChat(sNo, userId, freeId, mNo, mGrade) {
 			$.ajax({
 				url : "/makeRoom.do",
