@@ -111,7 +111,7 @@
             	<button class="introduce-btn">나의 소개페이지 보기</button>
             </c:if>
             <div>
-            <form action="/updateFreelancer.do" method="post">
+            <form action="/updateFreelancer.do?" method="post">
                 <div class="form-group brand">
                     <label for="tel-label">브랜드 명</label><br>
                     <input type="hidden" value="${loginMember.MId }" name="mId" id="mId">
