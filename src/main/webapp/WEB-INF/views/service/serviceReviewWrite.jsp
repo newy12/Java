@@ -10,6 +10,16 @@
         integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
 </head>
 <style>
+     @font-face {
+         font-family: 'Arita-dotum-Medium';
+         src:
+             url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Arita-dotum-Medium.woff') format('woff');
+         font-weight: normal;
+         font-style: normal;
+     }
+    * {
+        font-family: 'Arita-dotum-Medium';
+    }
 	.wrap{
 		padding : 20px;
 	}
