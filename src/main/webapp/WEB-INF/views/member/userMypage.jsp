@@ -413,7 +413,7 @@
 		var mPw = $('#pw-label').val();
 		var mPw_check = $('#pw-check').val();
 		if(mPw == mPw_check){
-			location.href="/deleteMember.do?mId="+mId+"&mPw="+mPw;
+			location.href="/deleteMember.do?mId="+mId;
 		}else{
 			alert('비밀번호가 일치하지 않습니다. 다시 입력해주세요');
 		}

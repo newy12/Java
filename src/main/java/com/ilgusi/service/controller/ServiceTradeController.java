@@ -3,12 +3,16 @@ package com.ilgusi.service.controller;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ilgusi.member.model.vo.Member;
 import com.ilgusi.service.model.service.ServiceTradeService;
 import com.ilgusi.service.model.vo.Service;
 import com.ilgusi.service.model.vo.ServiceTrade;
@@ -76,37 +80,25 @@ public class ServiceTradeController {
 		model.addAttribute("payDate",payDate);
 		System.out.println(tradeList.size()+"/"+serviceList.size()+"/"+payDate.size());
 		return "freelancer/freelancerTradeHistory";
+	}
 		
-		
-		// (영재) 작업완료버튼누르면 t_status 변경( 1-->2)
-}	@ResponseBody
+	//(영재) 작업완료버튼누르면 t_status 변경( 1-->2)
+	@ResponseBody
 	@RequestMapping("/updateTStatus.do")
 	public void updateTStatus(int tNo, Model model) {
 		System.out.println("controller tno값"+tNo);
 		int result = service.updateTStatus(tNo);
 		System.out.println("controller result값"+result);
-//		if(result>0) {
-//			model.addAttribute("msg","작업완료되었습니다.");//
-//		}else {
-//			model.addAttribute("msg","작업완료실패");
-//		}
-//		model.addAttribute("loc","/");
-//		return "common/msg";
 	}
+
 	//(영재) warningCount 변경 	
 	@RequestMapping("/updateWarningCount.do")
-	public String updateWarningCount(int mNo, Model model) {
-		System.out.println("mNo>>>>>>>>>>>>>>>"+mNo);
+	public String updateWarningCount(int mNo, Model model, HttpServletRequest req) {
 		int result = service.updateWarningCount(mNo);
-		System.out.println("mNo>>>>>>>>>>>>>>>"+mNo);
-//		if(result>0) {
-//		model.addAttribute("msg","작업완료되었습니다.");//
-//	}else {
-//		model.addAttribute("msg","작업완료실패");
-//	}
-	model.addAttribute("loc","/");
-	return "common/msg";
-
+		
+		HttpSession session = req.getSession();
+		Member m = (Member)session.getAttribute("loginMember");
+		return "redirect:/freelancerTradeHistory.do?mNo="+m.getMNo();
 	}
 	
 	//(문정) 팝업창 닫고 페이지 이동만

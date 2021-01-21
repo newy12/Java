@@ -25,7 +25,9 @@ html {
 * {
 	font-family: 'Arita-dotum-Medium';
 }
-
+html{
+	width:1200px;
+}
 .header {
 	margin: 0 auto;
 	width: 1800px;
