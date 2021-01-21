@@ -1,13 +1,19 @@
 package com.ilgusi.request.controller;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -92,11 +98,11 @@ public class RequestController {
 		req.setReqTitle(request.getParameter("reqTitle"));
 		int result = service.requestInsert(req);
       if(result>0) {
-	         model.addAttribute("msg","등록 성공");
+	         model.addAttribute("msg","의뢰를 등록하였습니다.");
 	      }else {
 	         model.addAttribute("msg","실패");
 	      }
-	      model.addAttribute("loc","/");
+	      model.addAttribute("loc","/requestList.do?reqPage=1&order=new&subject=all&keyword=");
 	      return "common/msg";
 	}
 	
@@ -151,18 +157,25 @@ public class RequestController {
 		if(result>0) {
 			model.addAttribute("msg", "수정되었습니다.");
 		}
-		model.addAttribute("loc", "/requestList.do?reqPage=1");
+		model.addAttribute("loc", "/requestList.do?reqPage=1&order=new&subject=all&keyword=");
 		return "common/msg";
 	}
 	
 	//(문정) 의뢰 삭제
 	@RequestMapping("/requestDeleteOne.do")
-	public String requestDeleteOne(int reqNo, Model model) {
+	public String requestDeleteOne(int reqNo, String filepath, Model model, HttpServletRequest request, HttpServletResponse response) {
 		int result = service.requestDeleteOne(reqNo);
+		//파일 삭제
+		if(filepath != null) {
+			String root = request.getSession().getServletContext().getRealPath("/");
+			String path = root + "upload/request/";
+			File delFile = new File(path+filepath);
+			boolean bool = delFile.delete();
+		}
 		if(result>0) {
 			model.addAttribute("msg", "삭제되었습니다.");
 		}
-		model.addAttribute("loc", "/requestList.do?reqPage=1");
+		model.addAttribute("loc", "/requestList.do?reqPage=1&order=new&subject=all&keyword=");
 		return "common/msg";
 	}
 	
@@ -173,5 +186,47 @@ public class RequestController {
 		model.addAttribute("userId", userId);
 		model.addAttribute("list",list);
 		return "request/requestSendPopup";
+	}
+	
+	//(문정) 파일 다운로드
+	@RequestMapping("/requestFileDownload.do")
+	public void requestFileDownload(String filepath, HttpServletRequest req, HttpServletResponse res) {
+		String root = req.getSession().getServletContext().getRealPath("/");
+	    String path = root+"upload/request/";
+		System.out.println(path+filepath);
+	    try {
+			FileInputStream fis = new FileInputStream(path+filepath);
+			BufferedInputStream bis = new BufferedInputStream(fis);
+			ServletOutputStream sos = res.getOutputStream();
+			BufferedOutputStream bos = new BufferedOutputStream(sos);
+			//윈도우 익스플로어일때 대비
+			String resFilename = "";
+			boolean bool = req.getHeader("user-agent").indexOf("MSIE") != -1 
+					|| req.getHeader("user-agent").indexOf("Trident") != -1;
+			if(bool) {   //사용자의 브라우저가 IE인 경우
+				resFilename = URLEncoder.encode(filepath, "UTF-8");
+				resFilename = resFilename.replaceAll("\\\\", "%20");
+			}else {
+				resFilename = new String(filepath.getBytes("UTF-8"), "ISO-8859-1");
+			}
+			//파일 다운로드를 위한 HTTP헤더 설정
+			res.setContentType("application/octer-stream");
+			res.setHeader("Content-Disposition", "attachment;filename="+resFilename+";filename*= UTF-8");     //로드 되는 파일 이름
+			System.out.println(resFilename);
+			//파일 전송
+			int read = -1;
+			while((read=bis.read()) != -1) {
+				bos.write(read);
+			}
+			bos.close();
+			bis.close();
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

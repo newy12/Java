@@ -139,11 +139,11 @@ public class ServiceController {
 		join.setSImg(fileList.get(0).getFilepath());
 		int result = service.insertService(join);
 		if (result > 0) {
-			model.addAttribute("msg", "서비스등록완료");
+			model.addAttribute("msg", "서비스를 등록하였습니다");
 		} else {
 			model.addAttribute("msg", "서비스등록실패");
 		}
-		model.addAttribute("loc", "/");
+		model.addAttribute("loc", "/freelancerServiceList.do?mId="+join.getMId()+"&order=refuse");
 		return "common/msg";
 	}
 
@@ -210,12 +210,12 @@ public class ServiceController {
 
 	// (문정)사용자 마이페이지 - 거래후기 쓰기
 	@RequestMapping("/serviceReviewWrite.do")
-	public String serviceReviewWrite(int tNo, int sNo, String mId, String sImg, String sContent, Model model) {
+	public String serviceReviewWrite(int tNo, int sNo, String mId, String sImg, Model model) {
 		model.addAttribute("tNo", tNo);
 		model.addAttribute("sNo", sNo);
 		model.addAttribute("mId", mId);
 		model.addAttribute("sImg", sImg);
-		model.addAttribute("sContent", sContent);
+		
 		return "service/serviceReviewWrite";
 	}
 

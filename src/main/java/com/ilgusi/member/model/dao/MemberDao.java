@@ -21,6 +21,9 @@ public class MemberDao {
 	public int selectBuyingCount(int mNo) {
 		return session.selectOne("member.selectBuyingCount", mNo);
 	}
+	public int selectSellingCount(String mId) {
+		return session.selectOne("member.selectSellingCount", mId);
+	}
 	
 	// (도현) 로그인 기능
 	public Member loginMember(String id, String pw) {
@@ -61,10 +64,9 @@ public class MemberDao {
 	}
 
 	// (문정)사용자 마이페이지-회원탈퇴
-	public int deleteMember(String mId, String mPw) {
+	public int deleteMember(String mId) {
 		HashMap<String, String> map = new HashMap<String, String>();
 		map.put("id", mId);
-		map.put("pw", mPw);
 		return session.delete("member.deleteMember", map);
 	}
 
@@ -80,5 +82,17 @@ public class MemberDao {
 	public int settingMemberGrade(Member m) {
 		return session.update("member.settingMemberGrade",m);
 	}
+
+
+	//(문정) 거래중인 서비스가 있는지 확인
+	public int tradeStatus(int mNo) {
+		return session.selectOne("member.tradeStatus",mNo);
+	}
+
+	//(문정)탈퇴하기전 delete_status = 'y' 셋팅
+	public int setDeleteStatusY(String mId) {
+		return session.update("member.setDeleteStatusY",mId);
+	}
+
 
 }

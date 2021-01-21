@@ -24,8 +24,10 @@
         padding-top: 30px;
     }
     .text-box>div:last-child{
+    	color:rgb(49, 76, 131);
         padding-top: 70px;
         font-size: 30px;
+        line-height: 35px;
     }
     .form-control{
         float: left;
@@ -105,7 +107,7 @@
                     <th style="border-top: 0px" class="th-text">작성자</th>
                     <th style="border-top: 0px">${req.MId } &nbsp;&nbsp;&nbsp;
                     	<c:if test="${not empty loginMember}">
-                    		<c:if test="${loginMember.MId != req.MId and loginMember.brandName != null}">
+                    		<c:if test="${loginMember.MId != req.MId and loginMember.MGrade == 2}">
                     			<button class="contact-user" value="${req.MId }">고객에게 연락하기</button>
                     		</c:if>
                     	</c:if>
@@ -119,7 +121,7 @@
                     	첨부파일이 없습니다.
                     </c:if>
                     <c:if test="${req.filepath!=null }">
-                    	<a href="#">${req.filename }</a>
+                    	<a href="/requestFileDownload.do?filepath=${req.filepath }">${req.filename }</a>
                     </c:if>
                     </th>
                     <th style="border-top: 0px"></th>
@@ -160,13 +162,14 @@
     	
     	$(".btn-delete").click(function(){
     		var reqNo = $("#reqNo").val();
+    		var filepath = "${req.filepath}";
     		var reqStatus = $("#reqStatus").val();
     		if(reqStatus == 1){  //진행중이면 삭제안되게
     			alert('진행중인 의뢰는 삭제하실 수 없습니다.');
     		}else{
     			var result = confirm('정말 삭제하시겠습니까?');
     			if(result){
-    				location.href = "/requestDeleteOne.do?reqNo="+reqNo;
+    				location.href = "/requestDeleteOne.do?reqNo="+reqNo+"&filepath="+filepath;
     			}
     		}
     	});

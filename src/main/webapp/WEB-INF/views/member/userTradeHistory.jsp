@@ -317,7 +317,7 @@
 			var sImg = $(this).prev().prev().prev().prev().val();
 			var sContent = $(this).prev().prev().prev().prev().prev().val();
 			console.log("아이디"+mId);
-			window.open('/serviceReviewWrite.do?tNo='+tNo+'&sNo='+sNo+'&mId='+mId+'&sImg='+sImg+'&sContent='+sContent,'거래후기 작성', 'width=473, height=510, left='+ _left + ', top=50, scrollbars=no,location=no, resizable=no');
+			window.open('/serviceReviewWrite.do?tNo='+tNo+'&sNo='+sNo+'&mId='+mId+'&sImg='+sImg,'거래후기 작성', 'width=473, height=510, left='+ _left + ', top=50, scrollbars=no,location=no, resizable=no');
 			return false;
 		});
 		

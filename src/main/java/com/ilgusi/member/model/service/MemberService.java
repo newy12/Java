@@ -31,6 +31,9 @@ public class MemberService {
 	public int selectBuyingCount(int mNo) {
 		return dao.selectBuyingCount(mNo);
 	}
+	public int selectSellingCount(String mId) {
+		return dao.selectSellingCount(mId);
+	}
 	// (도현) 로그인기능
 	public Member loginMember(String id, String pw) {
 		// 비번 암호화
@@ -68,8 +71,8 @@ public class MemberService {
 	}
 
 	// (문정)사용자 마이페이지-회원탈퇴
-	public int deleteMember(String mId, String mPw) {
-		return dao.deleteMember(mId, mPw);
+	public int deleteMember(String mId) {
+		return dao.deleteMember(mId);
 	}
 	
 	//(문정) 마이페이지에서 사용자-프리랜서 전환
@@ -81,5 +84,16 @@ public class MemberService {
 	public int settingMemberGrade(Member m) {
 		return dao.settingMemberGrade(m);
 	}
+	
+	//(문정)거래중인 서비스가 있는지 확인
+	public int tradeStatus(int mNo) {
+		return dao.tradeStatus(mNo);
+	}
+	
+	//(문정)탈퇴하기전 delete_status = 'y' 셋팅
+	public int setDeleteStatusY(String mId) {
+		return dao.setDeleteStatusY(mId);
+	}
+
 
 }
