@@ -46,7 +46,9 @@
             font-weight: normal;
             font-style: normal;
         }
-
+	     * {
+	         font-family: 'Arita-dotum-Medium';
+	     }
         .dh-header-container {
             position: relative;
             width: 100%;
