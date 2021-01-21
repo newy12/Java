@@ -5,6 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>거래 내역</title>
+ 
 
 <style>
 .noList{
@@ -153,8 +154,10 @@
 	height: 26px;
 	font-size: 13px;
 	font-weight: bold;
+	line-height:24px;
 	margin-top: 20px;
 	margin-left: 4px;
+	border-radius:5px;
 	color: rgb(49, 76, 131);
 	background-color: white;
 	border: 1px solid rgb(49, 76, 131);
@@ -164,6 +167,42 @@
 	color: white;
 	background-color: rgb(49, 76, 131);
 	border: 1px solid rgb(49, 76, 131);
+}
+/*블랙컨슈머 모달*/
+#modal {
+	display:none;
+	width:100%;
+	height:100%;
+	z-index:10000;
+}
+
+#modal .modal_content {
+	width:430px;
+	height:170px;
+	padding:15px 30px;
+	background:#fff;
+	border-radius: 10px;
+	border: 2px solid #314C83;
+	box-shadow: 0px 0px 10px 0px #314C83;
+}
+
+#modal .modal_layer {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0, 0, 0, 0.5);
+  z-index:-1;
+}
+.modal_content ul{
+	list-style: none;
+	margin:0;
+	padding:0;
+	margin-top: 15px;
+}
+.modal_content ul>li{
+	text-align: center;
 }
 </style>
 </head>
@@ -219,7 +258,7 @@
 										</div>
 									</div>
 									<div>
-										<a href="/serviceView.do?sNo=${serviceList[status.index].SNo }&reqPage=1">${serviceList[status.index].SContent }</a>
+										<a href="/serviceView.do?sNo=${serviceList[status.index].SNo }&reqPage=1">${serviceList[status.index].STitle }</a>
 									</div>
 								</div>
 							</div>
@@ -251,7 +290,7 @@
 									<c:when test="${t.TStatus == 1 }">
 										<input type="hidden" value="${t.MNo}" />
 										<input id="tnoId" type="hidden" value="${t.TNo}" />
-										<button class="review-btn" id="ajax_button" onclick="ajax_click(this)">작업 완료</button>
+										<button class="review-btn" id="workDone-btn">작업 완료</button>
 									</c:when>
 									<c:when test="${t.TStatus == 2}">작업 완료</c:when>
 								</c:choose>
@@ -266,6 +305,23 @@
 	<br>
 	<br>
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
+	
+	<!-- 블랙컨슈머 등록 -->
+	<div id="modal">
+	    <div class="modal_content">
+			<h4><strong>거래 의뢰자</strong>는 어떠셨나요?</h4>
+			<div style="margin-top:-10px"">의뢰자에 대한 평가는 다른 프리랜서들에게 도움이 됩니다.</div>
+			<ul>
+			 	<li>
+			 		
+			 		<a href="#hate" style="color:#d10606; ">다신 보고싶지 않아요</a>
+			 	</li>
+			 	<li><a href="#close" class="modal_close" style="color:#807e7e; ">그저 그랬어요</a></li>
+			 	<li><a href=#close" class="modal_close"  style="color:#00cc25; ">매우 좋았어요</a></li>
+			</ul>
+	    </div>
+	    <div class="modal_layer"></div>
+	</div>
 </body>
 
 
@@ -275,32 +331,6 @@
 		 $(".menu").children().eq(3).find('a').css({'margin-left':'5px', 'font-weight':'bold'});
 		 $(".menu").children().eq(3).find('img').css({'display':'inline'});
 	});
-
-	function ajax_click(obj) {
-		var tnovalue = $(obj).prev().val(); //tno값
-		var mNo = $(obj).prev().prev().val(); //mNo값
-		console.log(mNo);
-		$.ajax({
-			type : "get",
-			url : "/updateTStatus.do",
-			data : {
-				tNo : tnovalue
-			},
-			error : function() {
-				alert("실패");
-			},
-			success : function() {
-								
-				if (confirm("블랙컨슈머로 등록하겠습니까?")) {
-					alert("감사합니다.관리자에게 반영되었습니다.");	
-					location.href="/updateWarningCount.do?mNo="+mNo;				
-				} else {
-					alert("감사합니다.관리자에게 반영되었습니다.");
-				}
-				/* location.reload(); */
-			}
-		});
-	}
 	
 	//거래 세부 내역 확인
 	function trade_open(obj){
@@ -309,5 +339,43 @@
 		window.open('/serviceTradeView.do?tNo='+tNo, '거래 내용 확인', 'width=473, height=480, left='+_left+', top=50, scrollbars=no, location=no, resizable=no');
 		return false;
 	}
+	
+	//작업 완료 번튼 누르면
+	 $('#workDone-btn').click(function(event) {
+		 var tNo = $(this).prev().val(); //tno값
+		 var mNo = $(this).prev().prev().val(); //mNo값
+
+		 $.ajax({
+			type : "post",
+			url : "/updateTStatus.do",
+			data : {tNo : tNo},
+			error : function() {
+				alert("실패");
+			},
+			success : function(result) {			
+				$(".modal_content").append("<input type='hidden' value="+tNo+" id='modal_tNo'>");
+				$(".modal_content").append("<input type='hidden' value="+mNo+" id='modal_mNo'>");
+				
+				var _left = Math.ceil(( window.screen.width - 430 )/2);
+				var _top = event.pageY-200;
+				$("#modal").css({'position':'absolute','top':_top,'left':_left}).toggle('slow');
+			}
+		});
+	});
+	 
+	//다신 만나기 싫어요 외 다른거 누르면
+	 $('.modal_close').click(function(event){
+		 alert('소중한 의견 감사합니다.');
+		 $("#modal").toggle('slow');
+		 location.reload();
+	 });
+	 
+	//다신 만나기 싫어요 버튼 누르면
+	 $('a[href="#hate"]').click(function(event){
+		var tNo = $('#modal_tNo').val();
+		var mNo = $("#modal_mNo").val();
+		alert('소중한 의견 감사합니다.');
+		location.href="/updateWarningCount.do?mNo="+mNo;
+	 });
 </script>
 </html>

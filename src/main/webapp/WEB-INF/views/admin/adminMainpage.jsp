@@ -10,7 +10,7 @@
 	crossorigin="anonymous"></script>
 <style>
 html {
-	width: 1800px;
+	width: 1900px;
 }
 
 @font-face {
@@ -25,9 +25,7 @@ html {
 * {
 	font-family: 'Arita-dotum-Medium';
 }
-html{
-	width:1200px;
-}
+
 .header {
 	margin: 0 auto;
 	width: 1800px;
@@ -120,13 +118,12 @@ html{
 
 .adminContent {
 	float: left;
-	padding-left: 50px;
+	padding-left: 40px;
 	padding-top: 0;
 	width: 80%;
 	height: 100%;
 	margin: 0 auto;
 	text-align: center;
-	height: 100%;
 }
 
 .memberTable a, .serviceTable a {
@@ -143,7 +140,11 @@ html{
 	text-align: center;
 	padding: 5px;
 	height: 30px;
+	font-size:15px;
 }
+
+.msgtd{
+width:500px;}
 
 .memberTable tr:nth-child(odd), .serviceTable tr:nth-child(odd) {
 	background-color: #FFF6E5;

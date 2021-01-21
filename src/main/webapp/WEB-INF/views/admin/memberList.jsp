@@ -78,9 +78,9 @@
 						</c:if>
 						<c:if test="${page ne 'free' }">
 							<th>등급</th>
-							<th>서비스 이용횟수</th>
+							<th>거래</th>
 						</c:if>
-						<th>신고횟수</th>
+						<th>신고</th>
 						<th colspan="3">메세지</th>
 						<c:if test="${page eq 'black' }">
 							<th>처리</th>
@@ -118,7 +118,7 @@
 									onClick="window.open(this.href, '', 'width=300, height=350, left=1000, scrollbars=no,location=no, resizable=no'); return false;">
 										<img src="/img/icon/chat.png">
 								</a></td>
-								<td style="text-align: left;"><c:forEach
+								<td class="msgtd" style="text-align: left;"><c:forEach
 										items="${adminMsg }" var="msg">
 										<!-- map값 불러오는 방법?? -->
 										<c:if test="${msg.key eq m.MId }">
@@ -133,7 +133,8 @@
 										</c:if>
 									</c:forEach></td>
 								<c:if test="${page eq 'black' }">
-									<td><button class="btn deleteBtn">탈퇴</button></td>
+									<td><button class="btn deleteBtn"
+											onclick="deleteMember('${m.MId}','${m.MNo}')">탈퇴</button></td>
 								</c:if>
 							</tr>
 						</c:if>
@@ -147,12 +148,9 @@
 			</div>
 		</c:if>
 		<c:if test="${empty memberList }">
-		<div style="text-align:center">
-			<br>
-			<br>
-			<br>
-			<br>
-			<div
+			<div style="text-align: center">
+				<br> <br> <br> <br>
+				<div
 					style="float: right; margin-right: 10%; margin-top: 0; margin-bottom: 20px;">
 					<input type="text" placeholder="id 또는 브랜드네임" class="keyword">
 					<button class="btn search" onclick="search('${page}');">검색</button>
@@ -181,16 +179,9 @@
 						<b>아이디 또는 브랜드네임 : </b> [${keyword}] 의<b> 검색 결과</b>
 					</div>
 				</c:if>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<br>
-			<img src="/img/icon/exclamation.png">
-			<br>
-			<h1>검색 결과가 없습니다!</h1>
+				<br> <br> <br> <br> <br> <br> <br>
+				<img src="/img/icon/exclamation.png"> <br>
+				<h1>검색 결과가 없습니다!</h1>
 			</div>
 		</c:if>
 	</div>
@@ -238,6 +229,13 @@
 			locationFunc(grade, keyword, order);
 
 		});
+
+		function deleteMember(mId,mNo) {
+			check = confirm(mId + "님을 탈퇴시킵니다")
+			if (check) {
+				location.href="/deleteMember.do?mId="+mId+"&mNo="+mNo;
+			}
+		}
 	</script>
 
 </body>

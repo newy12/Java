@@ -151,9 +151,9 @@ public class MemberController {
 			model.addAttribute("msg", "로그인 실패");
 		}
 		model.addAttribute("loc", loc);
-		if(m != null && m.getMGrade() == 0)
+		if (m != null && m.getMGrade() == 0)
 			model.addAttribute("loc", "/manageMember.do?reqPage=1&grade=all&keyword=&order=new");
-			
+
 		return "common/msg";
 	}
 
@@ -214,31 +214,55 @@ public class MemberController {
 
 	// (문정)사용자 마이페이지 - 회원탈퇴(아이디로만)
 	@RequestMapping("/deleteMember.do")
-	public String deleteMember(String mId, HttpServletRequest req, Model model) {
-		//회원번호 받아서 거래중인 것이 있는지 확인 -> 없어야만 삭제
-		HttpSession session = req.getSession();
-		Member m = (Member) session.getAttribute("loginMember");
-		int tradeStatus = service.tradeStatus(m.getMNo());
-		
-		//탈퇴 진행
-		if(tradeStatus==0) {
-			int result = service.setDeleteStatusY(mId);       //delete_status = 'y'로 바꿈
-			if(result>0) {
-				result = service.deleteMember(mId);
-				session.setAttribute("loginMember", null);
-				model.addAttribute("msg", "탈퇴 되었습니다.");
-				model.addAttribute("loc", "/");
-			}else {
-				model.addAttribute("msg", "탈퇴 실패");
+	public String deleteMember(String mId, HttpServletRequest req, Model model, String admin, String mNo) {
+		if (mNo == null) {
+			// 회원번호 받아서 거래중인 것이 있는지 확인 -> 없어야만 삭제
+			HttpSession session = req.getSession();
+			Member m = (Member) session.getAttribute("loginMember");
+			int tradeStatus = service.tradeStatus(m.getMNo());
+
+			// 탈퇴 진행
+			if (tradeStatus == 0) {
+				int result = service.setDeleteStatusY(mId); // delete_status = 'y'로 바꿈
+				if (result > 0) {
+					result = service.deleteMember(mId);
+					session.setAttribute("loginMember", null);
+					model.addAttribute("msg", "탈퇴 되었습니다.");
+					model.addAttribute("loc", "/");
+				} else {
+					model.addAttribute("msg", "탈퇴 실패");
+					model.addAttribute("loc", "/userMypage.do");
+				}
+			}
+			// 거래중인 서비스가 있어서 탈퇴 거절
+			else {
+				model.addAttribute("msg", "거래 중인 서비스가 있기 때문에 탈퇴하실 수 없습니다.");
 				model.addAttribute("loc", "/userMypage.do");
 			}
+			return "common/msg";
+		} else {// 관리자가 삭제할때
+			int mNoInt = Integer.parseInt(mNo);
+			int tradeStatus = service.tradeStatus(mNoInt);
+			// 탈퇴 진행
+			if (tradeStatus == 0) {
+				int result = service.setDeleteStatusY(mId); // delete_status = 'y'로 바꿈
+				if (result > 0) {
+					result = service.deleteMember(mId);
+					model.addAttribute("msg", "탈퇴 되었습니다.");
+					model.addAttribute("loc", "manageMember.do?reqPage=1&grade=black&keyword=&order=new");
+				} else {
+					model.addAttribute("msg", "탈퇴 실패");
+					model.addAttribute("loc", "/manageMember.do?reqPage=1&grade=black&keyword=&order=new");
+				}
+			}
+			// 거래중인 서비스가 있어서 탈퇴 거절
+			else {
+				model.addAttribute("msg", "거래 중인 서비스가 있기 때문에 탈퇴하실 수 없습니다.");
+				model.addAttribute("loc", "/manageMember.do?reqPage=1&grade=black&keyword=&order=new");
+			}
+			return "common/msg";
+
 		}
-		//거래중인 서비스가 있어서 탈퇴 거절
-		else {
-			model.addAttribute("msg", "거래 중인 서비스가 있기 때문에 탈퇴하실 수 없습니다.");
-			model.addAttribute("loc", "/userMypage.do");
-		}
-		return "common/msg";
 	}
 
 	// (문정) 마이페이지에서 사용자-프리랜서 전환

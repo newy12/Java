@@ -56,14 +56,16 @@
 	font-size: 20px;
 }
 
-.service-title{
+.bigBtn {
+	cursor: pointer;
+}
+
+.service-title {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	cursor: pointer;
-	}
-
-
+}
 </style>
 </head>
 
@@ -111,16 +113,20 @@
 										<div class="adminBox">
 											<br>
 											<c:if test="${status.index eq 0 }">
-											<div class="date" style="margin: 0 auto; margin-bottom:10px;">${message.CDate }</div>
+												<div class="date"
+													style="margin: 0 auto; margin-bottom: 10px;">${message.CDate }</div>
 											</c:if>
 											<c:if test="${status.index ne 0 }">
 												<!-- 이전 메세지의 보낸날짜와 다르면 출력 -->
-												<c:if test="${message.CDate ne content.get(status.index-1).CDate }">
+												<c:if
+													test="${message.CDate ne content.get(status.index-1).CDate }">
 													<br>
-													<div class="date" style="margin: 0 auto; margin-bottom:10px;">${message.CDate }</div>
-												</c:if></c:if>
+													<div class="date"
+														style="margin: 0 auto; margin-bottom: 10px;">${message.CDate }</div>
+												</c:if>
+											</c:if>
 
-												<p class="adminMsg" style="margin: 0 auto;">${message.CContent }</p>
+											<p class="adminMsg" style="margin: 0 auto;">${message.CContent }</p>
 										</div>
 									</c:if>
 								</c:if>
@@ -131,7 +137,7 @@
 							<div class="wrap">
 								<!-- 알림창 -->
 								<!-- 문의사항페이지로 이동 -->
-								<a class="bigBtn qna" >관리자에게 문의하기</a>
+								<a class="bigBtn qna">관리자에게 문의하기</a>
 							</div>
 						</div>
 					</c:if>
@@ -144,7 +150,9 @@
 				<c:if test="${service.SNo ne 0 }">
 					<div id="chat-profile">
 						<div id="profile-info">
-							<div class="service-title"><u>${service.STitle}</u></div>
+							<div class="service-title">
+								<u>${service.STitle}</u>
+							</div>
 							<div>${freeId }<c:if
 									test="${sessionScope.loginMember.MGrade==2 }">
 									<c:if test="${not empty black }">
@@ -235,7 +243,7 @@
 							<!-- 알림창 -->
 							<c:if test="${service.SNo eq 0 }">
 								<!-- 문의사항페이지로 이동 -->
-								<a class="bigBtn qna" >관리자에게 문의하기</a>
+								<a class="bigBtn qna">관리자에게 문의하기</a>
 							</c:if>
 						</div>
 					</div>
@@ -345,13 +353,13 @@
 		}
 
 		// 엔터 누르면 전송 
-		 $(".message").keyup(function(e) {
+		$(".message").keyup(function(e) {
 			var cNo = ${cNo}; //방번호 
 			cNo = Number(cNo);
 			if (e.keyCode == 13)
-				sendMsg('${sessionScope.loginMember.MId}',cNo);
+				sendMsg('${sessionScope.loginMember.MId}', cNo);
 		});
-		 
+
 		function deleteChat() {
 			var cNo = ${cNo}; //방번호 
 			cNo = Number(cNo);
@@ -364,9 +372,7 @@
 					url : "/deleteChat.do",
 					type : "post",
 					async : false,
-					data : {
-						cNo : cNo
-					},
+					data : {cNo : cNo},
 					success : function(data) {
 						console.log("삭제성공");
 						location.href = "/chatList.do?mGrade=" + mGrade
@@ -375,15 +381,17 @@
 				});
 			}
 		}
-		
-		$(".service-title").click(function(){
-			console.log("click!");
-			var sNo=${service.SNo};
-			sNo=Number(sNo);
-			opener.parent.location.href = "/serviceView.do?sNo="+sNo+"&reqPage=1";
-		});
-		
-		$(".qna").click(function(){
+
+		$(".service-title").click(
+				function() {
+					console.log("click!");
+					var sNo = ${service.SNo};
+					sNo = Number(sNo);
+					opener.parent.location.href = "/serviceView.do?sNo=" + sNo
+							+ "&reqPage=1";
+				});
+
+		$(".qna").click(function() {
 			console.log("click!!");
 			opener.parent.location.href = "/qna.do?page=1";
 		});
