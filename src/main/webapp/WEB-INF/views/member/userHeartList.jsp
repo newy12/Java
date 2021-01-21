@@ -181,7 +181,7 @@
 		                    <a href="/serviceView.do?sNo=${s.SNo }&reqPage=1">
 		                        <div class="title-img">
 		                            <div class="back-img">
-		                            	<img src="/img/icon/img.jpg" width="225x" height="133px">
+		                            	<img src="/upload/service/${s.SImg }" width="225x" height="133px">
 		                            </div>
 		                        </div>
 		                    </a>

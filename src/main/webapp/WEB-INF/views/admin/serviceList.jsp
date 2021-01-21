@@ -88,6 +88,12 @@
 							<c:otherwise>
 								<input type="radio" name="order" value="cate">카테고리↓</c:otherwise>
 						</c:choose>
+						<c:choose>
+							<c:when test="${order eq 'id' }">
+								<input type="radio" name="order" value="id" checked>id↓</c:when>
+							<c:otherwise>
+								<input type="radio" name="order" value="id">id↓</c:otherwise>
+						</c:choose>
 
 					</div>
 				</div>
@@ -193,12 +199,9 @@
 			</div>
 		</c:if>
 		<c:if test="${empty serviceList }">
-		<div>
-			<br>
-			<br>
-			<br>
-			<br>
-			<div
+			<div>
+				<br> <br> <br> <br>
+				<div
 					style="float: right; margin-right: 10%; margin-top: 0; margin-bottom: 20px;">
 
 					<select>
@@ -248,6 +251,12 @@
 							<c:otherwise>
 								<input type="radio" name="order" value="cate">카테고리↓</c:otherwise>
 						</c:choose>
+						<c:choose>
+							<c:when test="${order eq 'id' }">
+								<input type="radio" name="order" value="id" checked>id↓</c:when>
+							<c:otherwise>
+								<input type="radio" name="order" value="id">id↓</c:otherwise>
+						</c:choose>
 
 					</div>
 				</div>
@@ -274,8 +283,8 @@
 			<img src="/img/icon/exclamation.png">
 			<br>
 			<h1>검색 결과가 없습니다!</h1>
-			</div>
-		</c:if>
+	</div>
+	</c:if>
 
 	</div>
 	<script>
@@ -429,14 +438,18 @@
 				type : "post",
 				async : false,
 				data : {
-					sNo : sNo,
+					mId:mId,
+					sNo : sNo
 				},
-				success : function() {
-					console.log("승인 성공!");
-					var content ="서비스 <b> ["+sTitle+"]</b>가 <b>등록</b>되었습니다.";
-					sendMsg(mNo,mId,content);
-					location.reload(); 
-					
+				success : function(data) {
+					if (data == -1) {
+						alert("5개 이상 등록할수 없습니다!");
+					} else{
+						console.log("승인 성공!");
+						var content ="서비스 <b> ["+sTitle+"]</b>가 <b>등록</b>되었습니다.";
+						sendMsg(mNo,mId,content);
+						location.reload(); }
+									
 			},
 			  error : function(){
                   console.log("승인 실패!");

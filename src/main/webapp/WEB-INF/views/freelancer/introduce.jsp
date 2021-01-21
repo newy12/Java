@@ -8,6 +8,7 @@
 <title>19시 :: [${j.brandName}] 소개</title>
 <script type="text/javascript"
 	src="https://code.jquery.com/jquery-3.3.1.js"></script>
+
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
@@ -16,12 +17,9 @@
 	<br>
 	<div class="content">
 		<div class="inner">
-			<div class="title">
-				<div class="title2"></div>
-				<p class="tt">${j.brandName}(${j.MId})
-				</p>
-
-				<p class="tt" id="listSize">${list} </p>
+			<div class="title"><br><br><br><br><br><br>
+				<p class="tt"><h1>${j.brandName}<span style="font-size:30px;">(${j.MId})</span></h1></p>
+				<p class="tt" id="listSize">${list}</p>
 				<p class="tt" id="sRate">평균 평점 : ${avg }</p>
 
 			</div>
@@ -43,7 +41,7 @@
 					<h2>소개</h2>
 				</div>
 				<br>
-				<p>${j.introduceBr}</p>
+				<p style="margin-left:20px;">${j.introduceBr}</p>
 			</div>
 
 			<div class="middleright">
@@ -73,28 +71,40 @@
 					<h2>평가</h2>
 				</div>
 				<br>
-				<p class="tt" style="margin-left: -3px;" id="sRate2">
+				<p class="tt"  id="sRate2">
 					<c:choose>
 						<c:when test="${avg  == 5}">
-							<p>★★★★★  <b> ${avg }</b> /5.0점</p>
+							<p>
+								★★★★★ <b> ${avg }</b> /5.0점
+							</p>
 						</c:when>
 						<c:when test="${avg  gt 4}">
-							<p>★★★★☆  <b> ${avg }</b> /5.0점</p>
+							<p>
+								★★★★☆ <b> ${avg }</b> /5.0점
+							</p>
 						</c:when>
 						<c:when test="${avg  gt 3}">
-							<p>★★★☆☆  <b> ${avg }</b> /5.0점</p>
+							<p>
+								★★★☆☆ <b> ${avg }</b> /5.0점
+							</p>
 						</c:when>
 						<c:when test="${avg  gt 2}">
-							<p>★★☆☆☆  <b> ${avg }</b> /5.0점</p>
+							<p>
+								★★☆☆☆ <b> ${avg }</b> /5.0점
+							</p>
 						</c:when>
 						<c:when test="${avg  gt 1}">
-							<p>★☆☆☆☆  <b> ${avg }</b> /5.0점</p>
+							<p>
+								★☆☆☆☆ <b> ${avg }</b> /5.0점
+							</p>
 						</c:when>
 						<c:when test="${avg ==0}">
-							<p>☆☆☆☆☆  <b> ${avg }</b> /5.0점</p>
+							<p>
+								☆☆☆☆☆ <b> ${avg }</b> /5.0점
+							</p>
 						</c:when>
 					</c:choose>
-					
+
 
 				</p>
 				<p class="tt" id="listSize2"></p>
@@ -140,8 +150,12 @@
 									<hr>
 								</div>
 								<div id="reviewContentBox">
-									<p class="userId"><b>작성자 :</b> ${r.MId}</p>
-									<p class="serviceName"><b>서비스 : </b>[${r.STitle}]</p>
+									<p class="userId">
+										<b>작성자 :</b> ${r.MId}
+									</p>
+									<p class="serviceName">
+										<b>서비스 : </b>[${r.STitle}]
+									</p>
 									<hr>
 									<br>
 									<p class="reviewText">${r.RContent}</p>
@@ -158,8 +172,7 @@
 			<div class="middle2right"></div>
 			<br> <br>
 			<div class="middle3">
-				<br>
-				<br>
+				<br> <br>
 				<div id="three">
 					<br>
 					<h2>서비스(${j.serviceList.size()}개)</h2>
@@ -177,7 +190,7 @@
 										style="width: 150px; height: 150px;"><br> <span
 										class="preName">[<b>${r.STitle }</b>]
 									</span><br>
-									<p class="serviceCon" style="float: left;">내용 :${r.SContent }</p>
+									<p class="serviceCon" style="float: right;">${r.SPrice }원~</p>
 									<br>
 									<c:if test="${r.SRate ==0}">
 										<p class="score">
@@ -219,7 +232,9 @@
 		<input type="hidden" id="haha" value="${j.MId}">
 	</div>
 	<a id="topBtn" href="#"
-		style="width: 50px; height: 50px; line-height: 50px; background-color: orange; border-radius: 25%; text-decoration: none; text-align: center;">Top</a>
+		style="width: 50px; height: 50px; line-height: 50px; background-color: orange; border-radius: 25%; text-decoration: none; text-align: center;">
+		TOP
+		</a>
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 </body>
 
@@ -314,6 +329,7 @@ body, hr, p, ul {
 
 p.tt {
 	margin-left: 100px;
+	font-size:18px;
 }
 
 a {
@@ -323,10 +339,24 @@ a {
 li.ac {
 	list-style: none;
 	float: left;
+	width: 100px;
+	line-height:50px;
+	text-align:center;
 	margin-left: -30px;
-	margin-right: 80px;
+	margin-right: 30px;
 	font-size: 20px;
+	background-color: #314C83;
+	font-weight: bold;
+	box-sizing: border-box;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	border: 2px solid #314C83;
+	border-bottom: none;
 }
+
+li.ac a{
+color:white;
+display:block;}
 
 div.inner {
 	width: 1200px;
@@ -335,13 +365,15 @@ div.inner {
 
 div.title {
 	width: 100%;
-	height: 200px;
+	height: 300px;
+	margin-bottom:30px;
+	padding:30px;
+	text-align: right;
+	background-image: url("img/free/free_banner.jpeg");
+	background-size:cover;
+	background-repeat: no-repeat;
 }
 
-div.title2 {
-	width: 100%;
-	height: 90px;
-}
 
 div.menu {
 	width: 100%;
@@ -357,11 +389,12 @@ div.middleleft {
 div.middleright {
 	float: left;
 	width: 300px;
-	border: 1px solid black;
+	/* border: 1px solid black; */
 	margin-left: 60px;
-	margin-top: 120px;
+	margin-top: 80px;
 	padding-left: 20px;
 	padding-bottom: 50px;
+	background-color:#f5f5f5;
 }
 
 div.boxinner {
@@ -407,9 +440,11 @@ div.middle4 {
 
 #topBtn {
 	position: fixed;
-	right: 50px;
-	bottom: 100px;
+	left: 80px;
+	bottom: 50%;
 	z-index: 9;
+	color:white;
+	font-weight: bold;
 }
 
 .reviewBox {

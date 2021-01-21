@@ -24,8 +24,10 @@
         padding-top: 30px;
     }
     .text-box>div:last-child{
+    	color:rgb(49, 76, 131);
         padding-top: 70px;
         font-size: 30px;
+        font-weight: bold;
     }
     .search-box{
 		height : 65px;

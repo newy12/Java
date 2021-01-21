@@ -69,7 +69,7 @@
 				<table class="memberTable" style="width: 90%;">
 					<tr>
 						<th>가입일</th>
-						<th>회원번호</th>
+						<!-- <th>회원번호</th> -->
 						<th>아이디</th>
 						<th>이름</th>
 						<c:if test="${page eq 'free'}">
@@ -90,7 +90,7 @@
 						<c:if test="${m.MId != 'admin' }">
 							<tr>
 								<td>${m.enrollDate }</td>
-								<td>${m.MNo }</td>
+								<%-- <td>${m.MNo }</td> --%>
 								<td>${m.MId}</td>
 								<td>${m.MName }</td>
 								<c:if test="${page eq 'free'}">

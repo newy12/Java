@@ -6,8 +6,31 @@
 <head>
 <meta charset="UTF-8">
 <title>19시 :: 찜 리스트</title>
-</head>
+<style>
+#name {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
 
+.startChat,.deleteFavorite{
+color:white;
+display:inline-block;
+width:70px;
+height:30px;
+text-align:center;
+line-height:30px;
+border-radius:10px;
+}
+
+.navy{
+background-color: #314C83;}
+
+.orange{
+background-color: #FF8F3F;
+}
+</style>
+</head>
 <body>
 	<!--전체 wrap-->
 	<div id="chat-wrap">
@@ -40,13 +63,15 @@
 													<c:if test="${empty s.MId }">탈퇴한 회원</c:if>
 													<c:if test="${not empty s.MId }">${s.MId }</c:if>
 												</p>
-												<p id="preview">내용: ${s.SContent}</p>
+												<%-- <p id="preview">내용: ${s.SContent}</p> --%>
 												<p id="preview">가격: ${s.SPrice } 평점: ${s.SRate }</p>
-												<c:if test="${not empty s.MId }">
-													<a href="#"
-														onclick="startChat('${s.SNo }','${sessionScope.loginMember.MId }','${s.MId}','${sessionScope.loginMember.MNo }','${sessionScope.loginMember.MGrade}');">문의하기</a>
-												</c:if>
-												<a href="#" onclick="deleteFavorite();">삭제하기</a>
+												<div style="float: right;">
+													<c:if test="${not empty s.MId }">
+														<a class="startChat navy" href="#"
+															onclick="startChat('${s.SNo }','${sessionScope.loginMember.MId }','${s.MId}','${sessionScope.loginMember.MNo }','${sessionScope.loginMember.MGrade}');">문의하기</a>
+													</c:if>
+													<a class="deleteFavorite orange" href="#" onclick="deleteFavorite();">삭제하기</a>
+												</div>
 											</div>
 										</div>
 									</li>
@@ -69,7 +94,7 @@
 						<h3>
 							아직 찜한 서비스가 <br>없습니다!
 						</h3>
-						<a href="#"><u>나에게 맞는 서비스 검색 ></u></a>
+						<a href="/"><u>나에게 맞는 서비스 검색 ></u></a>
 					</div>
 				</div>
 			</c:if>
@@ -83,7 +108,7 @@
 	<!-- chat-wrap 끝-->
 
 	<script>
-		function startChat(sNo, userId, freeId, mNo,mGrade) {
+		function startChat(sNo, userId, freeId, mNo, mGrade) {
 			$.ajax({
 				url : "/makeRoom.do",
 				type : "post",
@@ -93,11 +118,12 @@
 					userId : userId,
 					freeId : freeId,
 					mNo : mNo,
-					mGrade:mGrade
+					mGrade : mGrade
 				},
 				success : function(data) {
-					location.href = "/enterRoom.do?cNo=-1&sNo=" + sNo + "&myId="
-							+ userId + "&yourId=" + freeId+"&mGrade="+mGrade
+					location.href = "/enterRoom.do?cNo=-1&sNo=" + sNo
+							+ "&myId=" + userId + "&yourId=" + freeId
+							+ "&mGrade=" + mGrade
 				},
 				error : function() {
 

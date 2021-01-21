@@ -120,5 +120,10 @@ public class AdminService {
 	public int totalServiceCount(String status, String keyword1, String keyword2) {
 		return dao.totalServiceCount(status, keyword1, keyword2);
 	}
+	
+	//회원의 서비스개수 구하기
+	public ArrayList<com.ilgusi.service.model.vo.Service> selectServiceList(String mId) {
+		return dao.selectServiceList(mId);
+	}
 
 }

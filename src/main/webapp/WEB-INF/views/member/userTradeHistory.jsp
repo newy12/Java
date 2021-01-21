@@ -227,7 +227,7 @@
 	                                <div>
 	                                    <div><a href="/introduceFrm.do?mId=${serviceList[status.index].MId}&reqPage=1">${serviceList[status.index].MId }</a></div>
 	                                    <div><a href="/introduceFrm.do?mId=${serviceList[status.index].MId}&reqPage=1"><img src="/img/icon/home.png"></a></div>
-	                                    <div><a href="#"><img src="/img/icon/message.png"></a></div>
+	                                    <div><a href="#" onclick="startChat('${serviceList[status.index].SNo}','${sessionScope.loginMember.MId }','${serviceList[status.index].MId}','${sessionScope.loginMember.MNo }','${sessionScope.loginMember.MGrade}');"><img src="/img/icon/message.png"></a></div>
 	                                </div>
 	                            </div>
 	                            <div><a href="/serviceView.do?sNo=${serviceList[status.index].SNo}&reqPage=1">${serviceList[status.index].SContent }</a></div>
@@ -238,6 +238,7 @@
 	                    		<c:when test="${t.TStatus == 0 }">
 	                    			<div style="color: rgb(255, 143, 63);font-size: 20px;margin-top: 5px;font-weight: bold;">결제 전</div>
 			                        <div>
+			                        	<input type="text" style="display:none" value="${serviceList[status.index].STitle }">
 			                        	<input type="text" style="display:none" value="${loginMember.MNo }">
 			                        	<input type="text" style="display:none" value="${loginMember.MName }">
 			                        	<input type="text" style="display:none" value="${loginMember.MPhone }">
@@ -343,6 +344,7 @@
 			var mPhone = $(this).prev().prev().prev().prev().val();
 			var mName = $(this).prev().prev().prev().prev().prev().val();
 			var mNo = $(this).prev().prev().prev().prev().prev().prev().val();
+			var sTitle = $(this).prev().prev().prev().prev().prev().prev().prev().val();
 			var d = new Date();
 			var date = d.getFullYear()+''+(d.getMonth()+1)+''+d.getDate()+''+d.getHours()+''+d.getMinutes()+''+d.getSeconds();
 			
@@ -354,7 +356,7 @@
 		  		IMP.init("imp45748539");
 		  		IMP.request_pay({
 		  			merchant_uid : date, //거래ID(고유)
-		  			name : tNo, //결제이름(거래번호)
+		  			name : sTitle, //결제이름(거래번호)
 		  			amount : tPrice, //결제금액
 		  			buyer_email : mEmail,//구매자email
 		  			buyer_name : mName, //구매자이름
@@ -374,6 +376,32 @@
 		//거래상세보기 창에서 서비스 상세보기를 누르면
 		function gotoServiceView(sNo){
 			location.href="/serviceView.do?sNo="+sNo+"&reqPage=1";
+		}
+		
+	    function startChat(sNo, userId, freeId, mNo, mGrade) {
+			$.ajax({
+				url : "/makeRoom.do",
+				type : "post",
+				async : false,
+				data : {
+					sNo : sNo,
+					userId : userId,
+					freeId : freeId,
+					mNo : mNo,
+					mGrade : mGrade
+				},
+				success : function(data) {
+					/* location.href = "/enterRoom.do?cNo=-1&sNo=" + sNo
+							+ "&myId=" + userId + "&yourId=" + freeId
+							+ "&mGrade=" + mGrade */
+					var loc="/enterRoom.do?cNo=-1&sNo=" + sNo + "&myId="+ userId + "&yourId=" + freeId+"&mGrade="+mGrade
+					var _left = Math.ceil(( window.screen.width - 530 )/2);
+					window.open(loc, '', 'width=530, height=630, left='+_left+', top=50, location=no,scrollbars=no,location=no, resizable=no'); 
+				},
+				error : function() {
+
+				}
+			});
 		}
 	</script>
 

@@ -50,7 +50,8 @@ public class ChatDao {
 	}
 
 	// (소현)보낸메세지 저장
-	public void insertChat(HashMap<String, Object> message) {
+	public void insertChat(HashMap<String, Object> message) {	
+		System.out.println(message.get("content"));
 		session.insert("chat.insertChat", message);
 	}
 

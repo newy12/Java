@@ -166,6 +166,10 @@
 	    			oEditors.getById["smartEditor"].exec("FOCUS"); 
 	    			return; 
 	    			} 
+	    		if(getByteB(content) > 2000){
+	    			alert("입력할 수 있는 글자수를 초과되었습니다.\n현재 본문크기 : "+getByteB(content)+"byte, 제한크기 : 2000byte");
+	    			return;
+	    		}
 	    		//이 부분은 스마트에디터 유효성 검사 부분이니 참고하시길 바랍니다. 
 	    		var result = confirm("등록 하시겠습니까?"); 
 	    		if(result){
@@ -175,7 +179,19 @@
 	    			return; 
 	    			} 
 	    		}); 
+	    	
+
 	    	})
+	    	
+	 //글자수 검사
+	function getByteB(str) {
+		var byte = 0;
+		for (var i=0; i<str.length; ++i) {
+			// 기본 한글 3바이트 처리
+			(str.charCodeAt(i) > 127) ? byte += 3 : byte++ ;
+		}
+			return byte;
+		}
     </script>
 
 </body>

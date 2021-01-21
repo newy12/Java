@@ -252,9 +252,27 @@ public class AdminController {
 	// (소현)서비스승인
 	@ResponseBody
 	@RequestMapping("/acceptService.do")
-	public int acceptService(int sNo) {
-		int result = service.acceptService(sNo);
-		return result;
+	public int acceptService(String mId, int sNo) {
+		// 회원의 전체서비스
+		ArrayList<Service> serviceList = service.selectServiceList(mId);
+		// 승인된 서비스
+		int approved = 0;
+		for (int i = 0; i < serviceList.size(); i++) {
+			char adminApproval = serviceList.get(i).getAdminApproval();
+			char deleteStatus = serviceList.get(i).getDeleteStatus();
+			if (adminApproval == 'y' && deleteStatus == 'n') {
+				approved++;
+			}
+		}
+
+		if (approved < 5) {
+			int result = service.acceptService(sNo);
+			System.out.println(result);
+			return result;
+		} else {// 5개 미만이면 승인 아니면 return -1
+			return -1;
+		}
+
 	}
 
 	// (소현)서비스거절창에 서비스정보보내기
@@ -340,7 +358,7 @@ public class AdminController {
 				maxListCount - ((page - 1) * listPerPage), type, keyword);
 		int maxPrintPageCount = 5;
 		int maxPageCount = service.selectMaxPageCount(listPerPage, maxListCount);
-		int begin = maxPrintPageCount * (page / (maxPrintPageCount+1)) + 1; // 네비 시작
+		int begin = maxPrintPageCount * (page / (maxPrintPageCount + 1)) + 1; // 네비 시작
 		int end = (begin + 4) < maxPageCount ? begin + 4 : maxPageCount; // 네비 끝
 		model.addAttribute("questionList", list);
 		model.addAttribute("begin", begin);

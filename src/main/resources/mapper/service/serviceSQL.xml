@@ -405,6 +405,9 @@
 			<when test='order == "cate"'>
 				order by c_no
 			</when>
+			<when test='order == "id"'>
+				order by service.m_id
+			</when>
 		</choose>
 		) s) r where rnum between #{start} and #{end}
 

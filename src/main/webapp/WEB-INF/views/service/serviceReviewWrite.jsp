@@ -94,7 +94,7 @@
 		<div id="gray-text">거래 완료 후 리뷰를 쓰시면 다른 구매자의 이용에 도움이 됩니다.</div>
 		<hr>
 		<div class="sContent">
-			<div><img src="/upload/request/${sImg }" width="100%" height="80px" alt="${sImg }" style="border-radius:5px;"></div>
+			<div><img src="/upload/service/${sImg }" width="100%" height="80px" alt="${sImg }" style="border-radius:5px;"></div>
 			<div><a href="#">${sContent }</a></div>
 		</div>
 		<div class="sub-title">서비스 만족도</div>
