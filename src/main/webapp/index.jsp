@@ -209,6 +209,32 @@
 					}
 				}
 			});
+			$.ajax({
+				type: "post",
+				url: "/rankAjax.do",
+				data: {
+					cateNum: 70
+				},
+				dataType: "json",
+				success: function (response) {
+					console.log(response);
+					$(".rank-category-title:eq(2)").text("주문제작");
+					$(".sumPrice:eq(2)").empty
+					console.log(response["sump"]);
+					$(".sumPrice:eq(2)").text(response[0].sumPrice + "원");
+					$(".free-id:eq(2)").append("<a href='/introduceFrm.do?mId=" + response[0].mId +
+						"&reqPage=1'>" +
+						response[0].mId + "</a>");
+					for (let i = 1; i < response.length; i++) {
+						$(".rank-list:eq(2)").find(".rank-col-2:eq(" + (i-1) + ")").text(response[i]
+							.sumPrice + "원");
+						$(".rank-list:eq(2) .rank-col-3:eq(" + (i-1) + ")").append(
+							"<a href='/introduceFrm.do?mId=" + response[i].mId +
+							"&reqPage=1'>" +
+							response[i].mId + "</a>");
+					}
+				}
+			});
 			$(".category-title").hover(function (e) {
 				$(this).parent().children("a").eq(1).children("div").addClass("cate-hover");
 			}, function (e) {
@@ -449,7 +475,7 @@
 			<div class="rank-content">
 				<div class="rank-list">
 					<div class="rank-top-background">
-						<div class="rank-category-title">IT.프로그래밍</div>
+						<div class="rank-category-title"></div>
 						<div class="rank-1th-container">
 							<div class="rank-1th-col1 r-col">1위</div>
 							<div class="rank-1th-col2 r-col">
@@ -464,8 +490,8 @@
 					</div>
 					<div class="rank-row">
 						<div class="rank-col-1 r-col">2위</div>
-						<div class="rank-col-2 r-col"></div>
-						<div class="rank-col-3 r-col"></div>
+						<div class="rank-col-2 r-col">500원</div>
+						<div class="rank-col-3 r-col">frre</div>
 					</div>
 					<div class="rank-row">
 						<div class="rank-col-1 r-col">3위</div>
@@ -485,7 +511,7 @@
 				</div>
 				<div class="rank-list">
 					<div class="rank-top-background">
-						<div class="rank-category-title">IT.프로그래밍</div>
+						<div class="rank-category-title"></div>
 						<div class="rank-1th-container">
 							<div class="rank-1th-col1 r-col">1위</div>
 							<div class="rank-1th-col2 r-col">
@@ -501,8 +527,8 @@
 					</div>
 					<div class="rank-row">
 						<div class="rank-col-1 r-col">2위</div>
-						<div class="rank-col-2 r-col">123,123,123원</div>
-						<div class="rank-col-3 r-col">프리랜서아이디</div>
+						<div class="rank-col-2 r-col"></div>
+						<div class="rank-col-3 r-col"></div>
 					</div>
 					<div class="rank-row">
 						<div class="rank-col-1 r-col">3위</div>
@@ -522,15 +548,15 @@
 				</div>
 				<div class="rank-list">
 					<div class="rank-top-background">
-						<div class="rank-category-title">IT.프로그래밍</div>
+						<div class="rank-category-title">주문제작</div>
 						<div class="rank-1th-container">
 							<div class="rank-1th-col1 r-col">1위</div>
 							<div class="rank-1th-col2 r-col">
 								<div>
 									<div>총 판매 금액</div>
-									<div class="sumPrice">154,997,581원</div>
+									<div class="sumPrice"></div>
 									<div class="free-id">
-										프리랜서아이디
+										
 									</div>
 								</div>
 							</div>
@@ -538,8 +564,8 @@
 					</div>
 					<div class="rank-row">
 						<div class="rank-col-1 r-col">2위</div>
-						<div class="rank-col-2 r-col">123,123,123원</div>
-						<div class="rank-col-3 r-col">프리랜서아이디</div>
+						<div class="rank-col-2 r-col"></div>
+						<div class="rank-col-3 r-col"></div>
 					</div>
 					<div class="rank-row">
 						<div class="rank-col-1 r-col">3위</div>
