@@ -15,12 +15,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 import com.ilgusi.member.model.service.MemberService;
 import com.ilgusi.member.model.vo.Member;
+import com.ilgusi.request.model.service.RequestService;
+import com.ilgusi.request.model.vo.RequestPageData;
 
 @Controller
 public class MemberController {
 	@Autowired
 	private MemberService service;
 
+	@Autowired
+	private RequestService reqService;
+	
 	public MemberController() {
 		super();
 		System.out.println("Member컨트롤러 생성 완료");
@@ -279,5 +284,15 @@ public class MemberController {
 			session.setAttribute("loginMember", m);
 			return "member/userMypage";
 		}
+	}
+	
+	//(문정) 마이페이지 - 의뢰내역 확인하기
+	@RequestMapping("/userRequestHistory.do")
+	public String userRequestHistory( int reqPage, Model model) {
+		RequestPageData rpd = reqService.selectRequestList(reqPage, "new", "all", null,"mypage");
+		model.addAttribute("list", rpd.getList());
+		model.addAttribute("pageNavi", rpd.getPageNavi());
+		model.addAttribute("totalCount", rpd.getTotalCount());
+		return "member/userRequestHistory";
 	}
 }

@@ -5,19 +5,19 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>거래 후기 작성하기</title>
-  <!-- 합쳐지고 최소화된 최신 CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-
-    <!-- 부가적인 테마 -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-
-    <!-- 합쳐지고 최소화된 최신 자바스크립트 -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-
+<title>19시 :: 제공할 서비스 선택</title>
+<!-- 합쳐지고 최소화된 최신 CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<!-- 부가적인 테마 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<!-- 합쳐지고 최소화된 최신 자바스크립트 -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.5.1.js"
-        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+<!-- favicon -->
+<link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
 </head>
 <style>
      @font-face {
@@ -125,7 +125,7 @@
 	                        <div><img src="/upload/service/${s.SImg }" width="80px" height="50px" style="border-radius:10px;" alt="${s.SImg }"></div>
 	                        <div>
 	                            <div style="margin-top: 10px;font-weight: bold;font-size: 12px;">${s.mainCategoryName } > ${s.subCategoryName }</div>
-	                            <div><a href="javascript:openService(${s.SNo });" class="title">${s.STitle }</a></div>
+	                            <div><a href="javascript:openService(${s.SNo }, ${loginMember.MNo });" class="title">${s.STitle }</a></div>
 	                        </div>
 	                    </div>
 	                </td>
@@ -180,8 +180,8 @@
     	});
     	
     	//서비스 누르면 새 창으로 연결
-    	function openService(sNo){
-    		var win = window.open("/serviceView.do?sNo="+sNo+"&reqPage=1", "serviceView", "width="+(window.screen.width)+",height="+(window.screen.height));
+    	function openService(sNo,mNo){
+    		var win = window.open("/serviceView.do?sNo="+sNo+"&reqPage=1&mNo="+mNo, "serviceView", "width="+(window.screen.width)+",height="+(window.screen.height));
     	}
     </script>
 </body>
