@@ -4,7 +4,16 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>19시 :: 공지사항등록</title>
+<!-- favicon -->
+<link rel="apple-touch-icon" sizes="180x180"
+   href="favicon_io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32"
+   href="favicon_io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16"
+   href="favicon_io/favicon-16x16.png">
+   
+   
 <script type="text/javascript" src="/SE2/js/HuskyEZCreator.js" charset="utf-8"></script>
 <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 
@@ -197,9 +206,48 @@
 	    			} 
 	    		}); 
 	    	})
+	    	
+	    	
+	/*     $(".save").click(function () {
+			oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FILED",[]);
+			
+			if(getByteB(content)>4000){
+    			alert("입력할 수 있는 글자수를 초과되었습니다.\n현재 본문크기 : "+getByteB(content)+"byte, 제한크기 : 4000byte");
+    			return;
+    		}
+		})
+		
+		function getByteB(str) {
+		var Abyte = 0;
+		for (var i=0; i<str.length; ++i) {
+			// 기본 한글 3바이트 처리
+			(str.charCodeAt(i) > 127) ? Abyte += 3 : Abyte++ ;
+		}
+			return Abyte;
+		} */
+	    	
     </script>
 	
 	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 </body>
