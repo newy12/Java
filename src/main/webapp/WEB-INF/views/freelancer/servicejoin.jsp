@@ -349,6 +349,7 @@
 		
 		//제출버튼 눌리면
 		$("input[type=button]").click(function() { 
+			console.log($('input[name=ssImg]').val());
     		oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD", []);  
     		var mainCategory = $("#mainCategory").val();
     		var price = $("input[name=sPrice]").val(); 
@@ -369,6 +370,11 @@
 				$("input[name=workingDate]").focus(); 
 				return; 
 			} 
+    		if($('input[name=ssImg]').val() == ""){
+    			alert("이미지를 등록해주세요.");
+    			$('input[name=ssImg]').focus();
+    			return;
+    		}
     		if(content == "" || content == null || content == '&nbsp;' || content == '<br>' || content == '<br/>' || content == '<p>&nbsp;</p>'){ 
     			alert("본문을 작성해주세요."); 
     			oEditors.getById["smartEditor"].exec("FOCUS"); 
