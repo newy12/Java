@@ -65,8 +65,9 @@
 												<p>
 													<b id="name"> <c:if test="${r.freeId eq null }">(탈퇴한 회원)</c:if>
 														<c:if test="${r.freeId ne null }">
-														<c:if test="${ loginMember.MGrade eq 2}">
-																<span class="service-title">${r.serviceTitle }</span><br>
+															<c:if test="${ loginMember.MGrade eq 2}">
+																<span class="service-title">${r.serviceTitle }</span>
+																<br>
 															</c:if>
 															<span id="tradeStatus"> <c:if
 																	test="${r.status eq -1 }">
@@ -79,12 +80,14 @@
 																	<span class="red">(작업완료)</span>
 																</c:if>
 															</span>
-															<c:if test="${ loginMember.MGrade eq 1}">[${r.brandName }]<span id="time" style="float: right;"><%-- ${r.lastDate } --%>${r.lastTime}</span><br>
+															<c:if test="${ loginMember.MGrade eq 1}">[${r.brandName }]<span
+																	id="time" style="float: right;"> <%-- ${r.lastDate } --%>${r.lastTime}</span>
+																<br>
 																<span class="service-title">${r.serviceTitle }</span>
 															</c:if>
 															<c:if test="${ loginMember.MGrade eq 2}">
 															${r.freeId}
-															<span id="time" style="float: right;"><%-- ${r.lastDate } --%>${r.lastTime}</span>
+															<span id="time" style="float: right;"> <%-- ${r.lastDate } --%>${r.lastTime}</span>
 															</c:if>
 
 														</c:if>
@@ -135,35 +138,35 @@
 	</div>
 	<!-- chat-wrap 끝-->
 	<script>
-	
-	$(".goRequest").click(function(){
-		opener.parent.location.href = "requestList.do?reqPage=1&order=new&subject=all&keyword=";
-		window.close();
-			});
-	
-	$(".goMain").click(function(){
-		opener.parent.location.href = "/";
-		window.close();
-			});
-	
-		$(".list").click(
-				function() {
-					var cNo = $(this).find(".cNo").val();
-					var sNo = $(this).find(".sNo").val();
-					cNo = Number(cNo);
-					sNo = Number(sNo);
-					/* 상대방아이디 */
-					var freeId = $(this).find(".freeId").val();
-					/* 탈퇴한회원일때 */
-					if (freeId == '(탈퇴한 회원)') {
-						return;
-					}
-					console.log(cNo);
-					console.log(sNo);
-					console.log(freeId);
-					location.href = "/enterRoom.do?cNo=" + cNo + "&sNo=" + sNo
-							+ "&yourId=" + freeId;
-				});
+		$(".goRequest")
+				.click(
+						function() {
+							opener.parent.location.href = "requestList.do?reqPage=1&order=new&subject=all&keyword=";
+							window.close();
+						});
+
+		$(".goMain").click(function() {
+			opener.parent.location.href = "/";
+			window.close();
+		});
+
+		$(".list").click(function() {
+			var cNo = $(this).find(".cNo").val();
+			var sNo = $(this).find(".sNo").val();
+			cNo = Number(cNo);
+			sNo = Number(sNo);
+			/* 상대방아이디 */
+			var freeId = $(this).find(".freeId").val();
+			console.log("상대아이디:" + freeId);
+			/* 탈퇴한회원일때 */
+			if (freeId == '') {
+				alert("탈퇴한 회원입니다");
+
+			} else {
+				 	location.href = "/enterRoom.do?cNo=" + cNo + "&sNo="
+							+ sNo + "&yourId=" + freeId; 
+			}
+		});
 	</script>
 
 </body>
