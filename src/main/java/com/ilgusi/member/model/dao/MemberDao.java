@@ -65,9 +65,7 @@ public class MemberDao {
 
 	// (문정)사용자 마이페이지-회원탈퇴
 	public int deleteMember(String mId) {
-		HashMap<String, String> map = new HashMap<String, String>();
-		map.put("id", mId);
-		return session.delete("member.deleteMember", map);
+		return session.delete("member.deleteMember", mId);
 	}
 
 	//(문정) 마이페이지에서 사용자-프리랜서 전환
