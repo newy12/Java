@@ -157,7 +157,7 @@
          
             <div>
             	<button class="back-btn save" id="savebutton">작성완료</button>
-            	<a href="/noticeList.do" class="Listbtn">목록으로</a>
+            	<a href="/noticeList.do?reqPage=1&keyword=" class="Listbtn">목록으로</a>
             </div>
             </form>
         </div>
