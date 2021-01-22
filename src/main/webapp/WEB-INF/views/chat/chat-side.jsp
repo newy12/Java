@@ -12,6 +12,18 @@
 	crossorigin="anonymous"></script>
 
 <style>
+@font-face {
+	font-family: 'Arita-dotum-Medium';
+	src:
+		url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/Arita-dotum-Medium.woff')
+		format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+
+* {
+	font-family: 'Arita-dotum-Medium';
+}
 div {
 	/*	border: 0.5px solid gray;*/
 	box-sizing: border-box;
