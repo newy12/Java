@@ -385,12 +385,12 @@
 	});
 	
 	function getByteB(str) {
-		var byte = 0;
+		var Abyte = 0;
 		for (var i=0; i<str.length; ++i) {
 			// 기본 한글 3바이트 처리
-			(str.charCodeAt(i) > 127) ? byte += 3 : byte++ ;
+			(str.charCodeAt(i) > 127) ? Abyte += 3 : Abyte++ ;
 		}
-			return byte;
+			return Abyte;
 		}
 
 </script>

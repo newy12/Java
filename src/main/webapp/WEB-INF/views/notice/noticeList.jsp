@@ -4,17 +4,28 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>19시_ 공지사항</title>
+<title>19시 :: 공지사항</title>
+
+<!-- favicon -->
+<link rel="apple-touch-icon" sizes="180x180"
+   href="favicon_io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32"
+   href="favicon_io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16"
+   href="favicon_io/favicon-16x16.png">
+
 
 <style>
 	.page-wrap {
-            width: 911px;
+            width: 80%;
             height : 1000px;
             margin: 0 auto;
-            margin-top: 45px;
+            padding-top: 20px;
         }
 
         .text-box {
+        	margin: 0 auto;
+        	width: 910px;
             height: 332px;
             padding-left: 30px;
             background-image: url(img/notice/notice.jpg);
@@ -33,17 +44,22 @@
         }
 
         .search-box {
+       		width: 910px;
             height: 65px;
-            margin-top: 40px;
+            margin: 0 auto;
             line-height: 60px;
             border: 1px solid rgb(51, 51, 51);
         }
 
         .searchInput {
-            margin-left: 120px;
+            
         }
 
-        .container>span {
+		.search-container{
+			padding-right:250px;
+			float: right;
+		}
+        .search-container>span {
             float: left;
             margin-right: 20px;
         }
@@ -98,6 +114,7 @@
 
         .table {
             text-align: left;
+            width: 80%;
         }
         .table-title{
         	text-decoration: none;
@@ -120,10 +137,12 @@
         <div class="text-box">
             <div>홈 > 게시판 > 공지사항</div>
             <div>공지사항</div>
-        </div>
+        </div> 
+        <br>
+        <br>
 
         <div class="search-box">
-            <div class="container" style="width:81%;">
+            <div class="search-container" style="margin: 0 auto;">
                 <input type="text" class="form-control word searchInput keyword" placeholder="검색어를 입력해주세요" name="word" style="width:377px;">
                 <input type="submit" class="btn btn-md btn-search" value="검색">
             </div>
@@ -143,7 +162,7 @@
                 
                 	<tr>
                 		<td>${n.NNo } </td>
-                		<td><a href="/noticeView.do?nNo=${n.NNo }" class = "table-title">${n.NTitle } </a> </td>
+                		<td><a href="/noticeView.do?nNo=${n.NNo }" class = "table-title" style="display: block; height: 100%; width: 100%;">${n.NTitle } </a> </td>
                 		<td>일.구.시 </td>
                 		<td> ${n.writeDate } </td>
                 	</tr>
