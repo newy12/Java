@@ -161,12 +161,12 @@
 				type: "post",
 				url: "/rankAjax.do",
 				data: {
-					cateNum: 10
+					cateNum: 20
 				},
 				dataType: "json",
 				success: function (response) {
 					console.log(response);
-					$(".rank-category-title:eq(0)").text("테스트 카테고리");
+					$(".rank-category-title:eq(0)").text("IT·프로그래밍");
 					$(".sumPrice:eq(0)").empty
 					console.log(response["sump"]);
 					$(".sumPrice:eq(0)").text(response[0].sumPrice + "원");
@@ -177,6 +177,32 @@
 						$(".rank-list:eq(0)").find(".rank-col-2:eq(" + (i-1) + ")").text(response[i]
 							.sumPrice + "원");
 						$(".rank-list:eq(0) .rank-col-3:eq(" + (i-1) + ")").append(
+							"<a href='/introduceFrm.do?mId=" + response[i].mId +
+							"&reqPage=1'>" +
+							response[i].mId + "</a>");
+					}
+				}
+			});
+			$.ajax({
+				type: "post",
+				url: "/rankAjax.do",
+				data: {
+					cateNum: 40
+				},
+				dataType: "json",
+				success: function (response) {
+					console.log(response);
+					$(".rank-category-title:eq(1)").text("교육");
+					$(".sumPrice:eq(1)").empty
+					console.log(response["sump"]);
+					$(".sumPrice:eq(1)").text(response[0].sumPrice + "원");
+					$(".free-id:eq(1)").append("<a href='/introduceFrm.do?mId=" + response[0].mId +
+						"&reqPage=1'>" +
+						response[0].mId + "</a>");
+					for (let i = 1; i < response.length; i++) {
+						$(".rank-list:eq(1)").find(".rank-col-2:eq(" + (i-1) + ")").text(response[i]
+							.sumPrice + "원");
+						$(".rank-list:eq(1) .rank-col-3:eq(" + (i-1) + ")").append(
 							"<a href='/introduceFrm.do?mId=" + response[i].mId +
 							"&reqPage=1'>" +
 							response[i].mId + "</a>");
@@ -467,7 +493,7 @@
 									<div>총 판매 금액</div>
 									<div class="sumPrice">154,997,581원</div>
 									<div class="free-id">
-										프리랜서아이디
+										
 									</div>
 								</div>
 							</div>
