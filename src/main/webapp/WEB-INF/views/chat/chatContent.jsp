@@ -388,7 +388,7 @@
 					var sNo = ${service.SNo};
 					sNo = Number(sNo);
 					opener.parent.location.href = "/serviceView.do?sNo=" + sNo
-							+ "&reqPage=1";
+							+ "&reqPage=1&mNo="+${loginMember.MNo };
 				});
 
 		$(".qna").click(function() {
