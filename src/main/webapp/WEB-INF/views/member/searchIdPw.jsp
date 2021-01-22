@@ -87,11 +87,17 @@
         $(document).ready(function () {
             $("#btnPw").on("click", function () {
                 $("#mIdHidden").val($("#mId").val());
-                $("#mPhoneHidden").val($("#mPhone2").val());
+                let number = $("#mPhone2").val();
+                $("#mPhoneHidden").val(number);
                 let left = Math.ceil((window.screen.width-400)/2);
                 let top = Math.ceil((window.screen.height-350)/2);
                 window.open('', 'popup', 'width=500px, height=350px, left='+left+', top='+top)
                 $("#pop-form").submit();
+            });
+            $("form").submit(function (e) { 
+                let number = $(this).children("input[name=mPhone]").val();
+                let phone = number.substring(0,3)+'-'+number.substring(3,7)+'-'+number.substring(7,11);
+                $(this).children("input[name=mPhone]").val(phone);
             });
         });
     </script>
@@ -110,7 +116,7 @@
                     <div class="search-contents">
                         <form action="/searchId.do" method="post">
                             <input type="text" name="mName" id="mName" placeholder="이름을 입력해주세요.">
-                            <input type="text" name="mPhone" id="mPhone" placeholder="전화번호를 입력해주세요.">
+                            <input type="text" name="mPhone" id="mPhone" placeholder="전화번호를 입력해주세요.( '-' 제외 )">
                             <input type="submit" value="아이디 찾기">
                         </form>
                     </div>
@@ -125,7 +131,7 @@
                                 <input type="hidden" name="mPhone" id="mPhoneHidden">
                             </form>
                             <input type="text" name="mId" id="mId" placeholder="아이디를 입력해주세요.">
-                            <input type="text" name="mPhone" id="mPhone2" placeholder="전화번호를 입력해주세요.">
+                            <input type="text" name="mPhone" id="mPhone2" placeholder="전화번호를 입력해주세요.( '-' 제외 )">
                             <input type="button" id="btnPw" target="_self" value="비밀번호 찾기">
                     </div>
                 </div>

@@ -4,12 +4,16 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>19시 :: 서비스 등록</title>
 <script src="https://code.jquery.com/jquery-3.5.1.js"
         integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"> 
 </script>
 <script type="text/javascript" src="/SE2/js/HuskyEZCreator.js" charset="utf-8"></script>
 <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<!-- favicon -->
+<link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
 <style>
 	.select_img img{
 		width:50px;
@@ -345,6 +349,7 @@
 		
 		//제출버튼 눌리면
 		$("input[type=button]").click(function() { 
+			console.log($('input[name=ssImg]').val());
     		oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD", []);  
     		var mainCategory = $("#mainCategory").val();
     		var price = $("input[name=sPrice]").val(); 
@@ -365,6 +370,11 @@
 				$("input[name=workingDate]").focus(); 
 				return; 
 			} 
+    		if($('input[name=ssImg]').val() == ""){
+    			alert("이미지를 등록해주세요.");
+    			$('input[name=ssImg]').focus();
+    			return;
+    		}
     		if(content == "" || content == null || content == '&nbsp;' || content == '<br>' || content == '<br/>' || content == '<p>&nbsp;</p>'){ 
     			alert("본문을 작성해주세요."); 
     			oEditors.getById["smartEditor"].exec("FOCUS"); 

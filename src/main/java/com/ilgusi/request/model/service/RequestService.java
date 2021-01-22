@@ -20,7 +20,7 @@ public class RequestService {
 	}
 
 	//(문정) 의뢰 리스트 + ㅍ ㅔ이징 처리
-	public RequestPageData selectRequestList(int reqPage, String order, String subject, String keyword) {
+	public RequestPageData selectRequestList(int reqPage, String order, String subject, String keyword, String mypage) {
 		//1. 한 페이지에 보여줄 리스트 개수
 		int numPerPage = 10;
 		
@@ -47,29 +47,60 @@ public class RequestService {
 		//6. 페이지 네비
 		String pageNavi = "";
 		
-		//이전 버튼
-		if(pageNo != 1) {
-			pageNavi += "<li class='page-item'><a class='page-link' href='/requestList.do?reqPage="+(pageNo-1)+"&order="+order+"&subject="+subject+"&keyword="+keyword+"'><<</a></li>";
-		}
-		
-		//네비게이션 숫자
-		for(int i=0; i<pageNaviSize; i++) {
-			if(reqPage == pageNo) {
-				pageNavi += "<li class='page-item'><a class='page-link target' href='#' style='background-color:rgb(49, 76, 131)'>"+pageNo+"</a></li>";
-			}else {
-				pageNavi += "<li class='page-item'><a class='page-link' href='/requestList.do?reqPage="+(pageNo)+"&order="+order+"&subject="+subject+"&keyword="+keyword+"'>"+pageNo+"</a></li>";
+		//마이페이지에서 불러옴
+		if(mypage != null) {
+			//이전 버튼
+			if(pageNo != 1) {
+				pageNavi += "<li class='page-item'><a class='page-link' href='/userRequestHistory.do?reqPage="+(pageNo-1)+"'><<</a></li>";
 			}
-			pageNo++;
 			
-			if(pageNo > totalPage) {
-				break;
+			//네비게이션 숫자
+			for(int i=0; i<pageNaviSize; i++) {
+				if(reqPage == pageNo) {
+					pageNavi += "<li class='page-item'><a class='page-link target' href='#' style='background-color:rgb(49, 76, 131)'>"+pageNo+"</a></li>";
+				}else {
+					pageNavi += "<li class='page-item'><a class='page-link' href='/userRequestHistory.do?reqPage="+(pageNo)+"'>"+pageNo+"</a></li>";
+				}
+				pageNo++;
+				
+				if(pageNo > totalPage) {
+					break;
+				}
+			}
+			
+			//다음 버튼
+			if(reqPage <= (totalPage/pageNaviSize)) {
+				pageNavi += "<li class='page-item'><a class='page-link' href='/userRequestHistory.do?reqPage="+pageNo+"'>>></a></li>";
 			}
 		}
 		
-		//다음 버튼
-		if(reqPage <= (totalPage/pageNaviSize)) {
-			pageNavi += "<li class='page-item'><a class='page-link' href='/requestList.do?reqPage="+pageNo+"&order="+order+"&subject="+subject+"&keyword="+keyword+"'>>></a></li>";
+		//의뢰게시판에서 불러옴
+		else {
+			//이전 버튼
+			if(pageNo != 1) {
+				pageNavi += "<li class='page-item'><a class='page-link' href='/userRequestHistory.do?reqPage="+(pageNo-1)+"&order="+order+"&subject="+subject+"&keyword="+keyword+"'><<</a></li>";
+			}
+			
+			//네비게이션 숫자
+			for(int i=0; i<pageNaviSize; i++) {
+				if(reqPage == pageNo) {
+					pageNavi += "<li class='page-item'><a class='page-link target' href='#' style='background-color:rgb(49, 76, 131)'>"+pageNo+"</a></li>";
+				}else {
+					pageNavi += "<li class='page-item'><a class='page-link' href='/requestList.do?reqPage="+(pageNo)+"&order="+order+"&subject="+subject+"&keyword="+keyword+"'>"+pageNo+"</a></li>";
+				}
+				pageNo++;
+				
+				if(pageNo > totalPage) {
+					break;
+				}
+			}
+			
+			//다음 버튼
+			if(reqPage <= (totalPage/pageNaviSize)) {
+				pageNavi += "<li class='page-item'><a class='page-link' href='/requestList.do?reqPage="+pageNo+"&order="+order+"&subject="+subject+"&keyword="+keyword+"'>>></a></li>";
+			}
 		}
+
 		
 		//페이지 할게 없으면
 		if(totalCount <= numPerPage) {
