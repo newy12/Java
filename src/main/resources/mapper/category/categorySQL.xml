@@ -11,7 +11,7 @@
 		select s.m_id mId,sum(st.p_price) sumPrice from service s,
 		(select st.*,sp.p_price from service_pay sp, service_trade st where sp.t_no =
 		st.t_no) st
-		where s.s_no = st.s_no and s.main_category = #{cateNum} group by s.m_id
+		where s.m_id is not null and s.s_no = st.s_no and s.main_category = #{cateNum} group by s.m_id
 		order by 2 desc
 	</select>
 

@@ -353,9 +353,15 @@ public class AdminController {
 			maxListCount = service.selectQuestionCount();
 		else
 			maxListCount = service.selectQuestionCount(type, keyword);
-
+		
 		List<Question> list = service.selectQuestionList(maxListCount - ((page) * listPerPage) + 1,
 				maxListCount - ((page - 1) * listPerPage), type, keyword);
+		//날짜형식 변경
+				for(int i =0;i<list.size();i++) {
+					list.get(i).setWriteDate(list.get(i).getWriteDate().replace("/", "-"));
+					if(list.get(i).getAnswerDate() != null && list.get(i).getAnswerDate().equals(""))
+					list.get(i).setAnswerDate(list.get(i).getAnswerDate().replace("/", "-"));
+				}
 		int maxPrintPageCount = 5;
 		int maxPageCount = service.selectMaxPageCount(listPerPage, maxListCount);
 		int begin = maxPrintPageCount * (page / (maxPrintPageCount + 1)) + 1; // 네비 시작

@@ -56,6 +56,8 @@ public class QuestionController {
 		//날짜형식 변경
 		for(int i =0;i<list.size();i++) {
 			list.get(i).setWriteDate(list.get(i).getWriteDate().replace("/", "-"));
+			if(list.get(i).getAnswerDate() != null && list.get(i).getAnswerDate().equals(""))
+			list.get(i).setAnswerDate(list.get(i).getAnswerDate().replace("/", "-"));
 		}
 		int maxPrintPageCount = 5;
 		int maxPageCount = service.selectMaxPageCount(listPerPage, maxListCount);

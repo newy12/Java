@@ -50,6 +50,10 @@
             background-color: lightgray;
             color: white;
             font-weight: bold;
+            
+        }
+        input[type=submit]:hover{
+            cursor:not-allowed;
         }
 
         #pw1_validation,

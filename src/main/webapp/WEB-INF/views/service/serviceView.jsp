@@ -184,6 +184,7 @@
         .anotherService{
         	border-radius:5px;
         	width: 185px;
+        	height : 200px;
         	float: left;
         	margin: 5px;
         	padding: 2px;
@@ -526,20 +527,20 @@
                     <div class="tabcontent">
                         <h2>다른서비스보기</h2>
                         <hr>
-                        <c:forEach items="${sList }" var="s" begin="0" end="4">
+                        <c:forEach items="${sList }" var="ser" begin="0" end="4">
                         	<div class="anotherService"> 
-	                        	<img class="anoImg" src="/upload/service/${s.SImg }" width="180px;" style="margin: 0 auto;">
-	                        	<div class="anoCon" style="margin-top: 10px">
-	                        	
+	                        	<img class="anoImg" src="/upload/service/${ser.SImg }" width="180px;" style="margin: 0 auto;">
+	                        	<div class="anoCon" style="margin-top: 10px; margin-bottom:10px; height: 80px;">
+	                        	<input type="hidden" value="${ser.SNo }" id="serviceNo">
 	                        	<c:if test="${loginMember != null }">
-	                        		<a class="anoTitle" style="font-size: 10pt; height: 50px;" href="/serviceView.do?sNo=${s.SNo}&reqPage=1&mNo=${loginMember.MNo }"> ${s.STitle } </a>
+	                        		<a class="anoTitle" style="font-size: 10pt; height: 75px;" href="/serviceView.do?sNo=${ser.SNo}&reqPage=1&mNo=${loginMember.MNo }"> ${ser.STitle } </a>
 	                        	</c:if>
 	                        	<c:if test="${loginMember == null }">
-	                        		<a class="anoTitle" style="font-size: 10pt; height: 50px;" href="/serviceView2.do?sNo=${s.SNo}&reqPage=1"> ${s.STitle } </a>
+	                        		<a class="anoTitle" style="font-size: 10pt; height: 75px;" href="/serviceView2.do?sNo=${ser.SNo}&reqPage=1"> ${ser.STitle } </a>
 	                        	</c:if>
 	                        	
-	                        		
-	                        		<span>${s.mainCategoryName } / ${s.subCategoryName } </span>
+	                        		<br>
+	                        		<span>${ser.mainCategoryName } / ${ser.subCategoryName } </span>
 	                        	</div>
                         </div>
                         </c:forEach>

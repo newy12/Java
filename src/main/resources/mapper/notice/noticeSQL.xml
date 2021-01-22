@@ -14,7 +14,7 @@
  	<if test="keyword != null">
  		where n_title like '%'||#{keyword}||'%'
  	</if>
- 	order by 1 desc)n) where rnum between #{start} and #{end}
+ 	order by n_no desc)n) where rnum between #{start} and #{end}
   </select>
   
   <insert id="insertNotice" parameterType="n">
