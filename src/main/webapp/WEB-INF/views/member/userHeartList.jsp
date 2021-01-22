@@ -4,8 +4,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>찜한 리스트</title>
-
+<title>19시 :: 찜한 리스트</title>
+<!-- favicon -->
+<link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
 <style>
     .page-wrap {
         width: 1104px;
@@ -178,7 +181,7 @@
 		            <c:forEach items="${list }" var="s" varStatus="status">
 		            <div>
 		                <div>
-		                    <a href="/serviceView.do?sNo=${s.SNo }&reqPage=1">
+		                    <a href="/serviceView.do?sNo=${s.SNo }&reqPage=1&mNo=${loginMember.MNo}">
 		                        <div class="title-img">
 		                            <div class="back-img">
 		                            	<img src="/upload/service/${s.SImg }" width="225x" height="133px">
@@ -193,7 +196,7 @@
 		                </div>
 		                <div class="empty"></div>
 		                <div class="title">${brandList[status.index] }</div>
-		                <a href="/serviceView.do?sNo=${s.SNo }&reqPage=1" id="serviceContent">
+		                <a href="/serviceView.do?sNo=${s.SNo }&reqPage=1&mNo=${loginMember.MNo}" id="serviceContent">
 		                    <div class="content">${s.STitle } </div>
 		                    <div class="price">${s.SPriceTxt }</div>
 		                    <div class="rate"><span>평점 </span><span>${s.SRate }</span><span>.0점</span><span>★★★★★</span>
@@ -203,29 +206,6 @@
 		            </c:forEach>
 				</c:otherwise>
 			</c:choose>
-	            
-	            
-	        <!-- 
-	            <div>
-	                <div>
-	                    <a href="#">
-	                        <div class="title-img">
-	                            <div class="back-img"><img src="/img/icon/img.jpg" width="225x" height="133px"></div>
-	                        </div>
-	                    </a>
-	                    <div class="title-img heart-btn"><img id="service1" src="/img/icon/heart_orange.png" width="31px" height="31px" onclick="heart_click(this)" value="fill"></div>
-	                </div>
-	                <div class="empty"></div>
-	                <div class="title">브랜드 이름</div>
-	                <a href="#">
-	                    <div class="content">본인 서비스 소개글 소개글 소개글 소개글 소개글소개글 소개글 소개글 </div>
-	                    <div class="price">000,000,000원</div>
-	                    <div class="rate"><span>평점 5.0점</span><span>★★★★★</span></div>
-	                </a>
-	            </div>
-	          -->
-	          
-	          
 	        </div>
 	    </div>
 	</div>

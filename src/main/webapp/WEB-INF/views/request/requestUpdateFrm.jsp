@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>19시::의뢰 수정</title>
+<title>19시 :: 의뢰 수정</title>
 <script type="text/javascript" src="/SE2/js/HuskyEZCreator.js" charset="utf-8"></script>
 <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <!-- favicon -->

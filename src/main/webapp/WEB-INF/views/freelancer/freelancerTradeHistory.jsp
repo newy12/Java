@@ -4,8 +4,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>거래 내역</title>
- 
+<title>19시 :: 프리랜서 거래 내역</title>
+ <!-- favicon -->
+<link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
 
 <style>
 .noList{
@@ -244,7 +247,7 @@
 							<div>
 								<div>
 									<div>
-										<a href="/serviceView.do?sNo=${serviceList[status.index].SNo}&reqPage=1"><img src="/upload/service/${ serviceList[status.index].SImg}" width="175px" height="103px" style="border-radius:5px;"></a>
+										<a href="/serviceView.do?sNo=${serviceList[status.index].SNo}&reqPage=1&mNo=${loginMember.MNo}"><img src="/upload/service/${ serviceList[status.index].SImg}" width="175px" height="103px" style="border-radius:5px;"></a>
 									</div>
 									<div style="color: #8a8a8a;">
 										사용자 ID
@@ -258,7 +261,7 @@
 										</div>
 									</div>
 									<div>
-										<a href="/serviceView.do?sNo=${serviceList[status.index].SNo }&reqPage=1">${serviceList[status.index].STitle }</a>
+										<a href="/serviceView.do?sNo=${serviceList[status.index].SNo }&reqPage=1&mNo=${loginMember.MNo}">${serviceList[status.index].STitle }</a>
 									</div>
 								</div>
 							</div>
@@ -377,5 +380,11 @@
 		alert('소중한 의견 감사합니다.');
 		location.href="/updateWarningCount.do?mNo="+mNo;
 	 });
+	
+	//거래상세보기 창에서 서비스 상세보기를 누르면
+	function gotoServiceView(sNo,mNo){
+		location.href="/serviceView.do?sNo="+sNo+"&reqPage=1&mNo="+mNo;
+	}
+		
 </script>
 </html>
