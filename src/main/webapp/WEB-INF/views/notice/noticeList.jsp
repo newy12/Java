@@ -153,7 +153,7 @@
             <br>
             <table class="table table-hover">
                 <tr style="background-color: rgba(224, 224, 224, 0.5);">
-                    <th style="width: 100px;">순서</th>
+                    <th style="width: 100px;">글번호</th>
                     <th>제목</th>
                     <th>작성자</th>
                     <th style="width: 200px;">작성일</th>
