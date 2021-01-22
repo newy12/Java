@@ -4,7 +4,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>19시 | 의뢰게시판</title>
+<title>19시 ::의뢰게시판</title>
+<!-- favicon -->
+<link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
 <style>
     .page-wrap{
         width: 911px;
@@ -153,10 +157,10 @@
                 	</tr>
                 </c:if>
                 <c:if test="${list.size() != 0 }">
-	                <c:forEach items="${list }" var="r">
+	                <c:forEach items="${list }" var="r" varStatus="status">
 	               	<tr>
-	               		<td>${r.reqNo } </td>
-	               		<td><a href="/requestDetail.do?reqNo=${r.reqNo }" class = "table-title">${r.reqTitle } </a></td>
+	               		<td>${totalCount- status.index }</td>
+	               		<td><a href="/requestDetail.do?reqNo=${r.reqNo }&position=" class = "table-title">${r.reqTitle } </a></td>
 	               		<td>
 	               		<c:choose>
 	               			<c:when test="${r.reqStatus == 0 }">모집 중</c:when>
@@ -172,7 +176,7 @@
             <div>
             	<c:if test="${loginMember.MId != null }">
             		<br>
-            		<button class="btn-custom" onclick="location.href='/requestWriteFrm.do'">글쓰기</button>
+            		<button class="btn-custom" onclick="location.href='/requestWriteFrm.do?position='">글쓰기</button>
             	</c:if>
             </div>
             <br><br>

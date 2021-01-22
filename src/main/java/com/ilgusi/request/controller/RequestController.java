@@ -42,7 +42,7 @@ public class RequestController {
 		if(keyword == "") {
 			keyword = "null";
 		}
-		RequestPageData rpd = service.selectRequestList(reqPage, order, subject, keyword);
+		RequestPageData rpd = service.selectRequestList(reqPage, order, subject, keyword, null);
 		model.addAttribute("order",order);
 		model.addAttribute("subject", subject);
 		model.addAttribute("keyword",keyword);
@@ -54,17 +54,18 @@ public class RequestController {
 	
 	//(문정)작성폼으로 이동
 	@RequestMapping("/requestWriteFrm.do")
-	public String requestWriteFrm( Model model) {
+	public String requestWriteFrm( String position, Model model) {
+		model.addAttribute("position", position);
 		return "request/requestWriteFrm";
 	}
 	
 	//(문정) 의뢰 insert
 	@RequestMapping("/requestInsert.do")
 	public String requestInsert(Model model, MultipartHttpServletRequest mtfRequest, HttpServletRequest request) {
-		
+		String position = request.getParameter("position");
 		String root = request.getSession().getServletContext().getRealPath("/");
 	    String path = root+"upload/request/";
-	    System.out.println("경로는 : "+path);
+	    System.out.println("포지션은 :"+position+"/경로는 : "+path);
 	    
 	    //파일 이름 처리
 	    String filename = "";
@@ -102,23 +103,29 @@ public class RequestController {
 	      }else {
 	         model.addAttribute("msg","실패");
 	      }
-	      model.addAttribute("loc","/requestList.do?reqPage=1&order=new&subject=all&keyword=");
+      	if(position.equals("mypage")) {
+      		model.addAttribute("loc","/userRequestHistory.do?reqPage=1");
+      	}else {
+      		model.addAttribute("loc","/requestList.do?reqPage=1&order=new&subject=all&keyword=");
+      	}
 	      return "common/msg";
 	}
 	
 	//(문정) 의뢰게시판 상세보기
 	@RequestMapping("/requestDetail.do")
-	public String requestDetail(int reqNo, Model model) {
+	public String requestDetail(int reqNo, String position, Model model) {
 		Request req = service.selectOneRequest(reqNo);
 		model.addAttribute("req", req);
+		model.addAttribute("position",position);
 		return "request/requestDetail";
 	}
 	
 	//(문정) 의뢰글 frm
 	@RequestMapping("/requestUpdateFrm.do")
-	public String requestUpdateFrm(int reqNo, Model model) {
+	public String requestUpdateFrm(int reqNo, String position, Model model) {
 		Request req = service.selectOneRequest(reqNo);
 		model.addAttribute("req", req);
+		model.addAttribute("position",position);
 		return "request/requestUpdateFrm";
 	}
 	
@@ -153,17 +160,22 @@ public class RequestController {
 		
 		req.setFilename(filename);
 		req.setFilepath(filepath);
+		String position = request.getParameter("position");
 		int result = service.requestUpdate(req);
 		if(result>0) {
 			model.addAttribute("msg", "수정되었습니다.");
 		}
-		model.addAttribute("loc", "/requestList.do?reqPage=1&order=new&subject=all&keyword=");
+      	if(position.equals("mypage")) {
+      		model.addAttribute("loc","/userRequestHistory.do?reqPage=1");
+      	}else {
+      		model.addAttribute("loc","/requestList.do?reqPage=1&order=new&subject=all&keyword=");
+      	}
 		return "common/msg";
 	}
 	
 	//(문정) 의뢰 삭제
 	@RequestMapping("/requestDeleteOne.do")
-	public String requestDeleteOne(int reqNo, String filepath, Model model, HttpServletRequest request, HttpServletResponse response) {
+	public String requestDeleteOne(int reqNo, String filepath, String position, Model model, HttpServletRequest request, HttpServletResponse response) {
 		int result = service.requestDeleteOne(reqNo);
 		//파일 삭제
 		if(filepath != null) {
@@ -175,7 +187,11 @@ public class RequestController {
 		if(result>0) {
 			model.addAttribute("msg", "삭제되었습니다.");
 		}
-		model.addAttribute("loc", "/requestList.do?reqPage=1&order=new&subject=all&keyword=");
+      	if(position.equals("mypage")) {
+      		model.addAttribute("loc","/userRequestHistory.do?reqPage=1");
+      	}else {
+      		model.addAttribute("loc","/requestList.do?reqPage=1&order=new&subject=all&keyword=");
+      	}
 		return "common/msg";
 	}
 	

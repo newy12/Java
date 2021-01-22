@@ -105,6 +105,7 @@
                 <tr>
                     <th style="width: 10%;border-top: 2px solid rgb(49, 76, 131);text-align: center;line-height: 31px;">제목</th>
                     <th style="width: 75%;border-top: 2px solid rgb(49, 76, 131);">
+                    	<input type="hidden" name="position" value="${position }">
                     	<input type="text" name="mId" value="${loginMember.MId }" style="display:none;">
                         <input type="text" name="reqTitle" id="title" placeholder="제목을 입력해주세요.(30글자 이내)" maxlength="33">
                     </th>

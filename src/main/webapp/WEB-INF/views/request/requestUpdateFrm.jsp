@@ -4,9 +4,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>19시::의뢰 수정</title>
 <script type="text/javascript" src="/SE2/js/HuskyEZCreator.js" charset="utf-8"></script>
 <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<!-- favicon -->
+<link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
 </head>
 <style>
    .page-wrap{
@@ -105,6 +109,7 @@
                 <tr>
                     <th style="width: 10%;border-top: 2px solid rgb(49, 76, 131);text-align: center;line-height: 31px;">제목</th>
                     <th style="width: 75%;border-top: 2px solid rgb(49, 76, 131);">
+                    	<input type="hidden" name="position" value="${position }">
                     	<input type="hidden" name="reqNo" value="${req.reqNo }">
                     	<input type="hidden" name="mId" value="${loginMember.MId }">
                     	<input type="text" name="reqTitle" id="title" value="${req.reqTitle }">

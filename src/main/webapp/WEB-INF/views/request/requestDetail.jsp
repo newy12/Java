@@ -4,7 +4,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>19시::의뢰 상세</title>
+<!-- favicon -->
+<link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
 <style>
    .page-wrap{
         width: 911px;
@@ -157,10 +161,12 @@
     	
     	$(".btn-update").click(function(){
     		var reqNo = $("#reqNo").val();
-    		location.href = "/requestUpdateFrm.do?reqNo="+reqNo;
+    		var position = '${position}';
+    		location.href = "/requestUpdateFrm.do?reqNo="+reqNo+"&position="+position;
     	});
     	
     	$(".btn-delete").click(function(){
+    		var position = '${position}';
     		var reqNo = $("#reqNo").val();
     		var filepath = "${req.filepath}";
     		var reqStatus = $("#reqStatus").val();
@@ -169,7 +175,7 @@
     		}else{
     			var result = confirm('정말 삭제하시겠습니까?');
     			if(result){
-    				location.href = "/requestDeleteOne.do?reqNo="+reqNo+"&filepath="+filepath;
+    				location.href = "/requestDeleteOne.do?reqNo="+reqNo+"&filepath="+filepath+"&position="+position;
     			}
     		}
     	});
