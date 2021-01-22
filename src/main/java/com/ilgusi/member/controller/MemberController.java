@@ -215,7 +215,7 @@ public class MemberController {
 	// (문정)사용자 마이페이지 - 회원탈퇴(아이디로만)
 	@RequestMapping("/deleteMember.do")
 	public String deleteMember(String mId, HttpServletRequest req, Model model, String admin, String mNo) {
-		if (mNo == null) {
+		if (mNo == null) {	
 			// 회원번호 받아서 거래중인 것이 있는지 확인 -> 없어야만 삭제
 			HttpSession session = req.getSession();
 			Member m = (Member) session.getAttribute("loginMember");
@@ -224,15 +224,12 @@ public class MemberController {
 			// 탈퇴 진행
 			if (tradeStatus == 0) {
 				int result = service.setDeleteStatusY(mId); // delete_status = 'y'로 바꿈
-				if (result > 0) {
-					result = service.deleteMember(mId);
-					session.setAttribute("loginMember", null);
-					model.addAttribute("msg", "탈퇴 되었습니다.");
-					model.addAttribute("loc", "/");
-				} else {
-					model.addAttribute("msg", "탈퇴 실패");
-					model.addAttribute("loc", "/userMypage.do");
-				}
+				result = service.deleteMember(mId);
+				System.out.println("사용자 탈퇴성공");
+				model.addAttribute("loc", "/userMypage.do");
+				session.setAttribute("loginMember", null);
+				model.addAttribute("msg", "탈퇴 되었습니다.");
+				model.addAttribute("loc", "/");
 			}
 			// 거래중인 서비스가 있어서 탈퇴 거절
 			else {
@@ -246,14 +243,10 @@ public class MemberController {
 			// 탈퇴 진행
 			if (tradeStatus == 0) {
 				int result = service.setDeleteStatusY(mId); // delete_status = 'y'로 바꿈
-				if (result > 0) {
-					result = service.deleteMember(mId);
-					model.addAttribute("msg", "탈퇴 되었습니다.");
-					model.addAttribute("loc", "manageMember.do?reqPage=1&grade=black&keyword=&order=new");
-				} else {
-					model.addAttribute("msg", "탈퇴 실패");
-					model.addAttribute("loc", "/manageMember.do?reqPage=1&grade=black&keyword=&order=new");
-				}
+				result = service.deleteMember(mId);
+				System.out.println("관리자 탈퇴");
+				model.addAttribute("msg", "탈퇴 되었습니다.");
+				model.addAttribute("loc", "manageMember.do?reqPage=1&grade=black&keyword=&order=new");
 			}
 			// 거래중인 서비스가 있어서 탈퇴 거절
 			else {

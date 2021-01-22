@@ -138,7 +138,7 @@
 								<td>${s.SNo }</td>
 								<td>${s.MId }<c:if test="${s.MId eq null}">탈퇴한회원</c:if></td>
 								<td style="text-align: left; padding-left: 15px;"><b>[${ s.MCatName}]</b>${s.SCatName }</td>
-								<td style="text-align: left; padding-left: 15px;"><a href="/serviceView.do?sNo=${s.SNo}&reqPage=1" onClick="window.open(this.href, '', 'width=1200, height=1800, left=1000, scrollbars=no,location=no, resizable=no'); return false;">${s.STitle }</a></td>
+								<td style="text-align: left; padding-left: 15px;"><a href="/serviceView2.do?sNo=${s.SNo}&reqPage=1" onClick="window.open(this.href, '', 'width=1200, height=1800, left=1000, scrollbars=no,location=no, resizable=no'); return false;">${s.STitle }</a></td>
 								<!-- 미등록서비스 -->
 								<c:if test="${page eq 'waiting'}">
 									<td><c:forEach items="${mIdandmNo }" var="m">

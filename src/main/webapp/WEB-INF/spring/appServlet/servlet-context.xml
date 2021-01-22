@@ -82,10 +82,10 @@
 	<tx:annotation-driven />
 	<task:annotation-driven />
 	
-	<websocket:handlers>
+	<!-- <websocket:handlers>
 		<websocket:mapping handler="startChat"
 			path="/chat.do" />
-	</websocket:handlers> 
+	</websocket:handlers>  -->
 	
 	
 	<!-- 스캔패키지 추가 -->
