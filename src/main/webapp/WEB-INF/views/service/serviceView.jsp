@@ -530,7 +530,15 @@
                         	<div class="anotherService"> 
 	                        	<img class="anoImg" src="/upload/service/${s.SImg }" width="180px;" style="margin: 0 auto;">
 	                        	<div class="anoCon" style="margin-top: 10px">
-	                        		<a class="anoTitle" style="font-size: 10pt; height: 50px;"> ${s.STitle } </a>
+	                        	
+	                        	<c:if test="${loginMember != null }">
+	                        		<a class="anoTitle" style="font-size: 10pt; height: 50px;" href="/serviceView.do?sNo=${s.SNo}&reqPage=1&mNo=${loginMember.MNo }"> ${s.STitle } </a>
+	                        	</c:if>
+	                        	<c:if test="${loginMember == null }">
+	                        		<a class="anoTitle" style="font-size: 10pt; height: 50px;" href="/serviceView2.do?sNo=${s.SNo}&reqPage=1"> ${s.STitle } </a>
+	                        	</c:if>
+	                        	
+	                        		
 	                        		<span>${s.mainCategoryName } / ${s.subCategoryName } </span>
 	                        	</div>
                         </div>

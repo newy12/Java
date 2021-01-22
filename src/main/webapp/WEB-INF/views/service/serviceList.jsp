@@ -275,14 +275,17 @@ a:hover {
 						
 						<c:if test="${loginMember== null }"> 
 							<div class="imgBox">
-								<img src="upload/service/${s.SImg }" onclick="location.href='/serviceView.do?sNo=${s.SNo}&reqPage=1&mNo=null'">
+								<img src="upload/service/${s.SImg }" onclick="location.href='/serviceView2.do?sNo=${s.SNo}&reqPage=1'">
 							</div>
 							<br> 
 							<span class="preName">${s.brandName }</span>
 							<p class="serviceCon" style="height: 30px;">
-								<a href="/serviceView.do?sNo=${s.SNo}&reqPage=1&mNo=null"> ${s.STitle } </a>
+								<a href="/serviceView2.do?sNo=${s.SNo}&reqPage=1"> ${s.STitle } </a>
 							</p>
 						</c:if>
+						
+						
+						
 						<c:if test="${loginMember != null }">
 							<div class="imgBox">
 								<img src="upload/service/${s.SImg }" onclick="location.href='/serviceView.do?sNo=${s.SNo}&reqPage=1&mNo=${loginMember.MNo }'">

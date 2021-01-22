@@ -451,11 +451,67 @@ public class ServiceController {
 			 System.out.println("찜하기 없음");
 			 model.addAttribute("favoriteCheck", false);
 		 }
-			 
-		
-
 		return "/service/serviceView";
 	}
+	
+	
+	// (다솜) serviceView 페이지 이동 (로그인 안됐을때)
+		@RequestMapping("/serviceView2.do")
+		public String serviceView(int sNo, Model model, int reqPage) {
+			System.out.println("서비스 컨트롤러-serviceView");
+			System.out.println("서비스 상세보기 sNo: " + sNo);
+
+			// 해당 서비스 정보 불러오기
+			Service s = service.selectServiceView(sNo);
+
+			DecimalFormat formatter = new DecimalFormat("###,###");
+			s.setSPriceTxt(formatter.format(s.getSPrice()));
+
+			System.out.println("메인카테고리 이름 : " + s.getMainCategoryName());
+			System.out.println("서브카테고리 이름 : " + s.getSubCategoryName());
+
+			if (s != null) {
+				model.addAttribute("s", s);
+			}
+			int serviceNo = s.getSNo();
+			
+			// 브랜드 정보 불러오기
+			String memberId = s.getMId();
+
+			Member m = service.selectMemberName(memberId);
+			model.addAttribute("m", m);
+
+			// 서비스 파일 불러오기
+			ArrayList<ServiceFile> fileList = service.fileList(sNo);
+			System.out.println("fileList 사이즈 :" + fileList.size());
+			System.out.println("fileList값:" + fileList.get(0));
+			model.addAttribute("fileList", fileList);
+
+			// 해당 유저가 등록한 다른서비스 불러오기
+			ArrayList<Service> sList = service.userService(memberId);
+			model.addAttribute("sList", sList);
+
+			// 리뷰 리스트 불러오기 + 페이징
+			ReviewPageData rpd = service.selectReviewList(sNo, reqPage);
+			if(rpd.getList().size() == 0) {
+				System.out.println("리뷰 없음");
+			}else {
+				System.out.println("리뷰있음");
+				System.out.println(rpd.getPageNavi());
+			}
+			
+			model.addAttribute("reviewList", rpd.getList());
+			model.addAttribute("pageNavi", rpd.getPageNavi());
+			
+			//찜한내역 확인하기 
+			model.addAttribute("favoriteCheck", false);
+
+			return "/service/serviceView";
+		}
+	
+	
+	
+	
 
 	// (문정) 결제 진행
 	@RequestMapping("/insertServicePay.do")
