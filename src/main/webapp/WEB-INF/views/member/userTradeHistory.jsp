@@ -228,9 +228,16 @@
 	                            <div style="color:#8a8a8a;">
 	                                사용자 ID
 	                                <div>
-	                                    <div><a href="/introduceFrm.do?mId=${serviceList[status.index].MId}&reqPage=1">${serviceList[status.index].MId }</a></div>
+	                                    <div>
+	                                    <c:if test="${empty serviceList[status.index].MId}">(탈퇴한 회원)</c:if>
+	                                    <c:if test="${not empty serviceList[status.index].MId}">
+	                                    	<a href="/introduceFrm.do?mId=${serviceList[status.index].MId}&reqPage=1">${serviceList[status.index].MId }</a>
+	                                	 </c:if>
+	                                    </div>
+	                                    <c:if test="${not empty serviceList[status.index].MId}">
 	                                    <div><a href="/introduceFrm.do?mId=${serviceList[status.index].MId}&reqPage=1"><img src="/img/icon/home.png"></a></div>
 	                                    <div><a href="#" onclick="startChat('${serviceList[status.index].SNo}','${sessionScope.loginMember.MId }','${serviceList[status.index].MId}','${sessionScope.loginMember.MNo }','${sessionScope.loginMember.MGrade}');"><img src="/img/icon/message.png"></a></div>
+	                                	 </c:if>
 	                                </div>
 	                            </div>
 	                            <div><a href="/serviceView.do?sNo=${serviceList[status.index].SNo}&reqPage=1&mNo=${loginMember.MNo}">${serviceList[status.index].STitle }</a></div>

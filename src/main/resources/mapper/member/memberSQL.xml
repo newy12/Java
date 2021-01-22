@@ -227,7 +227,9 @@
 	
 	<!-- (문정) delete_status ='y' 셋팅 -->
 	<update id="setDeleteStatusY" parameterType="string">
-		update service set delete_status = 'y' where m_id = #{mId}
+		update service set
+		delete_status='y',s_title='(삭제)'||(select s_title from service where
+		s_no=#{_parameter}) where m_id = #{mId}
 	</update>
 	
 </mapper>

@@ -47,13 +47,11 @@ public class ServiceController {
 	@RequestMapping("/introduceFrm.do")
 	public String introduceFrm(String mId, int reqPage, Model model) {
 		Join j = service.selectOneMember(mId);
-		System.out.println("111111111111");
 		// 승인된 서비스만 가져오기
 		// 전체 서비스리스트
 		List<Service> serviceList = service.serviceList(mId);
 		// 승인된 서비스 리스트
 		List<Service> approvedList = new ArrayList<Service>();
-		System.out.println("2222222222");
 		for (int i = 0; i < serviceList.size(); i++) {
 			char approval = serviceList.get(i).getAdminApproval();
 			char deleted = serviceList.get(i).getDeleteStatus();
@@ -63,7 +61,6 @@ public class ServiceController {
 			}
 		}
 		j.setServiceList(approvedList);
-		System.out.println("333333333");
 		// 후기리스트
 
 		Join join = new Join();
@@ -71,12 +68,10 @@ public class ServiceController {
 			join = service.selectReviewList(mId, reqPage);
 			j.setReviewList(join.getReviewList());
 		}
-		System.out.println("444444444");
 
 		float avg = service.sRateAVG(mId);
 		model.addAttribute("avg", avg);
 
-		System.out.println("55555555555555555555555");
 		// System.out.println(list);
 		// System.out.println("리뷰리스트" + join.getReviewList());
 		model.addAttribute("pageNavi", join.getPageNavi());

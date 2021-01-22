@@ -607,8 +607,12 @@
                     <div class="pre-profile">
                         <img src="/img/test/icon_profile.svg" width="100px;">
                         <p class="brandName bold-font">${m.brandName }</p>
-
-                        <button class="emptyBtn" onclick="location.href='/introduceFrm.do?mId=${m.MId}&reqPage=1'">[${m.brandName }]의 프로필 보기</button>
+						<c:if test="${not empty m.brandName }">
+                        	<button class="emptyBtn" onclick="location.href='/introduceFrm.do?mId=${m.MId}&reqPage=1'">[${m.brandName }]의 프로필 보기</button>
+                        </c:if>
+                        <c:if test="${empty m.brandName }">
+                        	<button class="emptyBtn" >탈퇴한 회원입니다</button>
+                        </c:if>
                     </div>
 
                     <hr>
