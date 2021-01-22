@@ -198,6 +198,7 @@ public class ChatController {
 
 					// 프리랜서로 로그인했을때
 					// 상대방번호,서비스번호로 거래 견적서 작성 여부 확인
+					if(userId !=null) {
 					Member oneUser = service.selectOneMember(userId);
 					int mNo = oneUser.getMNo();
 					tradeInfo.put("sNo", sNo);
@@ -209,7 +210,7 @@ public class ChatController {
 							status = tradeList.get(0).getTStatus();
 							System.out.println("나는 프리랜서--거래상태 :" + status);
 						}
-					}
+					}}
 					/////////////////////////////////////////////////////////////////////////////////////////////////
 
 					HashMap<String, Object> room = new HashMap<String, Object>();

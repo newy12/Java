@@ -221,7 +221,7 @@
 									<div class="cate">
 										${s.mainCategoryName } / ${s.subCategoryName }
 									</div>
-									<div class="title">${s.STitle}</div>
+									<div class="title"><a href="/serviceView.do?sNo=${s.SNo}&reqPage=1&mNo=${loginMember.MNo }"> ${s.STitle} </a></div>
 									<a href="#">
 										<div class="content" style="font-size: 12pt; float: right; width: 200px; text-align: right;"  >${s.SPriceTxt }원~</div>
 									</a>
