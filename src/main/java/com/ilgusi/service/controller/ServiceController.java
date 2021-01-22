@@ -46,15 +46,14 @@ public class ServiceController {
 
 	@RequestMapping("/introduceFrm.do")
 	public String introduceFrm(String mId, int reqPage, Model model) {
-		System.out.println("ㅇㅇ" + reqPage);
 		Join j = service.selectOneMember(mId);
-
+		System.out.println("111111111111");
 		// 승인된 서비스만 가져오기
 		// 전체 서비스리스트
 		List<Service> serviceList = service.serviceList(mId);
 		// 승인된 서비스 리스트
 		List<Service> approvedList = new ArrayList<Service>();
-
+		System.out.println("2222222222");
 		for (int i = 0; i < serviceList.size(); i++) {
 			char approval = serviceList.get(i).getAdminApproval();
 			char deleted = serviceList.get(i).getDeleteStatus();
@@ -64,7 +63,7 @@ public class ServiceController {
 			}
 		}
 		j.setServiceList(approvedList);
-
+		System.out.println("333333333");
 		// 후기리스트
 
 		Join join = new Join();
@@ -72,9 +71,12 @@ public class ServiceController {
 			join = service.selectReviewList(mId, reqPage);
 			j.setReviewList(join.getReviewList());
 		}
+		System.out.println("444444444");
 
 		float avg = service.sRateAVG(mId);
 		model.addAttribute("avg", avg);
+
+		System.out.println("55555555555555555555555");
 		// System.out.println(list);
 		// System.out.println("리뷰리스트" + join.getReviewList());
 		model.addAttribute("pageNavi", join.getPageNavi());
@@ -113,7 +115,7 @@ public class ServiceController {
 
 		for (MultipartFile file : ssImg) { // 파일이 여러개라 반복문으로 처리
 			String filename = file.getOriginalFilename();
-			System.out.println("파일 이름"+filename);
+			System.out.println("파일 이름" + filename);
 			String filepath = new FileNameOverlap().rename(path, filename);
 			System.out.println("filename : " + filename);
 			System.out.println("filepath : " + filepath);
@@ -143,7 +145,7 @@ public class ServiceController {
 		} else {
 			model.addAttribute("msg", "서비스등록실패");
 		}
-		model.addAttribute("loc", "/freelancerServiceList.do?mId="+join.getMId()+"&order=refuse");
+		model.addAttribute("loc", "/freelancerServiceList.do?mId=" + join.getMId() + "&order=refuse");
 		return "common/msg";
 	}
 
@@ -215,7 +217,7 @@ public class ServiceController {
 		model.addAttribute("sNo", sNo);
 		model.addAttribute("mId", mId);
 		model.addAttribute("sImg", sImg);
-		
+
 		return "service/serviceReviewWrite";
 	}
 
@@ -368,25 +370,31 @@ public class ServiceController {
 			model.addAttribute("c_no", serList.get(0).getSubCategory());
 		}
 
-		
-		switch(maincateNum) {
-			case 10: model.addAttribute("mainCate", "디자인");
-				break;
-			case 20: model.addAttribute("mainCate", "ITㆍ프로그래밍");
-				break;
-			case 30: model.addAttribute("mainCate", "영상ㆍ사진ㆍ음향");
-				break;
-			case 40: model.addAttribute("mainCate", "교육");
-				break;
-			case 50: model.addAttribute("mainCate", "문서ㆍ글쓰기");
-				break;
-			case 60: model.addAttribute("mainCate", "비즈니스컨설팅");
-				break;
-			case 70: model.addAttribute("mainCate", "주문제작");
-				break;
+		switch (maincateNum) {
+		case 10:
+			model.addAttribute("mainCate", "디자인");
+			break;
+		case 20:
+			model.addAttribute("mainCate", "ITㆍ프로그래밍");
+			break;
+		case 30:
+			model.addAttribute("mainCate", "영상ㆍ사진ㆍ음향");
+			break;
+		case 40:
+			model.addAttribute("mainCate", "교육");
+			break;
+		case 50:
+			model.addAttribute("mainCate", "문서ㆍ글쓰기");
+			break;
+		case 60:
+			model.addAttribute("mainCate", "비즈니스컨설팅");
+			break;
+		case 70:
+			model.addAttribute("mainCate", "주문제작");
+			break;
 		}
-	
-		model.addAttribute("catList",catList);
+
+		model.addAttribute("catList", catList);
 		model.addAttribute("pageNavi", spd.getPageNavi());
 		model.addAttribute("order", order);
 
@@ -412,7 +420,7 @@ public class ServiceController {
 			model.addAttribute("s", s);
 		}
 		int serviceNo = s.getSNo();
-		
+
 		// 브랜드 정보 불러오기
 		String memberId = s.getMId();
 
@@ -431,87 +439,82 @@ public class ServiceController {
 
 		// 리뷰 리스트 불러오기 + 페이징
 		ReviewPageData rpd = service.selectReviewList(sNo, reqPage);
-		if(rpd.getList().size() == 0) {
+		if (rpd.getList().size() == 0) {
 			System.out.println("리뷰 없음");
-		}else {
+		} else {
 			System.out.println("리뷰있음");
 			System.out.println(rpd.getPageNavi());
 		}
-		
+
 		model.addAttribute("reviewList", rpd.getList());
 		model.addAttribute("pageNavi", rpd.getPageNavi());
-		
-		//찜한내역 확인하기 
-		
-		 Favorite f = service.searchFavorite(mNo,serviceNo);
-		 if(f != null) {
-			 System.out.println("찜하기 있음 ");
-			 model.addAttribute("favoriteCheck", true);
-		 }else {
-			 System.out.println("찜하기 없음");
-			 model.addAttribute("favoriteCheck", false);
-		 }
+
+		// 찜한내역 확인하기
+
+		Favorite f = service.searchFavorite(mNo, serviceNo);
+		if (f != null) {
+			System.out.println("찜하기 있음 ");
+			model.addAttribute("favoriteCheck", true);
+		} else {
+			System.out.println("찜하기 없음");
+			model.addAttribute("favoriteCheck", false);
+		}
 		return "/service/serviceView";
 	}
-	
-	
+
 	// (다솜) serviceView 페이지 이동 (로그인 안됐을때)
-		@RequestMapping("/serviceView2.do")
-		public String serviceView(int sNo, Model model, int reqPage) {
-			System.out.println("서비스 컨트롤러-serviceView");
-			System.out.println("서비스 상세보기 sNo: " + sNo);
+	@RequestMapping("/serviceView2.do")
+	public String serviceView(int sNo, Model model, int reqPage) {
+		System.out.println("서비스 컨트롤러-serviceView");
+		System.out.println("서비스 상세보기 sNo: " + sNo);
 
-			// 해당 서비스 정보 불러오기
-			Service s = service.selectServiceView(sNo);
+		// 해당 서비스 정보 불러오기
+		Service s = service.selectServiceView(sNo);
 
-			DecimalFormat formatter = new DecimalFormat("###,###");
-			s.setSPriceTxt(formatter.format(s.getSPrice()));
+		DecimalFormat formatter = new DecimalFormat("###,###");
+		s.setSPriceTxt(formatter.format(s.getSPrice()));
 
-			System.out.println("메인카테고리 이름 : " + s.getMainCategoryName());
-			System.out.println("서브카테고리 이름 : " + s.getSubCategoryName());
+		System.out.println("메인카테고리 이름 : " + s.getMainCategoryName());
+		System.out.println("서브카테고리 이름 : " + s.getSubCategoryName());
 
-			if (s != null) {
-				model.addAttribute("s", s);
-			}
-			int serviceNo = s.getSNo();
-			
-			// 브랜드 정보 불러오기
-			String memberId = s.getMId();
-
-			Member m = service.selectMemberName(memberId);
-			model.addAttribute("m", m);
-
-			// 서비스 파일 불러오기
-			ArrayList<ServiceFile> fileList = service.fileList(sNo);
-			System.out.println("fileList 사이즈 :" + fileList.size());
-			System.out.println("fileList값:" + fileList.get(0));
-			model.addAttribute("fileList", fileList);
-
-			// 해당 유저가 등록한 다른서비스 불러오기
-			ArrayList<Service> sList = service.userService(memberId);
-			model.addAttribute("sList", sList);
-
-			// 리뷰 리스트 불러오기 + 페이징
-			ReviewPageData rpd = service.selectReviewList(sNo, reqPage);
-			if(rpd.getList().size() == 0) {
-				System.out.println("리뷰 없음");
-			}else {
-				System.out.println("리뷰있음");
-				System.out.println(rpd.getPageNavi());
-			}
-			
-			model.addAttribute("reviewList", rpd.getList());
-			model.addAttribute("pageNavi", rpd.getPageNavi());
-			
-			//찜한내역 확인하기 
-			model.addAttribute("favoriteCheck", false);
-
-			return "/service/serviceView";
+		if (s != null) {
+			model.addAttribute("s", s);
 		}
-	
-	
-	
-	
+		int serviceNo = s.getSNo();
+
+		// 브랜드 정보 불러오기
+		String memberId = s.getMId();
+
+		Member m = service.selectMemberName(memberId);
+		model.addAttribute("m", m);
+
+		// 서비스 파일 불러오기
+		ArrayList<ServiceFile> fileList = service.fileList(sNo);
+		System.out.println("fileList 사이즈 :" + fileList.size());
+		System.out.println("fileList값:" + fileList.get(0));
+		model.addAttribute("fileList", fileList);
+
+		// 해당 유저가 등록한 다른서비스 불러오기
+		ArrayList<Service> sList = service.userService(memberId);
+		model.addAttribute("sList", sList);
+
+		// 리뷰 리스트 불러오기 + 페이징
+		ReviewPageData rpd = service.selectReviewList(sNo, reqPage);
+		if (rpd.getList().size() == 0) {
+			System.out.println("리뷰 없음");
+		} else {
+			System.out.println("리뷰있음");
+			System.out.println(rpd.getPageNavi());
+		}
+
+		model.addAttribute("reviewList", rpd.getList());
+		model.addAttribute("pageNavi", rpd.getPageNavi());
+
+		// 찜한내역 확인하기
+		model.addAttribute("favoriteCheck", false);
+
+		return "/service/serviceView";
+	}
 
 	// (문정) 결제 진행
 	@RequestMapping("/insertServicePay.do")
@@ -553,7 +556,7 @@ public class ServiceController {
 		}
 		return "/service/serviceAllList";
 	}
-	
+
 	@ResponseBody
 	@RequestMapping
 	public int isPossibleMakeService(String mId) {

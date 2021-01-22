@@ -355,7 +355,7 @@ li.ac {
 	margin-left: -30px;
 	margin-right: 30px;
 	font-size: 20px;
-	background-color: #314C83;
+	/* background-color: #314C83; */
 	font-weight: bold;
 	box-sizing: border-box;
 	border-top-left-radius: 10px;
@@ -365,7 +365,7 @@ li.ac {
 }
 
 li.ac a{
-color:white;
+color: #314C83;
 display:block;}
 
 div.inner {

@@ -138,7 +138,7 @@
 			<div class="search-list">
 				<c:if test="${not empty list}">
 					<c:forEach var="item" items="${list}">
-						<a href="/serviceView.do?sNo=${item.SNo}&reqPage=1">
+						<a href="/serviceView2.do?sNo=${item.SNo}&reqPage=1">
 							<div class="list-item">
 								<div class="item-img">
 									<img src="upload/service/${item.SImg}" alt="">

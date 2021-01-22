@@ -67,7 +67,7 @@
 			<tr>
 				<td>${h.MId }</td>
 				<td><c:if test="${h.TStatus eq 0}">결제전</c:if> <c:if
-						test="${h.TStatus eq 1}">진행중</c:if> <c:if test="${h.TStatus eq 2}">진행완료</c:if></td>
+						test="${h.TStatus eq 1}">진행중</c:if> <c:if test="${h.TStatus gt 2}">진행완료</c:if></td>
 				<td>${h.TPrice}</td>
 				<td>${h.startDate}</td>
 				<td>${h.endDate}</td>

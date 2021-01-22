@@ -430,7 +430,8 @@
 		(select c_name from category where c_no = sub_category) as subCategoryName,
 		working_date as workingDate,
 		working_count as workingCount,
-		write_date as writeDate
+		write_date as writeDate,
+		delete_status as deleteStatus
 		from service
 		where
 		s_no = #{parameter}

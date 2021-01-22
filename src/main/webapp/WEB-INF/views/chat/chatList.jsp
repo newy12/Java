@@ -83,7 +83,7 @@
 																	<span class="green">(결제전)</span>
 																</c:if> <c:if test="${r.status eq 1 }">
 																	<span class="blue">(진행중)</span>
-																</c:if> <c:if test="${r.status eq 2 }">
+																</c:if> <c:if test="${r.status gt 1 }">
 																	<span class="red">(작업완료)</span>
 																</c:if>
 															</span>

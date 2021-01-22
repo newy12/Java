@@ -66,11 +66,11 @@ public class ServiceDao {
 	}
 
 	public int totalCount(String mId) {
-		if(session.selectOne("service.selectTotalCount", mId)==null) {
+		if (session.selectOne("service.selectTotalCount", mId) == null) {
 			return 0;
+		} else {
+			return session.selectOne("service.selectTotalCount", mId);
 		}
-	else {
-		return session.selectOne("service.selectTotalCount", mId);}
 	}
 
 	// (문정) 마이페이지 - 서비스 후기 등록
@@ -169,7 +169,11 @@ public class ServiceDao {
 	public float sRateAVG(String mId) {
 		// List<com.ilgusi.service.model.vo.Service> list =
 		// session.selectList("service.sRateAVG",mId);
-		return session.selectOne("service.sRateAVG", mId);
+		if (session.selectOne("service.sRateAVG", mId) == null) {
+			return 0.0f;
+		} else {
+			return session.selectOne("service.sRateAVG", mId);
+		}
 	}
 
 	// (문정) 결제 진행
@@ -223,7 +227,7 @@ public class ServiceDao {
 		HashMap<String, Integer> map = new HashMap<String, Integer>();
 		map.put("mNo", mNo);
 		map.put("sNo", sNo);
-		return session.selectOne("favorite.searchMyFavorite",map);
+		return session.selectOne("favorite.searchMyFavorite", map);
 	}
 
 }

@@ -24,7 +24,7 @@
 		<ul>
 			<li class="tab">전체회원</li>
 			<li class="tab">프리랜서</li>
-			<li class="tab">블랙리스트</li>
+			<li class="tab">블랙컨슈머</li>
 		</ul>
 	</div>
 

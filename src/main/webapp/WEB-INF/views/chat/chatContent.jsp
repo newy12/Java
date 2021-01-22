@@ -8,11 +8,11 @@
 <title>19시 :: 문의하기</title>
 <!-- favicon -->
 <link rel="apple-touch-icon" sizes="180x180"
-   href="favicon_io/apple-touch-icon.png">
+	href="favicon_io/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32"
-   href="favicon_io/favicon-32x32.png">
+	href="favicon_io/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16"
-   href="favicon_io/favicon-16x16.png">
+	href="favicon_io/favicon-16x16.png">
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.5.1.js"
 	integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
@@ -290,6 +290,13 @@
 		}
 
 		function sendMsg(myId, cNo) {
+			
+			/* 삭제된 서비스면 alert */
+			var deleted = "${service.deleteStatus }";
+			if (deleted == 'y'.charAt(0)) {
+				alert("메세지를 보낼수 없습니다!");
+			} else {
+				
 			// 현재 시간 구하기
 			var now = new Date();
 			var year = now.getFullYear();
@@ -357,6 +364,7 @@
 					}
 				});
 			}
+			}
 		}
 
 		// 엔터 누르면 전송 
@@ -391,11 +399,17 @@
 
 		$(".service-title").click(
 				function() {
-					console.log("click!");
-					var sNo = ${service.SNo};
-					sNo = Number(sNo);
-					opener.parent.location.href = "/serviceView.do?sNo=" + sNo
-							+ "&reqPage=1&mNo="+${loginMember.MNo };
+					/* 삭제된 서비스면 alert */
+					var deleted = "${service.deleteStatus }";
+					if (deleted == 'y'.charAt(0)) {
+						alert("삭제된 서비스입니다!");
+					} else {
+						console.log("click!");
+						var sNo = ${service.SNo};
+						sNo = Number(sNo);
+						opener.parent.location.href = "/serviceView.do?sNo="
+								+ sNo + "&reqPage=1&mNo=" + ${loginMember.MNo};
+					}
 				});
 
 		$(".qna").click(function() {

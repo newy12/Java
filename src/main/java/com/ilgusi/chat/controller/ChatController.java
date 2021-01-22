@@ -119,12 +119,18 @@ public class ChatController {
 				Chat oneRoom = roomList.get(i);
 				int cNo = oneRoom.getCNo(); // 방번호
 				int sNo = oneRoom.getSNo();
-
+				System.out.println("방번호" + cNo);
+				System.out.println("서비스번호" + sNo);
 				if (sNo != 0) {
 					ArrayList<ChatContent> content = service.chatContentList(cNo);
 					int last = content.size() - 1;
 					ChatContent lastMsg = content.get(last);
 					String freeId = oneRoom.getFreelancerId();
+					if(freeId==null) { //채팅하던 프리랜서가 탈퇴하면
+						continue;
+					}
+					System.out.println("----------");
+					System.out.println(freeId);
 					Member oneMember = service.selectOneMember(freeId);
 					String brandName = oneMember.getBrandName();
 					ArrayList<ServiceInfo> serviceList = service.selectService(sNo);
@@ -182,7 +188,7 @@ public class ChatController {
 					int last = content.size() - 1;
 					ChatContent lastMsg = content.get(last);
 					/* String freeId = oneRoom.getFreelancerId(); */
-					String userId=oneRoom.getUserId();
+					String userId = oneRoom.getUserId();
 					String freeId = mId;
 					Member oneMember = service.selectOneMember(freeId);
 					String brandName = oneMember.getBrandName();
@@ -198,19 +204,20 @@ public class ChatController {
 
 					// 프리랜서로 로그인했을때
 					// 상대방번호,서비스번호로 거래 견적서 작성 여부 확인
-					if(userId !=null) {
-					Member oneUser = service.selectOneMember(userId);
-					int mNo = oneUser.getMNo();
-					tradeInfo.put("sNo", sNo);
-					tradeInfo.put("mNo", mNo);
+					if (userId != null) {
+						Member oneUser = service.selectOneMember(userId);
+						int mNo = oneUser.getMNo();
+						tradeInfo.put("sNo", sNo);
+						tradeInfo.put("mNo", mNo);
 
-					ArrayList<ServiceTrade> tradeList = service.tradeList(tradeInfo);
-					if (tradeList.size() != 0) {
-						if (tradeList.get(0) != null) { // 제일 최신 거래내역
-							status = tradeList.get(0).getTStatus();
-							System.out.println("나는 프리랜서--거래상태 :" + status);
+						ArrayList<ServiceTrade> tradeList = service.tradeList(tradeInfo);
+						if (tradeList.size() != 0) {
+							if (tradeList.get(0) != null) { // 제일 최신 거래내역
+								status = tradeList.get(0).getTStatus();
+								System.out.println("나는 프리랜서--거래상태 :" + status);
+							}
 						}
-					}}
+					}
 					/////////////////////////////////////////////////////////////////////////////////////////////////
 
 					HashMap<String, Object> room = new HashMap<String, Object>();
@@ -348,7 +355,6 @@ public class ChatController {
 			Chat oneRoom = service.selectOneRoom(room);
 			int rNo = oneRoom.getCNo();
 
-			
 			HashMap<String, Object> roomAndId = new HashMap<String, Object>();
 			if (mGrade.equals("1")) {
 				// 상대가 보낸 메세지 읽음으로 update
@@ -406,8 +412,8 @@ public class ChatController {
 		service.deleteChat(cNo);
 		return "";
 	}
-	
-	//(소현)메세지 삭제
+
+	// (소현)메세지 삭제
 	@ResponseBody
 	@RequestMapping("/deleteMsg.do")
 	public String deleteMsg(int ccNo) {
