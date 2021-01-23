@@ -197,7 +197,7 @@
                                     <th class="qna-col1">제목</th>
                                     <th class="qna-col2"><input type="text" name="qTitle" id="qTitle"
                                             placeholder="내용을 입력해주세요."
-                                            value="${not empty question ? question.QTitle : ''}"></th>
+                                            value="${not empty question ? question.QTitle : ''}"  maxlength="33"></th>
                                     <th></th>
                                 </tr>
                                 <tr>
