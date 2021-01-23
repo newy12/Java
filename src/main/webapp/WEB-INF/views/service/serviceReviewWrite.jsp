@@ -108,7 +108,7 @@
 		<hr>
 		<div class="sContent">
 			<div><img src="/upload/service/${sImg }" width="100%" height="80px" alt="${sImg }" style="border-radius:5px;"></div>
-			<div><a href="#">${sContent }</a></div>
+			<div>[서비스 제목] ${sTitle }</div>
 		</div>
 		<div class="sub-title">서비스 만족도</div>
 		<div class="heart-box">
