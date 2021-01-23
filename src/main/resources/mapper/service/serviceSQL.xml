@@ -201,8 +201,8 @@
 		select
 		ROUND(AVG(s_rate),1)
 		from service
-		where m_id = #{mId}
-		and admin_approval='y' and delete_status='n'
+		where m_id = #{mId} and admin_approval='y' 
+		and s_rate!=0
 	</select>
 	<!-- (소현)관리자-서비스 승인 -->
 	<update parameterType="_int" id="acceptService">

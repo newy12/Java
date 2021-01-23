@@ -11,7 +11,7 @@ public class Service {
 	private String sContent;	//서비스 내용
 	private String sArea;		//서비스 지역
 	private String sImg;		//섬네일 이미지
-	private int sRate;			//서비스 평점
+	private float sRate;			//서비스 평점
 	private int mainCategory;	//메인카테고리 번호
 	private int subCategory;	//서브카테고리 번호
 	private int workingDate;	//예상 작업일

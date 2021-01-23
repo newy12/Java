@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>19시 :: 공지사항수정</title>
+<title>19시 :: 공지사항 수정</title>
 <!-- favicon -->
 <link rel="apple-touch-icon" sizes="180x180"
    href="favicon_io/apple-touch-icon.png">

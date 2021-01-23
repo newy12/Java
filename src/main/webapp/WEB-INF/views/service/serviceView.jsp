@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>19시 :: 서비스 상세보기</title>
 
 	<!--아이콘 부트스트랩-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,6 +19,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     
+    	<!-- favicon -->
+	<link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
 
     
 	 <style>
@@ -476,7 +480,7 @@
 
                     </div>
                     <div class="tabcontent">
-                        <h2>서비스 평가</h2>
+                        <h2>서비스 평가 (평균 ${s.SRate }점)</h2>
                         <hr>
                         
                         <c:forEach items="${reviewList }" var="review">

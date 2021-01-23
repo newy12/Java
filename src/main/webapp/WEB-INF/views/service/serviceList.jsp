@@ -6,7 +6,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>19시 :: 일 구하고 시퍼_서비스</title>
+<title>19시 :: 서비스</title>
+	<!-- favicon -->
+	<link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
 <script type="text/javascript"
 	src="http://code.jquery.com/jquery-3.3.1.js"></script>
 
@@ -299,27 +303,28 @@ a:hover {
 						
 							<p class="price">${s.SPriceTxt }원~</p>
 							<p class="score">
-								평점 ${s.SRate }.0
-	
-								<c:if test="${s.SRate == 5}">
+								평점 ${s.SRate }
+							<c:choose>
+								<c:when test="${s.SRate == 5}">
 									<span class="star"> ★★★★★ </span>
-								</c:if>
+								</c:when>
 	
-								<c:if test="${s.SRate == 4}">
+								<c:when test="${s.SRate gt 3.9}">
 									<span class="star"> ☆★★★★ </span>
-								</c:if>
-								<c:if test="${s.SRate == 3}">
+								</c:when>
+								<c:when test="${s.SRate gt 2.9}">
 									<span class="star"> ☆☆★★★ </span>
-								</c:if>
-								<c:if test="${s.SRate == 2}">
+								</c:when>
+								<c:when test="${s.SRate gt 1.9}">
 									<span class="star"> ☆☆☆★★ </span>
-								</c:if>
-								<c:if test="${s.SRate == 1}">
+								</c:when>
+								<c:when test="${s.SRate gt 0.9}">
 									<span class="star"> ☆☆☆☆★ </span>
-								</c:if>
-								<c:if test="${s.SRate == 0}">
+								</c:when>
+								<c:when test="${s.SRate == 0}">
 									<span class="star"> ☆☆☆☆☆ </span>
-								</c:if>
+								</c:when>
+							</c:choose>
 							</p>
 						</div>
 					</c:forEach>

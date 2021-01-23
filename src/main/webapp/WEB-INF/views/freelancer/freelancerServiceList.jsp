@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>찜한 리스트</title>
+<title>19시 :: 나의 서비스</title>
 
 <style>
 .page-wrap {

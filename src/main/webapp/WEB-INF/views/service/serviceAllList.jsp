@@ -6,7 +6,11 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>Insert title here</title>
+	<title>19시 :: [${param.keyword}] 검색결과</title>
+		<!-- favicon -->
+	<link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png">
 	<style>
 		@font-face {
 			font-family: 'Arita-dotum-Medium';
@@ -125,6 +129,12 @@
             color: white;
             text-decoration: none;
         }
+        
+        .star {
+			color: rgb(241, 196, 15);
+			font-size: 14pt;
+		}
+
 	</style>
 </head>
 
@@ -153,7 +163,28 @@
 									${item.SPriceTxt}원
 								</div>
 								<div class="item-rate">
-									${item.SRate} 1개의 평가
+									${item.SRate}점
+									<c:choose>
+								<c:when test="${item.SRate == 5}">
+									<span class="star"> ★★★★★ </span>
+								</c:when>
+	
+								<c:when test="${item.SRate gt 3.9}">
+									<span class="star"> ☆★★★★ </span>
+								</c:when>
+								<c:when test="${item.SRate gt 2.9}">
+									<span class="star"> ☆☆★★★ </span>
+								</c:when>
+								<c:when test="${item.SRate gt 1.9}">
+									<span class="star"> ☆☆☆★★ </span>
+								</c:when>
+								<c:when test="${item.SRate gt 0.9}">
+									<span class="star"> ☆☆☆☆★ </span>
+								</c:when>
+								<c:when test="${item.SRate == 0}">
+									<span class="star"> ☆☆☆☆☆ </span>
+								</c:when>
+							</c:choose>
 								</div>
 							</div>
 						</a>
