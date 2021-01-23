@@ -590,6 +590,9 @@
                     </div>
                     <br>
                     <c:if test="${s.deleteStatus ne 'y'.charAt(0) }">
+                    <c:if test="${empty loginMember }">
+               		 <button class="centerBtn">로그인 후 문의하세요</button>
+               		</c:if>
                     <c:if test="${loginMember.MGrade eq 1 }">
                     <button class="centerBtn" onclick="startChat('${s.SNo }','${sessionScope.loginMember.MId }','${s.MId}','${sessionScope.loginMember.MNo }','${sessionScope.loginMember.MGrade}');">전문가에게 문의하기</button>
                		</c:if>
