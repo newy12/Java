@@ -504,9 +504,9 @@
 						<div class="rank-col-3 r-col"></div>
 					</div>
 					<div class="rank-row">
-						<div class="rank-col-1">5위</div>
-						<div class="rank-col-2"></div>
-						<div class="rank-col-3"></div>
+						<div class="rank-col-1 r-col">5위</div>
+						<div class="rank-col-2 r-col"></div>
+						<div class="rank-col-3 r-col"></div>
 					</div>
 				</div>
 				<div class="rank-list">
@@ -541,9 +541,9 @@
 						<div class="rank-col-3 r-col"></div>
 					</div>
 					<div class="rank-row">
-						<div class="rank-col-1">5위</div>
-						<div class="rank-col-2"></div>
-						<div class="rank-col-3"></div>
+						<div class="rank-col-1 r-col">5위</div>
+						<div class="rank-col-2 r-col"></div>
+						<div class="rank-col-3 r-col"></div>
 					</div>
 				</div>
 				<div class="rank-list">
@@ -578,9 +578,9 @@
 						<div class="rank-col-3 r-col"></div>
 					</div>
 					<div class="rank-row">
-						<div class="rank-col-1">5위</div>
-						<div class="rank-col-2"></div>
-						<div class="rank-col-3"></div>
+						<div class="rank-col-1 r-col">5위</div>
+						<div class="rank-col-2 r-col"></div>
+						<div class="rank-col-3 r-col"></div>
 					</div>
 				</div>
 			</div>
