@@ -490,8 +490,8 @@
 					</div>
 					<div class="rank-row">
 						<div class="rank-col-1 r-col">2위</div>
-						<div class="rank-col-2 r-col">500원</div>
-						<div class="rank-col-3 r-col">frre</div>
+						<div class="rank-col-2 r-col"></div>
+						<div class="rank-col-3 r-col"></div>
 					</div>
 					<div class="rank-row">
 						<div class="rank-col-1 r-col">3위</div>
