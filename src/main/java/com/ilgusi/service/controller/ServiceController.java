@@ -351,7 +351,7 @@ public class ServiceController {
 		if (serList.size() > 0) {
 			System.out.println("serList 사이즈 : " + serList.size());
 			System.out.println("serList.get(0) : " + serList.get(0));
-			System.out.println("serList.get(0).brandName : " + serList.get(0).getBrandName());
+			System.out.println("serList.get(0).평점 : " + serList.get(0).getSRate());
 			model.addAttribute("serviceList", spd.getList());
 
 		} else if (serList.size() == 0) {
