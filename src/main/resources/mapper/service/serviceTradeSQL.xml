@@ -104,11 +104,11 @@
 		t_status as tStatus,
 		t_price as tPrice,
 		start_date as startDate,
-		end_date as endDate
+		end_date as endDate,
+		(select m_id from member where member.m_no =s.m_no) as mId
 		from
-		service_trade
-		where s_no in (select s_no from service where m_id = (select m_id from
-		member where m_no = #{_parameter})) order by t_status,t_no
+		service_trade s
+		where s_no in (select s_no from service where m_id = (select m_id from member where m_no = #{_parameter})) order by t_status,t_no
 	</select>
 
 	<!-- (영재) 프리랜서 기준 거래내역 불러오기 -->

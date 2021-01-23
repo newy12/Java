@@ -14,4 +14,5 @@ public class ServiceTrade {
 	
 	//(문정) 천원단위 나누기위함
 	private String tPriceTxt;   //천원단위로 ,찍혀있는 텍스트
+	private String mId;         //거래내역에서 아이디 뽑아오기위함
 }

@@ -308,8 +308,8 @@
 	<script>
 		$(document).ready(function(){
 			//페이지 높이 동적 적용
-			var containerHeight = $(".container-box").height();
-			$(".page-wrap").height(containerHeight+600);
+			var containerHeight = $(".board-wrap").height();
+			$(".page-wrap").height(containerHeight+200);
 			
 			//메뉴 고정
 	   		 $(".menu").children().eq(2).find('a').css({'margin-left':'5px', 'font-weight':'bold'});

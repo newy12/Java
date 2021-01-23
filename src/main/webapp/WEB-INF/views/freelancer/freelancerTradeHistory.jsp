@@ -253,10 +253,16 @@
 										사용자 ID
 										<div>
 											<div>
-												<a href="/introduceFrm.do?mId=${loginMember.MId}&reqPage=1">${serviceList[status.index].MId }</a>
-											</div>
-											<div>
-												<a href="/introduceFrm.do?mId=${loginMember.MId}&reqPage=1"><img src="/img/icon/home.png"></a>
+												<c:choose>
+													<c:when test="${t.MId == null }">
+														<a href="#" style="text-decoration:none">탈퇴한 회원</a>
+													</c:when>
+													<c:otherwise>
+														<a href="#" style="text-decoration:none">${t.MId }</a>
+													</c:otherwise>
+												</c:choose>
+												
+												<div></div>
 											</div>
 										</div>
 									</div>
@@ -279,12 +285,12 @@
 										<div style="color: rgb(51, 51, 51); font-size: 15px; margin-top: 20px;">예상 마감일</div>
 										<div style="color: rgb(51, 51, 51); font-size: 15px; margin-top: 5px; font-weight: bold;">${t.endDate }</div>
 									</c:when>
-									<c:when test="${t.TStatus ==2 }">
+									<c:otherwise>
 										<div style="color: rgb(224, 224, 224); font-size: 20px; margin-top: 5px; font-weight: bold;">작업 완료</div>
 										<div style="color: rgb(51, 51, 51); font-size: 15px;">${payDate[status.index] }</div>
 										<div style="color: rgb(51, 51, 51); font-size: 15px; margin-top: 20px;">작업 종료일</div>
 										<div style="color: rgb(51, 51, 51); font-size: 15px; margin-top: 5px; font-weight: bold;">${t.endDate }</div>
-									</c:when>
+									</c:otherwise>
 								</c:choose>
 							</div>
 							<div>
@@ -295,7 +301,7 @@
 										<input id="tnoId" type="hidden" value="${t.TNo}" />
 										<button class="review-btn" id="workDone-btn">작업 완료</button>
 									</c:when>
-									<c:when test="${t.TStatus == 2}">작업 완료</c:when>
+									<c:otherwise>작업 완료</c:otherwise>
 								</c:choose>
 							</div>
 						</div>
@@ -333,6 +339,9 @@
 		//메뉴 고정
 		 $(".menu").children().eq(3).find('a').css({'margin-left':'5px', 'font-weight':'bold'});
 		 $(".menu").children().eq(3).find('img').css({'display':'inline'});
+		 
+		 var containerHeight = $(".board-wrap").height();
+		 $(".page-wrap").height(containerHeight+200);
 	});
 	
 	//거래 세부 내역 확인
