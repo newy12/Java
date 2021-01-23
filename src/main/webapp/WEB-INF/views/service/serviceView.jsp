@@ -209,7 +209,6 @@
 		}
 		.conView{
 			white-space: pre-line;
-			font-family: 'Arita-dotum-Medium';
 		}
 		
         /*.................... ▲ 왼쪽 컨텐츠...........................*/
@@ -591,15 +590,18 @@
                     </div>
                     <br>
                     <c:if test="${s.deleteStatus ne 'y'.charAt(0) }">
-	                    <c:if test="${loginMember.MGrade eq 1 }">
-	                   		<button class="centerBtn" onclick="startChat('${s.SNo }','${sessionScope.loginMember.MId }','${s.MId}','${sessionScope.loginMember.MNo }','${sessionScope.loginMember.MGrade}');">전문가에게 문의하기</button>
-	               		</c:if>
-	               		<c:if test="${loginMember.MGrade eq 2 }">
-	               		 	<button class="centerBtn">일반회원으로 전환후 문의하세요</button>
-	               		</c:if>
+                    <c:if test="${empty loginMember }">
+               		 <button class="centerBtn">로그인 후 문의하세요</button>
+               		</c:if>
+                    <c:if test="${loginMember.MGrade eq 1 }">
+                    <button class="centerBtn" onclick="startChat('${s.SNo }','${sessionScope.loginMember.MId }','${s.MId}','${sessionScope.loginMember.MNo }','${sessionScope.loginMember.MGrade}');">전문가에게 문의하기</button>
+               		</c:if>
+               		<c:if test="${loginMember.MGrade eq 2 }">
+               		 <button class="centerBtn">일반회원으로 전환후 문의하세요</button>
+               		</c:if>
                		</c:if>
                		<c:if test="${s.deleteStatus eq 'y'.charAt(0) }">
-               		 	<button class="centerBtn">삭제된 서비스입니다</button>
+               		 <button class="centerBtn">삭제된 서비스입니다</button>
                		</c:if>
                 </div>
                 <br>

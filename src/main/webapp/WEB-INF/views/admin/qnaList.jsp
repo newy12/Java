@@ -444,7 +444,6 @@
                     <option value="20" ${param.list_num == 20 ? 'selected' : ''}>20개</option>
                     <option value="30" ${param.list_num == 30 ? 'selected' : ''}>30개</option>
                 </select>
-                <input type="button" value="삭제">
             </div>
                 <div class="qna-center">
                 <table>
