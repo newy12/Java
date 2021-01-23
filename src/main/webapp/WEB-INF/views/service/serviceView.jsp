@@ -421,7 +421,7 @@
                 </div>
 
                 <div class="tabContentWrap">
-                    <div class="tabcontent sIntro">
+                    <div class="tabcontent sIntro" style=" font-family: 'Arita-dotum-Medium';">
 
                         <h2>서비스 설명</h2>
                         <hr>
