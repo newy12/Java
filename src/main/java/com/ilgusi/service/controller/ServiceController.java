@@ -434,7 +434,7 @@ public class ServiceController {
 		model.addAttribute("sList", sList);
 
 		// 리뷰 리스트 불러오기 + 페이징
-		ReviewPageData rpd = service.selectReviewList(sNo, reqPage);
+		ReviewPageData rpd = service.selectReviewList(sNo, reqPage,mNo);
 		if (rpd.getList().size() == 0) {
 			System.out.println("리뷰 없음");
 		} else {
@@ -495,7 +495,7 @@ public class ServiceController {
 		model.addAttribute("sList", sList);
 
 		// 리뷰 리스트 불러오기 + 페이징
-		ReviewPageData rpd = service.selectReviewList(sNo, reqPage);
+		ReviewPageData rpd = service.selectReviewList(sNo, reqPage,-1);
 		if (rpd.getList().size() == 0) {
 			System.out.println("리뷰 없음");
 		} else {

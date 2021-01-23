@@ -23,7 +23,7 @@
 	<br>
 	<br>
 	<div class="content">
-		<div class="inner">
+		<div class="inner" >
 			<div class="title"><br><br><br><br><br><br>
 				<p class="tt"><h1>${j.brandName}<span style="font-size:30px;">(${j.MId})</span></h1></p>
 				<p class="tt" id="listSize">${list}</p>
@@ -178,14 +178,14 @@
 
 			<div class="middle2right"></div>
 			<br> <br>
-			<div class="middle3">
+			<div class="middle3"">
 				<br> <br>
 				<div id="three">
 					<br>
 					<h2>서비스(${j.serviceList.size()}개)</h2>
 				</div>
-				<br> <br> <br>
-				<div class="tabContent">
+				<br> 
+				<div class="tabContent" style=";">
 					<c:choose>
 						<c:when test="${j.serviceList.size()==0}">
 							<div class="noList" style="width: 800px">등록된 서비스가 없습니다.</div>
@@ -199,36 +199,42 @@
 									</span><br>
 									<p class="serviceCon" style="float: right;">${r.SPrice }원~</p>
 									<br>
-									<c:if test="${r.SRate ==0}">
+									<span style="float: right;">
+									<c:choose>
+									<c:when test="${r.SRate gt 4.9}">
 										<p class="score">
-											평점 ${r.SRate}.0점<span class="star"> ☆☆☆☆☆</span>
+											평점 ${r.SRate}점<span class="star"> ★★★★★</span>
 										</p>
-									</c:if>
-									<c:if test="${r.SRate ==1}">
+									</c:when>
+									<c:when test="${r.SRate gt 3.9}">
 										<p class="score">
-											평점 ${r.SRate}.0점<span class="star"> ★☆☆☆☆</span>
+											평점 ${r.SRate}점<span class="star"> ★★★★☆</span>
 										</p>
-									</c:if>
-									<c:if test="${r.SRate ==2}">
+									</c:when>
+									<c:when test="${r.SRate gt 2.9}">
 										<p class="score">
-											평점 ${r.SRate}.0점<span class="star"> ★★☆☆☆</span>
+											평점 ${r.SRate}점<span class="star"> ★★★☆☆</span>
 										</p>
-									</c:if>
-									<c:if test="${r.SRate ==3}">
+									</c:when>
+									<c:when test="${r.SRate gt 1.9}">
 										<p class="score">
-											평점 ${r.SRate}.0점<span class="star"> ★★★☆☆</span>
+											평점 ${r.SRate}점<span class="star"> ★★☆☆☆</span>
 										</p>
-									</c:if>
-									<c:if test="${r.SRate ==4}">
+									</c:when>
+									<c:when test="${r.SRate gt 0.9}">
 										<p class="score">
-											평점 ${r.SRate}.0점<span class="star"> ★★★★☆</span>
+											평점 ${r.SRate}점<span class="star"> ★☆☆☆☆</span>
 										</p>
-									</c:if>
-									<c:if test="${r.SRate ==5}">
+									</c:when>
+									<c:when test="${r.SRate ==0}">
 										<p class="score">
-											평점 ${r.SRate}.0점<span class="star"> ★★★★★</span>
+											평점 ${r.SRate}점<span class="star"> ☆☆☆☆☆</span>
 										</p>
-									</c:if>
+									</c:when>
+									</c:choose>
+									
+									</span>
+									
 								</div>
 							</c:forEach>
 						</c:otherwise>
@@ -307,7 +313,7 @@
 } */
 .tabcontent {
 	width: 100%;
-	height: 80%;
+	height: 100%;
 	text-align: left;
 	padding: 20px;
 	font-size: 8pt;
@@ -440,6 +446,7 @@ div.middle2right {
 div.middle3 {
 	width: 70%;;
 	float: left;
+	height:600px;
 }
 
 div.middle4 {
