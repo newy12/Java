@@ -349,12 +349,16 @@
 		
 		//제출버튼 눌리면
 		$("input[type=button]").click(function() { 
-			console.log($('input[name=ssImg]').val());
     		oEditors.getById["smartEditor"].exec("UPDATE_CONTENTS_FIELD", []);  
     		var mainCategory = $("#mainCategory").val();
     		var price = $("input[name=sPrice]").val(); 
     		var day = $("input[name=workingDate]").val(); 
     		var content = document.getElementById("smartEditor").value; 
+    		if($("input[name=sTitle]").val() == ""){
+    			alert('제목을 입력해주세요.');
+    			$("input[name=sTitle]").focus(); 
+				return; 
+    		}
     		if (mainCategory == 0) { 
     			alert('카테고리를 선택해주세요');
    				$("input[name=mainCategory]").focus(); 
