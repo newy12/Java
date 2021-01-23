@@ -160,7 +160,7 @@
          
             <div>
             	<button class="back-btn save" id="savebutton">수정완료</button>
-            	<a href="/noticeList.do" class="Listbtn">수정취소</a>
+            	<a href="/noticeList.do?reqPage=1&keyword=" class="Listbtn">수정취소</a>
             </div>
             </form>
         </div>
