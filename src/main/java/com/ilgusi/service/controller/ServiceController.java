@@ -196,12 +196,12 @@ public class ServiceController {
 
 	// 프리랜서 마이페이지 - 서비스 삭제하기
 	@RequestMapping("/delService.do")
-	public String deleteService(int sNo, Model model) {
+	public String deleteService(int sNo, Model model, String mId) {
 		int result = service.deleteService(sNo);
 		if (result != 0) {
 			model.addAttribute("msg", "서비스가 삭제되었습니다.");
 		}
-		model.addAttribute("loc", "/");
+		model.addAttribute("loc", "/freelancerServiceList.do?mId="+mId+"&order=agree");
 		return "common/msg";
 	}
 

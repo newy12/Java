@@ -270,9 +270,10 @@
     		var sNo = $("#sNo").val();
     		console.log("sNo :"+sNo);
     		var confirm_test = confirm("해당 서비스를 삭제할까요?");
+    		var id = "${loginMember.MId}";
     		
     		if(confirm_test == true){
-    			location.href = "/delService.do?sNo="+sNo;
+    			location.href = "/delService.do?sNo="+sNo+"&mId="+id;
     		}
     		
     	};
