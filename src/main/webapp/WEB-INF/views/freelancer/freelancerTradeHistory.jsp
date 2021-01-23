@@ -299,7 +299,7 @@
 									<c:when test="${t.TStatus == 1 }">
 										<input type="hidden" value="${t.MNo}" />
 										<input id="tnoId" type="hidden" value="${t.TNo}" />
-										<button class="review-btn" id="workDone-btn">작업 완료</button>
+										<button class="review-btn " onclick="workDone_btn(this)">작업 완료</button>
 									</c:when>
 									<c:otherwise>작업 완료</c:otherwise>
 								</c:choose>
@@ -353,9 +353,11 @@
 	}
 	
 	//작업 완료 번튼 누르면
-	 $('#workDone-btn').click(function(event) {
+	 $('.review-btn').click(function(event){
 		 var tNo = $(this).prev().val(); //tno값
 		 var mNo = $(this).prev().prev().val(); //mNo값
+		 var heigh = event.pageY;
+		 console.log(tNo+"/"+mNo+"/"+heigh)
 
 		 $.ajax({
 			type : "post",
@@ -368,12 +370,12 @@
 				$(".modal_content").append("<input type='hidden' value="+tNo+" id='modal_tNo'>");
 				$(".modal_content").append("<input type='hidden' value="+mNo+" id='modal_mNo'>");
 				
-				var _left = Math.ceil(( window.screen.width - 430 )/2);
+				var _left = Math.ceil(( window.screen.width - 400 )/2);
 				var _top = event.pageY-200;
 				$("#modal").css({'position':'absolute','top':_top,'left':_left}).toggle('slow');
 			}
 		});
-	});
+	 });
 	 
 	//다신 만나기 싫어요 외 다른거 누르면
 	 $('.modal_close').click(function(event){

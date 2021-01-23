@@ -127,6 +127,9 @@
         text-align: center;
         margin-top: 55px;
     }
+    .review-btn:focus, .reviewCheck-btn:focus{
+    	outline: none;
+    }
     .review-btn{
         width: 100px;
         height: 26px;
@@ -325,9 +328,9 @@
 			var sNo = $(this).prev().prev().val();
 			var tNo = $(this).prev().prev().prev().val();
 			var sImg = $(this).prev().prev().prev().prev().val();
-			var sContent = $(this).prev().prev().prev().prev().prev().val();
-			console.log("아이디"+mId);
-			window.open('/serviceReviewWrite.do?tNo='+tNo+'&sNo='+sNo+'&mId='+mId+'&sImg='+sImg,'거래후기 작성', 'width=473, height=510, left='+ _left + ', top=50, scrollbars=no,location=no, resizable=no');
+			var sTitle = $(this).prev().prev().prev().prev().prev().val();
+			console.log("아이디"+sTitle);
+			window.open('/serviceReviewWrite.do?tNo='+tNo+'&sNo='+sNo+'&mId='+mId+'&sImg='+sImg+'&sTitle='+sTitle,'거래후기 작성', 'width=430, height=510, left='+ _left + ', top=50, scrollbars=no,location=no, resizable=no');
 			return false;
 		});
 		
@@ -336,7 +339,7 @@
 		    var mId = $(this).prev().val();
 			var sNo = $(this).prev().prev().val();
 			var tNo = $(this).prev().prev().prev().val();
-		    window.open('/serviceReviewView.do?tNo='+tNo+'&sNo='+sNo+'&mId='+mId, '거래 후기 확인', 'width=473, height=480, left='+_left+', top=50, scrollbars=no, location=no, resizable=no');
+		    window.open('/serviceReviewView.do?tNo='+tNo+'&sNo='+sNo+'&mId='+mId, '거래 후기 확인', 'width=433, height=490, left='+_left+', top=50, scrollbars=no, location=no, resizable=no');
 			return false;
 		});
 		
