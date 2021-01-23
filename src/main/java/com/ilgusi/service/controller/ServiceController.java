@@ -351,7 +351,7 @@ public class ServiceController {
 		if (serList.size() > 0) {
 			System.out.println("serList 사이즈 : " + serList.size());
 			System.out.println("serList.get(0) : " + serList.get(0));
-			System.out.println("serList.get(0).brandName : " + serList.get(0).getBrandName());
+			System.out.println("serList.get(0).평점 : " + serList.get(0).getSRate());
 			model.addAttribute("serviceList", spd.getList());
 
 		} else if (serList.size() == 0) {
@@ -434,7 +434,7 @@ public class ServiceController {
 		model.addAttribute("sList", sList);
 
 		// 리뷰 리스트 불러오기 + 페이징
-		ReviewPageData rpd = service.selectReviewList(sNo, reqPage);
+		ReviewPageData rpd = service.selectReviewList(sNo, reqPage,mNo);
 		if (rpd.getList().size() == 0) {
 			System.out.println("리뷰 없음");
 		} else {
@@ -495,7 +495,7 @@ public class ServiceController {
 		model.addAttribute("sList", sList);
 
 		// 리뷰 리스트 불러오기 + 페이징
-		ReviewPageData rpd = service.selectReviewList(sNo, reqPage);
+		ReviewPageData rpd = service.selectReviewList(sNo, reqPage,-1);
 		if (rpd.getList().size() == 0) {
 			System.out.println("리뷰 없음");
 		} else {

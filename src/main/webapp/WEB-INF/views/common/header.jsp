@@ -234,10 +234,12 @@
 
         .ul-user {
             float: left;
+            position: relative;
             display: block;
             padding: 0;
             margin: 0;
             margin-left: 20px;
+            margin-right: 20px;
             list-style: none;
         }
 
@@ -254,14 +256,15 @@
         .ul-user ul {
             display: none;
             position: absolute;
-            width: fit-content;
+            width: 120px;
             border: 1px solid lightgray;
             border-radius: 5px;
             box-shadow: 1px 1px 6px 0px lightgray;
             background-color: white;
             list-style: none;
             padding: 0;
-            margin: 0;
+            margin-right: 0;
+            left: -40px;
         }
 
         .ul-user li a {

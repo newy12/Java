@@ -236,7 +236,7 @@ public class ServiceService {
 		return dao.selectMemberName(memberId);
 	}
 
-	public ReviewPageData selectReviewList(int sNo, int reqPage) {
+	public ReviewPageData selectReviewList(int sNo, int reqPage, int mNo) {
 		// 보여줄 리스트 개수
 		int numPerPage = 5;
 		// 시작번호 끝번호
@@ -260,29 +260,56 @@ public class ServiceService {
 		int pageNo = ((reqPage - 1) / pageNaviSize) * pageNaviSize + 1;
 		String pageNavi = "<ul class='pagination'>";
 
-		// 이전 버튼
-		if (pageNo != 1) {
-			pageNavi += "<li class='page-item'><a class='page-link' href='/serviceView.do?sNo=" + sNo + "&reqPage="
-					+ (pageNo - 1) + "'>pre</a></li>";
-		}
-		// 페이지 네비 버튼
-		for (int i = 0; i < pageNaviSize; i++) {
-			if (reqPage == pageNo) {
-				pageNavi += "<li class='page-item'><span class='page-link selected'>" + pageNo + "</span></li>";
-			} else {
+		if (mNo == -1) {
+			// 이전 버튼
+			if (pageNo != 1) {
 				pageNavi += "<li class='page-item'><a class='page-link' href='/serviceView.do?sNo=" + sNo + "&reqPage="
-						+ (pageNo) + "'>" + pageNo + "</a></li>";
+						+ (pageNo - 1) + ">pre</a></li>";
 			}
-			pageNo++;
+			// 페이지 네비 버튼
+			for (int i = 0; i < pageNaviSize; i++) {
+				if (reqPage == pageNo) {
+					pageNavi += "<li class='page-item'><span class='page-link selected'>" + pageNo + "</span></li>";
+				} else {
+					pageNavi += "<li class='page-item'><a class='page-link' href='/serviceView.do?sNo=" + sNo
+							+ "&reqPage=" + (pageNo) + "'>" + pageNo + "</a></li>";
+				}
+				pageNo++;
 
-			if (pageNo > totalPage) {
-				break;
+				if (pageNo > totalPage) {
+					break;
+				}
 			}
-		}
 
-		if (reqPage <= (totalPage / pageNaviSize)) {
-			pageNavi += "<li class='page-item'><a class='page-link' href='/serviceView.do?sNo=" + sNo + "&reqPage="
-					+ (pageNo + 1) + "'> next </a></li>";
+			if (reqPage <= (totalPage / pageNaviSize)) {
+				pageNavi += "<li class='page-item'><a class='page-link' href='/serviceView2.do?sNo=" + sNo + "&reqPage="
+						+ (pageNo + 1) + "'> next </a></li>";
+			}
+		} else {
+			// 이전 버튼
+			if (pageNo != 1) {
+				pageNavi += "<li class='page-item'><a class='page-link' href='/serviceView2.do?sNo=" + sNo + "&reqPage="
+						+ (pageNo - 1) + ">pre</a></li>";
+			}
+			// 페이지 네비 버튼
+			for (int i = 0; i < pageNaviSize; i++) {
+				if (reqPage == pageNo) {
+					pageNavi += "<li class='page-item'><span class='page-link selected'>" + pageNo + "</span></li>";
+				} else {
+					pageNavi += "<li class='page-item'><a class='page-link' href='/serviceView2.do?sNo=" + sNo
+							+ "&reqPage=" + (pageNo) + "'>" + pageNo + "</a></li>";
+				}
+				pageNo++;
+
+				if (pageNo > totalPage) {
+					break;
+				}
+			}
+
+			if (reqPage <= (totalPage / pageNaviSize)) {
+				pageNavi += "<li class='page-item'><a class='page-link' href='/serviceView.do?sNo=" + sNo + "&reqPage="
+						+ (pageNo + 1) + "&mNo=" + mNo + "'> next </a></li>";
+			}
 		}
 
 		if (totalCount <= numPerPage) {
@@ -352,13 +379,13 @@ public class ServiceService {
 		return dao.selectServiceList(mId, order);
 	}
 
-	//(문정) 프리랜서가 등록한 총 서비스 개수
+	// (문정) 프리랜서가 등록한 총 서비스 개수
 	public int selectFreeServiceCount(String mId) {
 		return dao.selectFreeServiceCount(mId);
 	}
 
 	public Favorite searchFavorite(int mNo, int sNo) {
-		return dao.searchFavorite(mNo,sNo);
+		return dao.searchFavorite(mNo, sNo);
 	}
 
 }
