@@ -182,7 +182,7 @@ public class NoticeController {
 		}else {
 			model.addAttribute("msg","수정실패.");
 		}
-		model.addAttribute("loc", "/noticeList.do");
+		model.addAttribute("loc", "/noticeList.do?reqPage=1&keyword=");
 		
 		return "common/msg";
 	}
