@@ -130,7 +130,7 @@
 
         .priceInfo {
             border-top: 1px solid black;
-            border-bottom: 1px solid black;
+            border-bottom: 1px solid black;;pq4
             height: 150px;
             background-color: rgba(224, 224, 224, 0.42);
             font-size: 8pt;

@@ -327,7 +327,9 @@
                     </c:if>
                 </div>
                 <div class="btn-write">
-                    <a href="/questionFrm.do">글쓰기</a>
+                    <c:if test="${not empty loginMember}">
+                        <a href="/questionFrm.do">글쓰기</a>
+                    </c:if>
                 </div>
                 <div class="qna-search">
                     <form action="" method="get">
