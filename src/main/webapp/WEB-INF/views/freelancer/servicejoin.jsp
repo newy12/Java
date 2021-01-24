@@ -199,7 +199,7 @@
 						<tr>
 							<td class="table-title"><p>*이미지등록</p></td>
 							<td style="width: 400px;">
-								<input type="file"  multiple name="ssImg" id="gdsImg" value="파일첨부" style=" margin-left: 30px;margin-top:10px; color: gray; font-size: 15px;float:left" required="required">
+								<input type="file"  multiple name="ssImg" accept="image/*" id="gdsImg" value="파일첨부" style=" margin-left: 30px;margin-top:10px; color: gray; font-size: 15px;float:left" required="required">
 								<p style="font-size: 8px; color: gray;  margin-top: 45px; text-align:left;margin-left: 30px;">이미지는 jpg,gif,png 만 등록할수 있습니다.(이미지 용량 2MG이하)</p> 
 								<div class="select_img"><img src="" alt="썸네일사진" style="display:none;float:right; margin-top:-70px;border-radius:5px;"/></div>
 								<p style="font-size: 8px;  color: gray;text-align:left;margin-left: 30px;">※여러파일 첨부가능합니다.</p>
