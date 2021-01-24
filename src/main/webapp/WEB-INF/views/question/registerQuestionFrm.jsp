@@ -160,7 +160,12 @@
             });
         });
     </script>
-
+    <c:if test="${empty loginMember}">
+        <script>
+            alert("권한이 없습니다.");
+            location.href="/";
+        </script>
+    </c:if>
     <section class="qna-section">
         <div class="qna-container">
             <div class="qna-top">
