@@ -177,7 +177,7 @@
             </table>
             
             <div class="btn-left ">
-            	<a class="btn-emp" href="/noticeList.do">목록으로</a>
+            	<a class="btn-emp" href="/noticeList.do?reqPage=1&keyword=">목록으로</a>
             </div>
             <div class="btn-right">
             	<c:if test="${loginMember.MGrade == 0 }">

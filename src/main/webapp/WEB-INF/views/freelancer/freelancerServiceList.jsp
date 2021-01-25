@@ -206,12 +206,10 @@
 							<c:forEach items="${list}" var="s" begin="0" end="4">
 								<div>
 									<div>
-										<input type="hidden" value="${s.SNo }" id="sNo"> <a
-											href="#">
+										<input type="hidden" value="${s.SNo }" id="sNo"> <a href="/serviceView.do?sNo=${s.SNo}&reqPage=1&mNo=${loginMember.MNo }">
 											<div class="title-img">
 												<div class="back-img">
-													<img src="/upload/service/${s.SImg}" width="225x"
-														height="133px">
+													<img src="/upload/service/${s.SImg}" width="225x" height="133px">
 												</div>
 											</div>
 										</a>

@@ -126,7 +126,7 @@
            		</div>
             	<br><br>
             	<div class="text-center" style="width:100%; margin:0 auto;">
-					<ul class="pagination" >${pageNavi }</ul>
+					<ul class="pagination" ></ul>
              	</div>
            	<div></div>
         </div>

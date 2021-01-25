@@ -130,7 +130,7 @@
 
         .priceInfo {
             border-top: 1px solid black;
-            border-bottom: 1px solid black;;pq4
+            border-bottom: 1px solid black;
             height: 150px;
             background-color: rgba(224, 224, 224, 0.42);
             font-size: 8pt;
@@ -564,7 +564,12 @@
                         <c:choose>
                         	<c:when test="${loginMember != null }">
                         		<input type="hidden" value="${loginMember.MNo }" id="m_no">
-                        		<a href="javascript:like_func();" style="color: gray;"><i class="full-heart far fa-heart"></i> 이 서비스 찜하기</a>
+                        		<c:if test="${loginMember.MId == s.MId }">
+                        			<a href="javascript:like_func_error();" style="color: gray;"><i class="full-heart far fa-heart"></i> 이 서비스 찜하기</a>
+                        		</c:if>
+                        		<c:if test="${loginMember.MId != s.MId }">
+                        			<a href="javascript:like_func();" style="color: gray;"><i class="full-heart far fa-heart"></i> 이 서비스 찜하기</a>
+                        		</c:if>
                         	</c:when>
                         	<c:otherwise>
                         		<a href="javascript: login_need();" style="color: gray;"><i class="full-heart far fa-heart"></i> 이 서비스 찜하기 </a>
@@ -719,12 +724,12 @@
         	}else{
         		alert("찜하기는 로그인이 필요합니다.");
         	}
-        	
-        	
-        	
-
 		}
     	
+    	//본인 서비스는 찜할 수 없음
+    	function like_func_error(){
+    		alert("본인 서비스는 찜할 수 없습니다.");
+    	}
     	
     
         function login_need() {
@@ -732,6 +737,9 @@
 		}
         
         function startChat(sNo, userId, freeId, mNo, mGrade) {
+        	if(userId == freeId){
+        		alert("본인의 서비스는 문의할 수 없습니다.");
+        	}else{
 			$.ajax({
 				url : "/makeRoom.do",
 				type : "post",
@@ -755,7 +763,8 @@
 
 				}
 			});
-		}
+       	}
+	}
         
  /*        
         $(function () {

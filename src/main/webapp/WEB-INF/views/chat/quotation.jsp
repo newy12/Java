@@ -119,7 +119,7 @@ td {
 				</tr>
 				<tr>
 					<th>금액</th>
-					<td><input type="text" id="price"
+					<td><input type="text" id="price" maxlength="8"
 						oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
 						원</td>
 				</tr>
