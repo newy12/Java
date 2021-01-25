@@ -160,8 +160,11 @@
 							<div class="service-title">
 								<u>${service.STitle}</u>
 							</div>
-							<div>${freeId }<c:if
-									test="${sessionScope.loginMember.MGrade==2 }">
+							<div>
+							<c:if test="${freeId ne loginMember.MId }"> ${freeId }</c:if>
+							<c:if test="${freeId eq loginMember.MId }"> ${userId }</c:if>
+							
+							<c:if test="${sessionScope.loginMember.MGrade==2 }">
 									<c:if test="${not empty black }">
 										<img src="/img/icon/warning.png" width="10px;">
 									</c:if>
@@ -174,12 +177,19 @@
 							<c:if test="${empty status }">
 
 								<c:if test="${sessionScope.loginMember.MGrade==2 }">
-									<a
-										href="/quotationFrm.do?sNo=${service.SNo}&sTitle=${service.STitle }&userId=${freeId}&freeId=${loginMember.MId}"
-										onClick="window.open(this.href, '', 'width=800, height=800, left=1000, scrollbars=no,location=no, resizable=no'); return false;">
-										견적서 작성</a>
-									<br>
+								<!-- 의뢰인이 먼저 시작한 채팅 -->
+									<c:if test="${freeId ne loginMember.MId }">
+										<a href="/quotationFrm.do?sNo=${service.SNo}&sTitle=${service.STitle }&userId=${freeId}&freeId=${loginMember.MId}"
+										onClick="window.open(this.href, '', 'width=800, height=800, left=1000, scrollbars=no,location=no, resizable=no'); return false;"> 견적서 작성</a><br>
+									</c:if>
+								<!-- 프리랜서가 먼저 시작한 채팅 -->
+									<c:if test="${freeId eq loginMember.MId }">
+										<a href="/quotationFrm.do?sNo=${service.SNo}&sTitle=${service.STitle }&userId=${userId}&freeId=${loginMember.MId}"
+										onClick="window.open(this.href, '', 'width=800, height=800, left=1000, scrollbars=no,location=no, resizable=no'); return false;"> 견적서 작성</a><br>
+									</c:if>
 								</c:if>
+								
+								
 								<a href="#" onclick="deleteChat();">대화 나가기</a>
 							</c:if>
 							<!-- 견적서 작성&결제 전 -->

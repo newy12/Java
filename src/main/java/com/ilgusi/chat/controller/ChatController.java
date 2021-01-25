@@ -364,11 +364,13 @@ public class ChatController {
 
 			} else if (mGrade.equals("2")) {///////////////////////////////////////// 프리랜서가 의뢰글보고 채팅시작할때
 				// 상대가 보낸 메세지 읽음으로 update
-				roomAndId.put("mId", yourId);
+				System.out.println("내아이디:"+yourId);
+				System.out.println("의뢰인아이디:"+myId);
+				roomAndId.put("mId", myId);
 				roomAndId.put("rNo", rNo);
 				service.updateReadStatus(roomAndId);
 				// 의뢰인의 신고횟수가 4이상인지 확인
-				Member oneMember = service.selectOneMember(yourId);
+				Member oneMember = service.selectOneMember(myId);
 				int warningCount = oneMember.getWarningCount();
 				System.out.println("mId_warningcount:" + warningCount);
 
