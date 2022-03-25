@@ -15,5 +15,6 @@ public class SHA256Util {
 			sb.append(tmpTxt);
 		}
 		return sb.toString();
+		//깃 연동완료
 	}
 }
