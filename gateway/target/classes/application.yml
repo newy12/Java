@@ -1,4 +1,7 @@
 spring:
+  jwt:
+    secret-access-token: 61a8d20dd4dc8047f65ef5eeec6c51bcf83ce17e6c50defc3bba00fccb6858ad
+    secret-refresh-token: df45e8e2e54ab8d0a9d2a8a82fb48765bdce1db29d8718f413296fcc9d08c2c0
   datasource:
     url: jdbc:mysql://summar.cv9xsydusdbz.ap-northeast-2.rds.amazonaws.com:3306/summar?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: admin
@@ -15,6 +18,15 @@ spring:
         format_sql: true
   security:
     enable
+  redis:
+    lettuce:
+      pool:
+        max-active: 10
+        max-idle: 10
+        min-idle: 2
+    host: ip-172-31-13-184.ap-northeast-2.compute.internal
+    port: 6379
+    password: summarredis
 springdoc:
   swagger-ui:
     path: /summar-gateway-api-doc.html

@@ -1,6 +1,7 @@
 D:\ios-summar-backend\gateway\src\main\java\com\summar\gateway\dto\LoginRequestDto.java
 D:\ios-summar-backend\gateway\src\main\java\com\summar\gateway\auth\JwtAuthenticationEntryPoint.java
 D:\ios-summar-backend\gateway\src\main\java\com\summar\gateway\dto\PagingCriteria.java
+D:\ios-summar-backend\gateway\src\main\java\com\summar\gateway\config\RedisConfig.java
 D:\ios-summar-backend\gateway\src\main\java\com\summar\gateway\results\Result.java
 D:\ios-summar-backend\gateway\src\main\java\com\summar\gateway\dto\ApiResponseMessage.java
 D:\ios-summar-backend\gateway\src\main\java\com\summar\gateway\results\ObjectResult.java
@@ -15,6 +16,7 @@ D:\ios-summar-backend\gateway\src\main\java\com\summar\gateway\filter\JwtAuthent
 D:\ios-summar-backend\gateway\src\main\java\com\summar\gateway\GatewayApplication.java
 D:\ios-summar-backend\gateway\src\main\java\com\summar\gateway\results\ApiResult.java
 D:\ios-summar-backend\gateway\src\main\java\com\summar\gateway\repository\UserRepository.java
+D:\ios-summar-backend\gateway\src\main\java\com\summar\gateway\common\CurrentUser.java
 D:\ios-summar-backend\gateway\src\main\java\com\summar\gateway\util\JwtUtil.java
 D:\ios-summar-backend\gateway\src\main\java\com\summar\gateway\domain\User.java
 D:\ios-summar-backend\gateway\src\main\java\com\summar\gateway\dto\PaginationInfo.java
