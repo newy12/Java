@@ -8,8 +8,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="member" />
-        <module name="chat" />
         <module name="gateway" />
+        <module name="chat" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="8" />
