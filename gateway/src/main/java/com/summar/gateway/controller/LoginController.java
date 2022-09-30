@@ -3,15 +3,19 @@ package com.summar.gateway.controller;
 import com.summar.gateway.auth.LoginUser;
 import com.summar.gateway.auth.SummarUser;
 import com.summar.gateway.common.CurrentUser;
+import com.summar.gateway.config.RedisConfig;
 import com.summar.gateway.dto.LoginRequestDto;
-import com.summar.gateway.results.AuthenticationResult;
-import com.summar.gateway.results.ListResult;
+import com.summar.gateway.results.*;
 import com.summar.gateway.util.JwtUtil;
 import com.summar.gateway.domain.User;
 import com.summar.gateway.repository.UserRepository;
 import com.summar.gateway.service.CustomUserDetailService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,6 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/v1")
 public class LoginController {
@@ -32,6 +37,8 @@ public class LoginController {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final RedisTemplate redisTemplate;
+    private final JwtUtil jwtCheck;
 
     @PostMapping(value = "/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequestDto) throws Exception {
@@ -52,6 +59,22 @@ public class LoginController {
 
         return AuthenticationResult.build(loginUser);
     }
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestHeader(value = "Authorization")String token){
+
+        // 레디스에 토큰 값 저장
+        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+        valueOperations.set("accessToken",token);
+
+        log.info("redis token  : {}" , valueOperations.get("accessToken"));
+
+        return BooleanResult.build("result",jwtCheck.validateRedisToken(valueOperations.get("accessToken")));
+    }
+
+
+
+    @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/test")
     public ResponseEntity<?> test(){
         List<String> list = new ArrayList<>();
@@ -72,13 +95,13 @@ public class LoginController {
     }
 
     //redis 연동 테스트
-    @Cacheable(key = "#id" , cacheNames = "user")
+    @Cacheable(value = "test")
     @GetMapping(value = "/redisadd")
     public void redisadd(){
         userRepository.findAll();
     }
 
-   // @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/good")
     public Map<String, String> good(@CurrentUser SummarUser user) {
         Map<String,String> map = new HashMap<>();

@@ -24,7 +24,7 @@ spring:
         max-active: 10
         max-idle: 10
         min-idle: 2
-    host: ip-172-31-13-184.ap-northeast-2.compute.internal
+    host: 13.209.114.45
     port: 6379
     password: summarredis
 springdoc:

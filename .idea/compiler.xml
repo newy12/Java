@@ -7,8 +7,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="member" />
+        <module name="gateway (1)" />
         <module name="chat" />
         <module name="gateway" />
+        <module name="gateway (3)" />
       </profile>
     </annotationProcessing>
   </component>
@@ -16,6 +18,9 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="chat" options="-parameters" />
       <module name="gateway" options="-parameters" />
+      <module name="gateway (1)" options="-parameters" />
+      <module name="gateway (2)" options="-parameters" />
+      <module name="gateway (3)" options="-parameters" />
       <module name="member" options="-parameters" />
     </option>
   </component>

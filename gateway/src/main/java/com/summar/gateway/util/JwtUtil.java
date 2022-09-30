@@ -6,7 +6,11 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.dynamic.DynamicType;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +23,7 @@ import java.util.*;
 import java.util.function.Function;
 
 @RequiredArgsConstructor
+@Slf4j
 @Component
 public class JwtUtil {
 
@@ -27,6 +32,8 @@ public class JwtUtil {
 
     @Value("${spring.jwt.secret-refresh-token}")
     private String REFRESH_SECRET_KEY;
+
+    private final RedisTemplate redisTemplate;
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -64,7 +71,6 @@ public class JwtUtil {
     private Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
-
     private Boolean isRefreshTokenExpired(String token) {
         return extractRefreshTokenExpiration(token).before(new Date());
     }
@@ -101,5 +107,21 @@ public class JwtUtil {
         final String username = extractRefreshTokenUsername(token);
         return (username.equals(userDetails.getUsername()) && !isRefreshTokenExpired(token));
     }
+    public boolean validateRedisToken(String token) {
+        try{
+            ValueOperations<String,String> logoutValueOperations = redisTemplate.opsForValue();
+            if(logoutValueOperations.get("accessToken") != null) {
+                log.info("로그아웃된 토큰 입니다.");
+                return false;
+            }
+
+        }catch (Exception e){
+            return false;
+        }
+        log.info("로그아웃 실패 토큰 입니다.");
+        return true;
+    }
+
+
 
 }
