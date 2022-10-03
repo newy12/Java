@@ -4,8 +4,10 @@ import com.summar.gateway.auth.LoginUser;
 import com.summar.gateway.auth.SummarUser;
 import com.summar.gateway.common.CurrentUser;
 import com.summar.gateway.config.RedisConfig;
+import com.summar.gateway.domain.RefreshToken;
 import com.summar.gateway.dto.LoginRequestDto;
 import com.summar.gateway.results.*;
+import com.summar.gateway.service.RefreshTokenService;
 import com.summar.gateway.util.JwtUtil;
 import com.summar.gateway.domain.User;
 import com.summar.gateway.repository.UserRepository;
@@ -22,10 +24,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 @RestController
 @Slf4j
@@ -39,6 +39,7 @@ public class LoginController {
     private final UserRepository userRepository;
     private final RedisTemplate redisTemplate;
     private final JwtUtil jwtCheck;
+    private final RefreshTokenService refreshTokenService;
 
     @PostMapping(value = "/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequestDto) throws Exception {
@@ -54,8 +55,9 @@ public class LoginController {
         final String accessToken = jwtUtil.generateToken(loginUser);
         //refresh token 생성
         final String refreshToken = jwtUtil.generateRefreshToken(loginUser);
+        RefreshToken refreshTokenInfo = refreshTokenService.getRefreshTokenInfo(loginUser.getUser(),refreshToken);
         loginUser.setAccessToken(accessToken);
-        loginUser.setRefreshToken(refreshToken);
+        loginUser.setRefreshToken(String.valueOf(refreshTokenInfo.getRefreshTokenSeq()));
 
         return AuthenticationResult.build(loginUser);
     }

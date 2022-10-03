@@ -3,13 +3,14 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-@Data
-@ToString
 @Entity
 @Getter
 @NoArgsConstructor
-public class User implements Serializable {
+@Table(name = "USER")
+public class User extends BaseTimeEntity implements Serializable {
 
     /**
      * This VO is for security.
@@ -23,4 +24,6 @@ public class User implements Serializable {
     private String userNickname;
     private String userEmail;
     private String userHpNo;
+    @OneToMany(mappedBy = "user",fetch = FetchType.LAZY)
+    private List<RefreshToken> refreshTokenList = new ArrayList<>();
 }

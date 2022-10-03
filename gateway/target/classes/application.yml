@@ -9,13 +9,13 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     database: mysql
     show-sql: true
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
   security:
     enable
   redis:
