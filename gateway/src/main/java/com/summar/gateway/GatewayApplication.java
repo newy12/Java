@@ -11,7 +11,7 @@ public class GatewayApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(GatewayApplication.class, args);
-        System.out.println("build check");
+        System.out.println("build check2");
     }
 
 }
