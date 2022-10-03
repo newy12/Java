@@ -26,5 +26,4 @@ com/summar/gateway/GatewayApplication.class
 com/summar/gateway/dto/LoginRequestDto.class
 com/summar/gateway/util/JwtUtil.class
 com/summar/gateway/common/SummarErrorCode.class
-com/summar/gateway/domain/UserRefreshToken.class
 com/summar/gateway/filter/JwtAuthenticationFilter.class
