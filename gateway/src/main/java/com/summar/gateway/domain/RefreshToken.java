@@ -12,17 +12,21 @@ import java.util.UUID;
 
 @Entity
 @Getter
-@NoArgsConstructor
 @Table(name = "REFRESH_TOKEN")
 public class RefreshToken extends BaseTimeEntity implements Serializable {
     @Id @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2",strategy = "uuid2")
     @Type(type = "uuid-char")
+    @Column(name = "refreshTokenSeq")
     private UUID refreshTokenSeq;
     private String refreshToken;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_seq")
     private User user;
+
+    public RefreshToken() {
+        this.refreshTokenSeq = UUID.randomUUID();
+    }
 
     public void setRefreshToken(User user,String refreshToken) {
         this.user = user;
