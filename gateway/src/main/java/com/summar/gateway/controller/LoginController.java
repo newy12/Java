@@ -55,6 +55,7 @@ public class LoginController {
         final String accessToken = jwtUtil.generateToken(loginUser);
         //refresh token 생성
         final String refreshToken = jwtUtil.generateRefreshToken(loginUser);
+        refreshTokenService.saveRefreshTokenInfo(loginUser.getUser(),refreshToken);
         RefreshToken refreshTokenInfo = refreshTokenService.getRefreshTokenInfo(loginUser.getUser(),refreshToken);
         loginUser.setAccessToken(accessToken);
         loginUser.setRefreshToken(String.valueOf(refreshTokenInfo.getRefreshTokenSeq()));
@@ -103,5 +104,19 @@ public class LoginController {
         map.put("userpassword",user.getPassword());
         map.put("username",user.getUsername());
         return map;
+    }
+
+    @PostMapping(value = "/useradd")
+    public void userAdd() {
+        User user = User.builder()
+                .userId("newy12")
+                .userPwd(passwordEncoder.encode("123"))
+                .userHpNo("01057212058")
+                .userEmail("newy12@naver.com")
+                .userName("김영재")
+                .userNickname("영재킴")
+                .build();
+
+        userRepository.save(user);
     }
 }

@@ -23,9 +23,6 @@ public enum SummarErrorCode {
     EXPIRED_PASSWORD(206, "E106", "비밀번호가 만료되었습니다."),
     USER_ALREADY_EXIST(207, "E107", "이미 존재하는 사용자입니다."),
     USER_IS_NULL(200, "E108", "회원 정보가 필요합니다."),
-
-    // niceId
-    NICE_ID_COMMON_FAIL(300, "E200", "NICE ID 오류"),
     ;
 
     private final String code;

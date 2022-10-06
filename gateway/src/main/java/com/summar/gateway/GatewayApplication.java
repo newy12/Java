@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableJpaAuditing
 @EnableCaching
 @SpringBootApplication
-@EntityScan("com.summar.gateway.domain")
 public class GatewayApplication {
 
     public static void main(String[] args) {

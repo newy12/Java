@@ -1,6 +1,7 @@
 com/summar/gateway/common/SummarJwtException.class
 com/summar/gateway/controller/LoginController.class
 com/summar/gateway/auth/LoginUser.class
+com/summar/gateway/common/SummarCommonException.class
 com/summar/gateway/common/CurrentUser.class
 com/summar/gateway/dto/PagingCriteria.class
 com/summar/gateway/auth/LoginUser$1.class
@@ -24,6 +25,7 @@ com/summar/gateway/results/BooleanResult.class
 com/summar/gateway/repository/RefreshTokenRepository.class
 com/summar/gateway/config/WebSecurityConfig.class
 com/summar/gateway/domain/User$UserBuilder.class
+com/summar/gateway/common/SummarCommonCode.class
 com/summar/gateway/config/RedisConfig.class
 com/summar/gateway/results/ListResult.class
 com/summar/gateway/config/SwaggerConfig.class
