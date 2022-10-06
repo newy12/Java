@@ -28,6 +28,7 @@ com/summar/gateway/domain/User$UserBuilder.class
 com/summar/gateway/common/SummarCommonCode.class
 com/summar/gateway/config/RedisConfig.class
 com/summar/gateway/results/ListResult.class
+com/summar/gateway/dto/RefreshTokenRequestDto.class
 com/summar/gateway/config/SwaggerConfig.class
 com/summar/gateway/GatewayApplication.class
 com/summar/gateway/dto/LoginRequestDto.class

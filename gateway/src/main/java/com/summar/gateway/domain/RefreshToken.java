@@ -1,5 +1,6 @@
 package com.summar.gateway.domain;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
@@ -16,7 +17,7 @@ public class RefreshToken extends BaseTimeEntity implements Serializable {
     @Type(type = "uuid-char")
     private UUID refreshTokenSeq;
     private String refreshToken;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_seq")
     private User user;
 

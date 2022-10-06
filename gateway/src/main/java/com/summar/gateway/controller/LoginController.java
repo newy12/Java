@@ -6,6 +6,7 @@ import com.summar.gateway.common.CurrentUser;
 import com.summar.gateway.config.RedisConfig;
 import com.summar.gateway.domain.RefreshToken;
 import com.summar.gateway.dto.LoginRequestDto;
+import com.summar.gateway.dto.RefreshTokenRequestDto;
 import com.summar.gateway.results.*;
 import com.summar.gateway.service.RefreshTokenService;
 import com.summar.gateway.util.JwtUtil;
@@ -38,9 +39,14 @@ public class LoginController {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final RedisTemplate redisTemplate;
-    private final JwtUtil jwtCheck;
     private final RefreshTokenService refreshTokenService;
 
+    /**
+     * 로그인
+     * @param loginRequestDto
+     * @return
+     * @throws Exception
+     */
     @PostMapping(value = "/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequestDto) throws Exception {
         authenticationManager.authenticate(
@@ -62,6 +68,12 @@ public class LoginController {
 
         return AuthenticationResult.build(loginUser);
     }
+
+    /**
+     * 로그아웃
+     * @param token
+     * @return
+     */
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/logout")
     public ResponseEntity<?> logout(@RequestHeader(value = "Authorization")String token){
@@ -72,12 +84,43 @@ public class LoginController {
 
         log.info("redis token  : {}" , valueOperations.get("accessToken"));
 
-        return BooleanResult.build("result",jwtCheck.validateRedisToken(valueOperations.get("accessToken")));
+        return BooleanResult.build("result",jwtUtil.validateRedisToken(valueOperations.get("accessToken")));
+    }
+
+    /**
+     * 토큰재발급
+     * @param user
+     * @param refreshTokenRequestDto
+     * @return
+     */
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/refreshToken")
+    public ResponseEntity<?> refreshToken(@CurrentUser SummarUser user,@RequestBody RefreshTokenRequestDto refreshTokenRequestDto) {
+        //RefreshToken 객체 추출
+        RefreshToken refreshTokenInfo = refreshTokenService.getRefreshTokenInfo(refreshTokenRequestDto.getRefreshTokenId());
+        //RefreshToken 유효기간 체크
+        if(jwtUtil.validateRefreshToken(refreshTokenInfo.getRefreshToken(),user)){
+            String accessToken = jwtUtil.generateToken(user.getLoginUser());
+            List<String> result = new ArrayList<>();
+            result.add(accessToken);
+            return ListResult.build("result",result);
+        }else{
+            String accessToken = jwtUtil.generateToken(user.getLoginUser());
+            String refreshToken = jwtUtil.generateRefreshToken(user.getLoginUser());
+            //기존 RefreshToken 삭제
+            refreshTokenService.deleteByRefreshTokenSeq(refreshTokenInfo.getRefreshTokenSeq());
+            //신규 RefreshToken 저장
+            refreshTokenService.saveRefreshTokenInfo(user.loginUser.getUser(), refreshToken);
+
+            List<String> results = new ArrayList<>();
+            results.add(accessToken);
+            results.add(refreshToken);
+            return ListResult.build("results",results);
+        }
     }
 
 
 
-    @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/test")
     public ResponseEntity<?> test(){
         List<String> list = new ArrayList<>();
@@ -106,7 +149,7 @@ public class LoginController {
         return map;
     }
 
-    @PostMapping(value = "/useradd")
+    @PostMapping( "/adduser")
     public void userAdd() {
         User user = User.builder()
                 .userId("newy12")

@@ -24,8 +24,8 @@ public class User extends BaseTimeEntity implements Serializable{
     private String userNickname;
     private String userEmail;
     private String userHpNo;
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    private List<RefreshToken> refreshTokenList = new ArrayList<>();
+    @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
+    private RefreshToken refreshToken;
 
     @Builder
     public User(Long userSeq,String userId,String userPwd,String userName,String userNickname,String userEmail,String userHpNo){
