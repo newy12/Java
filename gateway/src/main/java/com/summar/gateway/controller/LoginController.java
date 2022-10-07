@@ -15,10 +15,12 @@ import com.summar.gateway.repository.UserRepository;
 import com.summar.gateway.service.CustomUserDetailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -105,17 +107,9 @@ public class LoginController {
             result.add(accessToken);
             return ListResult.build("result",result);
         }else{
-            String accessToken = jwtUtil.generateToken(user.getLoginUser());
-            String refreshToken = jwtUtil.generateRefreshToken(user.getLoginUser());
             //기존 RefreshToken 삭제
             refreshTokenService.deleteByRefreshTokenSeq(refreshTokenInfo.getRefreshTokenSeq());
-            //신규 RefreshToken 저장
-            refreshTokenService.saveRefreshTokenInfo(user.loginUser.getUser(), refreshToken);
-
-            List<String> results = new ArrayList<>();
-            results.add(accessToken);
-            results.add(refreshToken);
-            return ListResult.build("results",results);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
 
