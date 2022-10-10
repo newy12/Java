@@ -120,7 +120,7 @@ public class LoginController {
     }
 
 
-
+//반환값 list 테스트
     @PostMapping(value = "/test")
     public ResponseEntity<?> test(){
         List<String> list = new ArrayList<>();
@@ -139,16 +139,7 @@ public class LoginController {
         userRepository.findAll();
     }
 
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping("/good")
-    public Map<String, String> good(@CurrentUser SummarUser user) {
-        Map<String,String> map = new HashMap<>();
-        map.put("userId",user.getLoginUser().getUserId());
-        map.put("userpassword",user.getPassword());
-        map.put("username",user.getUsername());
-        return map;
-    }
-
+    //데이터 테스트용
     @PostMapping( "/adduser")
     public void userAdd() {
         User user = User.builder()
