@@ -11,6 +11,7 @@
 /Users/kimyoungjae/Desktop/개인프로젝트/summarProject/member/src/main/java/com/summar/member/config/RedisConfig.java
 /Users/kimyoungjae/Desktop/개인프로젝트/summarProject/member/src/main/java/com/summar/member/config/SwaggerConfig.java
 /Users/kimyoungjae/Desktop/개인프로젝트/summarProject/member/src/main/java/com/summar/member/dto/PagingCriteria.java
+/Users/kimyoungjae/Desktop/개인프로젝트/summarProject/member/src/main/java/com/summar/member/domain/Member.java
 /Users/kimyoungjae/Desktop/개인프로젝트/summarProject/member/src/main/java/com/summar/member/MemberApplication.java
 /Users/kimyoungjae/Desktop/개인프로젝트/summarProject/member/src/main/java/com/summar/member/results/ObjectResult.java
 /Users/kimyoungjae/Desktop/개인프로젝트/summarProject/member/src/main/java/com/summar/member/results/BooleanResult.java
@@ -22,4 +23,3 @@
 /Users/kimyoungjae/Desktop/개인프로젝트/summarProject/member/src/main/java/com/summar/member/domain/BaseTimeEntity.java
 /Users/kimyoungjae/Desktop/개인프로젝트/summarProject/member/src/main/java/com/summar/member/controller/SignInController.java
 /Users/kimyoungjae/Desktop/개인프로젝트/summarProject/member/src/main/java/com/summar/member/results/ListResult.java
-/Users/kimyoungjae/Desktop/개인프로젝트/summarProject/member/src/main/java/com/summar/member/domain/User.java

@@ -22,6 +22,7 @@ com/summar/member/results/Result.class
 com/summar/member/repository/UserRepository.class
 com/summar/member/common/CurrentUser.class
 com/summar/member/config/WebSecurityConfig.class
+com/summar/member/domain/Member.class
 com/summar/member/config/RedisConfig.class
 com/summar/member/results/ListResult.class
 com/summar/member/dto/PagingCriteria.class
