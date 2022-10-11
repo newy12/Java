@@ -16,7 +16,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/sign-in")
 public class SignInController {
-
+//테스트
     @PostMapping(value = "/test")
     public ResponseEntity<?> test() {
         List<String> list = new ArrayList<>();
