@@ -133,7 +133,7 @@ public class LoginController {
         userRepository.findAll();
     }
 
-    //데이터 테스트용
+    //데이터 테스트용으로 만듬
     @PostMapping( "/adduser")
     public void userAdd() {
         User user = User.builder()
