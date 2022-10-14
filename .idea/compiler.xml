@@ -7,13 +7,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="ios-summar-backend" />
+        <module name="summar" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="8">
       <module name="chat" target="1.8" />
       <module name="member" target="1.8" />
-      <module name="summar" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
