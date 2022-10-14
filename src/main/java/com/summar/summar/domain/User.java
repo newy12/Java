@@ -1,5 +1,6 @@
 package com.summar.summar.domain;
 
+import com.summar.summar.dto.JoinRequestDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -37,5 +38,8 @@ public class User extends BaseTimeEntity implements Serializable {
         this.userNickname = userNickname;
         this.userEmail = userEmail;
         this.userHpNo = userHpNo;
+    }
+
+    public User(JoinRequestDto joinRequestDto) {
     }
 }
