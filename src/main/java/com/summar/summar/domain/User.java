@@ -41,5 +41,11 @@ public class User extends BaseTimeEntity implements Serializable {
     }
 
     public User(JoinRequestDto joinRequestDto) {
+        this.userId = joinRequestDto.getUserId();
+        this.userName = joinRequestDto.getUserName();
+        this.userNickname = joinRequestDto.getUserNickname();
+        this.userEmail = joinRequestDto.getUserEmail();
+        this.userHpNo = joinRequestDto.getUserHpNo();
+        this.userPwd = joinRequestDto.getUserPwd();
     }
 }
