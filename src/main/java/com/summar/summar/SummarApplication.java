@@ -12,7 +12,6 @@ public class SummarApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(SummarApplication.class, args);
-
     }
 
 }

@@ -1,4 +1,4 @@
-package com.summar.summar;
+package java.com.summar.summar;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
