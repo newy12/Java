@@ -5,6 +5,7 @@ import com.summar.summar.auth.SummarUser;
 import com.summar.summar.common.CurrentUser;
 import com.summar.summar.domain.RefreshToken;
 import com.summar.summar.domain.User;
+import com.summar.summar.dto.JoinRequestDto;
 import com.summar.summar.dto.LoginRequestDto;
 import com.summar.summar.dto.RefreshTokenRequestDto;
 import com.summar.summar.repository.UserRepository;
@@ -13,6 +14,7 @@ import com.summar.summar.results.BooleanResult;
 import com.summar.summar.results.ListResult;
 import com.summar.summar.service.CustomUserDetailService;
 import com.summar.summar.service.RefreshTokenService;
+import com.summar.summar.service.UserService;
 import com.summar.summar.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,13 +35,14 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping(value = "/api/v1")
-public class LoginController {
+@RequestMapping(value = "/api/v1/user")
+public class UserController {
     private final CustomUserDetailService customUserDetailService;
     private final JwtUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final UserService userService;
     private final RedisTemplate redisTemplate;
     private final RefreshTokenService refreshTokenService;
 
@@ -91,6 +94,12 @@ public class LoginController {
 
         return BooleanResult.build("result",jwtUtil.validateRedisToken(valueOperations.get("accessToken")));
     }
+    @PostMapping("/join")
+    public ResponseEntity<?> join(@RequestBody JoinRequestDto joinRequestDto){
+        userService.saveUser(joinRequestDto);
+        return BooleanResult.build("result",true);
+    }
+
 
     /**
      * 토큰재발급
