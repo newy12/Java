@@ -94,6 +94,12 @@ public class UserController {
 
         return BooleanResult.build("result",jwtUtil.validateRedisToken(valueOperations.get("accessToken")));
     }
+
+    /**
+     * 회원가입
+     * @param joinRequestDto
+     * @return
+     */
     @PostMapping("/join")
     public ResponseEntity<?> join(@RequestBody JoinRequestDto joinRequestDto){
         userService.saveUser(joinRequestDto);
