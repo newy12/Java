@@ -39,6 +39,7 @@ public class User extends BaseTimeEntity implements Serializable {
         this.userEmail = userEmail;
         this.userHpNo = userHpNo;
     }
+    //머지오류네..
 
     public User(JoinRequestDto joinRequestDto) {
     }
