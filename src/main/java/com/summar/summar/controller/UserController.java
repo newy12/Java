@@ -102,6 +102,7 @@ public class UserController {
      */
     @PostMapping("/join")
     public ResponseEntity<?> join(@RequestBody JoinRequestDto joinRequestDto){
+        userService.validation(joinRequestDto);
         userService.saveUser(joinRequestDto);
         return BooleanResult.build("result",true);
     }
