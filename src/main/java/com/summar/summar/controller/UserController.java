@@ -27,8 +27,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.validation.Errors;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,7 +96,7 @@ public class UserController {
 
         log.info("redis token  : {}" , valueOperations.get("accessToken"));
 
-        return BooleanResult.build("result",jwtUtil.validateRedisToken(valueOperations.get("accessToken")));
+        return BooleanResult.build("result",jwtUtil.validateRedisToken(valueOperations.get("accessToken")),"message",null);
     }
 
     /**
@@ -101,12 +105,20 @@ public class UserController {
      * @return
      */
     @PostMapping("/join")
-    public ResponseEntity<?> join(@RequestBody JoinRequestDto joinRequestDto){
-        userService.saveUser(joinRequestDto);
-        return BooleanResult.build("result",true);
+    public ResponseEntity<?> join(@Validated @RequestBody JoinRequestDto joinRequestDto , Errors error) throws NoSuchAlgorithmException {
+        //벨리데이션 체크
+        if (error.hasErrors()) {
+            List<String> errorList = new ArrayList<>();
+            for (ObjectError errors:error.getAllErrors()) {
+                errorList.add(errors.getDefaultMessage());
+            }
+            log.info("회원가입 벨리데이션 결과: {}", errorList);
+            return BooleanResult.build("result",false,"message",errorList);
+        }
+        //유저 저장
+            userService.saveUser(joinRequestDto);
+            return BooleanResult.build("result", true,"message",null);
     }
-
-
     /**
      * 토큰재발급
      *
@@ -131,20 +143,6 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
-
-
-//반환값 list 테스트
-    @PostMapping(value = "/test")
-    public ResponseEntity<?> test(){
-        List<String> list = new ArrayList<>();
-        list.add("test1");
-        list.add("test2");
-        list.add("test3");
-        list.add("test4");
-        list.add("test5");
-        return ListResult.build("results",list);
-    }
-
     //redis 연동 테스트
     @Cacheable(value = "test")
     @GetMapping(value = "/redisadd")
@@ -152,18 +150,14 @@ public class UserController {
         userRepository.findAll();
     }
 
-    //데이터 테스트용으로 만듬
-    @PostMapping( "/adduser")
-    public void userAdd() {
-        User user = User.builder()
-                .userId("newy12")
-                .userPwd(passwordEncoder.encode("123"))
-                .userHpNo("01057212058")
-                .userEmail("newy12@naver.com")
-                .userName("김영재")
-                .userNickname("영재킴")
-                .build();
-
-        userRepository.save(user);
+    @PostMapping("/ADD")
+    public void userADD(){
+        JoinRequestDto joinRequestDto = new JoinRequestDto();
+        joinRequestDto.setUserHpNo("123");
+        joinRequestDto.setUserName("123");
+        joinRequestDto.setUserNickname("123");
+        joinRequestDto.setUserPwd("123");
+        joinRequestDto.setUserId("123");
+        userRepository.save(new User(joinRequestDto));
     }
 }

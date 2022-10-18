@@ -24,19 +24,17 @@ public class User extends BaseTimeEntity implements Serializable {
     private String userPwd;
     private String userName;
     private String userNickname;
-    private String userEmail;
     private String userHpNo;
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL)
     private RefreshToken refreshToken;
 
     @Builder
-    public User(Long userSeq,String userId,String userPwd,String userName,String userNickname,String userEmail,String userHpNo){
+    public User(Long userSeq,String userId,String userPwd,String userName,String userNickname,String userHpNo){
         this.userSeq = userSeq;
         this.userId = userId;
         this.userPwd = userPwd;
         this.userName = userName;
         this.userNickname = userNickname;
-        this.userEmail = userEmail;
         this.userHpNo = userHpNo;
     }
     //머지오류네..
@@ -45,7 +43,6 @@ public class User extends BaseTimeEntity implements Serializable {
         this.userId = joinRequestDto.getUserId();
         this.userName = joinRequestDto.getUserName();
         this.userNickname = joinRequestDto.getUserNickname();
-        this.userEmail = joinRequestDto.getUserEmail();
         this.userHpNo = joinRequestDto.getUserHpNo();
         this.userPwd = joinRequestDto.getUserPwd();
     }
