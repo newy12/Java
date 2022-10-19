@@ -107,6 +107,7 @@ public class UserController {
     @PostMapping("/join")
     public ResponseEntity<?> join(@Validated @RequestBody JoinRequestDto joinRequestDto , Errors error) throws NoSuchAlgorithmException {
         //벨리데이션 체크
+        List<String> result = new ArrayList<>();
         if (error.hasErrors()) {
             List<String> errorList = new ArrayList<>();
             for (ObjectError errors:error.getAllErrors()) {
@@ -116,8 +117,14 @@ public class UserController {
             return BooleanResult.build("result",false,"message",errorList);
         }
         //유저 저장
-            userService.saveUser(joinRequestDto);
-            return BooleanResult.build("result", true,"message",null);
+            Boolean saveResult = userService.saveUser(joinRequestDto);
+            if(saveResult){
+                result.add("회원가입 성공");
+                return BooleanResult.build("result", true,"message",result);
+            }else{
+                result.add("히원가입 실패");
+                return BooleanResult.build("result", false,"message",result);
+            }
     }
     /**
      * 토큰재발급
