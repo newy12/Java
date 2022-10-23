@@ -49,12 +49,9 @@ public class UserController {
     private final CustomUserDetailService customUserDetailService;
     private final JwtUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
-    private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
     private final UserService userService;
     private final RedisTemplate redisTemplate;
     private final RefreshTokenService refreshTokenService;
-    private final UserMapper userMapper;
 
     /**
      * 로그인
@@ -82,12 +79,12 @@ public class UserController {
         loginUser.setAccessToken(accessToken);
         loginUser.setRefreshToken(String.valueOf(refreshTokenInfo.getRefreshTokenSeq()));
 
+        //로그인 이력 업데이트
+        User userInfo = userService.findByUserId(loginRequestDto.getUsername());
+        userService.updateLastUserLoginDate(userInfo);
+
         return AuthenticationResult.build(loginUser);
     }
-
-
-
-
     /**
      * 로그아웃
      * @param token
@@ -163,8 +160,7 @@ public class UserController {
         if(nickname.isEmpty()){
             throw new NullPointerException();
         }
-        boolean isDuplicated = userService.checkNicknameDuplication(nickname);
-        return ResponseEntity.ok(isDuplicated);
+        return ResponseEntity.ok(userService.checkNicknameDuplication(nickname));
     }
 
     @GetMapping("/userIdCheck/{userId}")
@@ -172,7 +168,6 @@ public class UserController {
         if(userId.isEmpty()){
             throw new NullPointerException();
         }
-        boolean isDuplicated = userService.checkUserIdDuplication(userId);
-        return ResponseEntity.ok(isDuplicated);
+        return ResponseEntity.ok(userService.checkUserIdDuplication(userId));
     }
 }
