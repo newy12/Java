@@ -5,6 +5,8 @@ import com.summar.summar.enumeration.SocialType;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
@@ -34,9 +36,9 @@ public class JoinRequestDto {
 
     @NotBlank(message = "휴대폰번호는 필수 입력 값입니다.")
     //@Pattern(regexp = "/^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$/", message = "휴대폰 번호를 제대로 입력해주세요.")
-
     private String userHpNo;
 
-    private SocialType socialType;
+    @Enumerated(EnumType.STRING)
+    private SocialType socialType = SocialType.APPLE;
 
 }

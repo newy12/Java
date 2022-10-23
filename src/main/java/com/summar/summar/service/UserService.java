@@ -1,16 +1,20 @@
 package com.summar.summar.service;
 
+import com.summar.summar.domain.User;
 import com.summar.summar.dto.JoinRequestDto;
 import com.summar.summar.mapper.UserMapper;
 import com.summar.summar.repository.UserRepository;
 import com.summar.summar.util.SHA256Util;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDate;
+import java.util.Date;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -19,7 +23,6 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
     private final UserMapper userMapper;
 
     @Transactional
@@ -42,4 +45,12 @@ public class UserService {
         return userRepository.existsByUserId(userId);
     }
 
+    public User findByUserId(String userId) {
+        return userRepository.findByUserId(userId).orElseThrow(() -> new UsernameNotFoundException("User not found with userId: " + userId));
+    }
+
+    public void updateLastUserLoginDate(User userInfo) {
+        userInfo.setLastLoginDate(LocalDate.now());
+        userRepository.save(userInfo);
+    }
 }
