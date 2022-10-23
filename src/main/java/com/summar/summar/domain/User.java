@@ -1,7 +1,6 @@
 package com.summar.summar.domain;
 
 import com.summar.summar.dto.JoinRequestDto;
-import com.summar.summar.dto.SleepUserDto;
 import com.summar.summar.enumeration.SocialType;
 import lombok.*;
 

@@ -11,7 +11,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling //휴면계정 스케쥴러 활성화
 @SpringBootApplication
 public class SummarApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(SummarApplication.class, args);
     }
