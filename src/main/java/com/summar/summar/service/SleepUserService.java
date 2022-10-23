@@ -3,8 +3,6 @@ package com.summar.summar.service;
 import com.summar.summar.domain.User;
 import com.summar.summar.domain.UserStatus;
 import com.summar.summar.dto.SleepUserDto;
-import com.summar.summar.mapper.SleepUserMapper;
-import com.summar.summar.mapper.UserMapper;
 import com.summar.summar.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +20,6 @@ import java.util.List;
 public class SleepUserService {
 
     private final UserRepository userRepository;
-    private final SleepUserMapper sleepUserMapper;
 
 
     @Scheduled(cron = "0 0 0 * * *")
@@ -36,7 +33,6 @@ public class SleepUserService {
                 if(betweenDays >= 365){
                     sleepUserDto.setUserStatus(UserStatus.휴면);
                     log.info("휴면전환 아이디 : {}",sleepUserDto.getUserId());
-                    userRepository.save(sleepUserMapper.toEntity(sleepUserDto));
                 }
             }
         }
