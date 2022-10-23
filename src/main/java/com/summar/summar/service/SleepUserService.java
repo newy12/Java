@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -21,6 +22,7 @@ public class SleepUserService {
     private final UserRepository userRepository;
 
 
+    @Transactional
     @Scheduled(cron = "0 0 0 * * *")
     //@Scheduled(cron = "5 * * * * *")
     public void sleepUser(){
