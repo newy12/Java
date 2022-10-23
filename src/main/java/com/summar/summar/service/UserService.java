@@ -2,7 +2,6 @@ package com.summar.summar.service;
 
 import com.summar.summar.domain.User;
 import com.summar.summar.dto.JoinRequestDto;
-import com.summar.summar.mapper.UserMapper;
 import com.summar.summar.repository.UserRepository;
 import com.summar.summar.util.SHA256Util;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,6 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final UserMapper userMapper;
 
     @Transactional
     public Boolean saveUser(JoinRequestDto joinRequestDto) throws NoSuchAlgorithmException {
@@ -31,7 +29,7 @@ public class UserService {
         joinRequestDto.setUserHpNo(passwordEncoder.encode(joinRequestDto.getUserHpNo()));
         //SHA256 단방향 암호화 알고리즘 적용
         joinRequestDto.setUserPwd(SHA256Util.encrypt(joinRequestDto.getUserPwd()));
-        userRepository.save(userMapper.toEntity(joinRequestDto));
+        userRepository.save(new User(joinRequestDto));
         return true;
     }
 
