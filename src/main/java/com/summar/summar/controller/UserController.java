@@ -152,6 +152,12 @@ public class UserController {
         }
     }
 
+    /**
+     * 필명 중복체크
+     * @param nickname
+     * @return
+     * @throws NoSuchAlgorithmException
+     */
     @GetMapping("/nicknameCheck/{nickname}")
     public ResponseEntity<Boolean> checkNicknameDuplication(@PathVariable String nickname) throws NoSuchAlgorithmException {
         if (nickname.isEmpty()) {
@@ -160,6 +166,12 @@ public class UserController {
         return ResponseEntity.ok(userService.checkNicknameDuplication(nickname));
     }
 
+    /**
+     * 유저아이디 중복체크
+     * @param userId
+     * @return
+     * @throws NoSuchAlgorithmException
+     */
     @GetMapping("/userIdCheck/{userId}")
     public ResponseEntity<Boolean> checkUserIdDuplication(@PathVariable String userId) throws NoSuchAlgorithmException {
         if (userId.isEmpty()) {
@@ -167,4 +179,5 @@ public class UserController {
         }
         return ResponseEntity.ok(userService.checkUserIdDuplication(userId));
     }
+
 }
