@@ -4,10 +4,12 @@ import com.summar.summar.domain.User;
 import com.summar.summar.dto.JoinRequestDto;
 import com.summar.summar.dto.SmsRequestDto;
 import com.summar.summar.repository.UserRepository;
+import com.summar.summar.util.AES128;
 import com.summar.summar.util.SHA256Util;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,15 +23,14 @@ import java.util.List;
 @Slf4j
 @Service
 public class UserService {
-
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-
     @Transactional
     public Boolean saveUser(JoinRequestDto joinRequestDto) throws NoSuchAlgorithmException {
-        //passwordEncoder 양방향 암호화 알고리즘 적용
-        joinRequestDto.setUserHpNo(passwordEncoder.encode(joinRequestDto.getUserHpNo()));
-        //SHA256 단방향 암호화 알고리즘 적용
+        String test = "test";
+        log.info("AES128 : {}",AES128.encrypt(test));
+        //AES-128 양방향 암호화 알고리즘 적용
+        joinRequestDto.setUserHpNo(AES128.encrypt(joinRequestDto.getUserHpNo()));
+        //SHA-256 단방향 암호화 알고리즘 적용
         joinRequestDto.setUserPwd(SHA256Util.encrypt(joinRequestDto.getUserPwd()));
         userRepository.save(new User(joinRequestDto));
         return true;
@@ -62,7 +63,11 @@ public class UserService {
         if(!ObjectUtils.isEmpty(userList)){
             for (User userInfo : userList) {
                 //휴대번호 중복 존재 = true
-                return passwordEncoder.matches(smsRequestDto.getUserHpNo(), userInfo.getUserHpNo());
+                if(AES128.decrypt(userInfo.getUserHpNo()).equals(smsRequestDto.getUserHpNo())){
+                    return true;
+                }
+                //휴대번호 중복 없음 = false;
+                return false;
             }
         }
         throw new NullPointerException();
