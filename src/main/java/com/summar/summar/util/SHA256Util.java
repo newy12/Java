@@ -1,14 +1,11 @@
 package com.summar.summar.util;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-@RequiredArgsConstructor
+
 @Slf4j
 @Configuration
 public class SHA256Util {
