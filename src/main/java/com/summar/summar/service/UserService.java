@@ -57,10 +57,11 @@ public class UserService {
     @Transactional(readOnly = true)
     public Boolean userHpNoDuplication(SmsRequestDto smsRequestDto) throws Exception {
         List<User> userList = userRepository.findAll();
+
+        log.info("userList : {}",userList);
+
         if(!ObjectUtils.isEmpty(userList)){
             for (User userInfo : userList) {
-                log.info("decrypt : {}",AES256Cipher.decrypt(userInfo.getUserHpNo()));
-                log.info("smsRequestDto : {}",smsRequestDto.getUserHpNo());
                 //휴대번호 중복 존재 = true
                 if(AES256Cipher.decrypt(userInfo.getUserHpNo()).equals(smsRequestDto.getUserHpNo())){
                     return true;
