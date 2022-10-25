@@ -29,7 +29,7 @@ public class SmsController {
      * @return
      */
     @PostMapping("/sendMessage")
-    public ResponseEntity<?> sendMessage(@RequestBody SmsRequestDto smsRequestDto){
+    public ResponseEntity<?> sendMessage(@RequestBody SmsRequestDto smsRequestDto) throws Exception {
         List<String> result = new ArrayList<>();
         //휴대폰 중복체크.
         if(userService.userHpNoDuplication(smsRequestDto)){

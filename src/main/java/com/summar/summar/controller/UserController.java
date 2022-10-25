@@ -105,7 +105,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/join")
-    public ResponseEntity<BooleanResult> join(@Validated @RequestBody JoinRequestDto joinRequestDto, Errors error) throws NoSuchAlgorithmException {
+    public ResponseEntity<BooleanResult> join(@Validated @RequestBody JoinRequestDto joinRequestDto, Errors error) throws Exception {
         //벨리데이션 체크
         List<String> result = new ArrayList<>();
         if (error.hasErrors()) {
