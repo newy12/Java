@@ -59,8 +59,6 @@ public class UserService {
         List<User> userList = userRepository.findAll();
         if(!ObjectUtils.isEmpty(userList)){
             for (User userInfo : userList) {
-                log.info("decrypt : {}",AES256Cipher.decrypt(userInfo.getUserHpNo()));
-                log.info("smsRequestDto : {}",smsRequestDto.getUserHpNo());
                 //휴대번호 중복 존재 = true
                 if(AES256Cipher.decrypt(userInfo.getUserHpNo()).equals(smsRequestDto.getUserHpNo())){
                     return true;
