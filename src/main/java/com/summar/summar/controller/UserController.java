@@ -27,7 +27,6 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import retrofit2.http.POST;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -184,9 +183,29 @@ public class UserController {
         }
         return ResponseEntity.ok(userService.checkUserIdDuplication(userId));
     }
+
+    /**
+     * 아이디 찾기
+     * @param findRequestDto
+     * @return
+     * @throws InvalidAlgorithmParameterException
+     * @throws UnsupportedEncodingException
+     * @throws NoSuchPaddingException
+     * @throws IllegalBlockSizeException
+     * @throws NoSuchAlgorithmException
+     * @throws BadPaddingException
+     * @throws InvalidKeyException
+     */
     @PostMapping("/find-id")
     public ResponseEntity<?> findId(@RequestBody FindRequestDto findRequestDto) throws InvalidAlgorithmParameterException, UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
-        return ObjectResult.build("result",userService.getUserInfo(findRequestDto.getUserHpNo()).getUserId());
-    }
+        String userId = userService.getUserInfo(findRequestDto.getUserHpNo()).getUserId();
 
+        //아이디 앞에 세글자 제외한 나머지 문자 * 치환
+        StringBuilder sb = new StringBuilder();
+        sb.append(userId, 0, 3);
+        for (int i = 0; i < userId.length()-3; i++) {
+            sb.append("*");
+        }
+        return ObjectResult.build("result",sb);
+    }
 }
