@@ -1,5 +1,7 @@
 package com.summar.summar.service;
 
+import com.summar.summar.common.SummarCommonException;
+import com.summar.summar.common.SummarErrorCode;
 import com.summar.summar.domain.User;
 import com.summar.summar.dto.JoinRequestDto;
 import com.summar.summar.dto.SmsRequestDto;
@@ -13,7 +15,13 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.util.List;
@@ -71,5 +79,11 @@ public class UserService {
             }
         }
         throw new NullPointerException();
+    }
+
+    @Transactional(readOnly = true)
+    public User getUserInfo(String userHpNo) throws InvalidAlgorithmParameterException, UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+        return userRepository.findByUserHpNo(AES256Cipher.encrypt(userHpNo)).orElseThrow(
+                () ->new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
     }
 }

@@ -5,13 +5,11 @@ import com.summar.summar.auth.SummarUser;
 import com.summar.summar.common.CurrentUser;
 import com.summar.summar.domain.RefreshToken;
 import com.summar.summar.domain.User;
+import com.summar.summar.dto.FindRequestDto;
 import com.summar.summar.dto.JoinRequestDto;
 import com.summar.summar.dto.LoginRequestDto;
 import com.summar.summar.dto.RefreshTokenRequestDto;
-import com.summar.summar.results.ApiResult;
-import com.summar.summar.results.AuthenticationResult;
-import com.summar.summar.results.BooleanResult;
-import com.summar.summar.results.ListResult;
+import com.summar.summar.results.*;
 import com.summar.summar.service.CustomUserDetailService;
 import com.summar.summar.service.RefreshTokenService;
 import com.summar.summar.service.UserService;
@@ -29,7 +27,14 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import retrofit2.http.POST;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
@@ -178,6 +183,10 @@ public class UserController {
             throw new NullPointerException();
         }
         return ResponseEntity.ok(userService.checkUserIdDuplication(userId));
+    }
+    @PostMapping("/find-id")
+    public ResponseEntity<?> findId(@RequestBody FindRequestDto findRequestDto) throws InvalidAlgorithmParameterException, UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+        return ObjectResult.build("result",userService.getUserInfo(findRequestDto.getUserHpNo()).getUserId());
     }
 
 }
