@@ -208,6 +208,7 @@ public class UserController {
             }
             return ObjectResult.build("result",resultUserId);
         }
+        //아이디 그대로 반환
         resultUserId.append(userId);
         return ObjectResult.build("result",resultUserId);
     }
