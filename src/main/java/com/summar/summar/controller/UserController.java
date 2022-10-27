@@ -199,13 +199,16 @@ public class UserController {
     @PostMapping("/find-id")
     public ResponseEntity<?> findId(@RequestBody FindRequestDto findRequestDto) throws InvalidAlgorithmParameterException, UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
         String userId = userService.getUserInfo(findRequestDto.getUserHpNo()).getUserId();
-
-        //아이디 앞에 세글자 제외한 나머지 문자 * 치환
-        StringBuilder sb = new StringBuilder();
-        sb.append(userId, 0, 3);
-        for (int i = 0; i < userId.length()-3; i++) {
-            sb.append("*");
+        StringBuilder resultUserId = new StringBuilder();
+        if(findRequestDto.getFindIdFlag().equals("notCert")){
+            //아이디 앞에 세글자 제외한 나머지 문자 * 치환
+            resultUserId.append(userId, 0, 3);
+            for (int i = 0; i < userId.length()-3; i++) {
+                resultUserId.append("*");
+            }
+            return ObjectResult.build("result",resultUserId);
         }
-        return ObjectResult.build("result",sb);
+        resultUserId.append(userId);
+        return ObjectResult.build("result",resultUserId);
     }
 }
