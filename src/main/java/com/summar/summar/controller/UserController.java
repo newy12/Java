@@ -5,13 +5,11 @@ import com.summar.summar.auth.SummarUser;
 import com.summar.summar.common.CurrentUser;
 import com.summar.summar.domain.RefreshToken;
 import com.summar.summar.domain.User;
+import com.summar.summar.dto.FindRequestDto;
 import com.summar.summar.dto.JoinRequestDto;
 import com.summar.summar.dto.LoginRequestDto;
 import com.summar.summar.dto.RefreshTokenRequestDto;
-import com.summar.summar.results.ApiResult;
-import com.summar.summar.results.AuthenticationResult;
-import com.summar.summar.results.BooleanResult;
-import com.summar.summar.results.ListResult;
+import com.summar.summar.results.*;
 import com.summar.summar.service.CustomUserDetailService;
 import com.summar.summar.service.RefreshTokenService;
 import com.summar.summar.service.UserService;
@@ -30,6 +28,12 @@ import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
@@ -180,4 +184,32 @@ public class UserController {
         return ResponseEntity.ok(userService.checkUserIdDuplication(userId));
     }
 
+    /**
+     * 아이디 찾기
+     * @param findRequestDto
+     * @return
+     * @throws InvalidAlgorithmParameterException
+     * @throws UnsupportedEncodingException
+     * @throws NoSuchPaddingException
+     * @throws IllegalBlockSizeException
+     * @throws NoSuchAlgorithmException
+     * @throws BadPaddingException
+     * @throws InvalidKeyException
+     */
+    @PostMapping("/find-id")
+    public ResponseEntity<?> findId(@RequestBody FindRequestDto findRequestDto) throws InvalidAlgorithmParameterException, UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
+        String userId = userService.getUserInfo(findRequestDto.getUserHpNo()).getUserId();
+        StringBuilder resultUserId = new StringBuilder();
+        if(findRequestDto.getFindIdFlag().equals("notCert")){
+            //아이디 앞에 세글자 제외한 나머지 문자 * 치환
+            resultUserId.append(userId, 0, 3);
+            for (int i = 0; i < userId.length()-3; i++) {
+                resultUserId.append("*");
+            }
+            return ObjectResult.build("result",resultUserId);
+        }
+        //아이디 그대로 반환
+        resultUserId.append(userId);
+        return ObjectResult.build("result",resultUserId);
+    }
 }

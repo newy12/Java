@@ -34,11 +34,11 @@ public class SmsController {
         //휴대폰 중복체크.
         if(userService.userHpNoDuplication(smsRequestDto)){
             result.add("휴대폰번호 중복입니다.");
-            return BooleanResult.build("result", true, "message", result);
+            return BooleanResult.build("userHpNoDuplication", true, "message", result);
         }
         //문자 전송
-        smsService.send(smsRequestDto);
+        result.add(smsService.send(smsRequestDto));
         result.add("정상적으로 문자 전송 완료");
-        return BooleanResult.build("result", false, "message", result);
+        return BooleanResult.build("userHpNoDuplication", false, "message", result);
     }
 }
