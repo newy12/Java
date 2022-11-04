@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class FindRequestDto {
-    private String userHpNo;
+    private String userEmail;
     private String findIdFlag;
 }

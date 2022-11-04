@@ -14,8 +14,7 @@ import java.util.Collection;
 public class LoginUser implements Serializable {
 
     private Long userSeq;
-    private String userId;
-    private String userPwd;
+    private String userEmail;
     private Collection<? extends GrantedAuthority> authorities;
     private Boolean lockedYn;
     private User user;
@@ -29,8 +28,6 @@ public class LoginUser implements Serializable {
 
     public LoginUser(User entity){
         this.userSeq = entity.getUserSeq();
-        this.userId = entity.getUserId();
-        this.userPwd = entity.getUserPwd();
         this.lockedYn = true;
         this.authorities = new ArrayList<GrantedAuthority>(){{
             add(new SimpleGrantedAuthority("test"));

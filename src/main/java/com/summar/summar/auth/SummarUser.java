@@ -11,7 +11,7 @@ public class SummarUser extends User {
     public LoginUser loginUser;
 
     public SummarUser(LoginUser loginUser){
-        super(loginUser.getUserId()
+        super(loginUser.getUserEmail()
                 , loginUser.getUserPwd()
                 , true
                 , true

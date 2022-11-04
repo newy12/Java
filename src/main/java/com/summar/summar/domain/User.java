@@ -20,16 +20,8 @@ public class User extends BaseTimeEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userSeq;
-
-    private String userId;
-
-    private String userPwd;
-
-    private String userName;
-
     private String userNickname;
-
-    private String userHpNo;
+    private String userEmail;
 
     private LocalDate lastLoginDate;
 
@@ -37,26 +29,16 @@ public class User extends BaseTimeEntity implements Serializable {
     private SocialType socialType = SocialType.APPLE;
 
     @Enumerated(EnumType.STRING)
-    private UserStatus userStatus = UserStatus.일반;
+    private UserStatus userStatus = UserStatus.normal;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private RefreshToken refreshToken;
 
     @Builder
-    public User(Long userSeq,String userId,String userPwd,String userName,String userNickname,String userHpNo){
+    public User(Long userSeq,String userEmail ,String userNickname){
         this.userSeq = userSeq;
-        this.userId = userId;
-        this.userPwd = userPwd;
-        this.userName = userName;
+        this.userEmail = userEmail;
         this.userNickname = userNickname;
-        this.userHpNo = userHpNo;
     }
 
-    public User(JoinRequestDto joinRequestDto) {
-        this.userId = joinRequestDto.getUserId();
-        this.userName = joinRequestDto.getUserName();
-        this.userNickname = joinRequestDto.getUserNickname();
-        this.userHpNo = joinRequestDto.getUserHpNo();
-        this.userPwd = joinRequestDto.getUserPwd();
-    }
 }

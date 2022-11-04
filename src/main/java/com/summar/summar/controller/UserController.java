@@ -59,13 +59,12 @@ public class UserController {
      */
     @PostMapping(value = "/login")
     public ResponseEntity<ApiResult> login(@RequestBody LoginRequestDto loginRequestDto) throws Exception {
-        authenticationManager.authenticate(
+        /*authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequestDto.getUsername(),
                         loginRequestDto.getPassword())
-        );
-
-        final SummarUser customUser = (SummarUser) customUserDetailService.loadUserByUsername(loginRequestDto.getUsername());
+        );*/
+        final SummarUser customUser = (SummarUser) customUserDetailService.loadUserByUsername(loginRequestDto.getUserEmail());
         LoginUser loginUser = customUser.getLoginUser();
         //access token 생성
         final String accessToken = jwtUtil.generateToken(loginUser);
@@ -77,7 +76,7 @@ public class UserController {
         loginUser.setRefreshToken(String.valueOf(refreshTokenInfo.getRefreshTokenSeq()));
 
         //로그인 이력 업데이트
-        User userInfo = userService.findByUserId(loginRequestDto.getUsername());
+        User userInfo = userService.findByUserId(loginRequestDto.getUserEmail());
         userService.updateLastUserLoginDate(userInfo);
 
         return AuthenticationResult.build(loginUser);
@@ -102,13 +101,7 @@ public class UserController {
         return BooleanResult.build("result", jwtUtil.validateRedisToken(valueOperations.get("accessToken")), "message", null);
     }
 
-    /**
-     * 회원가입
-     *
-     * @param joinRequestDto
-     * @return
-     */
-    @PostMapping("/join")
+    /*@PostMapping("/join")
     public ResponseEntity<BooleanResult> join(@Validated @RequestBody JoinRequestDto joinRequestDto, Errors error) throws Exception {
         //벨리데이션 체크
         List<String> result = new ArrayList<>();
@@ -129,7 +122,7 @@ public class UserController {
             result.add("회원가입 실패");
             return BooleanResult.build("result", false, "message", result);
         }
-    }
+    }*/
 
     /**
      * 토큰재발급
@@ -169,34 +162,15 @@ public class UserController {
         }
         return ResponseEntity.ok(userService.checkNicknameDuplication(nickname));
     }
-
-    /**
-     * 유저아이디 중복체크
-     * @param userId
-     * @return
-     * @throws NoSuchAlgorithmException
-     */
-    @GetMapping("/userIdCheck/{userId}")
+    /*@GetMapping("/userIdCheck/{userId}")
     public ResponseEntity<Boolean> checkUserIdDuplication(@PathVariable String userId) throws NoSuchAlgorithmException {
         if (userId.isEmpty()) {
             throw new NullPointerException();
         }
         return ResponseEntity.ok(userService.checkUserIdDuplication(userId));
-    }
+    }*/
 
-    /**
-     * 아이디 찾기
-     * @param findRequestDto
-     * @return
-     * @throws InvalidAlgorithmParameterException
-     * @throws UnsupportedEncodingException
-     * @throws NoSuchPaddingException
-     * @throws IllegalBlockSizeException
-     * @throws NoSuchAlgorithmException
-     * @throws BadPaddingException
-     * @throws InvalidKeyException
-     */
-    @PostMapping("/find-id")
+    /*@PostMapping("/find-id")
     public ResponseEntity<?> findId(@RequestBody FindRequestDto findRequestDto) throws InvalidAlgorithmParameterException, UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
         String userId = userService.getUserInfo(findRequestDto.getUserHpNo()).getUserId();
         StringBuilder resultUserId = new StringBuilder();
@@ -212,4 +186,8 @@ public class UserController {
         resultUserId.append(userId);
         return ObjectResult.build("result",resultUserId);
     }
+    @PostMapping("/find-pw")
+    public void passwordReset(@RequestBody FindRequestDto findRequestDto) {
+
+    }*/
 }
