@@ -1,6 +1,7 @@
 package com.summar.summar.util;
 
 import com.summar.summar.auth.LoginUser;
+import com.summar.summar.dto.LoginRequestDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -71,14 +72,14 @@ public class JwtUtil {
         return extractRefreshTokenExpiration(token).before(new Date());
     }
 
-    public String generateToken(LoginUser loginUser) {
+    public String generateToken(String loginEmail) {
         Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, loginUser.getUserId());
+        return createToken(claims, loginEmail);
     }
 
-    public String generateRefreshToken(LoginUser loginUser) {
+    public String generateRefreshToken(String loginEmail) {
         Map<String, Object> claims = new HashMap<>();
-        return createRefreshToken(claims, loginUser.getUserId());
+        return createRefreshToken(claims, loginEmail);
     }
 
     private String createToken(Map<String, Object> claims, String subject) {

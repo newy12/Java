@@ -5,10 +5,7 @@ import com.summar.summar.auth.SummarUser;
 import com.summar.summar.common.CurrentUser;
 import com.summar.summar.domain.RefreshToken;
 import com.summar.summar.domain.User;
-import com.summar.summar.dto.FindRequestDto;
-import com.summar.summar.dto.JoinRequestDto;
-import com.summar.summar.dto.LoginRequestDto;
-import com.summar.summar.dto.RefreshTokenRequestDto;
+import com.summar.summar.dto.*;
 import com.summar.summar.results.*;
 import com.summar.summar.service.CustomUserDetailService;
 import com.summar.summar.service.RefreshTokenService;
@@ -50,6 +47,15 @@ public class UserController {
     private final RedisTemplate redisTemplate;
     private final RefreshTokenService refreshTokenService;
 
+
+
+
+
+
+
+
+
+
     /**
      * 로그인
      *
@@ -64,22 +70,34 @@ public class UserController {
                         loginRequestDto.getUsername(),
                         loginRequestDto.getPassword())
         );*/
-        final SummarUser customUser = (SummarUser) customUserDetailService.loadUserByUsername(loginRequestDto.getUserEmail());
-        LoginUser loginUser = customUser.getLoginUser();
+        //final SummarUser customUser = (SummarUser) customUserDetailService.loadUserByUsername(loginRequestDto.getUserEmail());
+        //LoginUser loginUser = new LoginUser();
+
+        TokenResponseDto tokenResponseDto = new TokenResponseDto();
         //access token 생성
-        final String accessToken = jwtUtil.generateToken(loginUser);
+        final String accessToken = jwtUtil.generateToken(loginRequestDto.getUserEmail());
         //refresh token 생성
-        final String refreshToken = jwtUtil.generateRefreshToken(loginUser);
-        refreshTokenService.saveRefreshTokenInfo(loginUser.getUser(), refreshToken);
-        RefreshToken refreshTokenInfo = refreshTokenService.getRefreshTokenInfo(loginUser.getUser(), refreshToken);
-        loginUser.setAccessToken(accessToken);
-        loginUser.setRefreshToken(String.valueOf(refreshTokenInfo.getRefreshTokenSeq()));
+        final String refreshToken = jwtUtil.generateRefreshToken(loginRequestDto.getUserEmail());
+        //기존 회원이 있다면.
+        if(userService.checkUserEmail(loginRequestDto.getUserEmail())){
+            refreshTokenService.saveRefreshTokenInfo(loginRequestDto.getUserEmail(),refreshToken);
+            RefreshToken refreshTokenInfo = refreshTokenService.getRefreshTokenInfo(userService.findUserInfo(loginRequestDto.getUserEmail()),refreshToken);
+            tokenResponseDto.setAccessToken(accessToken);
+            tokenResponseDto.setRefreshToken(String.valueOf(refreshTokenInfo.getRefreshTokenSeq()));
+            return AuthenticationResult.build(tokenResponseDto);
+        }
+        //신규 회원이라면.
+        User user = userService.saveUser(loginRequestDto);
+        refreshTokenService.saveRefreshTokenInfo(loginRequestDto.getUserEmail(), refreshToken);
+        RefreshToken refreshTokenInfo = refreshTokenService.getRefreshTokenInfo(user, refreshToken);
+        tokenResponseDto.setAccessToken(accessToken);
+        tokenResponseDto.setRefreshToken(String.valueOf(refreshTokenInfo.getRefreshTokenSeq()));
 
         //로그인 이력 업데이트
         User userInfo = userService.findByUserId(loginRequestDto.getUserEmail());
         userService.updateLastUserLoginDate(userInfo);
 
-        return AuthenticationResult.build(loginUser);
+        return AuthenticationResult.build(tokenResponseDto);
     }
 
     /**
@@ -131,9 +149,9 @@ public class UserController {
      * @param refreshTokenRequestDto
      * @return
      */
-    @PreAuthorize("isAuthenticated()")
+    /*@PreAuthorize("isAuthenticated()")
     @PostMapping("/refreshToken")
-    public ResponseEntity<ListResult> refreshToken(@CurrentUser SummarUser user, @RequestBody RefreshTokenRequestDto refreshTokenRequestDto) {
+    public ResponseEntity<ListResult> refreshToken(User user, @RequestBody RefreshTokenRequestDto refreshTokenRequestDto) {
         //RefreshToken 객체 추출
         RefreshToken refreshTokenInfo = refreshTokenService.getRefreshTokenInfo(refreshTokenRequestDto.getRefreshTokenId());
         //RefreshToken 유효기간 체크
@@ -147,7 +165,7 @@ public class UserController {
             refreshTokenService.deleteByRefreshTokenSeq(refreshTokenInfo.getRefreshTokenSeq());
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-    }
+    }*/
 
     /**
      * 필명 중복체크

@@ -28,7 +28,7 @@ public class SmsController {
      * @param smsRequestDto
      * @return
      */
-    @PostMapping("/sendMessage")
+    /*@PostMapping("/sendMessage")
     public ResponseEntity<?> sendMessage(@RequestBody SmsRequestDto smsRequestDto) throws Exception {
         List<String> result = new ArrayList<>();
         //휴대폰 중복체크.
@@ -40,5 +40,5 @@ public class SmsController {
         result.add(smsService.send(smsRequestDto));
         result.add("정상적으로 문자 전송 완료");
         return BooleanResult.build("userHpNoDuplication", false, "message", result);
-    }
+    }*/
 }

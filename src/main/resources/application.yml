@@ -1,4 +1,6 @@
 spring:
+  security:
+    enable
   jwt:
     secret-access-token: 61a8d20dd4dc8047f65ef5eeec6c51bcf83ce17e6c50defc3bba00fccb6858ad
     secret-refresh-token: df45e8e2e54ab8d0a9d2a8a82fb48765bdce1db29d8718f413296fcc9d08c2c0
@@ -17,8 +19,6 @@ spring:
       hibernate:
         format_sql: false
     open-in-view: false
-  security:
-    enable
   redis:
     lettuce:
       pool:

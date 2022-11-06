@@ -21,14 +21,15 @@ public class CustomUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        LoginUser loginUser = userRepository.findByUserId(username).map(LoginUser::new)
+       /* LoginUser loginUser = userRepository.findByUserId(username).map(LoginUser::new)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
         if(loginUser != null) {
             return new SummarUser(loginUser);
         }
         else {
             throw new UsernameNotFoundException("User not found with username: " + username);
-        }
+        }*/
+        return null;
     }
 
 }

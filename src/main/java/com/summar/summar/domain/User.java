@@ -1,6 +1,7 @@
 package com.summar.summar.domain;
 
 import com.summar.summar.dto.JoinRequestDto;
+import com.summar.summar.dto.LoginRequestDto;
 import com.summar.summar.enumeration.SocialType;
 import lombok.*;
 
@@ -25,6 +26,8 @@ public class User extends BaseTimeEntity implements Serializable {
 
     private LocalDate lastLoginDate;
 
+    private String userMajor;
+
     @Enumerated(EnumType.STRING)
     private SocialType socialType = SocialType.APPLE;
 
@@ -39,6 +42,11 @@ public class User extends BaseTimeEntity implements Serializable {
         this.userSeq = userSeq;
         this.userEmail = userEmail;
         this.userNickname = userNickname;
+    }
+    public User(LoginRequestDto loginRequestDto){
+        this.userNickname = loginRequestDto.getUserNickName();
+        this.userEmail = loginRequestDto.getUserEmail();
+        this.userMajor = loginRequestDto.getUserMajor();
     }
 
 }

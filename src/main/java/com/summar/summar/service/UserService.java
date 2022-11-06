@@ -4,6 +4,7 @@ import com.summar.summar.common.SummarCommonException;
 import com.summar.summar.common.SummarErrorCode;
 import com.summar.summar.domain.User;
 import com.summar.summar.dto.JoinRequestDto;
+import com.summar.summar.dto.LoginRequestDto;
 import com.summar.summar.dto.SmsRequestDto;
 import com.summar.summar.repository.UserRepository;
 import com.summar.summar.util.AES256Cipher;
@@ -32,13 +33,12 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
     @Transactional
-    public Boolean saveUser(JoinRequestDto joinRequestDto) throws Exception {
+    public User saveUser(LoginRequestDto loginRequestDto){
         //AES-128 양방향 암호화 알고리즘 적용
-        joinRequestDto.setUserHpNo(AES256Cipher.encrypt(joinRequestDto.getUserHpNo()));
+        //loginRequestDto.setUserHpNo(AES256Cipher.encrypt(joinRequestDto.getUserHpNo()));
         //SHA-256 단방향 암호화 알고리즘 적용
-        joinRequestDto.setUserPwd(SHA256Util.encrypt(joinRequestDto.getUserPwd()));
-        userRepository.save(new User(joinRequestDto));
-        return true;
+        //loginRequestDto.setUserPwd(SHA256Util.encrypt(joinRequestDto.getUserPwd()));
+        return userRepository.save(new User(loginRequestDto));
     }
 
     @Transactional(readOnly = true)
@@ -62,7 +62,7 @@ public class UserService {
         userRepository.save(userInfo);
     }
 
-    @Transactional(readOnly = true)
+    /*@Transactional(readOnly = true)
     public Boolean userHpNoDuplication(SmsRequestDto smsRequestDto) throws Exception {
         List<User> userList = userRepository.findAll();
 
@@ -79,11 +79,21 @@ public class UserService {
             }
         }
         throw new NullPointerException();
-    }
+    }*/
 
     @Transactional(readOnly = true)
     public User getUserInfo(String userHpNo) throws InvalidAlgorithmParameterException, UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
         return userRepository.findByUserHpNo(AES256Cipher.encrypt(userHpNo)).orElseThrow(
+                () ->new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
+    }
+
+    @Transactional
+    public boolean checkUserEmail(String userEmail) {
+        return userRepository.existsByUserEmail(userEmail);
+    }
+
+    public User findUserInfo(String userEmail) {
+        return userRepository.findByUserEmail(userEmail).orElseThrow(
                 () ->new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
     }
 }
