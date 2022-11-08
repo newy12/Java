@@ -84,6 +84,10 @@ public class UserController {
             RefreshToken refreshTokenInfo = refreshTokenService.getRefreshTokenInfo(userService.findUserInfo(loginRequestDto.getUserEmail()),refreshToken);
             tokenResponseDto.setAccessToken(accessToken);
             tokenResponseDto.setRefreshToken(String.valueOf(refreshTokenInfo.getRefreshTokenSeq()));
+            //로그인 이력 업데이트
+            User userInfo = userService.findByUserId(loginRequestDto.getUserEmail());
+            userService.updateLastUserLoginDate(userInfo);
+
             return AuthenticationResult.build(tokenResponseDto);
         }
         //신규 회원이라면.
