@@ -13,6 +13,7 @@ public class SHA256Util {
     public static String encrypt(String text) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         md.update(text.getBytes());
+        //ㅇㅇ
 
         return bytesToHex(md.digest());
     }
