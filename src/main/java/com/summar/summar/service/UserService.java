@@ -48,12 +48,12 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public Boolean checkUserIdDuplication(String userId) throws NoSuchAlgorithmException {
-        return userRepository.existsByUserId(userId);
+        return userRepository.existsByUserEmail(userId);
     }
 
     @Transactional(readOnly = true)
     public User findByUserId(String userId) {
-        return userRepository.findByUserId(userId).orElseThrow(() -> new UsernameNotFoundException("User not found with userId: " + userId));
+        return userRepository.findByUserEmail(userId).orElseThrow(() -> new UsernameNotFoundException("User not found with userId: " + userId));
     }
 
     @Transactional
@@ -80,12 +80,12 @@ public class UserService {
         }
         throw new NullPointerException();
     }*/
-
+/*
     @Transactional(readOnly = true)
     public User getUserInfo(String userHpNo) throws InvalidAlgorithmParameterException, UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
         return userRepository.findByUserHpNo(AES256Cipher.encrypt(userHpNo)).orElseThrow(
                 () ->new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
-    }
+    }*/
 
     @Transactional
     public boolean checkUserEmail(String userEmail) {
