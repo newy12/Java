@@ -1,5 +1,6 @@
 package com.summar.summar.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.summar.summar.dto.LoginRequestDto;
 import com.summar.summar.enumeration.SocialType;
@@ -39,10 +40,9 @@ public class User extends BaseTimeEntity implements Serializable {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private RefreshToken refreshToken;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="major_seq")
-    @JsonIgnoreProperties(value = { "users" }, allowSetters = true)
+    @JsonIgnore
     private Major major;
 
     @Builder

@@ -1,5 +1,6 @@
 package com.summar.summar.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +28,7 @@ public class Major {
     private Long parentsSeq;
 
     @OneToMany(mappedBy = "major")
-    @JsonIgnoreProperties(value = {"major"}, allowSetters = true)
+    @JsonIgnore
     private Set<User> users = new HashSet<>();
 
 }
