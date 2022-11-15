@@ -1,12 +1,13 @@
 package com.summar.summar.controller;
 
-import com.summar.summar.auth.LoginUser;
-import com.summar.summar.auth.SummarUser;
-import com.summar.summar.common.CurrentUser;
 import com.summar.summar.domain.RefreshToken;
 import com.summar.summar.domain.User;
-import com.summar.summar.dto.*;
-import com.summar.summar.results.*;
+import com.summar.summar.dto.LoginRequestDto;
+import com.summar.summar.dto.MajorResponseDto;
+import com.summar.summar.dto.TokenResponseDto;
+import com.summar.summar.results.ApiResult;
+import com.summar.summar.results.AuthenticationResult;
+import com.summar.summar.results.BooleanResult;
 import com.summar.summar.service.CustomUserDetailService;
 import com.summar.summar.service.RefreshTokenService;
 import com.summar.summar.service.UserService;
@@ -15,24 +16,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.validation.Errors;
-import org.springframework.validation.ObjectError;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -184,6 +173,24 @@ public class UserController {
         }
         return ResponseEntity.ok(userService.checkNicknameDuplication(nickname));
     }
+
+
+    @GetMapping("/major")
+    public ResponseEntity<List<MajorResponseDto>> getParentsMajor() throws NoSuchAlgorithmException {
+
+        List<MajorResponseDto> majorList = userService.findParentsMajor();
+        return ResponseEntity.ok(majorList);
+    }
+
+    @GetMapping("/major/{majorSeq}")
+    public ResponseEntity<List<MajorResponseDto>> getChildMajor(@PathVariable Long majorSeq) throws NoSuchAlgorithmException {
+        if (majorSeq == null) {
+            throw new NullPointerException();
+        }
+        List<MajorResponseDto> majorList = userService.findChildMajorByParentsSeq(majorSeq);
+        return ResponseEntity.ok(majorList);
+    }
+
     /*@GetMapping("/userIdCheck/{userId}")
     public ResponseEntity<Boolean> checkUserIdDuplication(@PathVariable String userId) throws NoSuchAlgorithmException {
         if (userId.isEmpty()) {
