@@ -1,9 +1,11 @@
 package com.summar.summar.dto;
 
 import com.summar.summar.domain.Major;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class LoginRequestDto {
     private String userEmail;
     private String userNickName;
