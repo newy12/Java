@@ -27,6 +27,7 @@ public class Major {
     private Long parentsSeq;
 
     @OneToMany(mappedBy = "major")
+    @JsonIgnoreProperties(value = {"major"}, allowSetters = true)
     private Set<User> users = new HashSet<>();
 
 }

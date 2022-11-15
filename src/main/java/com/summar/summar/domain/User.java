@@ -42,6 +42,7 @@ public class User extends BaseTimeEntity implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="major_seq")
+    @JsonIgnoreProperties(value = { "users" }, allowSetters = true)
     private Major major;
 
     @Builder
