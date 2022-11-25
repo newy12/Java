@@ -3,28 +3,19 @@ package com.summar.summar.service;
 import com.summar.summar.common.SummarCommonException;
 import com.summar.summar.common.SummarErrorCode;
 import com.summar.summar.domain.User;
-import com.summar.summar.dto.JoinRequestDto;
 import com.summar.summar.dto.LoginRequestDto;
-import com.summar.summar.dto.SmsRequestDto;
+import com.summar.summar.dto.MajorResponseDto;
+import com.summar.summar.repository.MajorRepository;
 import com.summar.summar.repository.UserRepository;
-import com.summar.summar.util.AES256Cipher;
-import com.summar.summar.util.SHA256Util;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -32,8 +23,10 @@ import java.util.List;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final MajorRepository majorRepository;
+
     @Transactional
-    public User saveUser(LoginRequestDto loginRequestDto){
+    public User saveUser(LoginRequestDto loginRequestDto) {
         //AES-128 양방향 암호화 알고리즘 적용
         //loginRequestDto.setUserHpNo(AES256Cipher.encrypt(joinRequestDto.getUserHpNo()));
         //SHA-256 단방향 암호화 알고리즘 적용
@@ -94,6 +87,22 @@ public class UserService {
 
     public User findUserInfo(String userEmail) {
         return userRepository.findByUserEmail(userEmail).orElseThrow(
-                () ->new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
+                () -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
+    }
+
+    public List<MajorResponseDto> findChildMajorByParentsSeq(Long majorSeq) {
+        List<MajorResponseDto> majorResponseDtoList = new ArrayList<>();
+        majorRepository.findAllByParentsSeq(majorSeq).forEach(
+                major -> majorResponseDtoList.add(new MajorResponseDto(major)));
+
+        return majorResponseDtoList;
+    }
+
+    public List<MajorResponseDto> findParentsMajor() {
+        List<MajorResponseDto> majorResponseDtoList = new ArrayList<>();
+        majorRepository.findAllByParentsSeqIsNull().forEach(
+                major -> majorResponseDtoList.add(new MajorResponseDto(major)));
+
+        return majorResponseDtoList;
     }
 }
