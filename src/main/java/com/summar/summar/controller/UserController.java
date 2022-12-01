@@ -54,14 +54,6 @@ public class UserController {
      */
     @PostMapping(value = "/login")
     public ResponseEntity<ApiResult> login(@RequestBody LoginRequestDto loginRequestDto) throws Exception {
-        /*authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequestDto.getUsername(),
-                        loginRequestDto.getPassword())
-        );*/
-        //final SummarUser customUser = (SummarUser) customUserDetailService.loadUserByUsername(loginRequestDto.getUserEmail());
-        //LoginUser loginUser = new LoginUser();
-
         TokenResponseDto tokenResponseDto = new TokenResponseDto();
         //access token 생성
         final String accessToken = jwtUtil.generateToken(loginRequestDto.getUserEmail());
