@@ -3,6 +3,7 @@ package com.summar.summar.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.summar.summar.dto.LoginRequestDto;
+import com.summar.summar.dto.UserSaveDto;
 import com.summar.summar.enumeration.SocialType;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,10 +38,10 @@ public class User extends BaseTimeEntity implements Serializable {
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus = UserStatus.normal;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private RefreshToken refreshToken;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name="major_seq")
     @JsonIgnore
     private Major major;
@@ -55,7 +56,12 @@ public class User extends BaseTimeEntity implements Serializable {
     public User(LoginRequestDto loginRequestDto) {
         this.userNickname = loginRequestDto.getUserNickName();
         this.userEmail = loginRequestDto.getUserEmail();
-        this.major = loginRequestDto.getMajor();
+    }
+
+    public User(UserSaveDto userSaveDto){
+        this.userEmail = userSaveDto.getUserEmail();
+        this.userNickname = userSaveDto.getUserNickname();
+        this.major = userSaveDto.getMajor();
     }
 
 }

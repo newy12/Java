@@ -2,9 +2,11 @@ package com.summar.summar.service;
 
 import com.summar.summar.common.SummarCommonException;
 import com.summar.summar.common.SummarErrorCode;
+import com.summar.summar.domain.Major;
 import com.summar.summar.domain.User;
 import com.summar.summar.dto.LoginRequestDto;
 import com.summar.summar.dto.MajorResponseDto;
+import com.summar.summar.dto.UserSaveDto;
 import com.summar.summar.repository.MajorRepository;
 import com.summar.summar.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -27,11 +29,14 @@ public class UserService {
 
     @Transactional
     public User saveUser(LoginRequestDto loginRequestDto) {
-        //AES-128 양방향 암호화 알고리즘 적용
-        //loginRequestDto.setUserHpNo(AES256Cipher.encrypt(joinRequestDto.getUserHpNo()));
-        //SHA-256 단방향 암호화 알고리즘 적용
-        //loginRequestDto.setUserPwd(SHA256Util.encrypt(joinRequestDto.getUserPwd()));
-        return userRepository.save(new User(loginRequestDto));
+        Major major = majorRepository.findByMajorName(loginRequestDto.getMajorName()).orElseThrow(() -> new UsernameNotFoundException("User not found with major" + loginRequestDto.getMajorName()));
+        return userRepository.save(
+                new User(UserSaveDto.builder()
+                .userEmail(loginRequestDto.getUserEmail())
+                .userNickname(loginRequestDto.getUserNickName())
+                .major(major)
+                .build())
+        );
     }
 
     @Transactional(readOnly = true)
