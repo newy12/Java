@@ -104,14 +104,14 @@ public class UserController {
 
 
     @GetMapping("/major")
-    public ResponseEntity<List<MajorResponseDto>> getParentsMajor() throws NoSuchAlgorithmException {
+    public ResponseEntity<List<MajorResponseDto>> getParentsMajor(){
 
         List<MajorResponseDto> majorList = userService.findParentsMajor();
         return ResponseEntity.ok(majorList);
     }
 
     @GetMapping("/major/{majorSeq}")
-    public ResponseEntity<List<MajorResponseDto>> getChildMajor(@PathVariable Long majorSeq) throws NoSuchAlgorithmException {
+    public ResponseEntity<List<MajorResponseDto>> getChildMajor(@PathVariable Long majorSeq){
         if (majorSeq == null) {
             throw new NullPointerException();
         }
