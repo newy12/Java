@@ -8,7 +8,6 @@ import com.summar.summar.dto.TokenResponseDto;
 import com.summar.summar.results.ApiResult;
 import com.summar.summar.results.AuthenticationResult;
 import com.summar.summar.results.BooleanResult;
-import com.summar.summar.service.CustomUserDetailService;
 import com.summar.summar.service.RefreshTokenService;
 import com.summar.summar.service.UserService;
 import com.summar.summar.util.JwtUtil;
@@ -18,7 +17,6 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
@@ -29,20 +27,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/v1/user")
 public class UserController {
-    private final CustomUserDetailService customUserDetailService;
     private final JwtUtil jwtUtil;
-    private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final RedisTemplate redisTemplate;
     private final RefreshTokenService refreshTokenService;
-
-
-
-
-
-
-
-
 
 
     /**
@@ -61,10 +49,10 @@ public class UserController {
         final String refreshToken = jwtUtil.generateRefreshToken(loginRequestDto.getUserEmail());
         //기존 회원이 있다면.d
         if(userService.checkUserEmail(loginRequestDto.getUserEmail())){
-            refreshTokenService.saveRefreshTokenInfo(loginRequestDto.getUserEmail(),refreshToken);
-            RefreshToken refreshTokenInfo = refreshTokenService.getRefreshTokenInfo(userService.findUserInfo(loginRequestDto.getUserEmail()),refreshToken);
             tokenResponseDto.setAccessToken(accessToken);
-            tokenResponseDto.setRefreshToken(String.valueOf(refreshTokenInfo.getRefreshTokenSeq()));
+            tokenResponseDto.setRefreshToken(refreshToken);
+            RefreshToken refreshTokenInfo = refreshTokenService.getRefreshTokenInfo(userService.findUserInfo(loginRequestDto.getUserEmail()));
+            refreshTokenService.saveRefreshTokenInfo(loginRequestDto.getUserEmail(),refreshTokenInfo,tokenResponseDto);
             //로그인 이력 업데이트
             User userInfo = userService.findByUserId(loginRequestDto.getUserEmail());
             userService.updateLastUserLoginDate(userInfo);
@@ -72,11 +60,11 @@ public class UserController {
             return AuthenticationResult.build(tokenResponseDto);
         }
         //신규 회원이라면.
-        User user = userService.saveUser(loginRequestDto);
-        refreshTokenService.saveRefreshTokenInfo(loginRequestDto.getUserEmail(), refreshToken);
-        RefreshToken refreshTokenInfo = refreshTokenService.getRefreshTokenInfo(user, refreshToken);
         tokenResponseDto.setAccessToken(accessToken);
-        tokenResponseDto.setRefreshToken(String.valueOf(refreshTokenInfo.getRefreshTokenSeq()));
+        tokenResponseDto.setRefreshToken(refreshToken);
+        User user = userService.saveUser(loginRequestDto);
+        refreshTokenService.saveNewRefreshTokenInfo(loginRequestDto.getUserEmail(),tokenResponseDto);
+        RefreshToken refreshTokenInfo = refreshTokenService.getRefreshTokenInfo(user, refreshToken);
 
         //로그인 이력 업데이트
         User userInfo = userService.findByUserId(loginRequestDto.getUserEmail());

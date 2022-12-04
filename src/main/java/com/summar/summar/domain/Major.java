@@ -2,6 +2,7 @@ package com.summar.summar.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.summar.summar.dto.LoginRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,8 +28,9 @@ public class Major {
     private String majorName;
     private Long parentsSeq;
 
-    @OneToMany(mappedBy = "major")
+    @OneToMany(mappedBy = "major",fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<User> users = new HashSet<>();
+
 
 }
