@@ -118,33 +118,4 @@ public class UserController {
         List<MajorResponseDto> majorList = userService.findChildMajorByParentsSeq(majorSeq);
         return ResponseEntity.ok(majorList);
     }
-
-    /*@GetMapping("/userIdCheck/{userId}")
-    public ResponseEntity<Boolean> checkUserIdDuplication(@PathVariable String userId) throws NoSuchAlgorithmException {
-        if (userId.isEmpty()) {
-            throw new NullPointerException();
-        }
-        return ResponseEntity.ok(userService.checkUserIdDuplication(userId));
-    }*/
-
-    /*@PostMapping("/find-id")
-    public ResponseEntity<?> findId(@RequestBody FindRequestDto findRequestDto) throws InvalidAlgorithmParameterException, UnsupportedEncodingException, NoSuchPaddingException, IllegalBlockSizeException, NoSuchAlgorithmException, BadPaddingException, InvalidKeyException {
-        String userId = userService.getUserInfo(findRequestDto.getUserHpNo()).getUserId();
-        StringBuilder resultUserId = new StringBuilder();
-        if(findRequestDto.getFindIdFlag().equals("notCert")){
-            //아이디 앞에 세글자 제외한 나머지 문자 * 치환
-            resultUserId.append(userId, 0, 3);
-            for (int i = 0; i < userId.length()-3; i++) {
-                resultUserId.append("*");
-            }
-            return ObjectResult.build("result",resultUserId);
-        }
-        //아이디 그대로 반환
-        resultUserId.append(userId);
-        return ObjectResult.build("result",resultUserId);
-    }
-    @PostMapping("/find-pw")
-    public void passwordReset(@RequestBody FindRequestDto findRequestDto) {
-
-    }*/
 }
