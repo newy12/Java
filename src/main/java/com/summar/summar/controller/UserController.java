@@ -59,7 +59,7 @@ public class UserController {
         final String accessToken = jwtUtil.generateToken(loginRequestDto.getUserEmail());
         //refresh token 생성
         final String refreshToken = jwtUtil.generateRefreshToken(loginRequestDto.getUserEmail());
-        //기존 회원이 있다면.
+        //기존 회원이 있다면.d
         if(userService.checkUserEmail(loginRequestDto.getUserEmail())){
             refreshTokenService.saveRefreshTokenInfo(loginRequestDto.getUserEmail(),refreshToken);
             RefreshToken refreshTokenInfo = refreshTokenService.getRefreshTokenInfo(userService.findUserInfo(loginRequestDto.getUserEmail()),refreshToken);
