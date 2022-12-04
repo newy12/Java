@@ -34,8 +34,7 @@ public class UserController {
 
 
     /**
-     * 로그인
-     *
+     * 로그인 & 회원가입
      * @param loginRequestDto
      * @return
      * @throws Exception
@@ -47,13 +46,13 @@ public class UserController {
         final String accessToken = jwtUtil.generateToken(loginRequestDto.getUserEmail());
         //refresh token 생성
         final String refreshToken = jwtUtil.generateRefreshToken(loginRequestDto.getUserEmail());
-        //기존 회원이 있다면.d
+        //기존 회원이 있다면
         if(userService.checkUserEmail(loginRequestDto.getUserEmail())){
             tokenResponseDto.setAccessToken(accessToken);
             tokenResponseDto.setRefreshToken(refreshToken);
             RefreshToken refreshTokenInfo = refreshTokenService.getRefreshTokenInfo(userService.findUserInfo(loginRequestDto.getUserEmail()));
             refreshTokenService.saveRefreshTokenInfo(loginRequestDto.getUserEmail(),refreshTokenInfo,tokenResponseDto);
-            //로그인 이력 업데이트//d
+            //로그인 이력 업데이트//
             User userInfo = userService.findByUserId(loginRequestDto.getUserEmail());
             userService.updateLastUserLoginDate(userInfo);
 
@@ -62,10 +61,8 @@ public class UserController {
         //신규 회원이라면.
         tokenResponseDto.setAccessToken(accessToken);
         tokenResponseDto.setRefreshToken(refreshToken);
-        User user = userService.saveUser(loginRequestDto);
+        userService.saveUser(loginRequestDto);
         refreshTokenService.saveNewRefreshTokenInfo(loginRequestDto.getUserEmail(),tokenResponseDto);
-        RefreshToken refreshTokenInfo = refreshTokenService.getRefreshTokenInfo(user, refreshToken);
-
         //로그인 이력 업데이트
         User userInfo = userService.findByUserId(loginRequestDto.getUserEmail());
         userService.updateLastUserLoginDate(userInfo);
@@ -91,55 +88,6 @@ public class UserController {
 
         return BooleanResult.build("result", jwtUtil.validateRedisToken(valueOperations.get("accessToken")), "message", null);
     }
-
-    /*@PostMapping("/join")
-    public ResponseEntity<BooleanResult> join(@Validated @RequestBody JoinRequestDto joinRequestDto, Errors error) throws Exception {
-        //벨리데이션 체크
-        List<String> result = new ArrayList<>();
-        if (error.hasErrors()) {
-            List<String> errorList = new ArrayList<>();
-            for (ObjectError errors : error.getAllErrors()) {
-                errorList.add(errors.getDefaultMessage());
-            }
-            log.info("회원가입 벨리데이션 결과: {}", errorList);
-            return BooleanResult.build("result", false, "message", errorList);
-        }
-        //유저 저장
-        Boolean saveResult = userService.saveUser(joinRequestDto);
-        if (saveResult) {
-            result.add("회원가입 성공");
-            return BooleanResult.build("result", true, "message", result);
-        } else {
-            result.add("회원가입 실패");
-            return BooleanResult.build("result", false, "message", result);
-        }
-    }*/
-
-    /**
-     * 토큰재발급
-     *
-     * @param user
-     * @param refreshTokenRequestDto
-     * @return
-     */
-    /*@PreAuthorize("isAuthenticated()")
-    @PostMapping("/refreshToken")
-    public ResponseEntity<ListResult> refreshToken(User user, @RequestBody RefreshTokenRequestDto refreshTokenRequestDto) {
-        //RefreshToken 객체 추출
-        RefreshToken refreshTokenInfo = refreshTokenService.getRefreshTokenInfo(refreshTokenRequestDto.getRefreshTokenId());
-        //RefreshToken 유효기간 체크
-        if (jwtUtil.validateRefreshToken(refreshTokenInfo.getRefreshToken(), user)) {
-            String accessToken = jwtUtil.generateToken(user.getLoginUser());
-            List<String> result = new ArrayList<>();
-            result.add(accessToken);
-            return ListResult.build("result", result);
-        } else {
-            //기존 RefreshToken 삭제
-            refreshTokenService.deleteByRefreshTokenSeq(refreshTokenInfo.getRefreshTokenSeq());
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-    }*/
-
     /**
      * 필명 중복체크
      * @param nickname
