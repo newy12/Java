@@ -53,7 +53,7 @@ public class UserController {
             tokenResponseDto.setRefreshToken(refreshToken);
             RefreshToken refreshTokenInfo = refreshTokenService.getRefreshTokenInfo(userService.findUserInfo(loginRequestDto.getUserEmail()));
             refreshTokenService.saveRefreshTokenInfo(loginRequestDto.getUserEmail(),refreshTokenInfo,tokenResponseDto);
-            //로그인 이력 업데이트
+            //로그인 이력 업데이트//d
             User userInfo = userService.findByUserId(loginRequestDto.getUserEmail());
             userService.updateLastUserLoginDate(userInfo);
 
