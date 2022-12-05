@@ -11,6 +11,9 @@ import com.summar.summar.results.BooleanResult;
 import com.summar.summar.service.RefreshTokenService;
 import com.summar.summar.service.UserService;
 import com.summar.summar.util.JwtUtil;
+import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -25,6 +28,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
+@Api(tags = {"유저 관련 API 제공 controller"})
 @RequestMapping(value = "/api/v1/user")
 public class UserController {
     private final JwtUtil jwtUtil;
@@ -39,6 +43,9 @@ public class UserController {
      * @return
      * @throws Exception
      */
+
+    @Operation(summary = "회원가입 & 로그인", description = "토큰이 발급 됩니다,")
+    @Schema(example = "test")
     @PostMapping(value = "/login")
     public ResponseEntity<ApiResult> login(@RequestBody LoginRequestDto loginRequestDto) throws Exception {
         TokenResponseDto tokenResponseDto = new TokenResponseDto();
@@ -52,7 +59,7 @@ public class UserController {
             tokenResponseDto.setRefreshToken(refreshToken);
             RefreshToken refreshTokenInfo = refreshTokenService.getRefreshTokenInfo(userService.findUserInfo(loginRequestDto.getUserEmail()));
             refreshTokenService.saveRefreshTokenInfo(loginRequestDto.getUserEmail(),refreshTokenInfo,tokenResponseDto);
-            //로그인 이력 업데이트//
+            //로그인 이력 업데이트
             User userInfo = userService.findByUserId(loginRequestDto.getUserEmail());
             userService.updateLastUserLoginDate(userInfo);
 

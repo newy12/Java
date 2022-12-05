@@ -28,23 +28,16 @@ public class User extends BaseTimeEntity implements Serializable {
     private Long userSeq;
     private String userNickname;
     private String userEmail;
-
     private LocalDate lastLoginDate;
-
-
     @Enumerated(EnumType.STRING)
-    private SocialType socialType = SocialType.APPLE;
-
+    private SocialType socialType;
     @Enumerated(EnumType.STRING)
     private UserStatus userStatus = UserStatus.normal;
+    private String major1; //계열
+    private String major2; //전공
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private RefreshToken refreshToken;
-
-    @ManyToOne
-    @JoinColumn(name="major_seq")
-    @JsonIgnore
-    private Major major;
 
     @Builder
     public User(Long userSeq, String userEmail, String userNickname) {
@@ -61,7 +54,9 @@ public class User extends BaseTimeEntity implements Serializable {
     public User(UserSaveDto userSaveDto){
         this.userEmail = userSaveDto.getUserEmail();
         this.userNickname = userSaveDto.getUserNickname();
-        this.major = userSaveDto.getMajor();
+        this.major1 = userSaveDto.getMajor1();
+        this.major2 = userSaveDto.getMajor2();
+        this.socialType = userSaveDto.getSocialType();
     }
 
 }

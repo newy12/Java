@@ -27,10 +27,4 @@ public class Major {
     private Long majorSeq;
     private String majorName;
     private Long parentsSeq;
-
-    @OneToMany(mappedBy = "major",fetch = FetchType.LAZY)
-    @JsonIgnore
-    private Set<User> users = new HashSet<>();
-
-
 }

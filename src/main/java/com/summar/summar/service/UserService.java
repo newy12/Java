@@ -29,12 +29,13 @@ public class UserService {
 
     @Transactional
     public User saveUser(LoginRequestDto loginRequestDto) {
-        Major major = majorRepository.findByMajorName(loginRequestDto.getMajorName()).orElseThrow(() -> new UsernameNotFoundException("User not found with major" + loginRequestDto.getMajorName()));
         return userRepository.save(
                 new User(UserSaveDto.builder()
-                .userEmail(loginRequestDto.getUserEmail())
-                .userNickname(loginRequestDto.getUserNickName())
-                .major(major)
+                        .userEmail(loginRequestDto.getUserEmail())
+                        .userNickname(loginRequestDto.getUserNickName())
+                        .major1(loginRequestDto.getMajor1())
+                        .major2(loginRequestDto.getMajor2())
+                        .socialType(loginRequestDto.getSocialType())
                 .build())
         );
     }
