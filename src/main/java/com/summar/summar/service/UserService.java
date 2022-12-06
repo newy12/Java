@@ -4,6 +4,7 @@ import com.summar.summar.common.SummarCommonException;
 import com.summar.summar.common.SummarErrorCode;
 import com.summar.summar.domain.Major;
 import com.summar.summar.domain.User;
+import com.summar.summar.dto.LoginCheckRequestDto;
 import com.summar.summar.dto.LoginRequestDto;
 import com.summar.summar.dto.MajorResponseDto;
 import com.summar.summar.dto.UserSaveDto;
@@ -89,6 +90,10 @@ public class UserService {
     @Transactional
     public boolean checkUserEmail(String userEmail) {
         return userRepository.existsByUserEmail(userEmail);
+    }
+    @Transactional
+    public boolean checkUserEmailAndSocialType(LoginCheckRequestDto loginCheckRequestDto) {
+        return userRepository.existsByUserEmailAndSocialType(loginCheckRequestDto.getUserEmail(), loginCheckRequestDto.getSocialType());
     }
 
     public User findUserInfo(String userEmail) {

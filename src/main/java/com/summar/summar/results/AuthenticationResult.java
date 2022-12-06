@@ -10,8 +10,8 @@ public class AuthenticationResult {
 
     public static ResponseEntity<ApiResult> build(TokenResponseDto tokenResponseDto) throws Exception {
         ApiResult apiResult = ApiResult.blank()
-            .add("accessToken", tokenResponseDto.getAccessToken())
-            .add("refreshToken",tokenResponseDto.getRefreshToken())
+            .add("accessToken", tokenResponseDto.getAccessToken() == null ? null :  tokenResponseDto.getAccessToken())
+            .add("refreshToken",tokenResponseDto.getRefreshToken() == null ? null : tokenResponseDto.getRefreshToken())
                 .add("loginStatus",tokenResponseDto.getLoginStatus());
         return Result.ok(apiResult);
     }
