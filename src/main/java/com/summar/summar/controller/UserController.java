@@ -13,7 +13,11 @@ import com.summar.summar.service.UserService;
 import com.summar.summar.util.JwtUtil;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -45,7 +49,13 @@ public class UserController {
      */
 
     @Operation(summary = "회원가입 & 로그인", description = "토큰이 발급 됩니다,")
-    @Schema(example = "test")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
+                    "  \"accessToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdHJpbmciLCJleHAiOjE2NzAyODU0NDIsImlhdCI6MTY3MDI4NTE0Mn0.j7_r4hhSVyQjLR7sTw8GQyBix1Md04akE-256qSOHW4\",\n" +
+                    "  \"refreshToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdHJpbmciLCJleHAiOjE2NzAzMjExNDIsImlhdCI6MTY3MDI4NTE0Mn0.hDbqlzHfe1oGV-TOAGvaGJAT3L62Uw6eZk6IOZTAmDk\"\n" +
+                    "}"))),
+            @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
+    })
     @PostMapping(value = "/login")
     public ResponseEntity<ApiResult> login(@RequestBody LoginRequestDto loginRequestDto) throws Exception {
         TokenResponseDto tokenResponseDto = new TokenResponseDto();
