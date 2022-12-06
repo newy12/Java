@@ -51,8 +51,9 @@ public class UserController {
     @Operation(summary = "회원가입 & 로그인", description = "토큰이 발급 됩니다,")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
-                    "  \"accessToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdHJpbmciLCJleHAiOjE2NzAyODU0NDIsImlhdCI6MTY3MDI4NTE0Mn0.j7_r4hhSVyQjLR7sTw8GQyBix1Md04akE-256qSOHW4\",\n" +
-                    "  \"refreshToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdHJpbmciLCJleHAiOjE2NzAzMjExNDIsImlhdCI6MTY3MDI4NTE0Mn0.hDbqlzHfe1oGV-TOAGvaGJAT3L62Uw6eZk6IOZTAmDk\"\n" +
+                    "  \"accessToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZXd5MTJAbmF2ZXIuY29tIiwiZXhwIjoxNjcwMjg3NjY3LCJpYXQiOjE2NzAyODczNjd9.USfai63Gz3JeAP0mX64szYgGIbddX0MGhJXn4EU_VQk\",\n" +
+                    "  \"loginStatus\": true,\n" +
+                    "  \"refreshToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZXd5MTJAbmF2ZXIuY29tIiwiZXhwIjoxNjcwMzIzMzY3LCJpYXQiOjE2NzAyODczNjd9.McB1Jy58nR_Bam5nJrfBxtH0AGgCgor7b9rSqxL7_NM\"\n" +
                     "}"))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
@@ -67,17 +68,18 @@ public class UserController {
         if(userService.checkUserEmail(loginRequestDto.getUserEmail())){
             tokenResponseDto.setAccessToken(accessToken);
             tokenResponseDto.setRefreshToken(refreshToken);
+            tokenResponseDto.setLoginStatus(true);
             RefreshToken refreshTokenInfo = refreshTokenService.getRefreshTokenInfo(userService.findUserInfo(loginRequestDto.getUserEmail()));
             refreshTokenService.saveRefreshTokenInfo(loginRequestDto.getUserEmail(),refreshTokenInfo,tokenResponseDto);
             //로그인 이력 업데이트
             User userInfo = userService.findByUserId(loginRequestDto.getUserEmail());
             userService.updateLastUserLoginDate(userInfo);
-
             return AuthenticationResult.build(tokenResponseDto);
         }
         //신규 회원이라면.
         tokenResponseDto.setAccessToken(accessToken);
         tokenResponseDto.setRefreshToken(refreshToken);
+        tokenResponseDto.setLoginStatus(false);
         userService.saveUser(loginRequestDto);
         refreshTokenService.saveNewRefreshTokenInfo(loginRequestDto.getUserEmail(),tokenResponseDto);
         //로그인 이력 업데이트
