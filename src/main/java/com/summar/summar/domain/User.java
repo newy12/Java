@@ -1,7 +1,5 @@
 package com.summar.summar.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.summar.summar.dto.LoginRequestDto;
 import com.summar.summar.dto.UserSaveDto;
 import com.summar.summar.enumeration.SocialType;
@@ -58,5 +56,4 @@ public class User extends BaseTimeEntity implements Serializable {
         this.major2 = userSaveDto.getMajor2();
         this.socialType = userSaveDto.getSocialType();
     }
-
 }

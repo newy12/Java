@@ -3,10 +3,7 @@ package com.summar.summar.controller;
 import com.summar.summar.domain.RefreshToken;
 import com.summar.summar.domain.User;
 import com.summar.summar.dto.*;
-import com.summar.summar.results.ApiResult;
-import com.summar.summar.results.AuthenticationResult;
-import com.summar.summar.results.BooleanResult;
-import com.summar.summar.results.Result;
+import com.summar.summar.results.*;
 import com.summar.summar.service.RefreshTokenService;
 import com.summar.summar.service.UserService;
 import com.summar.summar.util.JwtUtil;
@@ -98,24 +95,6 @@ public class UserController {
     }
 
     /**
-     * 로그인 체크
-     * @param loginCheckRequestDto
-     * @return
-     */
-    @Operation(summary = "로그인 아이디 체크", description = "아이디의 중복 여부를 체크합니다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
-                    "    \"status\": \"SUCCESS\",\n" +
-                    "    \"message\": \"정상처리\",\n" +
-                    "    \"errorMessage\": null,\n" +
-                    "    \"errorCode\": null,\n" +
-                    "    \"result\": {\n" +
-                    "        \"result\": true\n" +
-                    "    }\n" +
-                    "}"))),
-            @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
-    })
-    /**
      * 로그아웃
      *
      * @param token
@@ -133,6 +112,18 @@ public class UserController {
 
         return BooleanResult.build("result", jwtUtil.validateRedisToken(valueOperations.get("accessToken")), "message", null);
     }
+
+    @GetMapping("/find-user")
+    public ResponseEntity<?> findUserInfo(@RequestParam(value = "userEmail")String userEmail){
+        User user = userService.findUserInfo(userEmail);
+        FindUserInfoResponseDto findUserInfoResponseDto = FindUserInfoResponseDto.builder()
+                .userNickname(user.getUserNickname())
+                .major1(user.getMajor1())
+                .major2(user.getMajor2())
+                .build();
+        return ObjectResult.build("result",findUserInfoResponseDto);
+    }
+
     /**
      * 필명 중복체크
      * @param nickname
