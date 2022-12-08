@@ -113,6 +113,17 @@ public class UserController {
         return BooleanResult.build("result", jwtUtil.validateRedisToken(valueOperations.get("accessToken")), "message", null);
     }
 
+    @Operation(summary = "이메일로 회원 정보 찾기", description = "회원닉네임,전공(1,2) 찾아옵니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
+                    "    \"result\": {\n" +
+                    "        \"userNickname\": \"욱승\",\n" +
+                    "        \"major1\": \"공학계열\",\n" +
+                    "        \"major2\": \"컴퓨터ㆍ통신\"\n" +
+                    "    }\n" +
+                    "}"))),
+            @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
+    })
     @GetMapping("/find-user")
     public ResponseEntity<?> findUserInfo(@RequestParam(value = "userEmail")String userEmail){
         User user = userService.findUserInfo(userEmail);
