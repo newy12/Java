@@ -2,7 +2,10 @@ package com.summar.summar.controller;
 
 import com.summar.summar.domain.RefreshToken;
 import com.summar.summar.domain.User;
-import com.summar.summar.dto.*;
+import com.summar.summar.dto.FindUserInfoResponseDto;
+import com.summar.summar.dto.LoginRequestDto;
+import com.summar.summar.dto.LoginStatus;
+import com.summar.summar.dto.TokenResponseDto;
 import com.summar.summar.results.*;
 import com.summar.summar.service.RefreshTokenService;
 import com.summar.summar.service.UserService;
@@ -22,7 +25,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 
 @RestController
 @Slf4j
@@ -46,15 +48,17 @@ public class UserController {
     @Operation(summary = "회원가입 & 로그인", description = "토큰이 발급 됩니다,")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
-                    "  \"accessToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZXd5MTJAbmF2ZXIuY29tIiwiZXhwIjoxNjcwMjg3NjY3LCJpYXQiOjE2NzAyODczNjd9.USfai63Gz3JeAP0mX64szYgGIbddX0MGhJXn4EU_VQk\",\n" +
-                    "  \"loginStatus\": \"회원가입완료\",\n" +
-                    "  \"refreshToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZXd5MTJAbmF2ZXIuY29tIiwiZXhwIjoxNjcwMzIzMzY3LCJpYXQiOjE2NzAyODczNjd9.McB1Jy58nR_Bam5nJrfBxtH0AGgCgor7b9rSqxL7_NM\"\n" +
+                    "  \"major2\": \"컴퓨터ㆍ통신\",\n" +
+                    "  \"major1\": \"공학계열\",\n" +
+                    "  \"userNickname\": \"욱승\",\n" +
+                    "  \"accessToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNTQ5NTQ5ODM3IiwiZXhwIjoxNjcwNzY2NjE2LCJpYXQiOjE2NzA3NjYzMTZ9.c2SHSHtUgtdHDjHvkP-SD16tcQ5ZIQG3-6onGIxnF-0\",\n" +
+                    "  \"loginStatus\": \"로그인\",\n" +
+                    "  \"refreshToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNTQ5NTQ5ODM3IiwiZXhwIjoxNjcwODAyMzE2LCJpYXQiOjE2NzA3NjYzMTZ9.rnmL0ZUDudyjmo9IYPhXfZVpsiW0ENQahKSgdw7MY3k\"\n" +
                     "}"))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
     @PostMapping(value = "/login")
     public ResponseEntity<ApiResult> login(@RequestBody LoginRequestDto loginRequestDto) throws Exception {
-        TokenResponseDto tokenResponseDto = new TokenResponseDto();
         //access token 생성
         final String accessToken = jwtUtil.generateToken(loginRequestDto.getUserEmail());
         //refresh token 생성
@@ -63,34 +67,57 @@ public class UserController {
         //nickname 혹은 major 1 혹은 major 2 가 비어있으면 회원가입
         if("".equals(loginRequestDto.getUserNickName()) && "".equals(loginRequestDto.getMajor1()) && "".equals(loginRequestDto.getMajor2())
         && !userService.checkUserEmail(loginRequestDto.getUserEmail())){
-            tokenResponseDto.setAccessToken("발급X");
-            tokenResponseDto.setRefreshToken("발급X");
-            tokenResponseDto.setLoginStatus(LoginStatus.회원가입);
-            return AuthenticationResult.build(tokenResponseDto);
+            return AuthenticationResult.build(
+                    TokenResponseDto.builder()
+                            .accessToken("발급X")
+                            .refreshToken("발급x")
+                            .loginStatus(LoginStatus.회원가입)
+                            .userNickname("")
+                            .major1("")
+                            .major2("")
+                    .build());
         }
 
         //기존 회원이 있다면
         if(userService.checkUserEmail(loginRequestDto.getUserEmail())){
-            tokenResponseDto.setAccessToken(accessToken);
-            tokenResponseDto.setRefreshToken(refreshToken);
-            tokenResponseDto.setLoginStatus(LoginStatus.로그인);
-            RefreshToken refreshTokenInfo = refreshTokenService.getRefreshTokenInfo(userService.findUserInfo(loginRequestDto.getUserEmail()));
-            refreshTokenService.saveRefreshTokenInfo(loginRequestDto.getUserEmail(),refreshTokenInfo,tokenResponseDto);
-            //로그인 이력 업데이트
             User userInfo = userService.findByUserId(loginRequestDto.getUserEmail());
+            RefreshToken refreshTokenInfo = refreshTokenService.getRefreshTokenInfo(userService.findUserInfo(loginRequestDto.getUserEmail()));
+            refreshTokenService.saveRefreshTokenInfo(loginRequestDto.getUserEmail(),refreshTokenInfo,
+                    TokenResponseDto.builder()
+                            .accessToken(accessToken)
+                            .refreshToken(refreshToken)
+                            .loginStatus(LoginStatus.로그인)
+                            .userNickname(userInfo.getUserNickname())
+                            .major1(userInfo.getMajor1())
+                            .major2(userInfo.getMajor2())
+                            .build());
+            //로그인 이력 업데이트
             userService.updateLastUserLoginDate(userInfo);
-            return AuthenticationResult.build(tokenResponseDto);
+            return AuthenticationResult.build(
+                    TokenResponseDto.builder()
+                            .accessToken(accessToken)
+                            .refreshToken(refreshToken)
+                            .loginStatus(LoginStatus.로그인)
+                            .userNickname(userInfo.getUserNickname())
+                            .major1(userInfo.getMajor1())
+                            .major2(userInfo.getMajor2())
+                            .build());
         }
         //신규 회원이라면.
-        tokenResponseDto.setAccessToken(accessToken);
-        tokenResponseDto.setRefreshToken(refreshToken);
-        tokenResponseDto.setLoginStatus(LoginStatus.회원가입완료);
         userService.saveUser(loginRequestDto);
-        refreshTokenService.saveNewRefreshTokenInfo(loginRequestDto.getUserEmail(),tokenResponseDto);
-        //로그인 이력 업데이트
-        User userInfo = userService.findByUserId(loginRequestDto.getUserEmail());
-        userService.updateLastUserLoginDate(userInfo);
-
+        refreshTokenService.saveNewRefreshTokenInfo(loginRequestDto.getUserEmail(),TokenResponseDto.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .loginStatus(LoginStatus.회원가입완료)
+                .build());
+        TokenResponseDto tokenResponseDto = TokenResponseDto.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .loginStatus(LoginStatus.회원가입완료)
+                .userNickname("")
+                .major1("")
+                .major2("")
+                .build();
         return AuthenticationResult.build(tokenResponseDto);
     }
 
@@ -137,32 +164,43 @@ public class UserController {
 
     /**
      * 필명 중복체크
+     *
      * @param nickname
      * @return
      * @throws NoSuchAlgorithmException
      */
+    @Operation(summary = "닉네임 중복 체크", description = "닉네임의 중복을 체크합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
+                    "  \"status\": \"SUCCESS\",\n" +
+                    "  \"message\": \"정상처리\",\n" +
+                    "  \"errorMessage\": null,\n" +
+                    "  \"errorCode\": null,\n" +
+                    "  \"result\": {\n" +
+                    "    \"result\": true\n" +
+                    "  }\n" +
+                    "}"))),
+            @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
+    })
     @GetMapping("/nicknameCheck/{nickname}")
-    public ResponseEntity<Boolean> checkNicknameDuplication(@PathVariable String nickname) throws NoSuchAlgorithmException {
+    public ResponseEntity<?> checkNicknameDuplication(@PathVariable String nickname) throws NoSuchAlgorithmException {
         if (nickname.isEmpty()) {
             throw new NullPointerException();
         }
-        return ResponseEntity.ok(userService.checkNicknameDuplication(nickname));
+        return BooleanResult.build("result",userService.checkNicknameDuplication(nickname));
     }
 
 
     @GetMapping("/major")
-    public ResponseEntity<List<MajorResponseDto>> getParentsMajor(){
-
-        List<MajorResponseDto> majorList = userService.findParentsMajor();
-        return ResponseEntity.ok(majorList);
+    public ResponseEntity<?> getParentsMajor(){
+        return ListResult.build("result",userService.findParentsMajor());
     }
 
     @GetMapping("/major/{majorSeq}")
-    public ResponseEntity<List<MajorResponseDto>> getChildMajor(@PathVariable Long majorSeq){
+    public ResponseEntity<?> getChildMajor(@PathVariable Long majorSeq){
         if (majorSeq == null) {
             throw new NullPointerException();
         }
-        List<MajorResponseDto> majorList = userService.findChildMajorByParentsSeq(majorSeq);
-        return ResponseEntity.ok(majorList);
+        return ListResult.build("result",userService.findChildMajorByParentsSeq(majorSeq));
     }
 }

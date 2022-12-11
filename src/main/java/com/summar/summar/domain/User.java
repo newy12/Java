@@ -6,13 +6,11 @@ import com.summar.summar.enumeration.SocialType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 @Getter
-@Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "USER")
@@ -55,5 +53,12 @@ public class User extends BaseTimeEntity implements Serializable {
         this.major1 = userSaveDto.getMajor1();
         this.major2 = userSaveDto.getMajor2();
         this.socialType = userSaveDto.getSocialType();
+        this.lastLoginDate = userSaveDto.getLastLoginDate();
+    }
+    public void setLastLoginDate(LocalDate lastLoginDate){
+        this.lastLoginDate = lastLoginDate;
+    }
+    public void setUserStatus(UserStatus userStatus){
+        this.userStatus = userStatus;
     }
 }

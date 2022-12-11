@@ -2,7 +2,6 @@ package com.summar.summar.service;
 
 import com.summar.summar.common.SummarCommonException;
 import com.summar.summar.common.SummarErrorCode;
-import com.summar.summar.domain.Major;
 import com.summar.summar.domain.User;
 import com.summar.summar.dto.LoginCheckRequestDto;
 import com.summar.summar.dto.LoginRequestDto;
@@ -37,6 +36,7 @@ public class UserService {
                         .major1(loginRequestDto.getMajor1())
                         .major2(loginRequestDto.getMajor2())
                         .socialType(loginRequestDto.getSocialType())
+                        .lastLoginDate(LocalDate.now())
                 .build())
         );
     }
