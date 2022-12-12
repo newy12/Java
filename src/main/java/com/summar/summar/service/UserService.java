@@ -32,7 +32,7 @@ public class UserService {
         return userRepository.save(
                 new User(UserSaveDto.builder()
                         .userEmail(loginRequestDto.getUserEmail())
-                        .userNickname(loginRequestDto.getUserNickName())
+                        .userNickname(loginRequestDto.getUserNickname())
                         .major1(loginRequestDto.getMajor1())
                         .major2(loginRequestDto.getMajor2())
                         .socialType(loginRequestDto.getSocialType())
