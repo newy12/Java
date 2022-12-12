@@ -65,7 +65,7 @@ public class UserController {
         final String refreshToken = jwtUtil.generateRefreshToken(loginRequestDto.getUserEmail());
 
         //nickname 혹은 major 1 혹은 major 2 가 비어있으면 회원가입
-        if("".equals(loginRequestDto.getUserNickName()) && "".equals(loginRequestDto.getMajor1()) && "".equals(loginRequestDto.getMajor2())
+        if("".equals(loginRequestDto.getUserNickname()) && "".equals(loginRequestDto.getMajor1()) && "".equals(loginRequestDto.getMajor2())
         && !userService.checkUserEmail(loginRequestDto.getUserEmail())){
             return AuthenticationResult.build(
                     TokenResponseDto.builder()
