@@ -182,18 +182,12 @@ public class UserController {
                     "}"))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
-    @GetMapping("/nicknameCheck/{nickname}")
-    public ResponseEntity<?> checkNicknameDuplication(@PathVariable String nickname) throws NoSuchAlgorithmException {
+    @GetMapping("/nicknameCheck")
+    public ResponseEntity<?> checkNicknameDuplication(@RequestParam(value = "nickname")String nickname) throws NoSuchAlgorithmException {
         if (nickname.isEmpty()) {
             throw new NullPointerException();
         }
         return BooleanResult.build("result",userService.checkNicknameDuplication(nickname));
-    }
-
-
-    @GetMapping("/major")
-    public ResponseEntity<?> getParentsMajor(){
-        return ListResult.build("result",userService.findParentsMajor());
     }
 
     @GetMapping("/major/{majorSeq}")

@@ -109,11 +109,4 @@ public class UserService {
         return majorResponseDtoList;
     }
 
-    public List<MajorResponseDto> findParentsMajor() {
-        List<MajorResponseDto> majorResponseDtoList = new ArrayList<>();
-        majorRepository.findAllByParentsSeqIsNull().forEach(
-                major -> majorResponseDtoList.add(new MajorResponseDto(major)));
-
-        return majorResponseDtoList;
-    }
 }
