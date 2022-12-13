@@ -187,14 +187,6 @@ public class UserController {
         if (nickname.isEmpty()) {
             throw new NullPointerException();
         }
-        return BooleanResult.build("result",userService.checkNicknameDuplication(nickname));
-    }
-
-    @GetMapping("/major/{majorSeq}")
-    public ResponseEntity<?> getChildMajor(@PathVariable Long majorSeq){
-        if (majorSeq == null) {
-            throw new NullPointerException();
-        }
-        return ListResult.build("result",userService.findChildMajorByParentsSeq(majorSeq));
+        return BooleanResult.build("result", userService.checkNicknameDuplication(nickname));
     }
 }
