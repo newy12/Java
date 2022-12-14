@@ -22,15 +22,19 @@ public class User extends BaseTimeEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userSeq;
-    private String userNickname;
-    private String userEmail;
-    private LocalDate lastLoginDate;
+    private String userNickname; //닉네임
+    private String userEmail; //이메일
+    private LocalDate lastLoginDate; //최종로그인일시
     @Enumerated(EnumType.STRING)
-    private SocialType socialType;
+    private SocialType socialType; //소셜로그인 타입
     @Enumerated(EnumType.STRING)
-    private UserStatus userStatus = UserStatus.normal;
+    private UserStatus userStatus = UserStatus.normal; //유저 상태
     private String major1; //계열
     private String major2; //전공
+
+    private Integer follower; //팔로워
+
+    private Integer following; //팔로윙
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private RefreshToken refreshToken;

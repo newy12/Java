@@ -77,7 +77,6 @@ public class UserController {
                             .major2("")
                     .build());
         }
-
         //기존 회원이 있다면
         if(userService.checkUserEmail(loginRequestDto.getUserEmail())){
             User userInfo = userService.findByUserId(loginRequestDto.getUserEmail());
