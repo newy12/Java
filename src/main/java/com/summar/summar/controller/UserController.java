@@ -64,7 +64,7 @@ public class UserController {
         //refresh token 생성
         final String refreshToken = jwtUtil.generateRefreshToken(loginRequestDto.getUserEmail());
 
-        //nickname 혹은 major 1 혹은 major 2 가 비어있으면 회원가입
+        //nickname 또는 major 1 또는 major 2 가 비어있으면 회원가입
         if("".equals(loginRequestDto.getUserNickname()) && "".equals(loginRequestDto.getMajor1()) && "".equals(loginRequestDto.getMajor2())
         && !userService.checkUserEmail(loginRequestDto.getUserEmail())){
             return AuthenticationResult.build(
@@ -100,9 +100,14 @@ public class UserController {
                             .userNickname(userInfo.getUserNickname())
                             .major1(userInfo.getMajor1())
                             .major2(userInfo.getMajor2())
+                            .follower(userInfo.getFollower())
+                            .following(userInfo.getFollowing())
                             .build());
         }
-        //신규 회원이라면.
+        //신규 회원이라면.(nickname 빈값이면, 회원가입 방지)
+        if("".equals(loginRequestDto.getUserNickname())){
+            return null;
+        }
         userService.saveUser(loginRequestDto);
         refreshTokenService.saveNewRefreshTokenInfo(loginRequestDto.getUserEmail(),TokenResponseDto.builder()
                 .accessToken(accessToken)
@@ -116,6 +121,8 @@ public class UserController {
                 .userNickname("")
                 .major1("")
                 .major2("")
+                .follower(0)
+                .following(0)
                 .build();
         return AuthenticationResult.build(tokenResponseDto);
     }

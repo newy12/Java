@@ -56,6 +56,8 @@ public class User extends BaseTimeEntity implements Serializable {
         this.userNickname = userSaveDto.getUserNickname();
         this.major1 = userSaveDto.getMajor1();
         this.major2 = userSaveDto.getMajor2();
+        this.follower = userSaveDto.getFollower();
+        this.following = userSaveDto.getFollowing();
         this.socialType = userSaveDto.getSocialType();
         this.lastLoginDate = userSaveDto.getLastLoginDate();
     }

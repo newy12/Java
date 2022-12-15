@@ -17,4 +17,6 @@ public class TokenResponseDto {
     private String userNickname;
     private String major1;
     private String major2;
+    private Integer follower;
+    private Integer following;
 }

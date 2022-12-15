@@ -13,6 +13,8 @@ public class UserSaveDto {
     private String userNickname;
     private String major1;
     private String major2;
+    private Integer follower;
+    private Integer following;
     private SocialType socialType;
     private LocalDate lastLoginDate;
 }
