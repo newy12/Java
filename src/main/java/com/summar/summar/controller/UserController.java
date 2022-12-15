@@ -48,12 +48,14 @@ public class UserController {
     @Operation(summary = "회원가입 & 로그인", description = "토큰이 발급 됩니다,")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
-                    "  \"major2\": \"컴퓨터ㆍ통신\",\n" +
-                    "  \"major1\": \"공학계열\",\n" +
-                    "  \"userNickname\": \"욱승\",\n" +
-                    "  \"accessToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNTQ5NTQ5ODM3IiwiZXhwIjoxNjcwNzY2NjE2LCJpYXQiOjE2NzA3NjYzMTZ9.c2SHSHtUgtdHDjHvkP-SD16tcQ5ZIQG3-6onGIxnF-0\",\n" +
-                    "  \"loginStatus\": \"로그인\",\n" +
-                    "  \"refreshToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyNTQ5NTQ5ODM3IiwiZXhwIjoxNjcwODAyMzE2LCJpYXQiOjE2NzA3NjYzMTZ9.rnmL0ZUDudyjmo9IYPhXfZVpsiW0ENQahKSgdw7MY3k\"\n" +
+                    "    \"major2\": \"전공2\",\n" +
+                    "    \"major1\": \"전공1\",\n" +
+                    "    \"follower\": 0,\n" +
+                    "    \"following\": 0,\n" +
+                    "    \"userNickname\": \"4124\",\n" +
+                    "    \"accessToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZXd5MTMiLCJleHAiOjE2NzExMTc4MDEsImlhdCI6MTY3MTExNzUwMX0.SUBYajqxbX7JA4v2iBvMUUpGhWCnM4PY3pSMBPv-7jI\",\n" +
+                    "    \"loginStatus\": \"로그인\",\n" +
+                    "    \"refreshToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZXd5MTMiLCJleHAiOjE2NzExNTM1MDEsImlhdCI6MTY3MTExNzUwMX0.fOZj98iGiMr1KY4q2MszAddhcX1u8Ko3ds7K6Fl1rcU\"\n" +
                     "}"))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
@@ -75,6 +77,8 @@ public class UserController {
                             .userNickname("")
                             .major1("")
                             .major2("")
+                            .follower(0)
+                            .following(0)
                     .build());
         }
         //기존 회원이 있다면
@@ -104,8 +108,11 @@ public class UserController {
                             .following(userInfo.getFollowing())
                             .build());
         }
-        //신규 회원이라면.(nickname 빈값이면, 회원가입 방지)
-        if("".equals(loginRequestDto.getUserNickname())){
+        //신규 회원이라면.(nickname 빈값, email 빈값 major 1,2 빈값 => 회원가입 방지)
+        if("".equals(loginRequestDto.getUserNickname()) ||
+                "".equals(loginRequestDto.getUserEmail())  ||
+                "".equals(loginRequestDto.getMajor1())  ||
+                "".equals(loginRequestDto.getMajor2())){
             return null;
         }
         userService.saveUser(loginRequestDto);
