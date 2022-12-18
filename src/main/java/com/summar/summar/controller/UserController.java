@@ -2,10 +2,7 @@ package com.summar.summar.controller;
 
 import com.summar.summar.domain.RefreshToken;
 import com.summar.summar.domain.User;
-import com.summar.summar.dto.FindUserInfoResponseDto;
-import com.summar.summar.dto.LoginRequestDto;
-import com.summar.summar.dto.LoginStatus;
-import com.summar.summar.dto.TokenResponseDto;
+import com.summar.summar.dto.*;
 import com.summar.summar.results.*;
 import com.summar.summar.service.RefreshTokenService;
 import com.summar.summar.service.UserService;
@@ -22,6 +19,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
@@ -36,6 +34,7 @@ public class UserController {
     private final UserService userService;
     private final RedisTemplate redisTemplate;
     private final RefreshTokenService refreshTokenService;
+    private final AuthenticationManager authenticationManager;
 
 
     /**
@@ -108,13 +107,7 @@ public class UserController {
                             .following(userInfo.getFollowing())
                             .build());
         }
-        //신규 회원이라면.(nickname 빈값, email 빈값 major 1,2 빈값 => 회원가입 방지)
-        if("".equals(loginRequestDto.getUserNickname()) ||
-                "".equals(loginRequestDto.getUserEmail())  ||
-                "".equals(loginRequestDto.getMajor1())  ||
-                "".equals(loginRequestDto.getMajor2())){
-            return null;
-        }
+        //신규 회원이라면
         userService.saveUser(loginRequestDto);
         refreshTokenService.saveNewRefreshTokenInfo(loginRequestDto.getUserEmail(),TokenResponseDto.builder()
                 .accessToken(accessToken)
@@ -153,28 +146,61 @@ public class UserController {
         return BooleanResult.build("result", jwtUtil.validateRedisToken(valueOperations.get("accessToken")), "message", null);
     }
 
-    @Operation(summary = "이메일로 회원 정보 찾기", description = "회원닉네임,전공(1,2) 찾아옵니다.")
+    @Operation(summary = "이메일로 회원 정보 찾기", description = "회원의 모든 정보를 찾아옵니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
                     "    \"result\": {\n" +
-                    "        \"userNickname\": \"욱승\",\n" +
-                    "        \"major1\": \"공학계열\",\n" +
-                    "        \"major2\": \"컴퓨터ㆍ통신\"\n" +
+                    "        \"userNickname\": \"dd\",\n" +
+                    "        \"major1\": \"전공1\",\n" +
+                    "        \"major2\": \"전공2\",\n" +
+                    "        \"follower\": 0,\n" +
+                    "        \"following\": 0\n" +
                     "    }\n" +
                     "}"))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
-    @GetMapping("/find-user")
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/user-info")
     public ResponseEntity<?> findUserInfo(@RequestParam(value = "userEmail")String userEmail){
         User user = userService.findUserInfo(userEmail);
         FindUserInfoResponseDto findUserInfoResponseDto = FindUserInfoResponseDto.builder()
                 .userNickname(user.getUserNickname())
                 .major1(user.getMajor1())
                 .major2(user.getMajor2())
+                .follower(user.getFollower())
+                .following(user.getFollowing())
+                .introduce(user.getIntroduce())
                 .build();
         return ObjectResult.build("result",findUserInfoResponseDto);
     }
 
+    /**
+     * 마이페이지 개인정보 수정
+     * @param changeUserInfoRequestDto
+     * @return
+     */
+    @Operation(summary = "마이페이지 개인정보 수정", description = "회원의 정보를 수정합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "ok"))),
+            @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
+    })
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/user-info")
+    public ResponseEntity<?> changeUserInfo(@RequestBody ChangeUserInfoRequestDto changeUserInfoRequestDto){
+        userService.changeUserInfo(changeUserInfoRequestDto);
+        return Result.ok();
+    }
+    @Operation(summary = "자기소개 추가", description = "자기소개를 추가합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "ok"))),
+            @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
+    })
+    //@PreAuthorize("isAuthenticated()")
+    @PostMapping("/add-introduce")
+    public ResponseEntity<?> addIntroduce(@RequestBody AddIntroduceRequestDto addIntroduceRequestDto){
+        userService.addIntroduce(addIntroduceRequestDto);
+        return Result.ok();
+    }
     /**
      * 필명 중복체크
      *
@@ -195,7 +221,7 @@ public class UserController {
                     "}"))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
-    @GetMapping("/nicknameCheck")
+    @GetMapping("/nickname-check")
     public ResponseEntity<?> checkNicknameDuplication(@RequestParam(value = "nickname")String nickname) throws NoSuchAlgorithmException {
         if (nickname.isEmpty()) {
             throw new NullPointerException();

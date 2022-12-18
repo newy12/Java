@@ -3,6 +3,8 @@ package com.summar.summar.service;
 import com.summar.summar.common.SummarCommonException;
 import com.summar.summar.common.SummarErrorCode;
 import com.summar.summar.domain.User;
+import com.summar.summar.dto.AddIntroduceRequestDto;
+import com.summar.summar.dto.ChangeUserInfoRequestDto;
 import com.summar.summar.dto.LoginRequestDto;
 import com.summar.summar.dto.UserSaveDto;
 import com.summar.summar.repository.UserRepository;
@@ -61,6 +63,18 @@ public class UserService {
         return userRepository.findByUserEmail(userEmail).orElseThrow(
                 () -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
     }
+    @Transactional
+    public void changeUserInfo(ChangeUserInfoRequestDto changeUserInfoRequestDto) {
+        User user = userRepository.findByUserNickname(changeUserInfoRequestDto.getUserNickname()).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
+        user.changeUserInfo(changeUserInfoRequestDto);
+        userRepository.save(user);
+    }
 
-
+    @Transactional
+    public void addIntroduce(AddIntroduceRequestDto addIntroduceRequestDto) {
+        User user = userRepository.findByUserEmail(addIntroduceRequestDto.getUserEmail()).orElseThrow(
+                () -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
+        user.setIntroduce(addIntroduceRequestDto.getIntroduce());
+        userRepository.save(user);
+    }
 }

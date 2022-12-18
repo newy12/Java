@@ -5,12 +5,8 @@ import lombok.Data;
 
 @Data
 @Builder
-public class FindUserInfoResponseDto {
+public class ChangeUserInfoRequestDto {
     private String userNickname;
     private String major1;
     private String major2;
-    private String introduce;
-    private Integer follower;
-    private Integer following;
-
 }

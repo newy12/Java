@@ -2,7 +2,8 @@ package com.summar.summar.filter;
 
 import com.summar.summar.common.SummarErrorCode;
 import com.summar.summar.common.SummarJwtException;
-import com.summar.summar.service.CustomUserDetailService;
+import com.summar.summar.domain.User;
+import com.summar.summar.repository.UserRepository;
 import com.summar.summar.util.JwtUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -10,7 +11,6 @@ import io.jsonwebtoken.SignatureException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -26,7 +26,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
-    private final CustomUserDetailService customUserDetailService;
+    private final UserRepository userRepository;
 
 
     @Override
@@ -34,13 +34,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         final String authorizationHeader = request.getHeader("Authorization");
 
-        String username= null;
+        String userEmail= null;
         String jwt = null;
 
         if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
             jwt = authorizationHeader.substring(7);
             try {
-                username = jwtUtil.extractUsername(jwt);
+                userEmail = jwtUtil.extractUsername(jwt);
             }catch(IllegalArgumentException e){
                 logger.error("error occured during getting username from token!", e);
                 throw new SummarJwtException(SummarErrorCode.INVALID_TOKEN.getCode(), SummarErrorCode.INVALID_TOKEN.getMessage());
@@ -58,11 +58,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             logger.warn("couldn't find bearer string, will ignore the header");
         }
 
-        if(username != null && SecurityContextHolder.getContext().getAuthentication() == null){
-            UserDetails userDetails = customUserDetailService.loadUserByUsername(username);
-            if (jwtUtil.validateToken(jwt,userDetails)) {
+        if(userEmail != null){
+            User user = userRepository.findByUserEmail(userEmail).get();
+            if (jwtUtil.validateToken(jwt,user.getUserEmail())) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                        new UsernamePasswordAuthenticationToken(user, null,null);
                 usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
