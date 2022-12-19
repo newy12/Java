@@ -181,25 +181,43 @@ public class UserController {
      */
     @Operation(summary = "마이페이지 개인정보 수정", description = "회원의 정보를 수정합니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "ok"))),
+            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
+                    "    \"status\": \"SUCCESS\",\n" +
+                    "    \"message\": \"정상처리\",\n" +
+                    "    \"errorMessage\": \"\",\n" +
+                    "    \"errorCode\": \"\",\n" +
+                    "    \"result\": null\n" +
+                    "}"))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/user-info")
     public ResponseEntity<?> changeUserInfo(@RequestBody ChangeUserInfoRequestDto changeUserInfoRequestDto){
         userService.changeUserInfo(changeUserInfoRequestDto);
-        return Result.ok();
+        return ObjectResult.ok();
     }
+
+    /**
+     * 자기소개 작성
+     * @param addIntroduceRequestDto
+     * @return
+     */
     @Operation(summary = "자기소개 추가", description = "자기소개를 추가합니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "ok"))),
+            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
+                    "    \"status\": \"SUCCESS\",\n" +
+                    "    \"message\": \"정상처리\",\n" +
+                    "    \"errorMessage\": \"\",\n" +
+                    "    \"errorCode\": \"\",\n" +
+                    "    \"result\": null\n" +
+                    "}"))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/add-introduce")
     public ResponseEntity<?> addIntroduce(@RequestBody AddIntroduceRequestDto addIntroduceRequestDto){
         userService.addIntroduce(addIntroduceRequestDto);
-        return Result.ok();
+        return ObjectResult.ok();
     }
     /**
      * 필명 중복체크
