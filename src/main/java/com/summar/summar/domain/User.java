@@ -17,7 +17,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Entity
 @Table(name = "USER")
-@ToString(exclude = "user")
 public class User extends BaseTimeEntity implements Serializable {
 
     /**
