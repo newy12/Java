@@ -98,7 +98,7 @@ public class UserController {
             userService.updateLastUserLoginDate(userInfo);
             return AuthenticationResult.build(
                     TokenResponseDto.builder()
-                            .accessToken(accessToken)
+                            .accessToken(accessToken)//ㅇ
                             .refreshToken(refreshToken)
                             .loginStatus(LoginStatus.로그인)
                             .userNickname(userInfo.getUserNickname())
