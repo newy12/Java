@@ -9,7 +9,7 @@ public class AuthenticationResult {
     public static ResponseEntity<ApiResult> build(TokenResponseDto tokenResponseDto) throws Exception {
         ApiResult apiResult = ApiResult.blank()
                 .add("accessToken", tokenResponseDto.getAccessToken() == null ? null : tokenResponseDto.getAccessToken())
-                .add("refreshToken", tokenResponseDto.getRefreshToken() == null ? null : tokenResponseDto.getRefreshToken())
+                .add("refreshTokenSeq", tokenResponseDto.getRefreshTokenSeq() == null ? null : tokenResponseDto.getRefreshTokenSeq())
                 .add("loginStatus", tokenResponseDto.getLoginStatus())
                 .add("userNickname", tokenResponseDto.getUserNickname() == "" ? "" : tokenResponseDto.getUserNickname())
                 .add("major1", tokenResponseDto.getMajor1() == "" ? "" : tokenResponseDto.getMajor1())

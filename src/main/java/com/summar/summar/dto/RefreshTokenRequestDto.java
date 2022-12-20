@@ -8,4 +8,5 @@ import java.util.UUID;
 public class RefreshTokenRequestDto {
 
     private UUID refreshTokenId;
+    private String userEmail;
 }

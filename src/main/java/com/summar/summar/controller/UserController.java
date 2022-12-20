@@ -3,7 +3,10 @@ package com.summar.summar.controller;
 import com.summar.summar.domain.RefreshToken;
 import com.summar.summar.domain.User;
 import com.summar.summar.dto.*;
-import com.summar.summar.results.*;
+import com.summar.summar.results.ApiResult;
+import com.summar.summar.results.AuthenticationResult;
+import com.summar.summar.results.BooleanResult;
+import com.summar.summar.results.ObjectResult;
 import com.summar.summar.service.RefreshTokenService;
 import com.summar.summar.service.UserService;
 import com.summar.summar.util.JwtUtil;
@@ -24,6 +27,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
 
 @RestController
 @Slf4j
@@ -71,8 +75,8 @@ public class UserController {
         && !userService.checkUserEmail(loginRequestDto.getUserEmail())){
             return AuthenticationResult.build(
                     TokenResponseDto.builder()
-                            .accessToken("발급X")
-                            .refreshToken("발급x")
+                            .accessToken("발급x")
+                            .refreshTokenSeq(UUID.randomUUID())
                             .loginStatus(LoginStatus.회원가입)
                             .userNickname("")
                             .major1("")
@@ -85,21 +89,14 @@ public class UserController {
         if(userService.checkUserEmail(loginRequestDto.getUserEmail())){
             User userInfo = userService.findByUserId(loginRequestDto.getUserEmail());
             RefreshToken refreshTokenInfo = refreshTokenService.getRefreshTokenInfo(userService.findUserInfo(loginRequestDto.getUserEmail()));
-            refreshTokenService.saveRefreshTokenInfo(loginRequestDto.getUserEmail(),refreshTokenInfo,
-                    TokenResponseDto.builder()
-                            .accessToken(accessToken)
-                            .refreshToken(refreshToken)
-                            .loginStatus(LoginStatus.로그인)
-                            .userNickname(userInfo.getUserNickname())
-                            .major1(userInfo.getMajor1())
-                            .major2(userInfo.getMajor2())
-                            .build());
+            UUID refreshTokenSeq = refreshTokenService.saveRefreshTokenInfo(loginRequestDto.getUserEmail(),refreshTokenInfo,refreshToken);
             //로그인 이력 업데이트
             userService.updateLastUserLoginDate(userInfo);
+
             return AuthenticationResult.build(
                     TokenResponseDto.builder()
-                            .accessToken(accessToken)//ㅇ
-                            .refreshToken(refreshToken)
+                            .accessToken(accessToken)
+                            .refreshTokenSeq(refreshTokenSeq)
                             .loginStatus(LoginStatus.로그인)
                             .userNickname(userInfo.getUserNickname())
                             .major1(userInfo.getMajor1())
@@ -110,14 +107,10 @@ public class UserController {
         }
         //신규 회원이라면
         userService.saveUser(loginRequestDto);
-        refreshTokenService.saveNewRefreshTokenInfo(loginRequestDto.getUserEmail(),TokenResponseDto.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .loginStatus(LoginStatus.회원가입완료)
-                .build());
+        UUID refreshTokenSeq = refreshTokenService.saveNewRefreshTokenInfo(loginRequestDto.getUserEmail(),refreshToken);
         TokenResponseDto tokenResponseDto = TokenResponseDto.builder()
                 .accessToken(accessToken)
-                .refreshToken(refreshToken)
+                .refreshTokenSeq(refreshTokenSeq)
                 .loginStatus(LoginStatus.회원가입완료)
                 .userNickname("")
                 .major1("")
@@ -127,6 +120,18 @@ public class UserController {
                 .build();
         return AuthenticationResult.build(tokenResponseDto);
     }
+    @PostMapping("/give-access-token")
+    public ResponseEntity<?> giveAccessToken(@RequestBody RefreshTokenRequestDto refreshTokenRequestDto) {
+        RefreshToken refreshToken = refreshTokenService.getRefreshTokenInfo(refreshTokenRequestDto.getRefreshTokenId());
+        if(jwtUtil.validateRefreshToken(refreshToken.getRefreshToken(),refreshTokenRequestDto.getUserEmail())){
+            String newAccessToken = jwtUtil.generateToken(refreshTokenRequestDto.getUserEmail());
+            return ObjectResult.build("accessToken",newAccessToken);
+        }
+        return ObjectResult.build("accessToken","x");
+    }
+
+
+
 
     /**
      * 로그아웃
