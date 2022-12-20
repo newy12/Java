@@ -20,7 +20,7 @@ import java.util.Set;
 @Entity
 @Table(name = "MAJOR")
 public class Major {
-
+//커밑체스트
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="major_seq")
