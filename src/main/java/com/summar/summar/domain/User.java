@@ -8,8 +8,6 @@ import com.summar.summar.enumeration.SocialType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
