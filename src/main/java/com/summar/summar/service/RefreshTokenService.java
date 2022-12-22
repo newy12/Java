@@ -30,11 +30,7 @@ public class RefreshTokenService {
         log.info(">>>>> : {}", refreshToken.getRefreshTokenSeq());
         return refreshToken.getRefreshTokenSeq();
     }
-    @Transactional(readOnly = true)
-    public RefreshToken getRefreshTokenInfo(User user,String refreshToken) {
-        return refreshTokenRepository.findByUserAndRefreshToken(user,refreshToken).orElseThrow(() ->
-                new SummarCommonException(SummarErrorCode.WRONG_TOKEN.getCode(), SummarErrorCode.WRONG_TOKEN.getMessage()));
-    }
+
     @Transactional(readOnly = true)
     public RefreshToken getRefreshTokenInfo(User user) {
         return refreshTokenRepository.findByUser(user).orElseThrow(() ->

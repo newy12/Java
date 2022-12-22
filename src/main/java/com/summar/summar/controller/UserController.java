@@ -25,6 +25,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
+import org.webjars.NotFoundException;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
@@ -44,6 +45,7 @@ public class UserController {
 
     /**
      * 로그인 & 회원가입
+     *
      * @param loginRequestDto
      * @return
      * @throws Exception
@@ -71,8 +73,8 @@ public class UserController {
         final String refreshToken = jwtUtil.generateRefreshToken(loginRequestDto.getUserEmail());
 
         //nickname 또는 major 1 또는 major 2 가 비어있으면 회원가입
-        if("".equals(loginRequestDto.getUserNickname()) && "".equals(loginRequestDto.getMajor1()) && "".equals(loginRequestDto.getMajor2())
-        && !userService.checkUserEmail(loginRequestDto.getUserEmail())){
+        if ("".equals(loginRequestDto.getUserNickname()) && "".equals(loginRequestDto.getMajor1()) && "".equals(loginRequestDto.getMajor2())
+                && !userService.checkUserEmail(loginRequestDto.getUserEmail())) {
             return AuthenticationResult.build(
                     TokenResponseDto.builder()
                             .accessToken("발급x")
@@ -83,13 +85,13 @@ public class UserController {
                             .major2("")
                             .follower(0)
                             .following(0)
-                    .build());
+                            .build());
         }
         //기존 회원이 있다면
-        if(userService.checkUserEmail(loginRequestDto.getUserEmail())){
+        if (userService.checkUserEmail(loginRequestDto.getUserEmail())) {
             User userInfo = userService.findByUserId(loginRequestDto.getUserEmail());
             RefreshToken refreshTokenInfo = refreshTokenService.getRefreshTokenInfo(userService.findUserInfo(loginRequestDto.getUserEmail()));
-            UUID refreshTokenSeq = refreshTokenService.saveRefreshTokenInfo(loginRequestDto.getUserEmail(),refreshTokenInfo,refreshToken);
+            UUID refreshTokenSeq = refreshTokenService.saveRefreshTokenInfo(loginRequestDto.getUserEmail(), refreshTokenInfo, refreshToken);
             //로그인 이력 업데이트
             userService.updateLastUserLoginDate(userInfo);
 
@@ -107,7 +109,7 @@ public class UserController {
         }
         //신규 회원이라면
         userService.saveUser(loginRequestDto);
-        UUID refreshTokenSeq = refreshTokenService.saveNewRefreshTokenInfo(loginRequestDto.getUserEmail(),refreshToken);
+        UUID refreshTokenSeq = refreshTokenService.saveNewRefreshTokenInfo(loginRequestDto.getUserEmail(), refreshToken);
         TokenResponseDto tokenResponseDto = TokenResponseDto.builder()
                 .accessToken(accessToken)
                 .refreshTokenSeq(refreshTokenSeq)
@@ -120,17 +122,40 @@ public class UserController {
                 .build();
         return AuthenticationResult.build(tokenResponseDto);
     }
+
+    /**
+     * 리프레시 토큰으로 엑세스 토큰 재발급
+     *
+     * @param refreshTokenRequestDto
+     * @return
+     */
     @PostMapping("/give-access-token")
     public ResponseEntity<?> giveAccessToken(@RequestBody RefreshTokenRequestDto refreshTokenRequestDto) {
-        RefreshToken refreshToken = refreshTokenService.getRefreshTokenInfo(refreshTokenRequestDto.getRefreshTokenId());
-        if(jwtUtil.validateRefreshToken(refreshToken.getRefreshToken(),refreshTokenRequestDto.getUserEmail())){
+        RefreshToken refreshToken = refreshTokenService.getRefreshTokenInfo(userService.findUserInfo(refreshTokenRequestDto.getUserEmail()));
+        if (jwtUtil.validateRefreshToken(refreshToken.getRefreshToken(), refreshTokenRequestDto.getUserEmail())) {
             String newAccessToken = jwtUtil.generateToken(refreshTokenRequestDto.getUserEmail());
-            return ObjectResult.build("accessToken",newAccessToken);
+            return ObjectResult.build("accessToken", newAccessToken);
         }
-        return ObjectResult.build("accessToken","x");
+        return null;
     }
 
-
+    /**
+     * 액세스 토큰, 리프레시 토큰 재발급
+     *
+     * @param refreshTokenRequestDto
+     * @return
+     */
+    @PostMapping("/give-both-token")
+    public ResponseEntity<?> giveBothToken(@RequestBody RefreshTokenRequestDto refreshTokenRequestDto) {
+        String accessToken = jwtUtil.generateToken(refreshTokenRequestDto.getUserEmail());
+        String refreshToken = jwtUtil.generateRefreshToken(refreshTokenRequestDto.getUserEmail());
+        RefreshToken refreshTokenInfo = refreshTokenService.getRefreshTokenInfo(userService.findUserInfo(refreshTokenRequestDto.getUserEmail()));
+        UUID refreshTokenSeq = refreshTokenService.saveRefreshTokenInfo(refreshTokenRequestDto.getUserEmail(), refreshTokenInfo, refreshToken);
+        return ObjectResult.build("results", BothTokenResponseDto.builder()
+                .accessToken(accessToken)
+                .refreshTokenSeq(refreshTokenSeq)
+                .build());
+    }
 
 
     /**
@@ -152,7 +177,7 @@ public class UserController {
         return BooleanResult.build("result", jwtUtil.validateRedisToken(valueOperations.get("accessToken")), "message", null);
     }
 
-    @Operation(summary = "이메일로 회원 정보 찾기", description = "회원의 모든 정보를 찾아옵니다.",security = @SecurityRequirement(name = "Authorization"))
+    @Operation(summary = "이메일로 회원 정보 찾기", description = "회원의 모든 정보를 찾아옵니다.", security = @SecurityRequirement(name = "Authorization"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
                     "    \"result\": {\n" +
@@ -167,7 +192,7 @@ public class UserController {
     })
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/user-info")
-    public ResponseEntity<?> findUserInfo(@RequestParam(value = "userEmail")String userEmail){
+    public ResponseEntity<?> findUserInfo(@RequestParam(value = "userEmail") String userEmail) {
         User user = userService.findUserInfo(userEmail);
         FindUserInfoResponseDto findUserInfoResponseDto = FindUserInfoResponseDto.builder()
                 .userNickname(user.getUserNickname())
@@ -177,15 +202,16 @@ public class UserController {
                 .following(user.getFollowing())
                 .introduce(user.getIntroduce())
                 .build();
-        return ObjectResult.build("result",findUserInfoResponseDto);
+        return ObjectResult.build("result", findUserInfoResponseDto);
     }
 
     /**
      * 마이페이지 개인정보 수정
+     *
      * @param changeUserInfoRequestDto
      * @return
      */
-    @Operation(summary = "마이페이지 개인정보 수정", description = "회원의 정보를 수정합니다." , security = @SecurityRequirement(name = "Authorization"))
+    @Operation(summary = "마이페이지 개인정보 수정", description = "회원의 정보를 수정합니다.", security = @SecurityRequirement(name = "Authorization"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
                     "    \"status\": \"SUCCESS\",\n" +
@@ -198,13 +224,14 @@ public class UserController {
     })
     @PreAuthorize("isAuthenticated()")
     @PutMapping("/user-info")
-    public ResponseEntity<?> changeUserInfo(@RequestBody ChangeUserInfoRequestDto changeUserInfoRequestDto){
+    public ResponseEntity<?> changeUserInfo(@RequestBody ChangeUserInfoRequestDto changeUserInfoRequestDto) {
         userService.changeUserInfo(changeUserInfoRequestDto);
         return ObjectResult.ok();
     }
 
     /**
      * 자기소개 작성
+     *
      * @param addIntroduceRequestDto
      * @return
      */
@@ -221,10 +248,11 @@ public class UserController {
     })
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/add-introduce")
-    public ResponseEntity<?> addIntroduce(@RequestBody AddIntroduceRequestDto addIntroduceRequestDto){
+    public ResponseEntity<?> addIntroduce(@RequestBody AddIntroduceRequestDto addIntroduceRequestDto) {
         userService.addIntroduce(addIntroduceRequestDto);
         return ObjectResult.ok();
     }
+
     /**
      * 필명 중복체크
      *
@@ -246,7 +274,7 @@ public class UserController {
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
     @GetMapping("/nickname-check")
-    public ResponseEntity<?> checkNicknameDuplication(@RequestParam(value = "nickname")String nickname) throws NoSuchAlgorithmException {
+    public ResponseEntity<?> checkNicknameDuplication(@RequestParam(value = "nickname") String nickname) throws NoSuchAlgorithmException {
         if (nickname.isEmpty()) {
             throw new NullPointerException();
         }
