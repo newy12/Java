@@ -129,6 +129,13 @@ public class UserController {
      * @param refreshTokenRequestDto
      * @return
      */
+    @Operation(summary = "리프레시토큰이 유효할 시 액새스토큰 재발급", description = "토큰이 재발급 됩니다,")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
+                    "    \"accessToken\": \"djwdbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZGQiLCJleHAiOjE2NzE2OTkyNjUsImlhdCI6MTY3MTY5ODk2NX0.7exMAI-zaTqu5ouZI6AMfuEmE7bTlvAp9wMlCHvVzoA\"\n" +
+                    "}"))),
+            @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
+    })
     @PostMapping("/give-access-token")
     public ResponseEntity<?> giveAccessToken(@RequestBody RefreshTokenRequestDto refreshTokenRequestDto) {
         RefreshToken refreshToken = refreshTokenService.getRefreshTokenInfo(userService.findUserInfo(refreshTokenRequestDto.getUserEmail()));
@@ -145,6 +152,16 @@ public class UserController {
      * @param refreshTokenRequestDto
      * @return
      */
+    @Operation(summary = "리프래시 토큰 무효할 시 액세스,리프래시 둘다 재발급", description = "토큰이 재발급 됩니다,")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
+                    "    \"results\": {\n" +
+                    "        \"accessToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOdasasdjeHAiOjE2NzE2OTg2NDcsImlhdCI6MTY3MTY5ODM0N30.ONblIUyQSNyQFB_aQep9mrRGZunP14rxaV8glafC1d8\",\n" +
+                    "        \"refreshTokenSeq\": \"102c533a-6e5a-436d-86e7-f144d4ssaa41\"\n" +
+                    "    }\n" +
+                    "}"))),
+            @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
+    })
     @PostMapping("/give-both-token")
     public ResponseEntity<?> giveBothToken(@RequestBody RefreshTokenRequestDto refreshTokenRequestDto) {
         String accessToken = jwtUtil.generateToken(refreshTokenRequestDto.getUserEmail());
