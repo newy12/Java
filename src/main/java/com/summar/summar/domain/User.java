@@ -1,18 +1,17 @@
 package com.summar.summar.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.summar.summar.dto.ChangeUserInfoRequestDto;
 import com.summar.summar.dto.LoginRequestDto;
 import com.summar.summar.dto.UserSaveDto;
 import com.summar.summar.enumeration.SocialType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 @Getter
-@Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "USER")
@@ -24,17 +23,25 @@ public class User extends BaseTimeEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userSeq;
-    private String userNickname;
-    private String userEmail;
-    private LocalDate lastLoginDate;
+    private String userNickname; //닉네임
+    private String userEmail; //이메일
+
+    private LocalDate lastLoginDate; //최종로그인일시
     @Enumerated(EnumType.STRING)
-    private SocialType socialType;
+    private SocialType socialType; //소셜로그인 타입
     @Enumerated(EnumType.STRING)
-    private UserStatus userStatus = UserStatus.normal;
+    private UserStatus userStatus = UserStatus.normal; //유저 상태
     private String major1; //계열
     private String major2; //전공
 
+    private String introduce; //자기소개
+
+    private Integer follower; //팔로워
+
+    private Integer following; //팔로윙
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonManagedReference
     private RefreshToken refreshToken;
 
     @Builder
@@ -45,7 +52,7 @@ public class User extends BaseTimeEntity implements Serializable {
     }
 
     public User(LoginRequestDto loginRequestDto) {
-        this.userNickname = loginRequestDto.getUserNickName();
+        this.userNickname = loginRequestDto.getUserNickname();
         this.userEmail = loginRequestDto.getUserEmail();
     }
 
@@ -54,6 +61,25 @@ public class User extends BaseTimeEntity implements Serializable {
         this.userNickname = userSaveDto.getUserNickname();
         this.major1 = userSaveDto.getMajor1();
         this.major2 = userSaveDto.getMajor2();
+        this.follower = userSaveDto.getFollower();
+        this.following = userSaveDto.getFollowing();
         this.socialType = userSaveDto.getSocialType();
+        this.lastLoginDate = userSaveDto.getLastLoginDate();
+    }
+    public void setLastLoginDate(LocalDate lastLoginDate){
+        this.lastLoginDate = lastLoginDate;
+    }
+    public void setUserStatus(UserStatus userStatus){
+        this.userStatus = userStatus;
+    }
+
+    public void setIntroduce(String introduce){
+        this.introduce = introduce;
+    }
+
+    public void changeUserInfo(ChangeUserInfoRequestDto changeUserInfoRequestDto) {
+        this.userNickname = changeUserInfoRequestDto.getUserNickname();
+        this.major1 = changeUserInfoRequestDto.getMajor1();
+        this.major2 = changeUserInfoRequestDto.getMajor2();
     }
 }

@@ -5,12 +5,11 @@ import lombok.Data;
 
 @Data
 @Builder
-public class FindUserInfoResponseDto {
+public class SearchUserInfoResponseDto {
     private String userNickname;
-    private String major1;
-    private String major2;
-    private String introduce;
     private Integer follower;
     private Integer following;
-
+    private String userEmail;
+    private String major1;
+    private String major2;
 }

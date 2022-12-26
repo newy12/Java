@@ -1,7 +1,5 @@
 package com.summar.summar.util;
 
-import com.summar.summar.auth.LoginUser;
-import com.summar.summar.dto.LoginRequestDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -10,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -95,14 +92,14 @@ public class JwtUtil {
     }
 
 
-    public Boolean validateToken(String token, UserDetails userDetails) {
+    public Boolean validateToken(String token, String loginEmail) {
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        return (username.equals(loginEmail) && !isTokenExpired(token));
     }
 
-    public Boolean validateRefreshToken(String token, UserDetails userDetails) {
+    public Boolean validateRefreshToken(String token, String loginEmail) {
         final String username = extractRefreshTokenUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isRefreshTokenExpired(token));
+        return (username.equals(loginEmail) && !isRefreshTokenExpired(token));
     }
     public boolean validateRedisToken(String token) {
         try {

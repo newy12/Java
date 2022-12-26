@@ -1,5 +1,6 @@
 package com.summar.summar.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
@@ -19,6 +20,7 @@ public class RefreshToken extends BaseTimeEntity implements Serializable {
     private String refreshToken;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_seq")
+    @JsonBackReference
     private User user;
 
 

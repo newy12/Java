@@ -33,4 +33,8 @@ public class ObjectResult {
         apiResult.putAll(resultMap);
         return Result.ok(new ApiResponseMessage(apiResult));
     }
+
+    public static ResponseEntity<?> ok() {
+        return Result.ok(new ApiResponseMessage("SUCCESS", "정상처리", "", ""));
+    }
 }

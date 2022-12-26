@@ -1,9 +1,13 @@
 package com.summar.summar.controller;
 
-import com.summar.summar.domain.RefreshToken;
-import com.summar.summar.domain.User;
-import com.summar.summar.dto.*;
-import com.summar.summar.results.*;
+import com.summar.summar.dto.AddIntroduceRequestDto;
+import com.summar.summar.dto.ChangeUserInfoRequestDto;
+import com.summar.summar.dto.LoginRequestDto;
+import com.summar.summar.dto.RefreshTokenRequestDto;
+import com.summar.summar.results.ApiResult;
+import com.summar.summar.results.AuthenticationResult;
+import com.summar.summar.results.BooleanResult;
+import com.summar.summar.results.ObjectResult;
 import com.summar.summar.service.RefreshTokenService;
 import com.summar.summar.service.UserService;
 import com.summar.summar.util.JwtUtil;
@@ -13,16 +17,16 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 
 @RestController
 @Slf4j
@@ -34,10 +38,12 @@ public class UserController {
     private final UserService userService;
     private final RedisTemplate redisTemplate;
     private final RefreshTokenService refreshTokenService;
+    private final AuthenticationManager authenticationManager;
 
 
     /**
      * 로그인 & 회원가입
+     *
      * @param loginRequestDto
      * @return
      * @throws Exception
@@ -46,123 +52,168 @@ public class UserController {
     @Operation(summary = "회원가입 & 로그인", description = "토큰이 발급 됩니다,")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
-                    "  \"accessToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZXd5MTJAbmF2ZXIuY29tIiwiZXhwIjoxNjcwMjg3NjY3LCJpYXQiOjE2NzAyODczNjd9.USfai63Gz3JeAP0mX64szYgGIbddX0MGhJXn4EU_VQk\",\n" +
-                    "  \"loginStatus\": \"회원가입완료\",\n" +
-                    "  \"refreshToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZXd5MTJAbmF2ZXIuY29tIiwiZXhwIjoxNjcwMzIzMzY3LCJpYXQiOjE2NzAyODczNjd9.McB1Jy58nR_Bam5nJrfBxtH0AGgCgor7b9rSqxL7_NM\"\n" +
+                    "    \"major2\": \"전공2\",\n" +
+                    "    \"major1\": \"전공1\",\n" +
+                    "    \"follower\": 0,\n" +
+                    "    \"following\": 0,\n" +
+                    "    \"userNickname\": \"4124\",\n" +
+                    "    \"accessToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZXd5MTMiLCJleHAiOjE2NzExMTc4MDEsImlhdCI6MTY3MTExNzUwMX0.SUBYajqxbX7JA4v2iBvMUUpGhWCnM4PY3pSMBPv-7jI\",\n" +
+                    "    \"loginStatus\": \"로그인\",\n" +
+                    "    \"refreshToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZXd5MTMiLCJleHAiOjE2NzExNTM1MDEsImlhdCI6MTY3MTExNzUwMX0.fOZj98iGiMr1KY4q2MszAddhcX1u8Ko3ds7K6Fl1rcU\"\n" +
                     "}"))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
     @PostMapping(value = "/login")
     public ResponseEntity<ApiResult> login(@RequestBody LoginRequestDto loginRequestDto) throws Exception {
-        TokenResponseDto tokenResponseDto = new TokenResponseDto();
-        //access token 생성
-        final String accessToken = jwtUtil.generateToken(loginRequestDto.getUserEmail());
-        //refresh token 생성
-        final String refreshToken = jwtUtil.generateRefreshToken(loginRequestDto.getUserEmail());
-
-        //nickname 혹은 major 1 혹은 major 2 가 비어있으면 회원가입
-        if("".equals(loginRequestDto.getUserNickName()) && "".equals(loginRequestDto.getMajor1()) && "".equals(loginRequestDto.getMajor2())
-        && !userService.checkUserEmail(loginRequestDto.getUserEmail())){
-            tokenResponseDto.setAccessToken("발급X");
-            tokenResponseDto.setRefreshToken("발급X");
-            tokenResponseDto.setLoginStatus(LoginStatus.회원가입);
-            return AuthenticationResult.build(tokenResponseDto);
-        }
-
-        //기존 회원이 있다면
-        if(userService.checkUserEmail(loginRequestDto.getUserEmail())){
-            tokenResponseDto.setAccessToken(accessToken);
-            tokenResponseDto.setRefreshToken(refreshToken);
-            tokenResponseDto.setLoginStatus(LoginStatus.로그인);
-            RefreshToken refreshTokenInfo = refreshTokenService.getRefreshTokenInfo(userService.findUserInfo(loginRequestDto.getUserEmail()));
-            refreshTokenService.saveRefreshTokenInfo(loginRequestDto.getUserEmail(),refreshTokenInfo,tokenResponseDto);
-            //로그인 이력 업데이트
-            User userInfo = userService.findByUserId(loginRequestDto.getUserEmail());
-            userService.updateLastUserLoginDate(userInfo);
-            return AuthenticationResult.build(tokenResponseDto);
-        }
-        //신규 회원이라면.
-        tokenResponseDto.setAccessToken(accessToken);
-        tokenResponseDto.setRefreshToken(refreshToken);
-        tokenResponseDto.setLoginStatus(LoginStatus.회원가입완료);
-        userService.saveUser(loginRequestDto);
-        refreshTokenService.saveNewRefreshTokenInfo(loginRequestDto.getUserEmail(),tokenResponseDto);
-        //로그인 이력 업데이트
-        User userInfo = userService.findByUserId(loginRequestDto.getUserEmail());
-        userService.updateLastUserLoginDate(userInfo);
-
-        return AuthenticationResult.build(tokenResponseDto);
+        return AuthenticationResult.build(userService.loginFlow(loginRequestDto));
     }
 
     /**
-     * 로그아웃
+     * 리프레시 토큰으로 엑세스 토큰 재발급
      *
-     * @param token
+     * @param refreshTokenRequestDto
      * @return
      */
-    @PreAuthorize("isAuthenticated()")
-    @PostMapping("/logout")
-    public ResponseEntity<BooleanResult> logout(@RequestHeader(value = "Authorization") String token) {
-
-        // 레디스에 토큰 값 저장
-        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-        valueOperations.set("accessToken", token);
-
-        log.info("redis token  : {}", valueOperations.get("accessToken"));
-
-        return BooleanResult.build("result", jwtUtil.validateRedisToken(valueOperations.get("accessToken")), "message", null);
-    }
-
-    @Operation(summary = "이메일로 회원 정보 찾기", description = "회원닉네임,전공(1,2) 찾아옵니다.")
+    @Operation(summary = "리프레시토큰이 유효할 시 액새스토큰 재발급", description = "토큰이 재발급 됩니다,")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
-                    "    \"result\": {\n" +
-                    "        \"userNickname\": \"욱승\",\n" +
-                    "        \"major1\": \"공학계열\",\n" +
-                    "        \"major2\": \"컴퓨터ㆍ통신\"\n" +
+                    "    \"accessToken\": \"djwdbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZGQiLCJleHAiOjE2NzE2OTkyNjUsImlhdCI6MTY3MTY5ODk2NX0.7exMAI-zaTqu5ouZI6AMfuEmE7bTlvAp9wMlCHvVzoA\"\n" +
+                    "}"))),
+            @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
+    })
+    @PostMapping("/give-access-token")
+    public ResponseEntity<?> giveAccessToken(@RequestBody RefreshTokenRequestDto refreshTokenRequestDto) {
+        return ObjectResult.build("accessToken",  userService.giveAccessToken(refreshTokenRequestDto));
+    }
+    /**
+     * 액세스 토큰, 리프레시 토큰 재발급
+     *
+     * @param refreshTokenRequestDto
+     * @return
+     */
+    @Operation(summary = "리프래시 토큰 무효할 시 액세스,리프래시 둘다 재발급", description = "토큰이 재발급 됩니다,")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
+                    "    \"results\": {\n" +
+                    "        \"accessToken\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOdasasdjeHAiOjE2NzE2OTg2NDcsImlhdCI6MTY3MTY5ODM0N30.ONblIUyQSNyQFB_aQep9mrRGZunP14rxaV8glafC1d8\",\n" +
+                    "        \"refreshTokenSeq\": \"102c533a-6e5a-436d-86e7-f144d4ssaa41\"\n" +
                     "    }\n" +
                     "}"))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
-    @GetMapping("/find-user")
-    public ResponseEntity<?> findUserInfo(@RequestParam(value = "userEmail")String userEmail){
-        User user = userService.findUserInfo(userEmail);
-        FindUserInfoResponseDto findUserInfoResponseDto = FindUserInfoResponseDto.builder()
-                .userNickname(user.getUserNickname())
-                .major1(user.getMajor1())
-                .major2(user.getMajor2())
-                .build();
-        return ObjectResult.build("result",findUserInfoResponseDto);
+    @PostMapping("/give-both-token")
+    public ResponseEntity<?> giveBothToken(@RequestBody RefreshTokenRequestDto refreshTokenRequestDto) {
+        return ObjectResult.build("results", userService.giveBothToken(refreshTokenRequestDto));
+    }
+    @Operation(summary = "이메일로 회원 정보 찾기", description = "회원의 모든 정보를 찾아옵니다.", security = @SecurityRequirement(name = "Authorization"))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
+                    "    \"result\": {\n" +
+                    "        \"userNickname\": \"dd\",\n" +
+                    "        \"major1\": \"전공1\",\n" +
+                    "        \"major2\": \"전공2\",\n" +
+                    "        \"follower\": 0,\n" +
+                    "        \"following\": 0\n" +
+                    "    }\n" +
+                    "}"))),
+            @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
+    })
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/user-info")
+    public ResponseEntity<?> findUserInfo(@RequestParam(value = "userEmail") String userEmail) {
+        return ObjectResult.build("result", userService.getUserInfo(userEmail));
+    }
+
+    /**
+     * 마이페이지 개인정보 수정
+     *
+     * @param changeUserInfoRequestDto
+     * @return
+     */
+    @Operation(summary = "마이페이지 개인정보 수정", description = "회원의 정보를 수정합니다.", security = @SecurityRequirement(name = "Authorization"))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
+                    "    \"status\": \"SUCCESS\",\n" +
+                    "    \"message\": \"정상처리\",\n" +
+                    "    \"errorMessage\": \"\",\n" +
+                    "    \"errorCode\": \"\",\n" +
+                    "    \"result\": null\n" +
+                    "}"))),
+            @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
+    })
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping("/user-info")
+    public ResponseEntity<?> changeUserInfo(@RequestBody ChangeUserInfoRequestDto changeUserInfoRequestDto) {
+        userService.changeUserInfo(changeUserInfoRequestDto);
+        return ObjectResult.ok();
+    }
+
+    /**
+     * 자기소개 작성
+     *
+     * @param addIntroduceRequestDto
+     * @return
+     */
+    @Operation(summary = "자기소개 추가", description = "자기소개를 추가합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
+                    "    \"status\": \"SUCCESS\",\n" +
+                    "    \"message\": \"정상처리\",\n" +
+                    "    \"errorMessage\": \"\",\n" +
+                    "    \"errorCode\": \"\",\n" +
+                    "    \"result\": null\n" +
+                    "}"))),
+            @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
+    })
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/add-introduce")
+    public ResponseEntity<?> addIntroduce(@RequestBody AddIntroduceRequestDto addIntroduceRequestDto) {
+        userService.addIntroduce(addIntroduceRequestDto);
+        return ObjectResult.ok();
     }
 
     /**
      * 필명 중복체크
-     * @param nickname
+     *
+     * @param userNickname
      * @return
      * @throws NoSuchAlgorithmException
      */
-    @GetMapping("/nicknameCheck/{nickname}")
-    public ResponseEntity<Boolean> checkNicknameDuplication(@PathVariable String nickname) throws NoSuchAlgorithmException {
-        if (nickname.isEmpty()) {
-            throw new NullPointerException();
-        }
-        return ResponseEntity.ok(userService.checkNicknameDuplication(nickname));
+    @Operation(summary = "닉네임 중복 체크", description = "닉네임의 중복을 체크합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
+                    "  \"status\": \"SUCCESS\",\n" +
+                    "  \"message\": \"정상처리\",\n" +
+                    "  \"errorMessage\": null,\n" +
+                    "  \"errorCode\": null,\n" +
+                    "  \"result\": {\n" +
+                    "    \"result\": true\n" +
+                    "  }\n" +
+                    "}"))),
+            @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
+    })
+    @GetMapping("/nickname-check")
+    public ResponseEntity<?> checkNicknameDuplication(@RequestParam(value = "userNickname") String userNickname) throws NoSuchAlgorithmException {
+        return BooleanResult.build("result", userService.checkNicknameDuplication(userNickname));
     }
 
-
-    @GetMapping("/major")
-    public ResponseEntity<List<MajorResponseDto>> getParentsMajor(){
-
-        List<MajorResponseDto> majorList = userService.findParentsMajor();
-        return ResponseEntity.ok(majorList);
-    }
-
-    @GetMapping("/major/{majorSeq}")
-    public ResponseEntity<List<MajorResponseDto>> getChildMajor(@PathVariable Long majorSeq){
-        if (majorSeq == null) {
-            throw new NullPointerException();
-        }
-        List<MajorResponseDto> majorList = userService.findChildMajorByParentsSeq(majorSeq);
-        return ResponseEntity.ok(majorList);
+    @Operation(summary = "닉네임으로 유저정보 조회", description = "회원의 정보를 조회합니다.", security = @SecurityRequirement(name = "Authorization"))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
+                    "  \"results\": {\n" +
+                    "    \"userNickname\": \"신승욱\",\n" +
+                    "    \"follower\": 0,\n" +
+                    "    \"following\": 0,\n" +
+                    "    \"userEmail\": \"112468669451266982874\",\n" +
+                    "    \"major1\": \"자연계열\",\n" +
+                    "    \"major2\": \"수학ㆍ물리ㆍ천문ㆍ지리\"\n" +
+                    "  }\n" +
+                    "}"))),
+            @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
+    })
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/search-user-info")
+    public ResponseEntity<?> searchUserInfo(@RequestParam(value = "userNickname")String userNickname){
+       return ObjectResult.build("results",userService.searchUserInfo(userNickname));
     }
 }

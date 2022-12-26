@@ -6,6 +6,5 @@ import java.util.UUID;
 
 @Data
 public class RefreshTokenRequestDto {
-
-    private UUID refreshTokenId;
+    private String userEmail;
 }
