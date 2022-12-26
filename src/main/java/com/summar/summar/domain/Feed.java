@@ -8,7 +8,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -27,7 +29,7 @@ public class Feed extends BaseTimeEntity implements Serializable {
 
     @OneToMany(mappedBy = "feed")
     @JsonIgnoreProperties(value = {"feed"}, allowSetters = true)
-    private Set<FeedImage> feedImages = new HashSet<>();
+    private List<FeedImage> feedImages = new ArrayList<>();
 
 
     public Feed(FeedRegisterDto feedRegisterDto) {

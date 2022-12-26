@@ -19,6 +19,8 @@ public class FeedService {
     private final FeedRepository feedRepository;
     private final FeedImageRepository feedImageRepository;
 
+    private final S3Service s3Service;
+
     @Transactional
     public FeedDto saveFeed(FeedRegisterDto feedRegisterDto) {
         Feed feed = new Feed(feedRegisterDto);
@@ -28,7 +30,7 @@ public class FeedService {
                     FeedImage feedImage = new FeedImage();
                     feedImage.setFeedSeq(feedSeq);
                     feedImage.setFeed(feed);
-                    feedImage.setImageUrl("setImageUrl");
+                    feedImage.setImageUrl(s3Service.upload(image,S3Service.FEED_IMAGE));
                     feedImage.setOrderNo(feedRegisterDto.getImages().indexOf(image));
                     feedImageRepository.save(feedImage);
                 });

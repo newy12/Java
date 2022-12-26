@@ -10,10 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Slf4j
@@ -25,8 +22,8 @@ public class FeedController {
 
 
     @Operation(summary = "피드 등록")
-    @PostMapping(value = "")
-    public ResponseEntity<?> registFeed(@RequestBody FeedRegisterDto feedRegisterDto) throws Exception {
+    @PostMapping(value = "",consumes = {"multipart/form-data"})
+    public ResponseEntity<?> registFeed(@ModelAttribute FeedRegisterDto feedRegisterDto) throws Exception {
         FeedDto feedDto = feedService.saveFeed(feedRegisterDto);
 
         return ObjectResult.build("result", feedDto);
