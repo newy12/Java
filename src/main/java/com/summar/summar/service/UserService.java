@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
-import java.util.UUID;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -166,6 +166,7 @@ public class UserService {
                 .build();
     }
 
+    @Transactional(readOnly = true)
     public SearchUserInfoResponseDto searchUserInfo(String userNickname) {
         User user = userRepository.findByUserNickname(userNickname).orElseThrow(() ->
                 new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
@@ -178,4 +179,51 @@ public class UserService {
                 .following(user.getFollowing())
                 .build();
     }
+    @Transactional(readOnly = true)
+    public List<SearchUserListResponseDto> searchUserList(String userNickname) {
+        if(userNickname.equals("")){
+            return new ArrayList<>();
+        }
+        List<SearchUserListResponseDto> searchUserListResponseDtos = new ArrayList<>();
+        List<User> searchUserList = userRepository.findByUserNicknameContains(userNickname);
+        searchUserList.forEach(user -> {
+            SearchUserListResponseDto searchUserListResponseDto = SearchUserListResponseDto.builder()
+                    .userNickname(user.getUserNickname())
+                    .build();
+            searchUserListResponseDtos.add(searchUserListResponseDto);
+        });
+        List<String> index_list = new ArrayList<>();
+
+        index_list.add("ㄱ");    index_list.add("ㄴ");    index_list.add("ㄷ");
+        index_list.add("ㄹ");    index_list.add("ㅁ");    index_list.add("ㅂ");
+        index_list.add("ㅅ");    index_list.add("ㅇ");    index_list.add("ㅈ");
+        index_list.add("ㅊ");    index_list.add("ㅋ");    index_list.add("ㅌ");
+        index_list.add("ㅍ");    index_list.add("ㅎ");
+
+        Map<Integer, String> index_map = new HashMap<>();
+
+        index_map.put(0, "가");  index_map.put(1, "나");  index_map.put(2, "다");
+        index_map.put(3, "라");  index_map.put(4, "마");  index_map.put(5, "바");
+        index_map.put(6, "사");  index_map.put(7, "아");  index_map.put(8, "자");
+        index_map.put(9, "차");  index_map.put(10, "카");  index_map.put(11, "타");
+        index_map.put(12, "파");  index_map.put(13, "하"); index_map.put(14, "힣");
+        int num = 0;
+        for( int i = 0; i < index_list.size(); i++ ) {
+
+            if(userNickname.equals(index_list.get(i)) ) {
+                num = i;
+                break;
+            }
+        }
+        List<User> users = userRepository.searchWord(index_map.get(num),index_map.get(num+1));
+        users.forEach(user -> {
+            searchUserListResponseDtos.add(
+                    SearchUserListResponseDto.builder()
+                    .userNickname(user.getUserNickname())
+                    .build());
+        });
+        return searchUserListResponseDtos;
+    }
+
+
 }
