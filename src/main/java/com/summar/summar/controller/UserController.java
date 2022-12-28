@@ -34,11 +34,7 @@ import java.security.NoSuchAlgorithmException;
 @Api(tags = {"유저 관련 API 제공 controller"})
 @RequestMapping(value = "/api/v1/user")
 public class UserController {
-    private final JwtUtil jwtUtil;
     private final UserService userService;
-    private final RedisTemplate redisTemplate;
-    private final RefreshTokenService refreshTokenService;
-    private final AuthenticationManager authenticationManager;
 
 
     /**
