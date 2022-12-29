@@ -10,6 +10,8 @@ import com.summar.summar.repository.UserRepository;
 import com.summar.summar.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -181,25 +183,14 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public List<SearchUserListResponseDto> searchUserList(String userNickname) {
-        if (userNickname.equals("")) {
-            return new ArrayList<>();
+    public Page<SearchUserListResponseDto> searchUserList(String userNickname, Pageable pageable) {
+        //닉네임 검색 완성했을 때
+        boolean searchUserListCheck = userRepository.existsByUserNickname(userNickname);
+        if(searchUserListCheck){
+            Page<User> searchUserList = userRepository.findByUserNicknameContains(userNickname,pageable);
+            return searchUserList.map(SearchUserListResponseDto::new);
         }
-        List<SearchUserListResponseDto> searchUserListResponseDtos = new ArrayList<>();
-        List<User> searchUserList = userRepository.findByUserNicknameContains(userNickname);
-        searchUserList.forEach(user -> {
-            SearchUserListResponseDto searchUserListResponseDto = SearchUserListResponseDto.builder()
-                    .userNickname(user.getUserNickname())
-                    .major1(user.getMajor1())
-                    .major2(user.getMajor2())
-                    .follower(user.getFollower())
-                    .following(user.getFollowing())
-                    .introduce(user.getIntroduce())
-                    .build();
-            searchUserListResponseDtos.add(searchUserListResponseDto);
-        });
         List<String> index_list = new ArrayList<>();
-
         index_list.add("ㄱ");
         index_list.add("ㄴ");
         index_list.add("ㄷ");
@@ -214,9 +205,7 @@ public class UserService {
         index_list.add("ㅌ");
         index_list.add("ㅍ");
         index_list.add("ㅎ");
-
         Map<Integer, String> index_map = new HashMap<>();
-
         index_map.put(0, "가");
         index_map.put(1, "나");
         index_map.put(2, "다");
@@ -232,6 +221,8 @@ public class UserService {
         index_map.put(12, "파");
         index_map.put(13, "하");
         index_map.put(14, "힣");
+        //닉네임 검색 초성일 때
+        ;
         int num = 0;
         for (int i = 0; i < index_list.size(); i++) {
 
@@ -240,19 +231,8 @@ public class UserService {
                 break;
             }
         }
-        List<User> users = userRepository.searchWord(index_map.get(num), index_map.get(num + 1));
-        users.forEach(user -> {
-            searchUserListResponseDtos.add(
-                    SearchUserListResponseDto.builder()
-                            .userNickname(user.getUserNickname())
-                            .major1(user.getMajor1())
-                            .major2(user.getMajor2())
-                            .follower(user.getFollower())
-                            .following(user.getFollowing())
-                            .introduce(user.getIntroduce())
-                            .build());
-        });
-        return searchUserListResponseDtos;
+        Page<User> users = userRepository.searchWord(index_map.get(num), index_map.get(num + 1),pageable);
+        return users.map(SearchUserListResponseDto::new);
     }
 
 

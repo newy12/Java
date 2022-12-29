@@ -2,6 +2,8 @@ package com.summar.summar.repository;
 
 import com.summar.summar.domain.User;
 import com.summar.summar.enumeration.SocialType;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -24,8 +26,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByUserNickname(String userNickname);
 
-    List<User> findByUserNicknameContains(String userNickname);
+    Page<User> findByUserNicknameContains(String userNickname, Pageable pageable);
 
-    @Query("select u from User u where u.userNickname >=:word and u.userNickname < :word2")
-    List<User> searchWord(String word,String word2);
+    @Query("select u from User u where u.userNickname >=:word and u.userNickname <:word2")
+    Page<User> searchWord(String word,String word2,Pageable pageable);
 }

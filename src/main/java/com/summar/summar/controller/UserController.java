@@ -4,10 +4,7 @@ import com.summar.summar.dto.AddIntroduceRequestDto;
 import com.summar.summar.dto.ChangeUserInfoRequestDto;
 import com.summar.summar.dto.LoginRequestDto;
 import com.summar.summar.dto.RefreshTokenRequestDto;
-import com.summar.summar.results.ApiResult;
-import com.summar.summar.results.AuthenticationResult;
-import com.summar.summar.results.BooleanResult;
-import com.summar.summar.results.ObjectResult;
+import com.summar.summar.results.*;
 import com.summar.summar.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,6 +15,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -216,21 +216,29 @@ public class UserController {
     @Operation(summary = "한글 초성 & 단어 검색 기능", description = "회원의 닉네임검색 기능입니다.", security = @SecurityRequirement(name = "Authorization"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
-                    "  \"results\": [\n" +
-                    "    {\n" +
-                    "      \"userNickname\": \"ㅇㅇ\"\n" +
-                    "    },\n" +
-                    "    {\n" +
-                    "      \"userNickname\": \"욱승\"\n" +
-                    "    }\n" +
-                    "  ]\n" +
+                    "    \"firstPage\": true,\n" +
+                    "    \"lastPage\": true,\n" +
+                    "    \"totalPageCount\": 1,\n" +
+                    "    \"recordsPerPage\": 30,\n" +
+                    "    \"content\": [\n" +
+                    "        {\n" +
+                    "            \"userNickname\": \"욱승\",\n" +
+                    "            \"major1\": \"공학계열\",\n" +
+                    "            \"major2\": \"컴퓨터ㆍ통신\",\n" +
+                    "            \"follower\": 1234,\n" +
+                    "            \"following\": 1,\n" +
+                    "            \"introduce\": null\n" +
+                    "        }\n" +
+                    "    ],\n" +
+                    "    \"totalRecordCount\": 1,\n" +
+                    "    \"currentPageNo\": 1\n" +
                     "}"))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
     //@PreAuthorize("isAuthenticated()")
     @GetMapping("/search-user-list")
-    public ResponseEntity<?> searchUserInitialList(@RequestParam(value = "userNickname")String userNickname) {
-        return ObjectResult.build("results",userService.searchUserList(userNickname));
+    public ResponseEntity<?> searchUserInitialList(@RequestParam(value = "userNickname")String userNickname, @PageableDefault(size = 30,sort = "userNickname",direction = Sort.Direction.DESC) Pageable pageable) {
+        return PageResult.build(userService.searchUserList(userNickname,pageable));
     }
 
 
