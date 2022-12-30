@@ -1,5 +1,6 @@
 package com.summar.summar.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,7 +11,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Getter
-@Setter
 @NoArgsConstructor
 @Entity
 @Table(name = "Feed_Image")
@@ -27,14 +27,15 @@ public class FeedImage extends BaseTimeEntity implements Serializable {
     private int orderNo;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "feedImages" }, allowSetters = true)
+    @JsonIgnore
     private Feed feed;
 
 
     @Builder
-    public FeedImage(Long feedSeq, String imageUrl, int orderNo) {
+    public FeedImage(Long feedSeq, String imageUrl, int orderNo, Feed feed) {
         this.feedSeq = feedSeq;
         this.imageUrl = imageUrl;
         this.orderNo = orderNo;
+        this.feed = feed;
     }
 }
