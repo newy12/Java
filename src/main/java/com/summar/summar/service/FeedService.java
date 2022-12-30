@@ -11,6 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RequiredArgsConstructor
 @Slf4j
 @Service
@@ -35,5 +38,19 @@ public class FeedService {
                 .imageUrls(feedImageRepository.findByFeedSeq(feedSeq))
                 .userSeq(feedRegisterDto.getUserSeq())
                 .build();
+    }
+
+    @Transactional
+    public List<FeedDto> getFeed() {
+        List<Feed> feeds = feedRepository.findAll();
+        List<FeedDto> feedDtos = new ArrayList<>();
+        feeds.forEach(
+                feed -> feedDtos.add(FeedDto.builder()
+                        .feedSeq(feed.getFeedSeq())
+                        .imageUrls(feedImageRepository.findByFeedSeq(feed.getFeedSeq()))
+                        .userSeq(feed.getUserSeq())
+                        .contents(feed.getContents())
+                        .build()));
+        return feedDtos;
     }
 }

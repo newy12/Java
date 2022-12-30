@@ -3,6 +3,7 @@ package com.summar.summar.controller;
 import com.summar.summar.domain.Feed;
 import com.summar.summar.dto.FeedDto;
 import com.summar.summar.dto.FeedRegisterDto;
+import com.summar.summar.results.ListResult;
 import com.summar.summar.results.ObjectResult;
 import com.summar.summar.service.FeedService;
 import io.swagger.annotations.Api;
@@ -22,11 +23,15 @@ public class FeedController {
 
 
     @Operation(summary = "피드 등록")
-    @PostMapping(value = "",consumes = {"multipart/form-data"})
-    public ResponseEntity<?> registFeed(@ModelAttribute FeedRegisterDto feedRegisterDto) throws Exception {
-        FeedDto feedDto = feedService.saveFeed(feedRegisterDto);
+    @PostMapping(value = "", consumes = {"multipart/form-data"})
+    public ResponseEntity<?> registFeed(@ModelAttribute FeedRegisterDto feedRegisterDto) {
+        return ObjectResult.build("result", feedService.saveFeed(feedRegisterDto));
+    }
 
-        return ObjectResult.build("result", feedDto);
+    @Operation(summary = "피드 조회")
+    @GetMapping(value = "")
+    public ResponseEntity<?> getFeed() {
+        return ListResult.build("result", feedService.getFeed());
     }
 
 }
