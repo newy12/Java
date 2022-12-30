@@ -21,7 +21,7 @@ public class S3Service {
     private String s3Bucket;
     private String removeUploadedUrl;
 
-    static final String FEED_IMAGE="feed";
+    static final String FEED_IMAGE="/feed";
 
      public S3Service(ApplicationProperties applicationProperties) {
         ApplicationProperties.Aws aws = applicationProperties.getAws();
