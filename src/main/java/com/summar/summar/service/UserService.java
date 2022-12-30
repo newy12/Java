@@ -185,7 +185,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public Page<SearchUserListResponseDto> searchUserList(String userNickname, Pageable pageable) {
         //닉네임 검색 완성했을 때
-        boolean searchUserListCheck = userRepository.existsByUserNickname(userNickname);
+        boolean searchUserListCheck = userRepository.existsByUserNicknameContains(userNickname);
         if(searchUserListCheck){
             Page<User> searchUserList = userRepository.findByUserNicknameContains(userNickname,pageable);
             return searchUserList.map(SearchUserListResponseDto::new);
@@ -234,6 +234,4 @@ public class UserService {
         Page<User> users = userRepository.searchWord(index_map.get(num), index_map.get(num + 1),pageable);
         return users.map(SearchUserListResponseDto::new);
     }
-
-
 }
