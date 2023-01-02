@@ -12,7 +12,13 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableJpaAuditing
 @EnableCaching //캐시 사용 활성화
 @EnableScheduling //휴면계정 스케쥴러 활성화
-@SpringBootApplication
+@SpringBootApplication(
+        exclude = {
+                org.springframework.cloud.aws.autoconfigure.context.ContextInstanceDataAutoConfiguration.class,
+                org.springframework.cloud.aws.autoconfigure.context.ContextStackAutoConfiguration.class,
+                org.springframework.cloud.aws.autoconfigure.context.ContextRegionProviderAutoConfiguration.class
+        }
+)
 @EnableConfigurationProperties({ ApplicationProperties.class })
 public class SummarApplication {
     public static void main(String[] args) {
