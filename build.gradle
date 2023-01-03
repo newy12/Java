@@ -14,7 +14,7 @@ jar {
 }
 bootJar {
     jar.enabled = true
-    archiveName("test.jar")
+    archiveName("test1.jar")
 }
 
 repositories {
