@@ -13,4 +13,7 @@ public class ChangeUserInfoRequestDto {
     private String major1;
     @Schema(description = "전공2", example = "전공2")
     private String major2;
+    @Schema(description = "프로필이미지경로", example = "프로필이미지경로")
+    private String profileImageUrl;
+
 }

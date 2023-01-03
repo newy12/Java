@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @OpenAPIDefinition(
-        info = @Info(title = "Summar API 명세서ZZZZZZZZZZZddddd",
+        info = @Info(title = "Summar API 명세서",
                 description = "Summar API 명세서",
                 version = "v1"))
 @RequiredArgsConstructor

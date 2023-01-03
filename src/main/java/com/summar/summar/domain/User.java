@@ -40,6 +40,8 @@ public class User extends BaseTimeEntity implements Serializable {
 
     private Integer following; //팔로윙
 
+    private String profileImageUrl; //프로필이미지경로
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonManagedReference
     private RefreshToken refreshToken;
@@ -81,5 +83,6 @@ public class User extends BaseTimeEntity implements Serializable {
         this.userNickname = changeUserInfoRequestDto.getUserNickname();
         this.major1 = changeUserInfoRequestDto.getMajor1();
         this.major2 = changeUserInfoRequestDto.getMajor2();
+        this.profileImageUrl = changeUserInfoRequestDto.getProfileImageUrl();
     }
 }

@@ -14,6 +14,7 @@ public class SearchUserListResponseDto {
     private Integer follower;
     private Integer following;
     private String introduce;
+    private String profileImageUrl;
 
     public SearchUserListResponseDto(User user){
         this.userNickname = user.getUserNickname();
@@ -22,6 +23,7 @@ public class SearchUserListResponseDto {
         this.follower = user.getFollower();
         this.following = user.getFollowing();
         this.introduce = user.getIntroduce();
+        this.profileImageUrl = user.getProfileImageUrl();
     }
 
 }
