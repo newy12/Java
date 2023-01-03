@@ -221,20 +221,30 @@ public class UserController {
                     "    \"recordsPerPage\": 30,\n" +
                     "    \"content\": [\n" +
                     "        {\n" +
-                    "            \"userNickname\": \"욱승\",\n" +
+                    "            \"userNickname\": \"승욱\",\n" +
                     "            \"major1\": \"공학계열\",\n" +
-                    "            \"major2\": \"컴퓨터ㆍ통신\",\n" +
-                    "            \"follower\": 1234,\n" +
-                    "            \"following\": 1,\n" +
-                    "            \"introduce\": null\n" +
+                    "            \"major2\": \"건축\",\n" +
+                    "            \"follower\": 50,\n" +
+                    "            \"following\": 30,\n" +
+                    "            \"introduce\": null,\n" +
+                    "            \"profileImageUrl\": null\n" +
+                    "        },\n" +
+                    "        {\n" +
+                    "            \"userNickname\": \"신승욱\",\n" +
+                    "            \"major1\": \"자연계열\",\n" +
+                    "            \"major2\": \"수학ㆍ물리ㆍ천문ㆍ지리\",\n" +
+                    "            \"follower\": 0,\n" +
+                    "            \"following\": 0,\n" +
+                    "            \"introduce\": null,\n" +
+                    "            \"profileImageUrl\": null\n" +
                     "        }\n" +
                     "    ],\n" +
-                    "    \"totalRecordCount\": 1,\n" +
+                    "    \"totalRecordCount\": 2,\n" +
                     "    \"currentPageNo\": 1\n" +
                     "}"))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
-    @PreAuthorize("isAuthenticated()")
+    //@PreAuthorize("isAuthenticated()")
     @GetMapping("/search-user-list")
     public ResponseEntity<?> searchUserInitialList(@RequestParam(value = "userNickname")String userNickname, @PageableDefault(size = 30) Pageable pageable) {
         return PageResult.build(userService.searchUserList(userNickname,pageable));
