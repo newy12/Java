@@ -39,7 +39,7 @@ springdoc:
 
 application:
   aws:
-    accessKey: AKIA3AI73FTR7UVPZYMM
-    secretKey: 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
+    accessKey: AKIA3AI73FTRVWWXC2P4
+    secretKey: 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
     s3Bucket: https://s3.ap-northeast-2.amazonaws.com/image.summar.io
 

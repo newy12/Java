@@ -11,6 +11,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RequiredArgsConstructor
 @Slf4j
 @Service
@@ -27,11 +30,7 @@ public class FeedService {
         Long feedSeq = feedRepository.save(feed).getFeedSeq();
         feedRegisterDto.getImages().forEach(
                 image -> {
-                    FeedImage feedImage = new FeedImage();
-                    feedImage.setFeedSeq(feedSeq);
-                    feedImage.setFeed(feed);
-                    feedImage.setImageUrl(s3Service.upload(image,S3Service.FEED_IMAGE));
-                    feedImage.setOrderNo(feedRegisterDto.getImages().indexOf(image));
+                    FeedImage feedImage = new FeedImage(feedSeq, s3Service.upload(image,S3Service.FEED_IMAGE),feedRegisterDto.getImages().indexOf(image), feed);
                     feedImageRepository.save(feedImage);
                 });
         return FeedDto.builder()
@@ -39,5 +38,19 @@ public class FeedService {
                 .imageUrls(feedImageRepository.findByFeedSeq(feedSeq))
                 .userSeq(feedRegisterDto.getUserSeq())
                 .build();
+    }
+
+    @Transactional
+    public List<FeedDto> getFeed() {
+        List<Feed> feeds = feedRepository.findAll();
+        List<FeedDto> feedDtos = new ArrayList<>();
+        feeds.forEach(
+                feed -> feedDtos.add(FeedDto.builder()
+                        .feedSeq(feed.getFeedSeq())
+                        .imageUrls(feedImageRepository.findByFeedSeq(feed.getFeedSeq()))
+                        .userSeq(feed.getUserSeq())
+                        .contents(feed.getContents())
+                        .build()));
+        return feedDtos;
     }
 }
