@@ -164,7 +164,7 @@ public class UserController {
     }//ㅅrstteddㅇㅇ우ㅏ미위ㅏㄴㅇanskdlsad
 
     /**
-     * 필명 중복체크
+     * 필명 중복체크d
      *
      * @param userNickname
      * @return
