@@ -4,13 +4,8 @@ import com.summar.summar.dto.AddIntroduceRequestDto;
 import com.summar.summar.dto.ChangeUserInfoRequestDto;
 import com.summar.summar.dto.LoginRequestDto;
 import com.summar.summar.dto.RefreshTokenRequestDto;
-import com.summar.summar.results.ApiResult;
-import com.summar.summar.results.AuthenticationResult;
-import com.summar.summar.results.BooleanResult;
-import com.summar.summar.results.ObjectResult;
-import com.summar.summar.service.RefreshTokenService;
+import com.summar.summar.results.*;
 import com.summar.summar.service.UserService;
-import com.summar.summar.util.JwtUtil;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -20,10 +15,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
@@ -34,11 +29,7 @@ import java.security.NoSuchAlgorithmException;
 @Api(tags = {"유저 관련 API 제공 controller"})
 @RequestMapping(value = "/api/v1/user")
 public class UserController {
-    private final JwtUtil jwtUtil;
     private final UserService userService;
-    private final RedisTemplate redisTemplate;
-    private final RefreshTokenService refreshTokenService;
-    private final AuthenticationManager authenticationManager;
 
 
     /**
@@ -170,7 +161,7 @@ public class UserController {
     public ResponseEntity<?> addIntroduce(@RequestBody AddIntroduceRequestDto addIntroduceRequestDto) {
         userService.addIntroduce(addIntroduceRequestDto);
         return ObjectResult.ok();
-    }
+    }//ㅅrstteddㅇㅇ우ㅏ미위ㅏㄴㅇanskdlsad
 
     /**
      * 필명 중복체크
@@ -197,6 +188,11 @@ public class UserController {
         return BooleanResult.build("result", userService.checkNicknameDuplication(userNickname));
     }
 
+    /**
+     * 닉네임으로 유저정보 조회
+     * @param userNickname
+     * @return
+     */
     @Operation(summary = "닉네임으로 유저정보 조회", description = "회원의 정보를 조회합니다.", security = @SecurityRequirement(name = "Authorization"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
@@ -216,4 +212,44 @@ public class UserController {
     public ResponseEntity<?> searchUserInfo(@RequestParam(value = "userNickname")String userNickname){
        return ObjectResult.build("results",userService.searchUserInfo(userNickname));
     }
+    @Operation(summary = "한글 초성 & 단어 검색 기능", description = "회원의 닉네임검색 기능입니다.", security = @SecurityRequirement(name = "Authorization"))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
+                    "    \"firstPage\": true,\n" +
+                    "    \"lastPage\": true,\n" +
+                    "    \"totalPageCount\": 1,\n" +
+                    "    \"recordsPerPage\": 30,\n" +
+                    "    \"content\": [\n" +
+                    "        {\n" +
+                    "            \"userNickname\": \"승욱\",\n" +
+                    "            \"major1\": \"공학계열\",\n" +
+                    "            \"major2\": \"건축\",\n" +
+                    "            \"follower\": 50,\n" +
+                    "            \"following\": 30,\n" +
+                    "            \"introduce\": null,\n" +
+                    "            \"profileImageUrl\": null\n" +
+                    "        },\n" +
+                    "        {\n" +
+                    "            \"userNickname\": \"신승욱\",\n" +
+                    "            \"major1\": \"자연계열\",\n" +
+                    "            \"major2\": \"수학ㆍ물리ㆍ천문ㆍ지리\",\n" +
+                    "            \"follower\": 0,\n" +
+                    "            \"following\": 0,\n" +
+                    "            \"introduce\": null,\n" +
+                    "            \"profileImageUrl\": null\n" +
+                    "        }\n" +
+                    "    ],\n" +
+                    "    \"totalRecordCount\": 2,\n" +
+                    "    \"currentPageNo\": 1\n" +
+                    "}"))),
+            @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
+    })
+    //@PreAuthorize("isAuthenticated()")
+    @GetMapping("/search-user-list")
+    public ResponseEntity<?> searchUserInitialList(@RequestParam(value = "userNickname")String userNickname, @PageableDefault(size = 30) Pageable pageable) {
+        return PageResult.build(userService.searchUserList(userNickname,pageable));
+    }
+
+
+
 }

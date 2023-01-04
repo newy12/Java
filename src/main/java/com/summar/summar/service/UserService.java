@@ -10,13 +10,15 @@ import com.summar.summar.repository.UserRepository;
 import com.summar.summar.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
-import java.util.UUID;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -166,6 +168,7 @@ public class UserService {
                 .build();
     }
 
+    @Transactional(readOnly = true)
     public SearchUserInfoResponseDto searchUserInfo(String userNickname) {
         User user = userRepository.findByUserNickname(userNickname).orElseThrow(() ->
                 new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
@@ -177,5 +180,58 @@ public class UserService {
                 .follower(user.getFollower())
                 .following(user.getFollowing())
                 .build();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<SearchUserListResponseDto> searchUserList(String userNickname, Pageable pageable) {
+        //닉네임 검색 완성했을 때
+        boolean searchUserListCheck = userRepository.existsByUserNicknameContains(userNickname);
+        if(searchUserListCheck){
+            Page<User> searchUserList = userRepository.findByUserNicknameContains(userNickname,pageable);
+            return searchUserList.map(SearchUserListResponseDto::new);
+        }
+        List<String> index_list = new ArrayList<>();
+        index_list.add("ㄱ");
+        index_list.add("ㄴ");
+        index_list.add("ㄷ");
+        index_list.add("ㄹ");
+        index_list.add("ㅁ");
+        index_list.add("ㅂ");
+        index_list.add("ㅅ");
+        index_list.add("ㅇ");
+        index_list.add("ㅈ");
+        index_list.add("ㅊ");
+        index_list.add("ㅋ");
+        index_list.add("ㅌ");
+        index_list.add("ㅍ");
+        index_list.add("ㅎ");
+        Map<Integer, String> index_map = new HashMap<>();
+        index_map.put(0, "가");
+        index_map.put(1, "나");
+        index_map.put(2, "다");
+        index_map.put(3, "라");
+        index_map.put(4, "마");
+        index_map.put(5, "바");
+        index_map.put(6, "사");
+        index_map.put(7, "아");
+        index_map.put(8, "자");
+        index_map.put(9, "차");
+        index_map.put(10, "카");
+        index_map.put(11, "타");
+        index_map.put(12, "파");
+        index_map.put(13, "하");
+        index_map.put(14, "힣");
+        //닉네임 검색 초성일 때
+        ;
+        int num = 0;
+        for (int i = 0; i < index_list.size(); i++) {
+
+            if (userNickname.equals(index_list.get(i))) {
+                num = i;
+                break;
+            }
+        }
+        Page<User> users = userRepository.searchWord(index_map.get(num), index_map.get(num + 1),pageable);
+        return users.map(SearchUserListResponseDto::new);
     }
 }
