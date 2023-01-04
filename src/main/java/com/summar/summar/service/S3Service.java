@@ -1,14 +1,15 @@
 package com.summar.summar.service;
 
 import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.summar.summar.config.ApplicationProperties;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,17 +22,20 @@ public class S3Service {
     private String s3Bucket;
     private String removeUploadedUrl;
 
-    static final String FEED_IMAGE="/feed";
+    static final String FEED_IMAGE = "feed";
 
      public S3Service(ApplicationProperties applicationProperties) {
-        ApplicationProperties.Aws aws = applicationProperties.getAws();
-        String accessKey = aws.getAccessKey();
-        String secretKey = aws.getSecretKey();
-        s3Bucket = aws.getS3Bucket();
-        removeUploadedUrl = "https://" + s3Bucket + "/";
-        AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
-        this.amazonS3 = new AmazonS3Client(credentials);
-    }
+         ApplicationProperties.Aws aws = applicationProperties.getAws();
+         String accessKey = aws.getAccessKey();
+         String secretKey = aws.getSecretKey();
+         s3Bucket = aws.getS3Bucket();
+         removeUploadedUrl = "https://" + s3Bucket + "/";
+         AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
+         this.amazonS3 = AmazonS3ClientBuilder.standard()
+                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                 .withRegion(Regions.AP_NORTHEAST_2)
+                 .build();
+     }
 
     public String upload(MultipartFile uploadFile, String dirName) {
         String filePath = dirName + "/" + convertFileName(uploadFile);

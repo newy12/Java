@@ -35,8 +35,9 @@ public class FeedService {
                 });
         return FeedDto.builder()
                 .feedSeq(feedSeq)
-                .imageUrls(feedImageRepository.findByFeedSeq(feedSeq))
+                .feedImages(feedImageRepository.findByFeedSeq(feedSeq))
                 .userSeq(feedRegisterDto.getUserSeq())
+                .contents(feedRegisterDto.getContents())
                 .build();
     }
 
@@ -47,7 +48,7 @@ public class FeedService {
         feeds.forEach(
                 feed -> feedDtos.add(FeedDto.builder()
                         .feedSeq(feed.getFeedSeq())
-                        .imageUrls(feedImageRepository.findByFeedSeq(feed.getFeedSeq()))
+                        .feedImages(feedImageRepository.findByFeedSeq(feed.getFeedSeq()))
                         .userSeq(feed.getUserSeq())
                         .contents(feed.getContents())
                         .build()));
