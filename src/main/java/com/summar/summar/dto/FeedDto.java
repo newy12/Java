@@ -27,6 +27,6 @@ public class FeedDto {
 
     private String contents;
 
-    private List<FeedImage> imageUrls;
+    private List<FeedImage> feedImages;
 
 }
