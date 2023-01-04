@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -17,4 +18,6 @@ public class UserSaveDto {
     private Integer following;
     private SocialType socialType;
     private LocalDate lastLoginDate;
+    private UUID deviceToken;
+    private Boolean pushAlarmYn;
 }

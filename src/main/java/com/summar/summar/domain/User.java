@@ -8,9 +8,13 @@ import com.summar.summar.enumeration.SocialType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.UUID;
+
 @Getter
 @NoArgsConstructor
 @Entity
@@ -42,6 +46,11 @@ public class User extends BaseTimeEntity implements Serializable {
 
     private String profileImageUrl; //프로필이미지경로
 
+    private UUID deviceToken; //디바이스 식별 토큰값 (랜덤)
+
+    @Type(type="yes_no")
+    private Boolean pushAlarmYn;
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonManagedReference
     private RefreshToken refreshToken;
@@ -65,11 +74,14 @@ public class User extends BaseTimeEntity implements Serializable {
         this.major2 = userSaveDto.getMajor2();
         this.follower = userSaveDto.getFollower();
         this.following = userSaveDto.getFollowing();
+        this.deviceToken = userSaveDto.getDeviceToken();
         this.socialType = userSaveDto.getSocialType();
         this.lastLoginDate = userSaveDto.getLastLoginDate();
+        this.pushAlarmYn = userSaveDto.getPushAlarmYn();
     }
-    public void setLastLoginDate(LocalDate lastLoginDate){
+    public void setLastLoginDateAndDeviceToken(LocalDate lastLoginDate,UUID deviceToken){
         this.lastLoginDate = lastLoginDate;
+        this.deviceToken = deviceToken;
     }
     public void setUserStatus(UserStatus userStatus){
         this.userStatus = userStatus;

@@ -123,7 +123,8 @@ public class UserService {
             log.info(">>>>> : {}", refreshTokenSeq);
 
             //로그인 이력 업데이트
-            userInfo.setLastLoginDate(LocalDate.now());
+            userInfo.setLastLoginDateAndDeviceToken(LocalDate.now(),UUID.randomUUID());
+
             userRepository.save(userInfo);
 
             return TokenResponseDto.builder()
@@ -146,7 +147,9 @@ public class UserService {
                         .major2(loginRequestDto.getMajor2())
                         .follower(0)
                         .following(0)
+                        .deviceToken(UUID.randomUUID())
                         .socialType(loginRequestDto.getSocialType())
+                        .pushAlarmYn(true)
                         .lastLoginDate(LocalDate.now())
                         .build())
         );
