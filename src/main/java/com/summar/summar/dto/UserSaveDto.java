@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Data
-@Builder
 public class UserSaveDto {
     private String userEmail;
     private String userNickname;
@@ -20,4 +19,17 @@ public class UserSaveDto {
     private LocalDate lastLoginDate;
     private UUID deviceToken;
     private Boolean pushAlarmYn;
+
+    public UserSaveDto(String userEmail, String userNickname, String major1, String major2, Integer follower, Integer following, SocialType socialType, LocalDate lastLoginDate, UUID deviceToken, Boolean pushAlarmYn){
+        this.userEmail = userEmail;
+        this.userNickname = userNickname;
+        this.major1 = major1;
+        this.major2 = major2;
+        this.follower = follower;
+        this.following = following;
+        this.socialType = socialType;
+        this.lastLoginDate = lastLoginDate;
+        this.deviceToken = deviceToken;
+        this.pushAlarmYn = pushAlarmYn;
+    }
 }

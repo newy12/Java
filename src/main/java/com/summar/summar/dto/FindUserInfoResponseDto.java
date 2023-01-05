@@ -4,7 +4,6 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
 public class FindUserInfoResponseDto {
     private String userNickname;
     private String major1;
@@ -13,4 +12,12 @@ public class FindUserInfoResponseDto {
     private Integer follower;
     private Integer following;
 
+    public FindUserInfoResponseDto(String userNickname, String major1, String major2, String introduce, Integer follower, Integer following){
+        this.userNickname = userNickname;
+        this.major1 = major1;
+        this.major2 = major2;
+        this.introduce = introduce;
+        this.follower = follower;
+        this.following = following;
+    }
 }

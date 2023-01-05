@@ -72,24 +72,14 @@ public class UserService {
         refreshTokenInfo.setRefreshToken(user, refreshToken);
         UUID refreshTokenSeq = refreshTokenRepository.save(refreshTokenInfo).getRefreshTokenSeq();
         log.info(">>>>> : {}", refreshTokenInfo.getRefreshTokenSeq());
-        return BothTokenResponseDto.builder()
-                .accessToken(accessToken)
-                .refreshTokenSeq(refreshTokenSeq)
-                .build();
+        return new BothTokenResponseDto(accessToken,refreshTokenSeq);
     }
 
     @Transactional(readOnly = true)
     public FindUserInfoResponseDto getUserInfo(String userEmail) {
         User user = userRepository.findByUserEmail(userEmail).orElseThrow(
                 () -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
-        return FindUserInfoResponseDto.builder()
-                .userNickname(user.getUserNickname())
-                .major1(user.getMajor1())
-                .major2(user.getMajor2())
-                .follower(user.getFollower())
-                .following(user.getFollowing())
-                .introduce(user.getIntroduce())
-                .build();
+        return new FindUserInfoResponseDto(user.getUserNickname(),user.getMajor1(),user.getMajor2(),user.getIntroduce(),user.getFollower(),user.getFollowing());
     }
 
     @Transactional
@@ -102,16 +92,7 @@ public class UserService {
         //nickname 또는 major 1 또는 major 2 가 비어있으면 회원가입
         if ("".equals(loginRequestDto.getUserNickname()) && "".equals(loginRequestDto.getMajor1()) && "".equals(loginRequestDto.getMajor2())
                 && !userRepository.existsByUserEmail(loginRequestDto.getUserEmail())) {
-            return TokenResponseDto.builder()
-                    .accessToken("발급x")
-                    .refreshTokenSeq(UUID.randomUUID())
-                    .loginStatus(LoginStatus.회원가입)
-                    .userNickname("")
-                    .major1("")
-                    .major2("")
-                    .follower(0)
-                    .following(0)
-                    .build();
+            return new TokenResponseDto("발급x",UUID.randomUUID(),LoginStatus.회원가입,"","","",0,0);
         }
         //기존 회원이 있다면
         if (userRepository.existsByUserEmail(loginRequestDto.getUserEmail())) {
@@ -127,62 +108,24 @@ public class UserService {
 
             userRepository.save(userInfo);
 
-            return TokenResponseDto.builder()
-                    .accessToken(accessToken)
-                    .refreshTokenSeq(refreshTokenSeq)
-                    .loginStatus(LoginStatus.로그인)
-                    .userNickname(userInfo.getUserNickname())
-                    .major1(userInfo.getMajor1())
-                    .major2(userInfo.getMajor2())
-                    .follower(userInfo.getFollower())
-                    .following(userInfo.getFollowing())
-                    .build();
+            return new TokenResponseDto(accessToken,refreshTokenSeq,LoginStatus.로그인,userInfo.getUserNickname(),userInfo.getMajor1(),userInfo.getMajor2(),userInfo.getFollower(),userInfo.getFollowing());
         }
         //신규 회원이라면
-        userRepository.save(
-                new User(UserSaveDto.builder()
-                        .userEmail(loginRequestDto.getUserEmail())
-                        .userNickname(loginRequestDto.getUserNickname())
-                        .major1(loginRequestDto.getMajor1())
-                        .major2(loginRequestDto.getMajor2())
-                        .follower(0)
-                        .following(0)
-                        .deviceToken(UUID.randomUUID())
-                        .socialType(loginRequestDto.getSocialType())
-                        .pushAlarmYn(true)
-                        .lastLoginDate(LocalDate.now())
-                        .build())
-        );
+        userRepository.save(new User(new UserSaveDto(loginRequestDto.getUserEmail(),loginRequestDto.getUserNickname(),loginRequestDto.getMajor1(),loginRequestDto.getMajor2(),0,0,loginRequestDto.getSocialType(),LocalDate.now(),UUID.randomUUID(),true)));
         User user = userRepository.findByUserEmail(loginRequestDto.getUserEmail()).orElseThrow(() ->
                 new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         RefreshToken refreshTokenInfo = new RefreshToken();
         refreshTokenInfo.setRefreshToken(user, refreshToken);
         UUID refreshTokenSeq = refreshTokenRepository.save(refreshTokenInfo).getRefreshTokenSeq();
         log.info(">>>>> : {}", refreshTokenSeq);
-        return TokenResponseDto.builder()
-                .accessToken(accessToken)
-                .refreshTokenSeq(refreshTokenSeq)
-                .loginStatus(LoginStatus.회원가입완료)
-                .userNickname("")
-                .major1("")
-                .major2("")
-                .follower(0)
-                .following(0)
-                .build();
+        return new TokenResponseDto(accessToken,refreshTokenSeq,LoginStatus.회원가입완료,"","","",0,0);
     }
 
     @Transactional(readOnly = true)
     public SearchUserInfoResponseDto searchUserInfo(String userNickname) {
         User user = userRepository.findByUserNickname(userNickname).orElseThrow(() ->
                 new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
-        return SearchUserInfoResponseDto.builder()
-                .userEmail(user.getUserEmail())
-                .userNickname(userNickname)
-                .major1(user.getMajor1())
-                .major2(user.getMajor2())
-                .follower(user.getFollower())
-                .following(user.getFollowing())
-                .build();
+        return new SearchUserInfoResponseDto(user.getUserEmail(),user.getFollower(),user.getFollowing(),user.getUserNickname(),user.getMajor1(),user.getMajor2());
     }
 
     @Transactional(readOnly = true)
