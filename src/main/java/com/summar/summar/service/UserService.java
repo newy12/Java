@@ -55,8 +55,7 @@ public class UserService {
         RefreshToken refreshToken = refreshTokenRepository.findByUser(user).orElseThrow(
                 () -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         if (jwtUtil.validateRefreshToken(refreshToken.getRefreshToken(), refreshTokenRequestDto.getUserEmail())) {
-            String newAccessToken = jwtUtil.generateToken(refreshTokenRequestDto.getUserEmail());
-            return newAccessToken;
+            return jwtUtil.generateToken(refreshTokenRequestDto.getUserEmail());
         }
         return null;
     }
