@@ -1,4 +1,6 @@
 spring:
+  main:
+    allow-bean-definition-overriding: true
   servlet:
     multipart:
       max-file-size: 100MB
@@ -46,4 +48,10 @@ application:
     accessKey: AKIA3AI73FTRVWWXC2P4
     secretKey: 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
     s3Bucket: image.summar.io
+elasticsearch:
+  host: 13.209.114.45
+  port: 9200
 
+push:
+  server-key: key=AAAAB9uCHb0:APA91bF7WLRRj7XDry8O34cmO3tbsjZfcARgA4AT38H32g0Yr_310AlLK7KExHC_XkQwSEQtpIW6-aiLz3d_veyDFmJb_vl1w34xxcmDQEnnH-fK_PQmGIJjrhyEv9FlGTVdnw60N3FE
+  device-key: e8JYHSQQyUabgu1g55CCNK:APA91bEh752UcgpOy8NYF41LC6aQ0g3PSvKqrlONWfS_S6Z9tIBmKbxAY5oQNOOMK4pZqxvs-Rl6yNFgdDS8R3w6t2wE-PXmvqZ0H8Fc-3SdliQvHUoHLpwRcfXf9rJ57aueioviqSJA

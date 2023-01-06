@@ -5,6 +5,7 @@ import com.summar.summar.dto.ChangeUserInfoRequestDto;
 import com.summar.summar.dto.LoginRequestDto;
 import com.summar.summar.dto.RefreshTokenRequestDto;
 import com.summar.summar.results.*;
+import com.summar.summar.service.PushService;
 import com.summar.summar.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,6 +31,7 @@ import java.security.NoSuchAlgorithmException;
 @RequestMapping(value = "/api/v1/user")
 public class UserController {
     private final UserService userService;
+    private final PushService pushService;
 
 
     /**
@@ -249,7 +251,8 @@ public class UserController {
     public ResponseEntity<?> searchUserInitialList(@RequestParam(value = "userNickname")String userNickname, @PageableDefault(size = 30) Pageable pageable) {
         return PageResult.build(userService.searchUserList(userNickname,pageable));
     }
-
-
-
+  /*  @PostMapping("/push-test")
+    public void pushTest(){
+        pushService.pushNotification();
+    }*/
 }

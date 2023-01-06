@@ -103,14 +103,14 @@ public class UserService {
             log.info(">>>>> : {}", refreshTokenSeq);
 
             //로그인 이력 업데이트
-            userInfo.setLastLoginDateAndDeviceToken(LocalDate.now(),UUID.randomUUID());
+            userInfo.setLastLoginDateAndDeviceToken(LocalDate.now(),loginRequestDto.getDeviceToken());
 
             userRepository.save(userInfo);
 
             return new TokenResponseDto(accessToken,refreshTokenSeq,LoginStatus.로그인,userInfo.getUserNickname(),userInfo.getMajor1(),userInfo.getMajor2(),userInfo.getFollower(),userInfo.getFollowing());
         }
         //신규 회원이라면
-        userRepository.save(new User(new UserSaveDto(loginRequestDto.getUserEmail(),loginRequestDto.getUserNickname(),loginRequestDto.getMajor1(),loginRequestDto.getMajor2(),0,0,loginRequestDto.getSocialType(),LocalDate.now(),UUID.randomUUID(),true)));
+        userRepository.save(new User(new UserSaveDto(loginRequestDto.getUserEmail(),loginRequestDto.getUserNickname(),loginRequestDto.getMajor1(),loginRequestDto.getMajor2(),0,0,loginRequestDto.getSocialType(),LocalDate.now(),loginRequestDto.getDeviceToken(),true)));
         User user = userRepository.findByUserEmail(loginRequestDto.getUserEmail()).orElseThrow(() ->
                 new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         RefreshToken refreshTokenInfo = new RefreshToken();

@@ -3,7 +3,6 @@ package com.summar.summar;
 import com.summar.summar.config.ApplicationProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;

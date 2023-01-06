@@ -9,6 +9,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,6 +20,7 @@ import java.util.UUID;
 
 @Getter
 @NoArgsConstructor
+@Document(indexName = "users")
 @Entity
 @Table(name = "USER")
 public class User extends BaseTimeEntity implements Serializable {
@@ -27,6 +31,7 @@ public class User extends BaseTimeEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userSeq;
+    @Field(type = FieldType.Keyword)
     private String userNickname; //닉네임
     private String userEmail; //이메일
 
@@ -46,7 +51,7 @@ public class User extends BaseTimeEntity implements Serializable {
 
     private String profileImageUrl; //프로필이미지경로
 
-    private UUID deviceToken; //디바이스 식별 토큰값 (랜덤)
+    private String deviceToken; //디바이스 식별 토큰값 (랜덤)
 
     @Type(type="yes_no")
     private Boolean pushAlarmYn;
@@ -79,7 +84,7 @@ public class User extends BaseTimeEntity implements Serializable {
         this.lastLoginDate = userSaveDto.getLastLoginDate();
         this.pushAlarmYn = userSaveDto.getPushAlarmYn();
     }
-    public void setLastLoginDateAndDeviceToken(LocalDate lastLoginDate,UUID deviceToken){
+    public void setLastLoginDateAndDeviceToken(LocalDate lastLoginDate,String deviceToken){
         this.lastLoginDate = lastLoginDate;
         this.deviceToken = deviceToken;
     }
