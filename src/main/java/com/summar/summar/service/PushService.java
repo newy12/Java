@@ -3,9 +3,15 @@ package com.summar.summar.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonObject;
+import com.summar.summar.common.SummarCommonException;
+import com.summar.summar.common.SummarErrorCode;
+import com.summar.summar.domain.User;
 import com.summar.summar.dto.Notification;
+import com.summar.summar.dto.PushNotificationDto;
 import com.summar.summar.dto.PushRequestDto;
+import com.summar.summar.repository.UserRepository;
 import jdk.nashorn.internal.parser.JSONParser;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -22,21 +28,28 @@ import java.net.URL;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class PushService {
 
     @Value("${push.server-key}")
     private String serverKey;
+    private final UserRepository userRepository;
 
-    public void pushNotification(){
+    public void pushNotification(PushNotificationDto pushNotificationDto){
         try{
             ObjectMapper mapper = new ObjectMapper();
-            PushRequestDto pushRequestDto = new PushRequestDto();
-            Notification notification = new Notification();
-            notification.setBody("body");
-            notification.setTitle("title");
-            pushRequestDto.setTo("e8JYHSQQyUabgu1g55CCNK:APA91bEh752UcgpOy8NYF41LC6aQ0g3PSvKqrlONWfS_S6Z9tIBmKbxAY5oQNOOMK4pZqxvs-Rl6yNFgdDS8R3w6t2wE-PXmvqZ0H8Fc-3SdliQvHUoHLpwRcfXf9rJ57aueioviqSJA");
-            pushRequestDto.setPriority("high");
-            pushRequestDto.setNotification(notification);
+            Notification notification = Notification.builder()
+                    .title(pushNotificationDto.getTitle())
+                    .body(pushNotificationDto.getBody())
+                    .build();
+
+            //device token 정보 찾기
+            User user = userRepository.findByUserNickname(pushNotificationDto.getUserNickname()).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
+
+            PushRequestDto pushRequestDto = PushRequestDto.builder()
+                    .to(user.getDeviceToken())  //해당기기 디바이스 토큰
+                    .notification(notification) //알림 - 제목,내용
+                    .build();
             HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
             factory.setConnectTimeout(5000); //타임아웃 설정 5초
             factory.setReadTimeout(5000);//타임아웃 설정 5초
@@ -50,18 +63,10 @@ public class PushService {
 
             String pushRequedtDtoJson = mapper.writeValueAsString(pushRequestDto);
 
-            /*MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-            jsonObject.get(pushRequestDto.getTo()).getAsJsonObject();
-            jsonObject.get(pushRequestDto.getPriority()).getAsJsonObject();
-            mapper.writeValueAsString(pushRequestDto.getNotification());
-            body.add("to",pushRequestDto.getTo());
-            body.add("priority",pushRequestDto.getPriority());
-            body.add("notification",pushRequestDto.getNotification());*/
-
             HttpEntity<String> request = new HttpEntity<>(pushRequedtDtoJson, header);
 
             String result = restTemplate.postForObject(new URL(url).toURI(),request,String.class);
-            log.info("result>>>>>>>>>>> : {}",result);
+            log.info("push-Notification result : {}",result);
         } catch (MalformedURLException | URISyntaxException | JsonProcessingException e) {
             throw new RuntimeException(e);
         }

@@ -16,6 +16,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -52,6 +53,10 @@ public class User extends BaseTimeEntity implements Serializable {
     private String profileImageUrl; //프로필이미지경로
 
     private String deviceToken; //디바이스 식별 토큰값 (랜덤)
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Follow> followList;
 
     @Type(type="yes_no")
     private Boolean pushAlarmYn;
@@ -101,5 +106,13 @@ public class User extends BaseTimeEntity implements Serializable {
         this.major1 = changeUserInfoRequestDto.getMajor1();
         this.major2 = changeUserInfoRequestDto.getMajor2();
         this.profileImageUrl = changeUserInfoRequestDto.getProfileImageUrl();
+    }
+    public void updateFollower(Integer follower){
+        this.follower = follower;
+    }
+
+    public void updateFollowing(Integer following) {
+        this.following = following;
+
     }
 }

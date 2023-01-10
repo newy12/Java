@@ -11,13 +11,15 @@ public class FindUserInfoResponseDto {
     private String introduce;
     private Integer follower;
     private Integer following;
+    private String profileImageUrl;
 
-    public FindUserInfoResponseDto(String userNickname, String major1, String major2, String introduce, Integer follower, Integer following){
+    public FindUserInfoResponseDto(String userNickname, String major1, String major2, String introduce, Integer follower, Integer following,String profileImageUrl){
         this.userNickname = userNickname;
         this.major1 = major1;
         this.major2 = major2;
         this.introduce = introduce;
         this.follower = follower;
         this.following = following;
+        this.profileImageUrl = profileImageUrl;
     }
 }

@@ -31,7 +31,6 @@ import java.security.NoSuchAlgorithmException;
 @RequestMapping(value = "/api/v1/user")
 public class UserController {
     private final UserService userService;
-    private final PushService pushService;
 
 
     /**
@@ -251,8 +250,4 @@ public class UserController {
     public ResponseEntity<?> searchUserInitialList(@RequestParam(value = "userNickname")String userNickname, @PageableDefault(size = 30) Pageable pageable) {
         return PageResult.build(userService.searchUserList(userNickname,pageable));
     }
-  /*  @PostMapping("/push-test")
-    public void pushTest(){
-        pushService.pushNotification();
-    }*/
 }
