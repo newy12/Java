@@ -54,10 +54,13 @@ public class User extends BaseTimeEntity implements Serializable {
 
     private String deviceToken; //디바이스 식별 토큰값 (랜덤)
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "followingUser", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonManagedReference
-    private List<Follow> followList;
+    private List<Follow> followingUserList;
 
+    @OneToMany(mappedBy = "followedUser", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<Follow> followedUserList;
     @Type(type="yes_no")
     private Boolean pushAlarmYn;
 

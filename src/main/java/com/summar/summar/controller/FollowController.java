@@ -22,38 +22,25 @@ public class FollowController {
     private final FollowService followService;
 
 
-    /**
-     * 팔로워 리스트 조회
-     * @param userNickname
-     * @param pageable
-     * @return
-     */
+
     @GetMapping("/followers")
     public ResponseEntity<?> findFollowers(@RequestParam(value = "userNickname")String userNickname, Pageable pageable){
         return PageResult.build(followService.findFollowers(userNickname,pageable));
     }
 
-   /* @GetMapping("/followings")
+    @GetMapping("/followings")
     public ResponseEntity<?> findFollowings(@RequestParam(value = "userNickname")String userNickname, Pageable pageable){
         return PageResult.build(followService.findFollowings(userNickname,pageable));
-    }*/
+    }
 
-    /**
-     * 팔로우 추가
-     * @param followerRequestDto
-     * @return
-     */
+
     @PostMapping("/follower")
     public ResponseEntity<?> addFollower(@RequestBody FollowerRequestDto followerRequestDto){
         followService.addFollower(followerRequestDto);
         return ObjectResult.ok();
     }
 
-    /**
-     * 팔로우 취소
-     * @param followerRequestDto
-     * @return
-     */
+
     @DeleteMapping("/follower")
     public ResponseEntity<?> deleteFollower(@RequestBody FollowerRequestDto followerRequestDto){
         followService.deleteFollower(followerRequestDto);

@@ -17,19 +17,22 @@ import javax.persistence.*;
 public class Follow {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long followId;
-    private String followedUserNickname; //팔로우 당한 사람
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name = "followed_user_id")
+    private User followedUser; //팔로우 당한 사람
     @Column(name = "follow_yn",length = 1, columnDefinition = "char(1) default 'N'")
     @Type(type = "yes_no")
     private Boolean followYn; //팔로우 Y/N
     @ManyToOne
     @JsonBackReference
-    @JoinColumn(name = "user_id")
-    private User user; //팔로우 한사람
+    @JoinColumn(name = "following_user_id")
+    private User followingUser; //팔로우 한사람
 
     public Follow(FollowerSaveDto followerSaveDto){
-        this.followedUserNickname = followerSaveDto.getFollowedUserNickname();
+        this.followedUser = followerSaveDto.getFollowedUser();
         this.followYn = followerSaveDto.getFollowYn();
-        this.user = followerSaveDto.getUser();
+        this.followingUser = followerSaveDto.getFollowingUser();
     }
 
     public void setFollowYn(boolean followYn) {

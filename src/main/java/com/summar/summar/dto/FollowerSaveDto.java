@@ -7,7 +7,8 @@ import lombok.Data;
 @Data
 @Builder
 public class FollowerSaveDto {
-    private String followedUserNickname;
+    private User followedUser;
     private Boolean followYn;
-    private User user;
+    private User followingUser;
 }
+

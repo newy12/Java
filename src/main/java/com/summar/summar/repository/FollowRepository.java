@@ -2,6 +2,7 @@ package com.summar.summar.repository;
 
 import com.summar.summar.domain.Follow;
 import com.summar.summar.domain.User;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,13 +10,17 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface FollowRepository extends JpaRepository<Follow,Long> {
-    Page<Follow> findByFollowedUserNicknameAndFollowYn(String userNickname, boolean followYn, Pageable pageable);
 
-    Optional<Follow> findByFollowedUserNicknameAndUserAndFollowYn(String followedUserNickname, User userInfo, boolean followYn);
 
-    Integer countByFollowedUserNicknameAndFollowYn(String userNickname,boolean followYn);
+    Integer countByFollowedUserAndFollowYn(User followedUserNickname,boolean followYn);
 
-    Integer countByUserAndFollowYn(User user, boolean followYn);
 
-    Page<Follow> findByUserAndFollowYn(User user, boolean followYn,Pageable pageable);
+
+    Optional<Follow> findByFollowedUserAndFollowingUserAndFollowYn(User followedUser, User followingUser, boolean followYn);
+
+    Integer countByFollowingUserAndFollowYn(User followingUser, boolean followYn);
+
+    Page<Follow> findByFollowedUserAndFollowYn(User followedUser, boolean followYn, Pageable pageable);
+
+    Page<Follow> findByFollowingUserAndFollowYn(User followingUser, boolean followYn, Pageable pageable);
 }
