@@ -64,7 +64,10 @@ public class FeedController {
                     "                \"userSeq\": 1,\n" +
                     "                \"contents\": \"dd\",\n" +
                     "                \"imageUrls\": []\n" +
-                    "            }"))),
+                    "            }\n" +
+                    "            ]\n" +
+                    "     }\n"
+                ))),
 
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
