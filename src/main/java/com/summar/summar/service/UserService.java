@@ -78,7 +78,7 @@ public class UserService {
     public FindUserInfoResponseDto getUserInfo(String userEmail) {
         User user = userRepository.findByUserEmail(userEmail).orElseThrow(
                 () -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
-        return new FindUserInfoResponseDto(user.getUserNickname(),user.getMajor1(),user.getMajor2(),user.getIntroduce(),user.getFollower(),user.getFollowing());
+        return new FindUserInfoResponseDto(user.getUserNickname(),user.getMajor1(),user.getMajor2(),user.getIntroduce(),user.getFollower(),user.getFollowing(),user.getProfileImageUrl());
     }
 
     @Transactional
