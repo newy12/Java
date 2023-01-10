@@ -100,7 +100,7 @@ public class FollowController {
      * @param followerRequestDto
      * @return
      */
-    @Operation(summary = "마이페이지 개인정보 수정", description = "회원의 정보를 수정합니다.", security = @SecurityRequirement(name = "Authorization"))
+    @Operation(summary = "팔로우 추가", description = "팔로우 추가를 합니다.", security = @SecurityRequirement(name = "Authorization"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
                     "    \"status\": \"SUCCESS\",\n" +
@@ -121,7 +121,7 @@ public class FollowController {
      * @param followerRequestDto
      * @return
      */
-    @Operation(summary = "마이페이지 개인정보 수정", description = "회원의 정보를 수정합니다.", security = @SecurityRequirement(name = "Authorization"))
+    @Operation(summary = "팔로우 취소", description = "팔로우를 취소를 합니다.", security = @SecurityRequirement(name = "Authorization"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
                     "    \"status\": \"SUCCESS\",\n" +
