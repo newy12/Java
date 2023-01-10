@@ -14,8 +14,6 @@ public interface FollowRepository extends JpaRepository<Follow,Long> {
 
     Integer countByFollowedUserAndFollowYn(User followedUserNickname,boolean followYn);
 
-
-
     Optional<Follow> findByFollowedUserAndFollowingUserAndFollowYn(User followedUser, User followingUser, boolean followYn);
 
     Integer countByFollowingUserAndFollowYn(User followingUser, boolean followYn);
