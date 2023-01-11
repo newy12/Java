@@ -16,4 +16,7 @@ public class LoginRequestDto {
     private String major2;
     @Schema(description = "소셜 로그인 종류", example = "KAKAO")
     private SocialType socialType;
+    @Schema(description = "디바이스 토큰", example = "디바이스 토큰")
+    private String deviceToken;
+
 }

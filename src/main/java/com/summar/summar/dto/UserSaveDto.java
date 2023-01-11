@@ -17,10 +17,10 @@ public class UserSaveDto {
     private Integer following;
     private SocialType socialType;
     private LocalDate lastLoginDate;
-    private UUID deviceToken;
+    private String deviceToken;
     private Boolean pushAlarmYn;
 
-    public UserSaveDto(String userEmail, String userNickname, String major1, String major2, Integer follower, Integer following, SocialType socialType, LocalDate lastLoginDate, UUID deviceToken, Boolean pushAlarmYn){
+    public UserSaveDto(String userEmail, String userNickname, String major1, String major2, Integer follower, Integer following, SocialType socialType, LocalDate lastLoginDate, String deviceToken, Boolean pushAlarmYn){
         this.userEmail = userEmail;
         this.userNickname = userNickname;
         this.major1 = major1;

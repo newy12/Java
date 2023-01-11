@@ -5,6 +5,7 @@ import com.summar.summar.dto.ChangeUserInfoRequestDto;
 import com.summar.summar.dto.LoginRequestDto;
 import com.summar.summar.dto.RefreshTokenRequestDto;
 import com.summar.summar.results.*;
+import com.summar.summar.service.PushService;
 import com.summar.summar.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
@@ -109,7 +110,7 @@ public class UserController {
                     "}"))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
-    //@PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/user-info")
     public ResponseEntity<?> findUserInfo(@RequestParam(value = "userEmail") String userEmail) {
         return ObjectResult.build("result", userService.getUserInfo(userEmail));
@@ -249,7 +250,4 @@ public class UserController {
     public ResponseEntity<?> searchUserInitialList(@RequestParam(value = "userNickname")String userNickname, @PageableDefault(size = 30) Pageable pageable) {
         return PageResult.build(userService.searchUserList(userNickname,pageable));
     }
-
-
-
 }

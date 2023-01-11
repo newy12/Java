@@ -55,8 +55,7 @@ public class UserService {
         RefreshToken refreshToken = refreshTokenRepository.findByUser(user).orElseThrow(
                 () -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         if (jwtUtil.validateRefreshToken(refreshToken.getRefreshToken(), refreshTokenRequestDto.getUserEmail())) {
-            String newAccessToken = jwtUtil.generateToken(refreshTokenRequestDto.getUserEmail());
-            return newAccessToken;
+            return jwtUtil.generateToken(refreshTokenRequestDto.getUserEmail());
         }
         return null;
     }
@@ -79,7 +78,7 @@ public class UserService {
     public FindUserInfoResponseDto getUserInfo(String userEmail) {
         User user = userRepository.findByUserEmail(userEmail).orElseThrow(
                 () -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
-        return new FindUserInfoResponseDto(user.getUserNickname(),user.getMajor1(),user.getMajor2(),user.getIntroduce(),user.getFollower(),user.getFollowing());
+        return new FindUserInfoResponseDto(user.getUserNickname(),user.getMajor1(),user.getMajor2(),user.getIntroduce(),user.getFollower(),user.getFollowing(),user.getProfileImageUrl());
     }
 
     @Transactional
@@ -104,14 +103,14 @@ public class UserService {
             log.info(">>>>> : {}", refreshTokenSeq);
 
             //로그인 이력 업데이트
-            userInfo.setLastLoginDateAndDeviceToken(LocalDate.now(),UUID.randomUUID());
+            userInfo.setLastLoginDateAndDeviceToken(LocalDate.now(),loginRequestDto.getDeviceToken());
 
             userRepository.save(userInfo);
 
             return new TokenResponseDto(accessToken,refreshTokenSeq,LoginStatus.로그인,userInfo.getUserNickname(),userInfo.getMajor1(),userInfo.getMajor2(),userInfo.getFollower(),userInfo.getFollowing());
         }
         //신규 회원이라면
-        userRepository.save(new User(new UserSaveDto(loginRequestDto.getUserEmail(),loginRequestDto.getUserNickname(),loginRequestDto.getMajor1(),loginRequestDto.getMajor2(),0,0,loginRequestDto.getSocialType(),LocalDate.now(),UUID.randomUUID(),true)));
+        userRepository.save(new User(new UserSaveDto(loginRequestDto.getUserEmail(),loginRequestDto.getUserNickname(),loginRequestDto.getMajor1(),loginRequestDto.getMajor2(),0,0,loginRequestDto.getSocialType(),LocalDate.now(),loginRequestDto.getDeviceToken(),true)));
         User user = userRepository.findByUserEmail(loginRequestDto.getUserEmail()).orElseThrow(() ->
                 new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         RefreshToken refreshTokenInfo = new RefreshToken();
