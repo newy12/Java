@@ -25,4 +25,10 @@ public class FeedRegisterDto implements Serializable {
 
     private List<MultipartFile> images;
 
+    private boolean secretYn;
+
+    private boolean commentYn;
+
+    private boolean tempSaveYn;
+
 }

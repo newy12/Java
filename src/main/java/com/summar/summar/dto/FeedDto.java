@@ -5,6 +5,7 @@ import com.summar.summar.domain.FeedImage;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
@@ -28,5 +29,14 @@ public class FeedDto {
     private String contents;
 
     private List<FeedImage> feedImages;
+
+    @Type(type = "yes_no")
+    private boolean secretYn;
+
+    @Type(type = "yes_no")
+    private boolean commentYn;
+
+    @Type(type = "yes_no")
+    private boolean tempSaveYn;
 
 }
