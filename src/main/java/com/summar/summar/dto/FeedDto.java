@@ -30,13 +30,11 @@ public class FeedDto {
 
     private List<FeedImage> feedImages;
 
-    @Type(type = "yes_no")
     private boolean secretYn;
 
-    @Type(type = "yes_no")
     private boolean commentYn;
 
-    @Type(type = "yes_no")
     private boolean tempSaveYn;
+
 
 }

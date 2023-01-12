@@ -1,5 +1,6 @@
 package com.summar.summar.controller;
 
+import com.summar.summar.dto.FeedDto;
 import com.summar.summar.dto.FeedRegisterDto;
 import com.summar.summar.results.ListResult;
 import com.summar.summar.results.ObjectResult;
@@ -14,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -42,6 +45,9 @@ public class FeedController {
                     "                       \"imageUrl\": 1,\n" +
                     "                       \"orderNo\": 1,\n" +
                     "                   }]\n" +
+                    "                \"secretYn\": true,\n" +
+                    "                \"commentYn\": true,\n" +
+                    "                \"tempSaveYn\": true,\n" +
                     "            }"))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
@@ -51,7 +57,7 @@ public class FeedController {
 
     @Operation(summary = "피드 조회")
     @GetMapping(value = "")
-    @ApiResponses(value = {
+   /* @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
                     "    \"status\": \"SUCCESS\",\n" +
                     "    \"message\": \"정상처리\",\n" +
@@ -64,15 +70,17 @@ public class FeedController {
                     "                \"userSeq\": 1,\n" +
                     "                \"contents\": \"dd\",\n" +
                     "                \"imageUrls\": []\n" +
+                    "                \"commentYn\": \"dd\",\n" +
                     "            }\n" +
                     "            ]\n" +
                     "     }\n"
                 ))),
 
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
-    })
-    public ResponseEntity<?> getFeed() {
-        return ListResult.build("result", feedService.getFeed());
+    })*/
+    @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null")))
+    public ResponseEntity<List<FeedDto>> getFeed() {
+        return ResponseEntity.ok().body(feedService.getFeed());
     }
 
 }
