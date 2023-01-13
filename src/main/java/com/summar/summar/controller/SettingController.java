@@ -1,5 +1,6 @@
 package com.summar.summar.controller;
 
+import com.summar.summar.enumeration.SettingType;
 import com.summar.summar.repository.SettingRepository;
 import com.summar.summar.results.ListResult;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +19,18 @@ public class SettingController {
     private final SettingRepository settingRepository;
 
 
-    @GetMapping("")
-    public ResponseEntity<?> setting() {
-       return ListResult.build("results",settingRepository.findAll());
+    /**
+     * 공지사항
+     */
+    @GetMapping("/notice")
+    public ResponseEntity<?> notice() {
+       return ListResult.build("results",settingRepository.findAllBySettingType(SettingType.NOTICE));
+    }
+    /**
+     * 자주 묻는 질문
+     */
+    @GetMapping("/question")
+    public ResponseEntity<?> question() {
+        return ListResult.build("results",settingRepository.findAllBySettingType(SettingType.QUESTION));
     }
 }

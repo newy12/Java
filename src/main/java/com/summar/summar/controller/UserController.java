@@ -1,9 +1,6 @@
 package com.summar.summar.controller;
 
-import com.summar.summar.dto.AddIntroduceRequestDto;
-import com.summar.summar.dto.ChangeUserInfoRequestDto;
-import com.summar.summar.dto.LoginRequestDto;
-import com.summar.summar.dto.RefreshTokenRequestDto;
+import com.summar.summar.dto.*;
 import com.summar.summar.results.*;
 import com.summar.summar.service.PushService;
 import com.summar.summar.service.UserService;
@@ -162,10 +159,10 @@ public class UserController {
     public ResponseEntity<?> addIntroduce(@RequestBody AddIntroduceRequestDto addIntroduceRequestDto) {
         userService.addIntroduce(addIntroduceRequestDto);
         return ObjectResult.ok();
-    }//ㅅrstteddㅇㅇ우ㅏ미위ㅏㄴㅇanskdlsad
+    }
 
     /**
-     * 필명 중복체크d
+     * 필명 중복체크
      *
      * @param userNickname
      * @return
@@ -249,5 +246,14 @@ public class UserController {
     @GetMapping("/search-user-list")
     public ResponseEntity<?> searchUserInitialList(@RequestParam(value = "userNickname")String userNickname, @PageableDefault(size = 30) Pageable pageable) {
         return PageResult.build(userService.searchUserList(userNickname,pageable));
+    }
+    @PostMapping("/push-notification-change")
+    public ResponseEntity<?> pushNotification(@RequestBody PushNotificationStatusDto pushNotificationStatusDto){
+        userService.changePushNotification(pushNotificationStatusDto);
+        return ObjectResult.ok();
+    }
+    @GetMapping("/push-notification-info")
+    public ResponseEntity<?> pushNotificationInfo(@RequestParam(value = "userNickname")String userNickname){
+      return ObjectResult.build("result",userService.userPushStatusInfo(userNickname));
     }
 }

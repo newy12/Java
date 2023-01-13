@@ -1,20 +1,20 @@
 package com.summar.summar.domain;
 
 
+import com.summar.summar.enumeration.SettingType;
 import lombok.Getter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Getter
 public class Setting {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long settingId;
-    private String profileEdit; //프로필편집
-    private String pushNotification; //푸시 알림
-    private String notice; //공지사항
-    private String question; //자주묻는질문
+    @Enumerated(EnumType.STRING)
+    private SettingType settingType;
+    private String title;
+    private String content;
+    private String regDatetime;
 }

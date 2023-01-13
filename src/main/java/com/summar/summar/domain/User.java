@@ -3,6 +3,7 @@ package com.summar.summar.domain;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.summar.summar.dto.ChangeUserInfoRequestDto;
 import com.summar.summar.dto.LoginRequestDto;
+import com.summar.summar.dto.UserPushStatusInfoResponseDto;
 import com.summar.summar.dto.UserSaveDto;
 import com.summar.summar.enumeration.SocialType;
 import lombok.Builder;
@@ -104,11 +105,16 @@ public class User extends BaseTimeEntity implements Serializable {
         this.introduce = introduce;
     }
 
+    public void setPushAlarmYn(Boolean pushStatus){
+        this.pushAlarmYn = pushStatus;
+    }
+
     public void changeUserInfo(ChangeUserInfoRequestDto changeUserInfoRequestDto) {
-        this.userNickname = changeUserInfoRequestDto.getUserNickname();
+        this.userNickname = changeUserInfoRequestDto.getUpdateUserNickname();
         this.major1 = changeUserInfoRequestDto.getMajor1();
         this.major2 = changeUserInfoRequestDto.getMajor2();
         this.profileImageUrl = changeUserInfoRequestDto.getProfileImageUrl();
+        this.introduce = changeUserInfoRequestDto.getIntroduce();
     }
     public void updateFollower(Integer follower){
         this.follower = follower;
@@ -116,6 +122,5 @@ public class User extends BaseTimeEntity implements Serializable {
 
     public void updateFollowing(Integer following) {
         this.following = following;
-
     }
 }
