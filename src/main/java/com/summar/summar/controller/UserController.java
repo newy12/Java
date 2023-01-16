@@ -82,7 +82,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.findUserInfo))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = StringUtil.nulls))),
     })
-    @PreAuthorize("isAuthenticated()")
+    //@PreAuthorize("isAuthenticated()")
     @GetMapping("/user-info")
     public ResponseEntity<?> findUserInfo(@RequestParam(value = "userEmail") String userEmail) {
         return ObjectResult.build("result", userService.getUserInfo(userEmail));
