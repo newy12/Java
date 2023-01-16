@@ -13,8 +13,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
 
@@ -35,8 +41,14 @@ public class FeedController {
 
     @Operation(summary = "피드 조회")
     @GetMapping(value = "")
-    public ResponseEntity<List<FeedDto>> getFeed() {
-        return ResponseEntity.ok().body(feedService.getFeed());
+    public ResponseEntity<Page<FeedDto>> getFeed(@PageableDefault(size = 20,sort = "createdDate", direction = Sort.Direction.DESC) Pageable page) {
+        return ResponseEntity.ok().body(feedService.getFeed(page));
+    }
+
+    @Operation(summary = "특정 유저 피드 조회")
+    @GetMapping(value = "/{userSeq}")
+    public ResponseEntity<Page<FeedDto>> getFeedByUserSeq(@PageableDefault(size = 20,sort = "createdDate", direction = Sort.Direction.DESC) Pageable page, @PathVariable(name="userSeq") Long userSeq) {
+        return ResponseEntity.ok().body(feedService.getFeedByUserSeq(userSeq,page));
     }
 
 }
