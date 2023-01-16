@@ -38,12 +38,15 @@ public class FeedService {
                 .feedImages(feedImageRepository.findByFeedSeq(feedSeq))
                 .userSeq(feedRegisterDto.getUserSeq())
                 .contents(feedRegisterDto.getContents())
+                .commentYn(feedRegisterDto.isCommentYn())
+                .tempSaveYn(feedRegisterDto.isTempSaveYn())
+                .secretYn(feedRegisterDto.isSecretYn())
                 .build();
     }
 
     @Transactional
     public List<FeedDto> getFeed() {
-        List<Feed> feeds = feedRepository.findAll();
+        List<Feed> feeds = feedRepository.findAllByActivatedIsTrueAndSecretYnIsFalseAndTempSaveYnIsFalse();
         List<FeedDto> feedDtos = new ArrayList<>();
         feeds.forEach(
                 feed -> feedDtos.add(FeedDto.builder()
