@@ -29,14 +29,12 @@ public class FeedController {
 
     @Operation(summary = "피드 등록")
     @PostMapping(value = "", consumes = {"multipart/form-data"})
-    @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null")))
     public ResponseEntity<?> registFeed(@ModelAttribute FeedRegisterDto feedRegisterDto) {
         return ObjectResult.build("result", feedService.saveFeed(feedRegisterDto));
     }
 
     @Operation(summary = "피드 조회")
     @GetMapping(value = "")
-    @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null")))
     public ResponseEntity<List<FeedDto>> getFeed() {
         return ResponseEntity.ok().body(feedService.getFeed());
     }
