@@ -3,6 +3,9 @@ package com.summar.summar.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
 
 @Data
 @Builder
@@ -15,7 +18,7 @@ public class ChangeUserInfoRequestDto {
     private String major1;
     @Schema(description = "전공2", example = "전공2")
     private String major2;
-    @Schema(description = "프로필이미지경로", example = "프로필이미지경로")
+    private MultipartFile file;
     private String profileImageUrl;
     @Schema(description = "자기소개", example = "자기소개")
     private String introduce;

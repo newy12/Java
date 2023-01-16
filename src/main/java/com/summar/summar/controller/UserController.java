@@ -33,7 +33,6 @@ public class UserController {
 
     /**
      * 로그인 & 회원가입
-     *
      * @param loginRequestDto
      * @return
      * @throws Exception
@@ -66,7 +65,6 @@ public class UserController {
     }
     /**
      * 액세스 토큰, 리프레시 토큰 재발급
-     *
      * @param refreshTokenRequestDto
      * @return
      */
@@ -101,16 +99,14 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.changeUserInfo))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = StringUtil.nulls))),
     })
-    @PreAuthorize("isAuthenticated()")
-    @PutMapping("/user-info")
-    public ResponseEntity<?> changeUserInfo(@RequestBody ChangeUserInfoRequestDto changeUserInfoRequestDto) {
+    @PutMapping(value = "/user-info",consumes ={"multipart/form-data"})
+    public ResponseEntity<?> changeUserInfo(@ModelAttribute ChangeUserInfoRequestDto changeUserInfoRequestDto) {
         userService.changeUserInfo(changeUserInfoRequestDto);
         return ObjectResult.ok();
     }
 
     /**
      * 자기소개 작성
-     *
      * @param addIntroduceRequestDto
      * @return
      */

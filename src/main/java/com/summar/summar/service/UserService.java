@@ -28,6 +28,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final JwtUtil jwtUtil;
+    private final S3Service s3Service;
 
     @Transactional(readOnly = true)
     public Boolean checkNicknameDuplication(String nickname) throws NoSuchAlgorithmException {
@@ -37,6 +38,9 @@ public class UserService {
     @Transactional
     public void changeUserInfo(ChangeUserInfoRequestDto changeUserInfoRequestDto) {
         User user = userRepository.findByUserNickname(changeUserInfoRequestDto.getUserNickname()).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
+        //s3 저장
+        String profileImageUrl = s3Service.upload(changeUserInfoRequestDto.getFile(),"profile");
+        changeUserInfoRequestDto.setProfileImageUrl(profileImageUrl.substring(8));
         user.changeUserInfo(changeUserInfoRequestDto);
         userRepository.save(user);
     }
