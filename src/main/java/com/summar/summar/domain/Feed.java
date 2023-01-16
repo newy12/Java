@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.summar.summar.dto.FeedRegisterDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
+import org.hibernate.type.YesNoType;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -21,6 +23,8 @@ public class Feed extends BaseTimeEntity implements Serializable {
     private Long feedSeq;
     private String contents;
     private Long userSeq;
+
+    @Type(type="yes_no")
     private boolean activated;
 
     @OneToMany(mappedBy = "feed")
