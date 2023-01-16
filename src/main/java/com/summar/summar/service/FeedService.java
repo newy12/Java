@@ -8,6 +8,9 @@ import com.summar.summar.repository.FeedImageRepository;
 import com.summar.summar.repository.FeedRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,9 +47,23 @@ public class FeedService {
                 .build();
     }
 
-    @Transactional
-    public List<FeedDto> getFeed() {
-        List<Feed> feeds = feedRepository.findAllByActivatedIsTrueAndSecretYnIsFalseAndTempSaveYnIsFalse();
+    @Transactional(readOnly = true)
+    public Page<FeedDto> getFeed(Pageable page) {
+        Page<Feed> feeds = feedRepository.findAllByActivatedIsTrueAndSecretYnIsFalseAndTempSaveYnIsFalse(page);
+        List<FeedDto> feedDtos= new ArrayList<>();
+        feeds.forEach(
+                feed -> feedDtos.add(FeedDto.builder()
+                        .feedSeq(feed.getFeedSeq())
+                        .feedImages(feedImageRepository.findByFeedSeq(feed.getFeedSeq()))
+                        .userSeq(feed.getUserSeq())
+                        .contents(feed.getContents())
+                        .build()));
+        return new PageImpl<>(feedDtos,page,feeds.getTotalElements());
+    }
+
+    @Transactional(readOnly = true)
+    public Page<FeedDto> getFeedByUserSeq(Long userSeq,Pageable page) {
+        Page<Feed> feeds = feedRepository.findAllByActivatedIsTrueAndSecretYnIsFalseAndTempSaveYnIsFalseAndUserSeq(userSeq,page);
         List<FeedDto> feedDtos = new ArrayList<>();
         feeds.forEach(
                 feed -> feedDtos.add(FeedDto.builder()
@@ -55,6 +72,6 @@ public class FeedService {
                         .userSeq(feed.getUserSeq())
                         .contents(feed.getContents())
                         .build()));
-        return feedDtos;
+        return new PageImpl<>(feedDtos,page,feeds.getTotalElements());
     }
 }
