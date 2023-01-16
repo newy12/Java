@@ -20,8 +20,6 @@ public class ChangeUserInfoRequestDto {
     private String major2;
     @Schema(description = "프로필사진첨부", example = "프로필사친첨부")
     private MultipartFile file;
-    @Schema(description = "프로필사진url", example = "프로필사진url")
-    private String profileImageUrl;
     @Schema(description = "자기소개", example = "자기소개")
     private String introduce;
 }

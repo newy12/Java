@@ -51,6 +51,7 @@ dependencies {
     api 'com.google.code.gson:gson:2.8.6'
     api 'org.springframework.boot:spring-boot-starter-data-elasticsearch:2.6.2'
     api "com.querydsl:querydsl-jpa:${queryDslVersion}"
+    api 'org.springframework.boot:spring-boot-starter-jdbc'
     //runtimeOnly 'com.h2database:h2'
     runtimeOnly 'org.springframework.boot:spring-boot-devtools:2.7.3'
     runtimeOnly 'mysql:mysql-connector-java:8.0.30'
