@@ -101,6 +101,7 @@ public class UserController {
     })
     @PutMapping(value = "/user-info",consumes ={"multipart/form-data"})
     public ResponseEntity<?> changeUserInfo(@ModelAttribute ChangeUserInfoRequestDto changeUserInfoRequestDto) {
+
         userService.changeUserInfo(changeUserInfoRequestDto);
         return ObjectResult.ok();
     }

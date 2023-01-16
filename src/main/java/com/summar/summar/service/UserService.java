@@ -39,14 +39,22 @@ public class UserService {
     public void changeUserInfo(ChangeUserInfoRequestDto changeUserInfoRequestDto) {
         User user = userRepository.findByUserNickname(changeUserInfoRequestDto.getUserNickname()).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         //s3 저장
-        String profileImageUrl = s3Service.upload(changeUserInfoRequestDto.getFile(),"profile");
         ChangeUserInfoResponseDto changeUserInfoResponseDto = new ChangeUserInfoResponseDto();
-        changeUserInfoResponseDto.setUpdateUserNickname(changeUserInfoRequestDto.getUpdateUserNickname());
-        changeUserInfoResponseDto.setMajor1(changeUserInfoRequestDto.getMajor1());
-        changeUserInfoResponseDto.setMajor2(changeUserInfoRequestDto.getMajor2());
-        changeUserInfoResponseDto.setProfileImageUrl(profileImageUrl.substring(8));
-        user.changeUserInfo(changeUserInfoResponseDto);
-        userRepository.save(user);
+        if(changeUserInfoRequestDto.getFile() != null){
+            String profileImageUrl = s3Service.upload(changeUserInfoRequestDto.getFile(),"profile");
+            changeUserInfoResponseDto.setProfileImageUrl(profileImageUrl.substring(8));
+            changeUserInfoResponseDto.setUpdateUserNickname(changeUserInfoRequestDto.getUpdateUserNickname());
+            changeUserInfoResponseDto.setMajor1(changeUserInfoRequestDto.getMajor1());
+            changeUserInfoResponseDto.setMajor2(changeUserInfoRequestDto.getMajor2());
+            user.changeUserInfo(changeUserInfoResponseDto);
+            userRepository.save(user);
+        }else{
+            changeUserInfoResponseDto.setUpdateUserNickname(changeUserInfoRequestDto.getUpdateUserNickname());
+            changeUserInfoResponseDto.setMajor1(changeUserInfoRequestDto.getMajor1());
+            changeUserInfoResponseDto.setMajor2(changeUserInfoRequestDto.getMajor2());
+            user.changeUserInfo(changeUserInfoResponseDto);
+            userRepository.save(user);
+        }
     }
 
     @Transactional
