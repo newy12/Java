@@ -1,8 +1,6 @@
 package com.summar.summar.controller;
 
 import com.summar.summar.dto.FollowerRequestDto;
-import com.summar.summar.dto.FollowerSaveDto;
-import com.summar.summar.results.ListResult;
 import com.summar.summar.results.ObjectResult;
 import com.summar.summar.results.PageResult;
 import com.summar.summar.service.FollowService;

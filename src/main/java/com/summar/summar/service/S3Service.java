@@ -13,6 +13,7 @@ import com.summar.summar.config.ApplicationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -63,6 +64,7 @@ public class S3Service {
         String fileName = UUID.randomUUID() + extension;
         return fileName;
     }
+
 
     private String getFileExtension(String fileName) {
         int extensionPosition = fileName.lastIndexOf(".");

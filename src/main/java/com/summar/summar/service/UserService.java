@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.webjars.NotFoundException;
 
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
@@ -27,6 +28,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final JwtUtil jwtUtil;
+    private final S3Service s3Service;
 
     @Transactional(readOnly = true)
     public Boolean checkNicknameDuplication(String nickname) throws NoSuchAlgorithmException {
@@ -36,7 +38,14 @@ public class UserService {
     @Transactional
     public void changeUserInfo(ChangeUserInfoRequestDto changeUserInfoRequestDto) {
         User user = userRepository.findByUserNickname(changeUserInfoRequestDto.getUserNickname()).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
-        user.changeUserInfo(changeUserInfoRequestDto);
+        //s3 저장
+        String profileImageUrl = s3Service.upload(changeUserInfoRequestDto.getFile(),"profile");
+        ChangeUserInfoResponseDto changeUserInfoResponseDto = new ChangeUserInfoResponseDto();
+        changeUserInfoResponseDto.setUpdateUserNickname(changeUserInfoRequestDto.getUpdateUserNickname());
+        changeUserInfoResponseDto.setMajor1(changeUserInfoRequestDto.getMajor1());
+        changeUserInfoResponseDto.setMajor2(changeUserInfoRequestDto.getMajor2());
+        changeUserInfoResponseDto.setProfileImageUrl(profileImageUrl.substring(8));
+        user.changeUserInfo(changeUserInfoResponseDto);
         userRepository.save(user);
     }
 
@@ -178,5 +187,21 @@ public class UserService {
         }
         Page<User> users = userRepository.searchWord(index_map.get(num), index_map.get(num + 1),pageable);
         return users.map(SearchUserListResponseDto::new);
+    }
+
+    @Transactional
+    public void changePushNotification(PushNotificationStatusDto pushNotificationStatusDto) {
+        User user = userRepository.findByUserNickname(pushNotificationStatusDto.getUserNickname())
+                .orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
+        user.setPushAlarmYn(pushNotificationStatusDto.getStatus());
+        userRepository.save(user);
+    }
+
+    public UserPushStatusInfoResponseDto userPushStatusInfo(String userNickname) {
+        User user = userRepository.findByUserNickname(userNickname)
+                .orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
+        UserPushStatusInfoResponseDto userPushStatusInfoResponseDto = new UserPushStatusInfoResponseDto();
+        userPushStatusInfoResponseDto.setStatus(user.getPushAlarmYn());
+        return userPushStatusInfoResponseDto;
     }
 }

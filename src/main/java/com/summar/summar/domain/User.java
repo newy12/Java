@@ -1,9 +1,7 @@
 package com.summar.summar.domain;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.summar.summar.dto.ChangeUserInfoRequestDto;
-import com.summar.summar.dto.LoginRequestDto;
-import com.summar.summar.dto.UserSaveDto;
+import com.summar.summar.dto.*;
 import com.summar.summar.enumeration.SocialType;
 import lombok.Builder;
 import lombok.Getter;
@@ -103,11 +101,16 @@ public class User extends BaseTimeEntity implements Serializable {
         this.introduce = introduce;
     }
 
-    public void changeUserInfo(ChangeUserInfoRequestDto changeUserInfoRequestDto) {
-        this.userNickname = changeUserInfoRequestDto.getUserNickname();
-        this.major1 = changeUserInfoRequestDto.getMajor1();
-        this.major2 = changeUserInfoRequestDto.getMajor2();
-        this.profileImageUrl = changeUserInfoRequestDto.getProfileImageUrl();
+    public void setPushAlarmYn(Boolean pushStatus){
+        this.pushAlarmYn = pushStatus;
+    }
+
+    public void changeUserInfo(ChangeUserInfoResponseDto changeUserInfoResponseDto) {
+        this.userNickname = changeUserInfoResponseDto.getUpdateUserNickname();
+        this.major1 = changeUserInfoResponseDto.getMajor1();
+        this.major2 = changeUserInfoResponseDto.getMajor2();
+        this.profileImageUrl = changeUserInfoResponseDto.getProfileImageUrl();
+        this.introduce = changeUserInfoResponseDto.getIntroduce();
     }
     public void updateFollower(Integer follower){
         this.follower = follower;
@@ -115,6 +118,5 @@ public class User extends BaseTimeEntity implements Serializable {
 
     public void updateFollowing(Integer following) {
         this.following = following;
-
     }
 }
