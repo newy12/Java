@@ -36,7 +36,4 @@ public class FeedDto {
 
     private boolean tempSaveYn;
 
-    private Long totalCount;
-
-
 }

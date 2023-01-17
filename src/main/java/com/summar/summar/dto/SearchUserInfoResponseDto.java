@@ -5,6 +5,8 @@ import lombok.Data;
 
 @Data
 public class SearchUserInfoResponseDto {
+
+    private Long userSeq;
     private String userNickname;
     private Integer follower;
     private Integer following;
@@ -12,7 +14,8 @@ public class SearchUserInfoResponseDto {
     private String major1;
     private String major2;
 
-    public SearchUserInfoResponseDto(String userNickname, Integer follower, Integer following, String userEmail, String major1, String major2) {
+    public SearchUserInfoResponseDto(Long userSeq,String userNickname, Integer follower, Integer following, String userEmail, String major1, String major2) {
+        this.userSeq = userSeq;
         this.userNickname = userNickname;
         this.follower = follower;
         this.following = following;

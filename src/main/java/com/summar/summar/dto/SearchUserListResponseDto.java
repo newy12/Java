@@ -5,6 +5,8 @@ import lombok.Data;
 
 @Data
 public class SearchUserListResponseDto {
+
+    private Long userSeq;
     private String userNickname;
     private String major1;
     private String major2;
@@ -14,6 +16,7 @@ public class SearchUserListResponseDto {
     private String profileImageUrl;
 
     public SearchUserListResponseDto(User user){
+        this.userSeq = user.getUserSeq();
         this.userNickname = user.getUserNickname();
         this.major1 = user.getMajor1();
         this.major2 = user.getMajor2();
