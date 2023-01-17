@@ -1,5 +1,6 @@
 package com.summar.summar.util;
 
+import com.summar.summar.domain.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -72,6 +73,12 @@ public class JwtUtil {
     public String generateToken(String loginEmail) {
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, loginEmail);
+    }
+
+    public String generateToken(User user) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("userSeq",user.getUserSeq());
+        return createToken(claims, user.getUserEmail());
     }
 
     public String generateRefreshToken(String loginEmail) {

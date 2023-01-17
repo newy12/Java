@@ -72,19 +72,19 @@ public class UserService {
         RefreshToken refreshToken = refreshTokenRepository.findByUser(user).orElseThrow(
                 () -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         if (jwtUtil.validateRefreshToken(refreshToken.getRefreshToken(), refreshTokenRequestDto.getUserEmail())) {
-            return jwtUtil.generateToken(refreshTokenRequestDto.getUserEmail());
+            return jwtUtil.generateToken(user);
         }
         return null;
     }
 
     @Transactional
     public BothTokenResponseDto giveBothToken(RefreshTokenRequestDto refreshTokenRequestDto) {
-        String accessToken = jwtUtil.generateToken(refreshTokenRequestDto.getUserEmail());
-        String refreshToken = jwtUtil.generateRefreshToken(refreshTokenRequestDto.getUserEmail());
         User user = userRepository.findByUserEmail(refreshTokenRequestDto.getUserEmail()).orElseThrow(
                 () -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         RefreshToken refreshTokenInfo = refreshTokenRepository.findByUser(user).orElseThrow(
                 () -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
+        String accessToken = jwtUtil.generateToken(user);
+        String refreshToken = jwtUtil.generateRefreshToken(refreshTokenRequestDto.getUserEmail());
         refreshTokenInfo.setRefreshToken(user, refreshToken);
         UUID refreshTokenSeq = refreshTokenRepository.save(refreshTokenInfo).getRefreshTokenSeq();
         log.info(">>>>> : {}", refreshTokenInfo.getRefreshTokenSeq());
@@ -95,15 +95,11 @@ public class UserService {
     public FindUserInfoResponseDto getUserInfo(String userEmail) {
         User user = userRepository.findByUserEmail(userEmail).orElseThrow(
                 () -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
-        return new FindUserInfoResponseDto(user.getUserNickname(),user.getMajor1(),user.getMajor2(),user.getIntroduce(),user.getFollower(),user.getFollowing(),user.getProfileImageUrl());
+        return new FindUserInfoResponseDto(user.getUserSeq(),user.getUserNickname(),user.getMajor1(),user.getMajor2(),user.getIntroduce(),user.getFollower(),user.getFollowing(),user.getProfileImageUrl());
     }
 
     @Transactional
     public TokenResponseDto loginFlow(LoginRequestDto loginRequestDto) throws Exception {
-        //access token 생성
-        final String accessToken = jwtUtil.generateToken(loginRequestDto.getUserEmail());
-        //refresh token 생성
-        final String refreshToken = jwtUtil.generateRefreshToken(loginRequestDto.getUserEmail());
 
         //nickname 또는 major 1 또는 major 2 가 비어있으면 회원가입
         if ("".equals(loginRequestDto.getUserNickname()) && "".equals(loginRequestDto.getMajor1()) && "".equals(loginRequestDto.getMajor2())
@@ -115,6 +111,11 @@ public class UserService {
             User userInfo = userRepository.findByUserEmail(loginRequestDto.getUserEmail()).orElseThrow(() -> new UsernameNotFoundException("User not found with userId: " + loginRequestDto.getUserEmail()));
             RefreshToken refreshTokenInfo = refreshTokenRepository.findByUser(userInfo).orElseThrow(() ->
                     new SummarCommonException(SummarErrorCode.WRONG_TOKEN.getCode(), SummarErrorCode.WRONG_TOKEN.getMessage()));
+
+            //access token 생성
+            final String accessToken = jwtUtil.generateToken(userInfo);
+            //refresh token 생성
+            final String refreshToken = jwtUtil.generateRefreshToken(loginRequestDto.getUserEmail());
             refreshTokenInfo.setRefreshToken(userInfo, refreshToken);
             UUID refreshTokenSeq = refreshTokenRepository.save(refreshTokenInfo).getRefreshTokenSeq();
             log.info(">>>>> : {}", refreshTokenSeq);
@@ -131,7 +132,13 @@ public class UserService {
         User user = userRepository.findByUserEmail(loginRequestDto.getUserEmail()).orElseThrow(() ->
                 new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         RefreshToken refreshTokenInfo = new RefreshToken();
+
+        //access token 생성
+        final String accessToken = jwtUtil.generateToken(user);
+        //refresh token 생성
+        final String refreshToken = jwtUtil.generateRefreshToken(loginRequestDto.getUserEmail());
         refreshTokenInfo.setRefreshToken(user, refreshToken);
+
         UUID refreshTokenSeq = refreshTokenRepository.save(refreshTokenInfo).getRefreshTokenSeq();
         log.info(">>>>> : {}", refreshTokenSeq);
         return new TokenResponseDto(accessToken,refreshTokenSeq,LoginStatus.회원가입완료,"","","",0,0);
@@ -141,7 +148,7 @@ public class UserService {
     public SearchUserInfoResponseDto searchUserInfo(String userNickname) {
         User user = userRepository.findByUserNickname(userNickname).orElseThrow(() ->
                 new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
-        return new SearchUserInfoResponseDto(user.getUserEmail(),user.getFollower(),user.getFollowing(),user.getUserNickname(),user.getMajor1(),user.getMajor2());
+        return new SearchUserInfoResponseDto(user.getUserSeq(), user.getUserEmail(),user.getFollower(),user.getFollowing(),user.getUserNickname(),user.getMajor1(),user.getMajor2());
     }
 
     @Transactional(readOnly = true)
