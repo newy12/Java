@@ -105,24 +105,6 @@ public class UserController {
         userService.changeUserInfo(changeUserInfoRequestDto);
         return ObjectResult.ok();
     }
-
-    /**
-     * 자기소개 작성
-     * @param addIntroduceRequestDto
-     * @return
-     */
-    @Operation(summary = "자기소개 추가", description = "자기소개를 추가합니다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.addIntroduce))),
-            @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = StringUtil.nulls))),
-    })
-    @PreAuthorize("isAuthenticated()")
-    @PostMapping("/add-introduce")
-    public ResponseEntity<?> addIntroduce(@RequestBody AddIntroduceRequestDto addIntroduceRequestDto) {
-        userService.addIntroduce(addIntroduceRequestDto);
-        return ObjectResult.ok();
-    }
-
     /**
      * 필명 중복체크
      *

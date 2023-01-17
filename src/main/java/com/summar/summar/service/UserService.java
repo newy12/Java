@@ -48,12 +48,14 @@ public class UserService {
             changeUserInfoResponseDto.setUpdateUserNickname(changeUserInfoRequestDto.getUpdateUserNickname());
             changeUserInfoResponseDto.setMajor1(changeUserInfoRequestDto.getMajor1());
             changeUserInfoResponseDto.setMajor2(changeUserInfoRequestDto.getMajor2());
+            changeUserInfoResponseDto.setIntroduce(changeUserInfoRequestDto.getIntroduce());
             user.changeUserInfo(changeUserInfoResponseDto);
             userRepository.save(user);
         }else{
             changeUserInfoResponseDto.setUpdateUserNickname(changeUserInfoRequestDto.getUpdateUserNickname());
             changeUserInfoResponseDto.setMajor1(changeUserInfoRequestDto.getMajor1());
             changeUserInfoResponseDto.setMajor2(changeUserInfoRequestDto.getMajor2());
+            changeUserInfoResponseDto.setIntroduce(changeUserInfoRequestDto.getIntroduce());
             user.changeUserInfo(changeUserInfoResponseDto);
             userRepository.save(user);
         }
