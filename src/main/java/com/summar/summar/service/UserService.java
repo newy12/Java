@@ -42,7 +42,9 @@ public class UserService {
         ChangeUserInfoResponseDto changeUserInfoResponseDto = new ChangeUserInfoResponseDto();
         if(changeUserInfoRequestDto.getFile() != null){
             String profileImageUrl = s3Service.upload(changeUserInfoRequestDto.getFile(),"profile");
-            changeUserInfoResponseDto.setProfileImageUrl(profileImageUrl.substring(8));
+            String profileImageUrlConvert = profileImageUrl.substring(8);
+
+            changeUserInfoResponseDto.setProfileImageUrl("http://"+profileImageUrlConvert);
             changeUserInfoResponseDto.setUpdateUserNickname(changeUserInfoRequestDto.getUpdateUserNickname());
             changeUserInfoResponseDto.setMajor1(changeUserInfoRequestDto.getMajor1());
             changeUserInfoResponseDto.setMajor2(changeUserInfoRequestDto.getMajor2());
@@ -108,7 +110,7 @@ public class UserService {
         //nickname 또는 major 1 또는 major 2 가 비어있으면 회원가입
         if ("".equals(loginRequestDto.getUserNickname()) && "".equals(loginRequestDto.getMajor1()) && "".equals(loginRequestDto.getMajor2())
                 && !userRepository.existsByUserEmail(loginRequestDto.getUserEmail())) {
-            return new TokenResponseDto("발급x",UUID.randomUUID(),LoginStatus.회원가입,"","","",0,0);
+            return new TokenResponseDto("발급x",UUID.randomUUID(),LoginStatus.회원가입,0L,"","","",0,0);
         }
         //기존 회원이 있다면
         if (userRepository.existsByUserEmail(loginRequestDto.getUserEmail())) {
@@ -124,7 +126,7 @@ public class UserService {
 
             userRepository.save(userInfo);
 
-            return new TokenResponseDto(accessToken,refreshTokenSeq,LoginStatus.로그인,userInfo.getUserNickname(),userInfo.getMajor1(),userInfo.getMajor2(),userInfo.getFollower(),userInfo.getFollowing());
+            return new TokenResponseDto(accessToken,refreshTokenSeq,LoginStatus.로그인,userInfo.getUserSeq(),userInfo.getUserNickname(),userInfo.getMajor1(),userInfo.getMajor2(),userInfo.getFollower(),userInfo.getFollowing());
         }
         //신규 회원이라면
         userRepository.save(new User(new UserSaveDto(loginRequestDto.getUserEmail(),loginRequestDto.getUserNickname(),loginRequestDto.getMajor1(),loginRequestDto.getMajor2(),0,0,loginRequestDto.getSocialType(),LocalDate.now(),loginRequestDto.getDeviceToken(),true)));
@@ -134,7 +136,7 @@ public class UserService {
         refreshTokenInfo.setRefreshToken(user, refreshToken);
         UUID refreshTokenSeq = refreshTokenRepository.save(refreshTokenInfo).getRefreshTokenSeq();
         log.info(">>>>> : {}", refreshTokenSeq);
-        return new TokenResponseDto(accessToken,refreshTokenSeq,LoginStatus.회원가입완료,"","","",0,0);
+        return new TokenResponseDto(accessToken,refreshTokenSeq,LoginStatus.회원가입완료,user.getUserSeq(),"","","",0,0);
     }
 
     @Transactional(readOnly = true)

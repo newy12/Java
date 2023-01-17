@@ -11,6 +11,7 @@ public class AuthenticationResult {
                 .add("accessToken", tokenResponseDto.getAccessToken() == null ? null : tokenResponseDto.getAccessToken())
                 .add("refreshTokenSeq", tokenResponseDto.getRefreshTokenSeq() == null ? null : tokenResponseDto.getRefreshTokenSeq())
                 .add("loginStatus", tokenResponseDto.getLoginStatus())
+                .add("userSeq",tokenResponseDto.getUserSeq())
                 .add("userNickname", tokenResponseDto.getUserNickname() == "" ? "" : tokenResponseDto.getUserNickname())
                 .add("major1", tokenResponseDto.getMajor1() == "" ? "" : tokenResponseDto.getMajor1())
                 .add("major2", tokenResponseDto.getMajor2() == "" ? "" : tokenResponseDto.getMajor2())
