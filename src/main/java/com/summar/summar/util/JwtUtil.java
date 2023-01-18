@@ -9,11 +9,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 
 @RequiredArgsConstructor
@@ -70,15 +73,23 @@ public class JwtUtil {
         return extractRefreshTokenExpiration(token).before(new Date());
     }
 
+
     public String generateToken(String loginEmail) {
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, loginEmail);
     }
 
-    public String generateToken(User user) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("userSeq",user.getUserSeq());
-        return createToken(claims, user.getUserEmail());
+    public static Optional<Long> getCurrentUserSeq() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        return Optional
+                .ofNullable(securityContext.getAuthentication())
+                .map(authentication -> {
+                    Object details = authentication.getDetails();
+                    if (details instanceof User) {
+                        return ((User) details).getUserSeq();
+                    }
+                    return null;
+                });
     }
 
     public String generateRefreshToken(String loginEmail) {
@@ -123,5 +134,26 @@ public class JwtUtil {
         return true;
     }
 
+    public String generateToken(User user) {
+        Map<String, Object> claims = new HashMap<>();
+
+        /*HashMap<String, String> extraClaims = new HashMap<>();
+
+        List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
+                .map(authority -> new SimpleGrantedAuthority(authority.getName()))
+                .collect(Collectors.toList());
+
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(userParam.getLogin(), null, grantedAuthorities);
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+        extraClaims.put(USER_ID_KEY, userParam.getId().toString());
+        extraClaims.put(MALL_ID_KEY, userParam.getMall().getId().toString());
+        String accessToken = createToken(authenticationToken, false, extraClaims);
+        String refreshToken = createRefreshToken(authenticationToken, extraClaims);*/
+
+        claims.put("userSeq", user.getUserSeq());
+        return createToken(claims, user.getUserEmail());
+    }
 
 }

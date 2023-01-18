@@ -33,13 +33,19 @@ public class FeedController {
 
     @Operation(summary = "피드 조회")
     @GetMapping(value = "")
-    public ResponseEntity<Page<FeedDto>> getFeed(@PageableDefault(size = 30,sort = "createdDate", direction = Sort.Direction.DESC) Pageable page) {
+    public ResponseEntity<Page<FeedDto>> getFeed(@PageableDefault(size = 30, sort = "createdDate", direction = Sort.Direction.DESC) Pageable page) {
         return (ResponseEntity<Page<FeedDto>>) PageResult.build(feedService.getFeed(page));
     }
 
+    @Operation(summary = "피드 상세 조회")
+    @GetMapping(value = "/{feedSeq}")
+    public ResponseEntity<FeedDto> getFeed(@PathVariable(name = "feedSeq") Long feedSeq) {
+        return (ResponseEntity<FeedDto>) ObjectResult.build("result", feedService.getFeedByFeedSeq(feedSeq));
+    }
+
     @Operation(summary = "특정 유저 피드 조회")
-    @GetMapping(value = "/{userSeq}")
-    public ResponseEntity<Page<FeedDto>> getFeedByUserSeq(@PageableDefault(size = 30,sort = "createdDate", direction = Sort.Direction.DESC) Pageable page, @PathVariable(name="userSeq") Long userSeq) {
+    @GetMapping(value = "/user/{userSeq}")
+    public ResponseEntity<Page<FeedDto>> getFeedByUserSeq(@PageableDefault(size = 30, sort = "createdDate", direction = Sort.Direction.DESC) Pageable page, @PathVariable(name = "userSeq") Long userSeq) {
         return (ResponseEntity<Page<FeedDto>>) PageResult.build(feedService.getFeedByUserSeq(userSeq, page));
     }
 

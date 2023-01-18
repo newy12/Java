@@ -6,6 +6,7 @@ import com.summar.summar.dto.FeedDto;
 import com.summar.summar.dto.FeedRegisterDto;
 import com.summar.summar.repository.FeedImageRepository;
 import com.summar.summar.repository.FeedRepository;
+import com.summar.summar.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -48,9 +50,23 @@ public class FeedService {
     }
 
     @Transactional(readOnly = true)
+    public Optional<FeedDto> getFeedByFeedSeq(Long feedSeq) {
+        Optional<Feed> feed = feedRepository.findById(feedSeq);
+        return Optional.ofNullable(FeedDto.builder()
+                .feedSeq(feedSeq)
+                .feedImages(feedImageRepository.findByFeedSeq(feedSeq))
+                .userSeq(feed.get().getUserSeq())
+                .contents(feed.get().getContents())
+                .commentYn(feed.get().isCommentYn())
+                .tempSaveYn(feed.get().isTempSaveYn())
+                .secretYn(feed.get().isSecretYn())
+                .build());
+    }
+
+    @Transactional(readOnly = true)
     public Page<FeedDto> getFeed(Pageable page) {
         Page<Feed> feeds = feedRepository.findAllByActivatedIsTrueAndSecretYnIsFalseAndTempSaveYnIsFalse(page);
-        List<FeedDto> feedDtos= new ArrayList<>();
+        List<FeedDto> feedDtos = new ArrayList<>();
         feeds.forEach(
                 feed -> feedDtos.add(FeedDto.builder()
                         .feedSeq(feed.getFeedSeq())
@@ -63,7 +79,12 @@ public class FeedService {
 
     @Transactional(readOnly = true)
     public Page<FeedDto> getFeedByUserSeq(Long userSeq,Pageable page) {
-        Page<Feed> feeds = feedRepository.findAllByActivatedIsTrueAndSecretYnIsFalseAndTempSaveYnIsFalseAndUserSeq(userSeq,page);
+        Page<Feed> feeds;
+        if (userSeq.equals(JwtUtil.getCurrentUserSeq().get())) {
+            feeds = feedRepository.findAllByActivatedIsTrueAndTempSaveYnIsFalseAndUserSeq(userSeq, page);
+        } else {
+            feeds = feedRepository.findAllByActivatedIsTrueAndSecretYnIsFalseAndTempSaveYnIsFalseAndUserSeq(userSeq, page);
+        }
         List<FeedDto> feedDtos = new ArrayList<>();
         feeds.forEach(
                 feed -> feedDtos.add(FeedDto.builder()
@@ -72,6 +93,6 @@ public class FeedService {
                         .userSeq(feed.getUserSeq())
                         .contents(feed.getContents())
                         .build()));
-        return new PageImpl<>(feedDtos,page,feeds.getTotalElements());
+        return new PageImpl<>(feedDtos, page, feeds.getTotalElements());
     }
 }

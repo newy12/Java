@@ -69,7 +69,7 @@ public class WebSecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()
+                .antMatchers("/api/v1/user/*").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().disable()
