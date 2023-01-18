@@ -14,22 +14,19 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long>{
 
 
-    boolean existsByUserNickname(String nickname);
+    boolean existsByUserNicknameAndLeaveYn(String nickname,boolean leaveYn);
+    boolean existsByUserNicknameContainsAndLeaveYn(String nickname,boolean leaveYn);
 
-    /*boolean existsByUserEmail(String userId);*/
-    boolean existsByUserNicknameContains(String nickname);
+    Optional<User> findByUserEmailAndLeaveYn(String userEmail, boolean leaveYn);
 
+    boolean existsByUserEmailAndLeaveYn(String userEmail,boolean leaveYn);
 
-    Optional<User> findByUserEmail(String userEmail);
+    Optional<User> findByUserNicknameAndLeaveYn(String userNickname,boolean leaveYn);
 
-    boolean existsByUserEmail(String userEmail);
+    Page<User> findByUserNicknameContainsAndLeaveYn(String userNickname,boolean leaveYn ,Pageable pageable);
 
-   // boolean existsByUserEmailAndSocialType(String userEmail, SocialType socialType);
-
-    Optional<User> findByUserNickname(String userNickname);
-
-    Page<User> findByUserNicknameContains(String userNickname, Pageable pageable);
-
-    @Query("select u from User u where u.userNickname >=:word and u.userNickname <:word2")
+    @Query("select u from User u where u.userNickname >=:word and u.userNickname <:word2 and u.leaveYn = false")
     Page<User> searchWord(String word,String word2,Pageable pageable);
+
+    Optional<User> findByUserSeqAndLeaveYn(Long userSeq, boolean leaveYn);
 }

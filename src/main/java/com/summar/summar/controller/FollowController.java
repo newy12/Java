@@ -55,8 +55,8 @@ public class FollowController {
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
     @GetMapping("/followers")
-    public ResponseEntity<?> findFollowers(@RequestParam(value = "userNickname")String userNickname, Pageable pageable){
-        return PageResult.build(followService.findFollowers(userNickname,pageable));
+    public ResponseEntity<?> findFollowers(@RequestParam(value = "userSeq")Long userSeq, Pageable pageable){
+        return PageResult.build(followService.findFollowers(userSeq,pageable));
     }
 
     /**
@@ -88,8 +88,8 @@ public class FollowController {
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
     @GetMapping("/followings")
-    public ResponseEntity<?> findFollowings(@RequestParam(value = "userNickname")String userNickname, Pageable pageable){
-        return PageResult.build(followService.findFollowings(userNickname,pageable));
+    public ResponseEntity<?> findFollowings(@RequestParam(value = "userSeq")Long userSeq, Pageable pageable){
+        return PageResult.build(followService.findFollowings(userSeq,pageable));
     }
 
 

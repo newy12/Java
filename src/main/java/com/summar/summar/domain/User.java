@@ -51,6 +51,9 @@ public class User extends BaseTimeEntity implements Serializable {
 
     private String deviceToken; //디바이스 식별 토큰값 (랜덤)
 
+    @Type(type="yes_no")
+    private Boolean leaveYn; //탈퇴 여부
+
     @OneToMany(mappedBy = "followingUser", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Follow> followingUserList;
@@ -88,6 +91,7 @@ public class User extends BaseTimeEntity implements Serializable {
         this.socialType = userSaveDto.getSocialType();
         this.lastLoginDate = userSaveDto.getLastLoginDate();
         this.pushAlarmYn = userSaveDto.getPushAlarmYn();
+        this.leaveYn = userSaveDto.getLeaveYn();
     }
     public void setLastLoginDateAndDeviceToken(LocalDate lastLoginDate,String deviceToken){
         this.lastLoginDate = lastLoginDate;
@@ -118,5 +122,13 @@ public class User extends BaseTimeEntity implements Serializable {
 
     public void updateFollowing(Integer following) {
         this.following = following;
+    }
+
+    public void leaveUser(String userEmail, String userNickname, String deviceToken,Boolean pushAlarmYn,Boolean leaveYn){
+        this.userEmail = userEmail;
+        this.userNickname = userNickname;
+        this.deviceToken = deviceToken;
+        this.pushAlarmYn = pushAlarmYn;
+        this.leaveYn = leaveYn;
     }
 }

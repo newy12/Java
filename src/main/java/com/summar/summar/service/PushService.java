@@ -41,7 +41,7 @@ public class PushService {
                     .build();
 
             //device token 정보 찾기
-            User user = userRepository.findByUserNickname(pushNotificationDto.getUserNickname()).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
+            User user = userRepository.findByUserNicknameAndLeaveYn(pushNotificationDto.getUserNickname(),false).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
 
             PushRequestDto pushRequestDto = PushRequestDto.builder()
                     .to(user.getDeviceToken())  //해당기기 디바이스 토큰

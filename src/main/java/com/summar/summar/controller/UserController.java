@@ -43,10 +43,27 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.login))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = StringUtil.nulls))),
     })
-    @PostMapping(value = "/login")
-    public ResponseEntity<ApiResult> login(@RequestBody LoginRequestDto loginRequestDto) throws Exception {
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequestDto) throws Exception {
         return AuthenticationResult.build(userService.loginFlow(loginRequestDto));
+
     }
+    /**
+     * 회원 탈퇴
+     * @param userSeq
+     * @return
+     */
+    @Operation(summary = "회원탈퇴", description = "회원이 탈퇴됩니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.leaveUser))),
+            @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = StringUtil.nulls))),
+    })
+    @DeleteMapping("/leave")
+    public ResponseEntity<?> leave(@RequestParam(value = "userSeq")Long userSeq){
+        userService.leaveUser(userSeq);
+        return ObjectResult.ok();
+    }
+
 
     /**
      * 리프레시 토큰으로 엑세스 토큰 재발급
@@ -123,19 +140,19 @@ public class UserController {
     }
 
     /**
-     * 닉네임으로 유저정보 조회
-     * @param userNickname
+     * 키값으로 유저정보 조회
+     * @param userSeq
      * @return
      */
-    @Operation(summary = "닉네임으로 유저정보 조회", description = "회원의 정보를 조회합니다.", security = @SecurityRequirement(name = "Authorization"))
+    @Operation(summary = "키값으로 유저정보 조회", description = "회원의 정보를 조회합니다.", security = @SecurityRequirement(name = "Authorization"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.searchUserInfo))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = StringUtil.nulls))),
     })
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/search-user-info")
-    public ResponseEntity<?> searchUserInfo(@RequestParam(value = "userNickname")String userNickname){
-       return ObjectResult.build("results",userService.searchUserInfo(userNickname));
+    public ResponseEntity<?> searchUserInfo(@RequestParam(value = "userSeq")Long userSeq){
+       return ObjectResult.build("results",userService.searchUserInfo(userSeq));
     }
     @Operation(summary = "한글 초성 & 단어 검색 기능", description = "회원의 닉네임검색 기능입니다.", security = @SecurityRequirement(name = "Authorization"))
     @ApiResponses(value = {

@@ -25,9 +25,9 @@ public class FollowService {
 
 
     @Transactional(readOnly = true)
-    public Page<FollowerResponseDto> findFollowers(String userNickname, Pageable pageable) {
+    public Page<FollowerResponseDto> findFollowers(Long userSeq, Pageable pageable) {
         //해당 유저의 팔로워들 정보 추출
-        User userInfo = userRepository.findByUserNickname(userNickname).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
+        User userInfo = userRepository.findByUserSeqAndLeaveYn(userSeq,false).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         Page<Follow> followerList = followRepository.findByFollowedUserAndFollowYn(userInfo,true, pageable);
         return followerList.map(m -> FollowerResponseDto.builder()
                 .userNickname(m.getFollowingUser().getUserNickname())
@@ -40,8 +40,8 @@ public class FollowService {
     }
 
    @Transactional(readOnly = true)
-    public Page<?> findFollowings(String userNickname, Pageable pageable) {
-        User userInfo = userRepository.findByUserNickname(userNickname).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
+    public Page<?> findFollowings(Long userSeq, Pageable pageable) {
+        User userInfo = userRepository.findByUserSeqAndLeaveYn(userSeq,false).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         Page<Follow> followingList = followRepository.findByFollowingUserAndFollowYn(userInfo, true, pageable);
         return followingList.map(m -> FollowerResponseDto.builder()
                 .userNickname(m.getFollowedUser().getUserNickname())
@@ -57,8 +57,8 @@ public class FollowService {
         if (followerRequestDto.getFollowedUserNickname().equals(followerRequestDto.getFollowingUserNickname())) {
             throw new NotFoundException("같을수없다");
         }
-        User followedUser = userRepository.findByUserNickname(followerRequestDto.getFollowedUserNickname()).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
-        User followingUser = userRepository.findByUserNickname(followerRequestDto.getFollowingUserNickname()).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
+        User followedUser = userRepository.findByUserNicknameAndLeaveYn(followerRequestDto.getFollowedUserNickname(),false).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
+        User followingUser = userRepository.findByUserNicknameAndLeaveYn(followerRequestDto.getFollowingUserNickname(),false).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         Follow followInfo = followRepository.findByFollowedUserAndFollowingUserAndFollowYn(followedUser, followingUser, false).orElse(null);
         //푸쉬 알람
         PushNotificationDto pushNotificationDto = PushNotificationDto.builder()
@@ -98,8 +98,8 @@ public class FollowService {
 
     @Transactional
     public void deleteFollower(FollowerRequestDto followerRequestDto) {
-        User followingUser = userRepository.findByUserNickname(followerRequestDto.getFollowingUserNickname()).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
-        User followedUser = userRepository.findByUserNickname(followerRequestDto.getFollowedUserNickname()).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
+        User followingUser = userRepository.findByUserNicknameAndLeaveYn(followerRequestDto.getFollowingUserNickname(),false).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
+        User followedUser = userRepository.findByUserNicknameAndLeaveYn(followerRequestDto.getFollowedUserNickname(),false).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         Follow followInfo = followRepository.findByFollowedUserAndFollowingUserAndFollowYn(followedUser,followingUser , true).orElseThrow(() -> new SummarCommonException(SummarErrorCode.FOLLOW_NOT_FOUND.getCode(), SummarErrorCode.FOLLOW_NOT_FOUND.getMessage()));
         followInfo.setFollowYn(false);
         followRepository.save(followInfo);

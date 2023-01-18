@@ -21,7 +21,7 @@ public class Follow {
     @JsonBackReference
     @JoinColumn(name = "followed_user_id")
     private User followedUser; //팔로우 당한 사람
-    @Column(name = "follow_yn",length = 1, columnDefinition = "char(1) default 'N'")
+    @Column(name = "follow_yn")
     @Type(type = "yes_no")
     private Boolean followYn; //팔로우 Y/N
     @ManyToOne

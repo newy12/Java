@@ -19,8 +19,9 @@ public class UserSaveDto {
     private LocalDate lastLoginDate;
     private String deviceToken;
     private Boolean pushAlarmYn;
+    private Boolean leaveYn;
 
-    public UserSaveDto(String userEmail, String userNickname, String major1, String major2, Integer follower, Integer following, SocialType socialType, LocalDate lastLoginDate, String deviceToken, Boolean pushAlarmYn){
+    public UserSaveDto(String userEmail, String userNickname, String major1, String major2, Integer follower, Integer following, SocialType socialType, LocalDate lastLoginDate, String deviceToken, Boolean pushAlarmYn,Boolean leaveYn){
         this.userEmail = userEmail;
         this.userNickname = userNickname;
         this.major1 = major1;
@@ -31,5 +32,6 @@ public class UserSaveDto {
         this.lastLoginDate = lastLoginDate;
         this.deviceToken = deviceToken;
         this.pushAlarmYn = pushAlarmYn;
+        this.leaveYn = leaveYn;
     }
 }
