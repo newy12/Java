@@ -11,6 +11,6 @@ import java.util.Optional;
 public interface FeedRepository extends JpaRepository<Feed, Long> {
 
     Page<Feed> findAllByActivatedIsTrueAndSecretYnIsFalseAndTempSaveYnIsFalse(Pageable page);
-    Page<Feed> findAllByActivatedIsTrueAndSecretYnIsFalseAndTempSaveYnIsFalseAndUserSeq(Long userSeq,Pageable page);
-    Page<Feed> findAllByActivatedIsTrueAndTempSaveYnIsFalseAndUserSeq(Long userSeq,Pageable page);
+
+    Page<Feed> findAllByActivatedIsTrueAndSecretYnIsFalseAndTempSaveYnIsFalseAndUserUserSeq(Long userSeq,Pageable page);
 }

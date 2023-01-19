@@ -21,7 +21,10 @@ public class Feed extends BaseTimeEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long feedSeq;
     private String contents;
-    private Long userSeq;
+
+    @ManyToOne
+    @JoinColumn(name="user_seq", referencedColumnName = "user_seq")
+    private User user;
 
     @Type(type = "yes_no")
     private boolean activated;
@@ -40,8 +43,10 @@ public class Feed extends BaseTimeEntity implements Serializable {
     private List<FeedImage> feedImages = new ArrayList<>();
 
 
-    public Feed(FeedRegisterDto feedRegisterDto) {
-        this.userSeq = feedRegisterDto.getUserSeq();
+
+
+    public Feed(FeedRegisterDto feedRegisterDto,User user) {
+        this.user = user;
         this.contents = feedRegisterDto.getContents();
         this.activated = true;
         this.secretYn = feedRegisterDto.isSecretYn();

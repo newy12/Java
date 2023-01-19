@@ -6,7 +6,6 @@ import com.summar.summar.dto.FeedDto;
 import com.summar.summar.dto.FeedRegisterDto;
 import com.summar.summar.repository.FeedImageRepository;
 import com.summar.summar.repository.FeedRepository;
-import com.summar.summar.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -17,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -27,40 +25,31 @@ public class FeedService {
     private final FeedRepository feedRepository;
     private final FeedImageRepository feedImageRepository;
 
+    private final UserRepository userRepository;
+
     private final S3Service s3Service;
 
     @Transactional
     public FeedDto saveFeed(FeedRegisterDto feedRegisterDto) {
-        Feed feed = new Feed(feedRegisterDto);
+        User user = userRepository.findById(feedRegisterDto.getUserSeq()).get();
+        Feed feed = new Feed(feedRegisterDto,user);
         Long feedSeq = feedRepository.save(feed).getFeedSeq();
         feedRegisterDto.getImages().forEach(
                 image -> {
-                    FeedImage feedImage = new FeedImage(feedSeq, s3Service.upload(image,S3Service.FEED_IMAGE),feedRegisterDto.getImages().indexOf(image), feed);
+                    String feedImg = s3Service.upload(image,S3Service.FEED_IMAGE);
+                    FeedImage feedImage = new FeedImage(feedSeq, feedImg.replace("https","http"),feedRegisterDto.getImages().indexOf(image), feed);
                     feedImageRepository.save(feedImage);
                 });
+        SimpleUserVO simpleUserVO = new SimpleUserVO(userRepository.findById(feedRegisterDto.getUserSeq()).get());
         return FeedDto.builder()
                 .feedSeq(feedSeq)
                 .feedImages(feedImageRepository.findByFeedSeq(feedSeq))
-                .userSeq(feedRegisterDto.getUserSeq())
+                .user(simpleUserVO)
                 .contents(feedRegisterDto.getContents())
                 .commentYn(feedRegisterDto.isCommentYn())
                 .tempSaveYn(feedRegisterDto.isTempSaveYn())
                 .secretYn(feedRegisterDto.isSecretYn())
                 .build();
-    }
-
-    @Transactional(readOnly = true)
-    public Optional<FeedDto> getFeedByFeedSeq(Long feedSeq) {
-        Optional<Feed> feed = feedRepository.findById(feedSeq);
-        return Optional.ofNullable(FeedDto.builder()
-                .feedSeq(feedSeq)
-                .feedImages(feedImageRepository.findByFeedSeq(feedSeq))
-                .userSeq(feed.get().getUserSeq())
-                .contents(feed.get().getContents())
-                .commentYn(feed.get().isCommentYn())
-                .tempSaveYn(feed.get().isTempSaveYn())
-                .secretYn(feed.get().isSecretYn())
-                .build());
     }
 
     @Transactional(readOnly = true)
@@ -71,7 +60,7 @@ public class FeedService {
                 feed -> feedDtos.add(FeedDto.builder()
                         .feedSeq(feed.getFeedSeq())
                         .feedImages(feedImageRepository.findByFeedSeq(feed.getFeedSeq()))
-                        .userSeq(feed.getUserSeq())
+                        .user(new SimpleUserVO(feed.getUser()))
                         .contents(feed.getContents())
                         .build()));
         return new PageImpl<>(feedDtos,page,feeds.getTotalElements());
@@ -79,7 +68,7 @@ public class FeedService {
 
     @Transactional(readOnly = true)
     public Page<FeedDto> getFeedByUserSeq(Long userSeq,Pageable page) {
-        Page<Feed> feeds;
+        Page<Feed> feeds = feedRepository.findAllByActivatedIsTrueAndSecretYnIsFalseAndTempSaveYnIsFalseAndUserUserSeq(userSeq,page);
         if (userSeq.equals(JwtUtil.getCurrentUserSeq().get())) {
             feeds = feedRepository.findAllByActivatedIsTrueAndTempSaveYnIsFalseAndUserSeq(userSeq, page);
         } else {
@@ -90,9 +79,9 @@ public class FeedService {
                 feed -> feedDtos.add(FeedDto.builder()
                         .feedSeq(feed.getFeedSeq())
                         .feedImages(feedImageRepository.findByFeedSeq(feed.getFeedSeq()))
-                        .userSeq(feed.getUserSeq())
+                        .user(new SimpleUserVO(feed.getUser()))
                         .contents(feed.getContents())
                         .build()));
-        return new PageImpl<>(feedDtos, page, feeds.getTotalElements());
+        return new PageImpl<>(feedDtos,page,feeds.getTotalElements());
     }
 }

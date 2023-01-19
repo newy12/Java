@@ -24,7 +24,7 @@ public class FeedDto {
 
     private Long feedSeq;
 
-    private Long userSeq;
+    private SimpleUserVO user;
 
     private String contents;
 

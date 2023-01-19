@@ -2,9 +2,11 @@ package com.summar.summar.service;
 
 import com.summar.summar.common.SummarCommonException;
 import com.summar.summar.common.SummarErrorCode;
+import com.summar.summar.domain.Follow;
 import com.summar.summar.domain.RefreshToken;
 import com.summar.summar.domain.User;
 import com.summar.summar.dto.*;
+import com.summar.summar.repository.FollowRepository;
 import com.summar.summar.repository.RefreshTokenRepository;
 import com.summar.summar.repository.UserRepository;
 import com.summar.summar.util.JwtUtil;
@@ -26,31 +28,36 @@ import java.util.*;
 public class UserService {
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final FollowRepository followRepository;
     private final JwtUtil jwtUtil;
     private final S3Service s3Service;
 
     @Transactional(readOnly = true)
     public Boolean checkNicknameDuplication(String nickname) throws NoSuchAlgorithmException {
-        return userRepository.existsByUserNickname(nickname);
+        return userRepository.existsByUserNicknameAndLeaveYn(nickname,false);
     }
 
     @Transactional
     public void changeUserInfo(ChangeUserInfoRequestDto changeUserInfoRequestDto) {
-        User user = userRepository.findByUserNickname(changeUserInfoRequestDto.getUserNickname()).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
+        User user = userRepository.findByUserNicknameAndLeaveYn(changeUserInfoRequestDto.getUserNickname(),false).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         //s3 저장
-        String profileImageUrl = s3Service.upload(changeUserInfoRequestDto.getFile(),"profile");
         ChangeUserInfoResponseDto changeUserInfoResponseDto = new ChangeUserInfoResponseDto();
+        if(changeUserInfoRequestDto.getFile() != null){
+            String profileImageUrl = s3Service.upload(changeUserInfoRequestDto.getFile(),"profile");
+            String profileImageUrlConvert = profileImageUrl.substring(8);
+            changeUserInfoResponseDto.setProfileImageUrl("http://"+profileImageUrlConvert);
+        }
         changeUserInfoResponseDto.setUpdateUserNickname(changeUserInfoRequestDto.getUpdateUserNickname());
         changeUserInfoResponseDto.setMajor1(changeUserInfoRequestDto.getMajor1());
         changeUserInfoResponseDto.setMajor2(changeUserInfoRequestDto.getMajor2());
-        changeUserInfoResponseDto.setProfileImageUrl(profileImageUrl.substring(8));
+        changeUserInfoResponseDto.setIntroduce("".equals(changeUserInfoRequestDto.getIntroduce())? null : changeUserInfoRequestDto.getIntroduce());
         user.changeUserInfo(changeUserInfoResponseDto);
         userRepository.save(user);
     }
 
     @Transactional
     public void addIntroduce(AddIntroduceRequestDto addIntroduceRequestDto) {
-        User user = userRepository.findByUserEmail(addIntroduceRequestDto.getUserEmail()).orElseThrow(
+        User user = userRepository.findByUserEmailAndLeaveYn(addIntroduceRequestDto.getUserEmail(),false).orElseThrow(
                 () -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         user.setIntroduce(addIntroduceRequestDto.getIntroduce());
         userRepository.save(user);
@@ -58,7 +65,7 @@ public class UserService {
 
     @Transactional
     public String giveAccessToken(RefreshTokenRequestDto refreshTokenRequestDto) {
-        User user = userRepository.findByUserEmail(refreshTokenRequestDto.getUserEmail()).orElseThrow(
+        User user = userRepository.findByUserEmailAndLeaveYn(refreshTokenRequestDto.getUserEmail(),false).orElseThrow(
                 () -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         RefreshToken refreshToken = refreshTokenRepository.findByUser(user).orElseThrow(
                 () -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
@@ -70,7 +77,7 @@ public class UserService {
 
     @Transactional
     public BothTokenResponseDto giveBothToken(RefreshTokenRequestDto refreshTokenRequestDto) {
-        User user = userRepository.findByUserEmail(refreshTokenRequestDto.getUserEmail()).orElseThrow(
+        User user = userRepository.findByUserEmailAndLeaveYn(refreshTokenRequestDto.getUserEmail(),false).orElseThrow(
                 () -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         RefreshToken refreshTokenInfo = refreshTokenRepository.findByUser(user).orElseThrow(
                 () -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
@@ -84,7 +91,7 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public FindUserInfoResponseDto getUserInfo(String userEmail) {
-        User user = userRepository.findByUserEmail(userEmail).orElseThrow(
+        User user = userRepository.findByUserEmailAndLeaveYn(userEmail,false).orElseThrow(
                 () -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         return new FindUserInfoResponseDto(user.getUserSeq(),user.getUserNickname(),user.getMajor1(),user.getMajor2(),user.getIntroduce(),user.getFollower(),user.getFollowing(),user.getProfileImageUrl());
     }
@@ -94,14 +101,15 @@ public class UserService {
 
         //nickname 또는 major 1 또는 major 2 가 비어있으면 회원가입
         if ("".equals(loginRequestDto.getUserNickname()) && "".equals(loginRequestDto.getMajor1()) && "".equals(loginRequestDto.getMajor2())
-                && !userRepository.existsByUserEmail(loginRequestDto.getUserEmail())) {
-            return new TokenResponseDto("발급x",UUID.randomUUID(),LoginStatus.회원가입,"","","",0,0);
+                && !userRepository.existsByUserEmailAndLeaveYn(loginRequestDto.getUserEmail(),false)) {
+            return new TokenResponseDto("발급x",UUID.randomUUID(),LoginStatus.회원가입,0L,"","","",0,0);
         }
         //기존 회원이 있다면
-        if (userRepository.existsByUserEmail(loginRequestDto.getUserEmail())) {
-            User userInfo = userRepository.findByUserEmail(loginRequestDto.getUserEmail()).orElseThrow(() -> new UsernameNotFoundException("User not found with userId: " + loginRequestDto.getUserEmail()));
+        if (userRepository.existsByUserEmailAndLeaveYn(loginRequestDto.getUserEmail(),false)) {
+            User userInfo = userRepository.findByUserEmailAndLeaveYn(loginRequestDto.getUserEmail(),false).orElseThrow(() -> new UsernameNotFoundException("User not found with userId: " + loginRequestDto.getUserEmail()));
             RefreshToken refreshTokenInfo = refreshTokenRepository.findByUser(userInfo).orElseThrow(() ->
                     new SummarCommonException(SummarErrorCode.WRONG_TOKEN.getCode(), SummarErrorCode.WRONG_TOKEN.getMessage()));
+
 
             //access token 생성
             final String accessToken = jwtUtil.generateToken(userInfo);
@@ -116,11 +124,17 @@ public class UserService {
 
             userRepository.save(userInfo);
 
-            return new TokenResponseDto(accessToken,refreshTokenSeq,LoginStatus.로그인,userInfo.getUserNickname(),userInfo.getMajor1(),userInfo.getMajor2(),userInfo.getFollower(),userInfo.getFollowing());
+
+            return new TokenResponseDto(accessToken,refreshTokenSeq,LoginStatus.로그인,userInfo.getUserSeq(),
+                    userInfo.getUserNickname() == null ? "" : userInfo.getUserNickname(),
+                    userInfo.getMajor1() == null ? "" : userInfo.getMajor1(),
+                    userInfo.getMajor2()  == null ? "" : userInfo.getMajor2(),
+                    userInfo.getFollower() == null ? 0 : userInfo.getFollower(),
+                    userInfo.getFollowing() == null ? 0 :userInfo.getFollowing());
         }
         //신규 회원이라면
-        userRepository.save(new User(new UserSaveDto(loginRequestDto.getUserEmail(),loginRequestDto.getUserNickname(),loginRequestDto.getMajor1(),loginRequestDto.getMajor2(),0,0,loginRequestDto.getSocialType(),LocalDate.now(),loginRequestDto.getDeviceToken(),true)));
-        User user = userRepository.findByUserEmail(loginRequestDto.getUserEmail()).orElseThrow(() ->
+        userRepository.save(new User(new UserSaveDto(loginRequestDto.getUserEmail(),loginRequestDto.getUserNickname(),loginRequestDto.getMajor1(),loginRequestDto.getMajor2(),0,0,loginRequestDto.getSocialType(),LocalDate.now(),loginRequestDto.getDeviceToken(),true,false)));
+        User user = userRepository.findByUserEmailAndLeaveYn(loginRequestDto.getUserEmail(),false).orElseThrow(() ->
                 new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         RefreshToken refreshTokenInfo = new RefreshToken();
 
@@ -132,12 +146,12 @@ public class UserService {
 
         UUID refreshTokenSeq = refreshTokenRepository.save(refreshTokenInfo).getRefreshTokenSeq();
         log.info(">>>>> : {}", refreshTokenSeq);
-        return new TokenResponseDto(accessToken,refreshTokenSeq,LoginStatus.회원가입완료,"","","",0,0);
+        return new TokenResponseDto(accessToken,refreshTokenSeq,LoginStatus.회원가입완료,user.getUserSeq(),"","","",0,0);
     }
 
     @Transactional(readOnly = true)
-    public SearchUserInfoResponseDto searchUserInfo(String userNickname) {
-        User user = userRepository.findByUserNickname(userNickname).orElseThrow(() ->
+    public SearchUserInfoResponseDto searchUserInfo(Long userSeq) {
+        User user = userRepository.findByUserSeqAndLeaveYn(userSeq,false).orElseThrow(() ->
                 new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         return new SearchUserInfoResponseDto(user.getUserSeq(), user.getUserEmail(),user.getFollower(),user.getFollowing(),user.getUserNickname(),user.getMajor1(),user.getMajor2());
     }
@@ -145,9 +159,9 @@ public class UserService {
     @Transactional(readOnly = true)
     public Page<SearchUserListResponseDto> searchUserList(String userNickname, Pageable pageable) {
         //닉네임 검색 완성했을 때
-        boolean searchUserListCheck = userRepository.existsByUserNicknameContains(userNickname);
+        boolean searchUserListCheck = userRepository.existsByUserNicknameContainsAndLeaveYn(userNickname,false);
         if(searchUserListCheck){
-            Page<User> searchUserList = userRepository.findByUserNicknameContains(userNickname,pageable);
+            Page<User> searchUserList = userRepository.findByUserNicknameContainsAndLeaveYn(userNickname,false,pageable);
             return searchUserList.map(SearchUserListResponseDto::new);
         }
         List<String> index_list = new ArrayList<>();
@@ -197,17 +211,44 @@ public class UserService {
 
     @Transactional
     public void changePushNotification(PushNotificationStatusDto pushNotificationStatusDto) {
-        User user = userRepository.findByUserNickname(pushNotificationStatusDto.getUserNickname())
+        User user = userRepository.findByUserNicknameAndLeaveYn(pushNotificationStatusDto.getUserNickname(),false)
                 .orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         user.setPushAlarmYn(pushNotificationStatusDto.getStatus());
         userRepository.save(user);
     }
 
     public UserPushStatusInfoResponseDto userPushStatusInfo(String userNickname) {
-        User user = userRepository.findByUserNickname(userNickname)
+        User user = userRepository.findByUserNicknameAndLeaveYn(userNickname,false)
                 .orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         UserPushStatusInfoResponseDto userPushStatusInfoResponseDto = new UserPushStatusInfoResponseDto();
         userPushStatusInfoResponseDto.setStatus(user.getPushAlarmYn());
         return userPushStatusInfoResponseDto;
+    }
+
+    @Transactional
+    public void leaveUser(Long userSeq) {
+        User userInfo = userRepository.findByUserSeqAndLeaveYn(userSeq,false)
+                .orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
+        List<Follow> follow = followRepository.findByFollowingUserAndFollowYn(userInfo,true);
+        for(Follow followInfo : follow){
+            followInfo.setFollowYn(false);
+            followRepository.save(followInfo);
+            User user = followInfo.getFollowedUser();
+            User user2 = followInfo.getFollowingUser();
+            Integer test = followRepository.countByFollowedUserAndFollowYn(user,true);
+            Integer test2 = followRepository.countByFollowingUserAndFollowYn(user2,true);
+            user.updateFollower(test);
+            user2.updateFollowing(test2);
+            userRepository.save(user);
+        }
+
+
+
+
+
+        //leaveYn = 'Y' 와 유저 정보 초기화
+        userInfo.leaveUser("","","",false,true);
+
+        userRepository.save(userInfo);
     }
 }

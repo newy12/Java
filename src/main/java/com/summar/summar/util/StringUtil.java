@@ -97,4 +97,12 @@ public class StringUtil {
             "                    \"}";
     public static final String nulls = "\"\\\"result\\\":null\"";
 
+    public static final String leaveUser = "{\\n\" +\n" +
+            "                    \"    \\\"status\\\": \\\"SUCCESS\\\",\\n\" +\n" +
+            "                    \"    \\\"message\\\": \\\"정상처리\\\",\\n\" +\n" +
+            "                    \"    \\\"errorMessage\\\": \\\"\\\",\\n\" +\n" +
+            "                    \"    \\\"errorCode\\\": \\\"\\\",\\n\" +\n" +
+            "                    \"    \\\"result\\\": null\\n\" +\n" +
+            "                    \"}";
+
 }
