@@ -26,7 +26,7 @@ import java.security.NoSuchAlgorithmException;
 @RequiredArgsConstructor
 @Api(tags = {"유저 관련 API 제공 controller"})
 @RequestMapping(value = "/api/v1/user")
-public class UserController {
+public class UserController {//ㅅ
     private final UserService userService;
 
 
