@@ -33,7 +33,8 @@ public class FeedService {
         Long feedSeq = feedRepository.save(feed).getFeedSeq();
         feedRegisterDto.getImages().forEach(
                 image -> {
-                    FeedImage feedImage = new FeedImage(feedSeq, s3Service.upload(image,S3Service.FEED_IMAGE),feedRegisterDto.getImages().indexOf(image), feed);
+                    String feedImg = s3Service.upload(image,S3Service.FEED_IMAGE);
+                    FeedImage feedImage = new FeedImage(feedSeq, feedImg.replace("https","http"),feedRegisterDto.getImages().indexOf(image), feed);
                     feedImageRepository.save(feedImage);
                 });
         return FeedDto.builder()
