@@ -28,6 +28,7 @@ public class User extends BaseTimeEntity implements Serializable {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="user_seq")
     private Long userSeq;
     @Field(type = FieldType.Keyword)
     private String userNickname; //닉네임
