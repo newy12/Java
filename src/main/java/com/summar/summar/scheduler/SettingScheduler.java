@@ -33,6 +33,7 @@ public class SettingScheduler {
             if("new".equals(setting.getStatus())){
                 List<User> userInfos = userRepository.findAllByLeaveYn(false);
                 for(User user:userInfos){
+                    log.info("userNickname : {}",user.getUserNickname());
                     PushNotificationDto pushNotificationDto = PushNotificationDto.builder()
                             .title("Summar")
                             .body("새로운 공지사항이 있어요. 확인해볼까요~?")
