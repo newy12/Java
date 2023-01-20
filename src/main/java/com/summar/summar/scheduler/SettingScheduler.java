@@ -28,7 +28,6 @@ public class SettingScheduler {
     @Transactional
     @Scheduled(cron = "0 0/5 * * * *")
     public void settingCheck(){
-        log.info("test");
        List<Setting> notices  = settingRepository.findBySettingType(SettingType.NOTICE);
         for(Setting setting:notices){
             if("new".equals(setting.getStatus())){
