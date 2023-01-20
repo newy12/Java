@@ -29,4 +29,6 @@ public interface UserRepository extends JpaRepository<User, Long>{
     Page<User> searchWord(String word,String word2,Pageable pageable);
 
     Optional<User> findByUserSeqAndLeaveYn(Long userSeq, boolean leaveYn);
+
+    List<User> findAllByLeaveYn(boolean leaveYn);
 }

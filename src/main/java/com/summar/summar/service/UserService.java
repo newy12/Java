@@ -17,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
+import org.webjars.NotFoundException;
 
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
@@ -229,23 +231,38 @@ public class UserService {
     public void leaveUser(Long userSeq) {
         User userInfo = userRepository.findByUserSeqAndLeaveYn(userSeq,false)
                 .orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
-        List<Follow> follow = followRepository.findByFollowingUserAndFollowYn(userInfo,true);
-        for(Follow followInfo : follow){
-            followInfo.setFollowYn(false);
-            followRepository.save(followInfo);
-            User user = followInfo.getFollowedUser();
-            User user2 = followInfo.getFollowingUser();
-            Integer test = followRepository.countByFollowedUserAndFollowYn(user,true);
-            Integer test2 = followRepository.countByFollowingUserAndFollowYn(user2,true);
-            user.updateFollower(test);
-            user2.updateFollowing(test2);
-            userRepository.save(user);
+        List<Follow> followingList = followRepository.findByFollowingUserAndFollowYn(userInfo,true);
+        //팔로윙 한 사람 초기화
+        if(!ObjectUtils.isEmpty(followingList)){
+            for(Follow followingInfo : followingList){
+                followingInfo.setFollowYn(false);
+                followRepository.save(followingInfo);
+                User followingUser = followingInfo.getFollowingUser();
+                User followedUser = followingInfo.getFollowedUser();
+                Integer value1 = followRepository.countByFollowingUserAndFollowYn(followingUser,true);
+                Integer value2 = followRepository.countByFollowedUserAndFollowYn(followedUser,true);
+                followingUser.updateFollowing(value1);
+                followedUser.updateFollower(value2);
+                userRepository.save(followingUser);
+                userRepository.save(followedUser);
+            }
         }
-
-
-
-
-
+        //팔로우 당한 사람 초기화
+        List<Follow> followedList = followRepository.findByFollowedUserAndFollowYn(userInfo,true);
+        if(!ObjectUtils.isEmpty(followedList)){
+            for(Follow followerInfo : followedList){
+                followerInfo.setFollowYn(false);
+                followRepository.save(followerInfo);
+                User followingUser = followerInfo.getFollowingUser();
+                User followedUser  = followerInfo.getFollowedUser();
+                Integer value1 = followRepository.countByFollowingUserAndFollowYn(followingUser,true);
+                Integer value2 = followRepository.countByFollowedUserAndFollowYn(followedUser,true);
+                followingUser.updateFollowing(value1);
+                followedUser.updateFollower(value2);
+                userRepository.save(followingUser);
+                userRepository.save(followedUser);
+            }
+        }
         //leaveYn = 'Y' 와 유저 정보 초기화
         userInfo.leaveUser("","","",false,true);
 

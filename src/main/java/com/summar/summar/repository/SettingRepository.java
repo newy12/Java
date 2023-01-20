@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface SettingRepository extends JpaRepository<Setting,Long> {
     List<Setting> findAllBySettingType(SettingType notice);
+
+    List<Setting> findBySettingType(SettingType notice);
 }

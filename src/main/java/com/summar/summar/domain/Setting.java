@@ -17,4 +17,9 @@ public class Setting {
     private String title;
     private String content;
     private String regDatetime;
+    private String status;
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }
