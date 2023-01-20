@@ -10,7 +10,6 @@ import com.summar.summar.service.PushService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,8 +26,9 @@ public class SettingScheduler {
 
 
     @Transactional
-    @Scheduled(cron = "5 * * * * *")
+    //@Scheduled(cron = "5 * * * * *")
     public void settingCheck(){
+        log.info("test");
         List<Setting> notices  = settingRepository.findBySettingType(SettingType.NOTICE);
         for(Setting setting:notices){
             if("new".equals(setting.getStatus())){
@@ -43,6 +43,7 @@ public class SettingScheduler {
                 }
                 setting.setStatus(null);
                 settingRepository.save(setting);
+                log.info("ok");
             }
         }
     }
