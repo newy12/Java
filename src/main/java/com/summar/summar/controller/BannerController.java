@@ -45,6 +45,6 @@ public class BannerController {
     })
     @GetMapping("/list")
     public ResponseEntity<?> selectBanners(){
-       return ListResult.build("results",bannerService.findAllByBanner());
+       return ObjectResult.build("results",bannerService.findAllByBanner());
     }
 }
