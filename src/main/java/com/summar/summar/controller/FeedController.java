@@ -1,7 +1,11 @@
 package com.summar.summar.controller;
 
+import com.summar.summar.common.SummarCommonException;
+import com.summar.summar.common.SummarErrorCode;
 import com.summar.summar.dto.FeedDto;
+import com.summar.summar.dto.FeedLikeDto;
 import com.summar.summar.dto.FeedRegisterDto;
+import com.summar.summar.results.BooleanResult;
 import com.summar.summar.results.ObjectResult;
 import com.summar.summar.results.PageResult;
 import com.summar.summar.service.FeedService;
@@ -28,6 +32,9 @@ public class FeedController {
     @Operation(summary = "피드 등록")
     @PostMapping(value = "", consumes = {"multipart/form-data"})
     public ResponseEntity<FeedDto> registFeed(@ModelAttribute FeedRegisterDto feedRegisterDto) {
+        if (feedRegisterDto.getImages().get(0).getSize() < 1 && feedRegisterDto.getContents().length() < 1) {
+            throw new SummarCommonException(SummarErrorCode.INVALID_TEMP_SAVE.getCode(), SummarErrorCode.INVALID_TEMP_SAVE.getMessage());
+        }
         return (ResponseEntity<FeedDto>) ObjectResult.build("result", feedService.saveFeed(feedRegisterDto));
     }
 
@@ -55,4 +62,9 @@ public class FeedController {
         return (ResponseEntity<Page<FeedDto>>) PageResult.build(feedService.getFeedByUserSeq(userSeq, page));
     }
 
+    @Operation(summary = "피드 좋아요 추가/삭제")
+    @PostMapping(value = "/like/{feedSeq}")
+    public ResponseEntity<BooleanResult> setFeedLike(@PathVariable(name = "feedSeq") Long feedSeq, @RequestBody FeedLikeDto feedLikeDto) {
+        return BooleanResult.build("result", feedService.setFeedLike(feedSeq, feedLikeDto));
+    }
 }
