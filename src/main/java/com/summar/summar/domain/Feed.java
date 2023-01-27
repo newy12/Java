@@ -19,6 +19,7 @@ public class Feed extends BaseTimeEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "feed_seq")
     private Long feedSeq;
     private String contents;
 
@@ -38,9 +39,13 @@ public class Feed extends BaseTimeEntity implements Serializable {
     @Type(type = "yes_no")
     private boolean tempSaveYn;
 
-    @OneToMany(mappedBy = "feed")
+    @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = {"feed"}, allowSetters = true)
     private List<FeedImage> feedImages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = {"feed"}, allowSetters = true)
+    private List<FeedLike> feedLikes = new ArrayList<>();
 
 
     public boolean isActivated() {

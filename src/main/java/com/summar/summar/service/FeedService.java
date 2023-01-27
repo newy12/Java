@@ -2,11 +2,14 @@ package com.summar.summar.service;
 
 import com.summar.summar.domain.Feed;
 import com.summar.summar.domain.FeedImage;
+import com.summar.summar.domain.FeedLike;
 import com.summar.summar.domain.User;
 import com.summar.summar.dto.FeedDto;
+import com.summar.summar.dto.FeedLikeDto;
 import com.summar.summar.dto.FeedRegisterDto;
 import com.summar.summar.dto.SimpleUserVO;
 import com.summar.summar.repository.FeedImageRepository;
+import com.summar.summar.repository.FeedLikeRepository;
 import com.summar.summar.repository.FeedRepository;
 import com.summar.summar.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +31,7 @@ public class FeedService {
 
     private final FeedRepository feedRepository;
     private final FeedImageRepository feedImageRepository;
-
+    private final FeedLikeRepository feedLikeRepository;
     private final UserRepository userRepository;
 
     private final S3Service s3Service;
@@ -115,5 +118,25 @@ public class FeedService {
                 .secretYn(feed.isSecretYn())
                 .activated(feed.isActivated())
                 .build();
+    }
+
+    @Transactional
+    public Boolean setFeedLike(Long feedSeq, FeedLikeDto feedLikeDto){
+        Optional<FeedLike> feedLike =feedLikeRepository.findByFeedFeedSeqAndUserUserSeq(feedSeq, feedLikeDto.getUserSeq());
+        feedLike.ifPresentOrElse(
+                findFeed -> {
+                        if(findFeed.isActivated()){
+                            findFeed.setActivated(false);
+                        }else{
+                            findFeed.setActivated(true);
+                        }
+                },
+                ()-> {
+                    Feed feed = feedRepository.findOneByFeedSeq(feedSeq);
+                    User user = userRepository.findByUserSeqAndLeaveYn(feedLikeDto.getUserSeq(),false).get();
+                    FeedLike newLike = new FeedLike(feed,user,true);
+                    feedLikeRepository.save(newLike);
+                });
+        return true;
     }
 }

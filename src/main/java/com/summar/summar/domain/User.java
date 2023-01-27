@@ -1,5 +1,6 @@
 package com.summar.summar.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.summar.summar.dto.*;
 import com.summar.summar.enumeration.SocialType;
@@ -14,6 +15,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -59,6 +61,10 @@ public class User extends BaseTimeEntity implements Serializable {
     @OneToMany(mappedBy = "followedUser", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<Follow> followedUserList;
+
+    @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<FeedLike> feedLikes = new ArrayList<>();
     @Type(type="yes_no")
     private Boolean pushAlarmYn;
 
