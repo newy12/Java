@@ -36,4 +36,6 @@ public class FeedDto {
 
     private boolean tempSaveYn;
 
+    private boolean activated;
+
 }

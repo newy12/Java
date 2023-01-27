@@ -43,9 +43,15 @@ public class Feed extends BaseTimeEntity implements Serializable {
     private List<FeedImage> feedImages = new ArrayList<>();
 
 
+    public boolean isActivated() {
+        return activated;
+    }
 
+    public void setActivated(boolean activated) {
+        this.activated = activated;
+    }
 
-    public Feed(FeedRegisterDto feedRegisterDto,User user) {
+    public Feed(FeedRegisterDto feedRegisterDto, User user) {
         this.user = user;
         this.contents = feedRegisterDto.getContents();
         this.activated = true;

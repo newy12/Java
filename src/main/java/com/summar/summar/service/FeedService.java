@@ -67,6 +67,7 @@ public class FeedService {
                 .commentYn(feed.get().isCommentYn())
                 .tempSaveYn(feed.get().isTempSaveYn())
                 .secretYn(feed.get().isSecretYn())
+                .activated(feed.get().isActivated())
                 .build());
     }
 
@@ -80,6 +81,7 @@ public class FeedService {
                         .feedImages(feedImageRepository.findByFeedSeq(feed.getFeedSeq()))
                         .user(new SimpleUserVO(feed.getUser()))
                         .contents(feed.getContents())
+                        .activated(feed.isActivated())
                         .build()));
         return new PageImpl<>(feedDtos,page,feeds.getTotalElements());
     }
@@ -94,7 +96,24 @@ public class FeedService {
                         .feedImages(feedImageRepository.findByFeedSeq(feed.getFeedSeq()))
                         .user(new SimpleUserVO(feed.getUser()))
                         .contents(feed.getContents())
+                        .activated(feed.isActivated())
                         .build()));
         return new PageImpl<>(feedDtos,page,feeds.getTotalElements());
+    }
+
+    @Transactional
+    public FeedDto updateFeedInActivated(Long feedSeq) {
+        Feed feed = feedRepository.findOneByFeedSeq(feedSeq);
+        feed.setActivated(false);
+        return FeedDto.builder()
+                .feedSeq(feedSeq)
+                .feedImages(feedImageRepository.findByFeedSeq(feedSeq))
+                .user(new SimpleUserVO(feed.getUser()))
+                .contents(feed.getContents())
+                .commentYn(feed.isCommentYn())
+                .tempSaveYn(feed.isTempSaveYn())
+                .secretYn(feed.isSecretYn())
+                .activated(feed.isActivated())
+                .build();
     }
 }

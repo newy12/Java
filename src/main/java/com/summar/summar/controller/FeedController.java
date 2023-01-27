@@ -43,6 +43,12 @@ public class FeedController {
         return (ResponseEntity<FeedDto>) ObjectResult.build("result", feedService.getFeedByFeedSeq(feedSeq));
     }
 
+    @Operation(summary = "피드 비활성화 (삭제)")
+    @PatchMapping(value = "/{feedSeq}")
+    public ResponseEntity<FeedDto> setFeedInActivated(@PathVariable(name = "feedSeq") Long feedSeq) {
+        return (ResponseEntity<FeedDto>) ObjectResult.build("result", feedService.updateFeedInActivated(feedSeq));
+    }
+
     @Operation(summary = "특정 유저 피드 조회")
     @GetMapping(value = "/user/{userSeq}")
     public ResponseEntity<Page<FeedDto>> getFeedByUserSeq(@PageableDefault(size = 30, sort = "createdDate", direction = Sort.Direction.DESC) Pageable page, @PathVariable(name = "userSeq") Long userSeq) {
