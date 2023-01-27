@@ -23,9 +23,6 @@ import java.util.List;
 @Table(name = "USER")
 public class User extends BaseTimeEntity implements Serializable {
 
-    /**
-     * This VO is for security.
-     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="user_seq")
