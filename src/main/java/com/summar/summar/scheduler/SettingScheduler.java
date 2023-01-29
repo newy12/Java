@@ -27,7 +27,29 @@ public class SettingScheduler {
 
     @Transactional
     @Scheduled(cron = "0 0/5 * * * *")
-    public void settingCheck(){
+    public void questionCheck(){
+        List<Setting> questions = settingRepository.findBySettingType(SettingType.QUESTION);
+        for(Setting setting:questions){
+            if("new".equals(setting.getStatus())){
+                List<User> userInfos = userRepository.findAllByLeaveYn(false);
+                for(User user:userInfos){
+                    log.info("userNickname : {}",user.getUserNickname());
+                    PushNotificationDto pushNotificationDto = PushNotificationDto.builder()
+                            .title("Summar")
+                            .body("새로운 자주 묻는 질문이 있어요. 확인해볼까요~?")
+                            .userNickname(user.getUserNickname())
+                            .build();
+                    pushService.pushNotification(pushNotificationDto);
+                }
+                setting.setStatus(null);
+                settingRepository.save(setting);
+                log.info("ok");
+            }
+        }
+    }
+    @Transactional
+    @Scheduled(cron = "0 0/5 * * * *")
+    public void NoticeCheck(){
        List<Setting> notices  = settingRepository.findBySettingType(SettingType.NOTICE);
         for(Setting setting:notices){
             if("new".equals(setting.getStatus())){

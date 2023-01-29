@@ -28,7 +28,7 @@ public class FollowController {
 
     /**
      * 팔로워 전체조회
-     * @param userNickname
+     * @param userSeq
      * @param pageable
      * @return
      */
@@ -61,7 +61,7 @@ public class FollowController {
 
     /**
      * 팔로윙 전체조회
-     * @param userNickname
+     * @param userSeq
      * @param pageable
      * @return
      */
