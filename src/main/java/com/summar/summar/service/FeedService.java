@@ -84,21 +84,12 @@ public class FeedService {
         List<FeedDto> feedDtos = new ArrayList<>();
         feeds.forEach(
                 feed -> {
-                    List<FeedComment> feedComments = feedCommentRepository.findTop3ByFeedFeedSeq(feed.getFeedSeq());
-                    List<FeedCommentDto> feedCommentDtos = new ArrayList<>();
-                    feedComments.forEach(
-                            feedComment -> feedCommentDtos.add(new FeedCommentDto(feedComment.getFeedCommentSeq()
-                                    ,feed.getFeedSeq() ,new SimpleUserVO(feedComment.getUser()),feedComment.isActivated()
-                                    ,feedComment.getParentCommentSeq(),feedComment.getModifiedDate()
-                                    ,feedComment.getCreatedDate(),feedComment.getComment()))
-                    );
                     feedDtos.add(FeedDto.builder()
                         .feedSeq(feed.getFeedSeq())
                         .feedImages(feedImageRepository.findByFeedSeq(feed.getFeedSeq()))
                         .user(new SimpleUserVO(feed.getUser()))
                         .contents(feed.getContents())
                         .activated(feed.isActivated())
-                        .feedComments(feedCommentDtos)
                         .lastModifiedDate(feed.getModifiedDate())
                         .createdDate(feed.getCreatedDate())
                         .build());
