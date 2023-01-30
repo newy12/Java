@@ -75,19 +75,22 @@ public class FeedController {
 
     @Operation(summary = "댓글 등록")
     @PostMapping(value = "{feedSeq}/comments")
-    public ResponseEntity<FeedCommentDto> registFeedComment(@RequestBody FeedCommentRegisterDto feedCommentRegisterDto) {
-        return (ResponseEntity<FeedCommentDto>) ObjectResult.build("result", feedService.saveFeedComment(feedCommentRegisterDto));
+    public ResponseEntity<?> registFeedComment(@RequestBody FeedCommentRegisterDto feedCommentRegisterDto) {
+        feedService.saveFeedComment(feedCommentRegisterDto);
+        return ObjectResult.ok();
     }
 
     @Operation(summary = "댓글 비활성화 (삭제)")
     @PatchMapping(value = "/comments/{feedCommentSeq}")
-    public ResponseEntity<FeedCommentDto> setFeedCommentInActivated(@PathVariable(name = "feedCommentSeq") Long feedCommentSeq) {
-        return (ResponseEntity<FeedCommentDto>) ObjectResult.build("result", feedService.updateFeedCommentInActivated(feedCommentSeq));
+    public ResponseEntity<?> setFeedCommentInActivated(@PathVariable(name = "feedCommentSeq") Long feedCommentSeq) {
+        feedService.updateFeedCommentInActivated(feedCommentSeq);
+        return ObjectResult.ok();
     }
 
     @Operation(summary = "댓글 수정")
     @PutMapping(value = "{feedSeq}/comments")
-    public ResponseEntity<FeedCommentDto> updateFeedComment(@RequestBody FeedCommentUpdateDto feedCommentUpdateDto) {
-        return (ResponseEntity<FeedCommentDto>) ObjectResult.build("result", feedService.updateFeedComment(feedCommentUpdateDto));
+    public ResponseEntity<?> updateFeedComment(@RequestBody FeedCommentUpdateDto feedCommentUpdateDto) {
+        feedService.updateFeedComment(feedCommentUpdateDto);
+        return ObjectResult.ok();
     }
 }

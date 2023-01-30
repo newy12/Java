@@ -43,6 +43,4 @@ public class FeedDto {
 
     private LocalDateTime createdDate;
 
-    private List<FeedCommentDto> feedComments;
-
 }

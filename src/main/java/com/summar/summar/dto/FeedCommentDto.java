@@ -3,6 +3,7 @@ package com.summar.summar.dto;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 /**
@@ -23,7 +24,9 @@ public class FeedCommentDto {
 
     private boolean activated;
 
-    private Long parentCommentSeq;
+    private List<FeedCommentDto> childComments;
+
+    private int childCommentsCount;
 
     private LocalDateTime lastModifiedDate;
 

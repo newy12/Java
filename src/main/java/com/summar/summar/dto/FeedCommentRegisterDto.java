@@ -15,6 +15,6 @@ public class FeedCommentRegisterDto {
 
     private String comment;
 
-    private Long parentCommentSeq;
+    private Long parentCommentSeq=0L;
 
 }

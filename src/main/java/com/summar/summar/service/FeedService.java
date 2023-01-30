@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -55,14 +56,6 @@ public class FeedService {
     @Transactional(readOnly = true)
     public Optional<FeedDto> getFeedByFeedSeq(Long feedSeq) {
         Optional<Feed> feed = feedRepository.findById(feedSeq);
-        List<FeedComment> feedComments = feedCommentRepository.findAllByFeedFeedSeq(feedSeq);
-        List<FeedCommentDto> feedCommentDtos = new ArrayList<>();
-        feedComments.forEach(
-                feedComment -> feedCommentDtos.add(new FeedCommentDto(feedComment.getFeedCommentSeq()
-                        ,feedSeq ,new SimpleUserVO(feedComment.getUser()),feedComment.isActivated()
-                        ,feedComment.getParentCommentSeq(),feedComment.getModifiedDate()
-                        ,feedComment.getCreatedDate(),feedComment.getComment()))
-        );
         return Optional.ofNullable(FeedDto.builder()
                 .feedSeq(feedSeq)
                 .feedImages(feedImageRepository.findByFeedSeq(feedSeq))
@@ -74,7 +67,6 @@ public class FeedService {
                 .activated(feed.get().isActivated())
                 .lastModifiedDate(feed.get().getModifiedDate())
                 .createdDate(feed.get().getCreatedDate())
-                .feedComments(feedCommentDtos)
                 .build());
     }
 
@@ -150,66 +142,47 @@ public class FeedService {
     public Page<FeedCommentDto> getFeedCommentsByFeedSeq(Pageable page, Long feedSeq) {
         Page<FeedComment> feedComments = feedCommentRepository.findAllByFeedFeedSeq(feedSeq,page);
         List<FeedCommentDto> feedCommentDtos = new ArrayList<>();
-        feedComments.forEach(
-                feedComment -> feedCommentDtos.add(FeedCommentDto.builder()
-                        .feedSeq(feedSeq)
-                        .user(new SimpleUserVO(feedComment.getUser()))
-                        .comment(feedComment.getComment())
-                        .activated(feedComment.isActivated())
-                        .parentCommentSeq(feedComment.getFeedCommentSeq())
-                        .feedCommentSeq(feedComment.getFeedCommentSeq())
-                        .lastModifiedDate(feedComment.getModifiedDate())
-                        .createdDate(feedComment.getCreatedDate())
-                        .build()));
+        List<FeedComment> parentComments = feedComments.stream().filter(feedComment1 -> feedComment1.getParentCommentSeq().equals(0L))
+                .collect(Collectors.toList());
+        List<FeedComment> childComments = feedComments.stream().filter(feedComment1 -> !feedComment1.getParentCommentSeq().equals(0L))
+                .collect(Collectors.toList());
+        parentComments.forEach(
+                parentComment -> {
+                    List<FeedCommentDto> myChildrenComments = new ArrayList<>();
+                    childComments.stream().filter(childComment->childComment.getParentCommentSeq().equals(parentComment.getFeedCommentSeq())).collect(Collectors.toList())
+                            .forEach(
+                                    myChild ->{
+                                        FeedCommentDto myChildren = new FeedCommentDto(myChild.getFeedCommentSeq()
+                                                , myChild.getFeed().getFeedSeq(), new SimpleUserVO(myChild.getUser()), myChild.isActivated()
+                                                , null,0, myChild.getModifiedDate()
+                                                , myChild.getCreatedDate(), myChild.getComment());
+                                        myChildrenComments.add(myChildren);
+                                    });
+                    feedCommentDtos.add(new FeedCommentDto(parentComment.getFeedCommentSeq()
+                            , parentComment.getFeed().getFeedSeq(), new SimpleUserVO(parentComment.getUser()), parentComment.isActivated()
+                            , myChildrenComments, myChildrenComments.size(), parentComment.getModifiedDate()
+                            , parentComment.getCreatedDate(), parentComment.getComment()));
+                });
         return new PageImpl<>(feedCommentDtos,page,feedComments.getTotalElements());
     }
 
     @Transactional
-    public FeedCommentDto saveFeedComment(FeedCommentRegisterDto feedCommentRegisterDto) {
+    public void saveFeedComment(FeedCommentRegisterDto feedCommentRegisterDto) {
         User user = userRepository.findById(feedCommentRegisterDto.getUserSeq()).get();
         Feed feed = feedRepository.findOneByFeedSeq(feedCommentRegisterDto.getFeedSeq());
         FeedComment feedComment = new FeedComment(feedCommentRegisterDto,feed,user);
-        Long feedCommentSeq = feedCommentRepository.save(feedComment).getFeedCommentSeq();
-        SimpleUserVO simpleUserVO = new SimpleUserVO(userRepository.findById(feedCommentRegisterDto.getUserSeq()).get());
-        return FeedCommentDto.builder()
-                .feedCommentSeq(feedCommentSeq)
-                .feedSeq(feedCommentRegisterDto.getFeedSeq())
-                .user(simpleUserVO)
-                .comment(feedComment.getComment())
-                .activated(feedComment.isActivated())
-                .parentCommentSeq(feedComment.getParentCommentSeq())
-                .lastModifiedDate(feedComment.getModifiedDate())
-                .createdDate(feedComment.getCreatedDate())
-                .build();
+        feedCommentRepository.save(feedComment);
     }
 
     @Transactional
-    public FeedCommentDto updateFeedCommentInActivated(Long feedCommentSeq) {
+    public void updateFeedCommentInActivated(Long feedCommentSeq) {
         FeedComment feedComment = feedCommentRepository.findOneByFeedCommentSeq(feedCommentSeq);
         feedComment.setActivated(false);
-        return FeedCommentDto.builder()
-                .feedCommentSeq(feedCommentSeq)
-                .feedSeq(feedComment.getFeed().getFeedSeq())
-                .comment(feedComment.getComment())
-                .activated(feedComment.isActivated())
-                .parentCommentSeq(feedComment.getParentCommentSeq())
-                .lastModifiedDate(feedComment.getModifiedDate())
-                .createdDate(feedComment.getCreatedDate())
-                .build();
     }
 
     @Transactional
-    public FeedCommentDto updateFeedComment(FeedCommentUpdateDto feedCommentUpdateDto) {
+    public void updateFeedComment(FeedCommentUpdateDto feedCommentUpdateDto) {
         FeedComment feedComment = feedCommentRepository.findOneByFeedCommentSeq(feedCommentUpdateDto.getFeedCommentSeq());
         feedComment.setComment(feedCommentUpdateDto.getComment());
-        return FeedCommentDto.builder()
-                .feedCommentSeq(feedCommentUpdateDto.getFeedCommentSeq())
-                .feedSeq(feedComment.getFeed().getFeedSeq())
-                .comment(feedComment.getComment())
-                .activated(feedComment.isActivated())
-                .parentCommentSeq(feedComment.getParentCommentSeq())
-                .lastModifiedDate(feedComment.getModifiedDate())
-                .createdDate(feedComment.getCreatedDate())
-                .build();
     }
 }
