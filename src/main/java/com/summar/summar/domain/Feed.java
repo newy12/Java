@@ -9,7 +9,9 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @NoArgsConstructor
@@ -47,6 +49,9 @@ public class Feed extends BaseTimeEntity implements Serializable {
     @JsonIgnoreProperties(value = {"feed"}, allowSetters = true)
     private List<FeedLike> feedLikes = new ArrayList<>();
 
+    @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = {"feed"}, allowSetters = true)
+    private List<FeedComment> feedComments = new ArrayList<>();
 
     public boolean isActivated() {
         return activated;

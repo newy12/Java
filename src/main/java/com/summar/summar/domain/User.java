@@ -62,9 +62,13 @@ public class User extends BaseTimeEntity implements Serializable {
     @JsonManagedReference
     private List<Follow> followedUserList;
 
-    @OneToMany(mappedBy = "feed", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonManagedReference
     private List<FeedLike> feedLikes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = {"user"}, allowSetters = true)
+    private List<FeedComment> feedComments = new ArrayList<>();
     @Type(type="yes_no")
     private Boolean pushAlarmYn;
 

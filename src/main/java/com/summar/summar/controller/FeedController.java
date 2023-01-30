@@ -2,9 +2,7 @@ package com.summar.summar.controller;
 
 import com.summar.summar.common.SummarCommonException;
 import com.summar.summar.common.SummarErrorCode;
-import com.summar.summar.dto.FeedDto;
-import com.summar.summar.dto.FeedLikeDto;
-import com.summar.summar.dto.FeedRegisterDto;
+import com.summar.summar.dto.*;
 import com.summar.summar.results.BooleanResult;
 import com.summar.summar.results.ObjectResult;
 import com.summar.summar.results.PageResult;
@@ -66,5 +64,30 @@ public class FeedController {
     @PostMapping(value = "/like/{feedSeq}")
     public ResponseEntity<BooleanResult> setFeedLike(@PathVariable(name = "feedSeq") Long feedSeq, @RequestBody FeedLikeDto feedLikeDto) {
         return BooleanResult.build("result", feedService.setFeedLike(feedSeq, feedLikeDto));
+    }
+
+    @Operation(summary = "특정 피드 댓글 조회")
+    @GetMapping(value = "{feedSeq}/comments")
+    public ResponseEntity<Page<FeedCommentDto>> getFeedCommentsByFeedSeq(@PageableDefault(size = 30, sort = "createdDate", direction = Sort.Direction.DESC) Pageable page,
+                                                                @PathVariable(name = "feedSeq")  Long feedSeq) {
+        return (ResponseEntity<Page<FeedCommentDto>>) PageResult.build(feedService.getFeedCommentsByFeedSeq(page, feedSeq));
+    }
+
+    @Operation(summary = "댓글 등록")
+    @PostMapping(value = "{feedSeq}/comments")
+    public ResponseEntity<FeedCommentDto> registFeedComment(@RequestBody FeedCommentRegisterDto feedCommentRegisterDto) {
+        return (ResponseEntity<FeedCommentDto>) ObjectResult.build("result", feedService.saveFeedComment(feedCommentRegisterDto));
+    }
+
+    @Operation(summary = "댓글 비활성화 (삭제)")
+    @PatchMapping(value = "/comments/{feedCommentSeq}")
+    public ResponseEntity<FeedCommentDto> setFeedCommentInActivated(@PathVariable(name = "feedCommentSeq") Long feedCommentSeq) {
+        return (ResponseEntity<FeedCommentDto>) ObjectResult.build("result", feedService.updateFeedCommentInActivated(feedCommentSeq));
+    }
+
+    @Operation(summary = "댓글 수정")
+    @PutMapping(value = "{feedSeq}/comments")
+    public ResponseEntity<FeedCommentDto> updateFeedComment(@RequestBody FeedCommentUpdateDto feedCommentUpdateDto) {
+        return (ResponseEntity<FeedCommentDto>) ObjectResult.build("result", feedService.updateFeedComment(feedCommentUpdateDto));
     }
 }
