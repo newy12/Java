@@ -101,8 +101,8 @@ public class UserController {
     })
     //@PreAuthorize("isAuthenticated()")
     @GetMapping("/user-info")
-    public ResponseEntity<?> findUserInfo(@RequestParam(value = "userEmail") String userEmail) {
-        return ObjectResult.build("result", userService.getUserInfo(userEmail));
+    public ResponseEntity<?> findUserInfo(@RequestParam(value = "userSeq") Long userSeq) {
+        return ObjectResult.build("result", userService.getUserInfo(userSeq));
     }
 
     /**
