@@ -92,8 +92,8 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public FindUserInfoResponseDto getUserInfo(String userEmail) {
-        User user = userRepository.findByUserEmailAndLeaveYn(userEmail,false).orElseThrow(
+    public FindUserInfoResponseDto getUserInfo(Long userSeq) {
+        User user = userRepository.findByUserSeqAndLeaveYn(userSeq,false).orElseThrow(
                 () -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         return new FindUserInfoResponseDto(user.getUserSeq(),user.getUserNickname(),user.getMajor1(),user.getMajor2(),user.getIntroduce(),user.getFollower(),user.getFollowing(),user.getProfileImageUrl());
     }
