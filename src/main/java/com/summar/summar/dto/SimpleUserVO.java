@@ -14,6 +14,8 @@ public class SimpleUserVO {
     private String userNickname; //닉네임
     private String profileImageUrl; //프로필이미지경로
     private boolean leaveYn;
+    private int follower;
+    private int following;
 
 
     public SimpleUserVO(User user){
@@ -24,5 +26,7 @@ public class SimpleUserVO {
         this.userNickname = user.getUserNickname();
         this.profileImageUrl = user.getProfileImageUrl();
         this.leaveYn = user.getLeaveYn();
+        this.follower=user.getFollower();
+        this.following=user.getFollowing();
     }
 }
