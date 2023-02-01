@@ -96,7 +96,12 @@ public class FeedService {
 
     @Transactional(readOnly = true)
     public Page<FeedDto> getFeedByUserSeq(Long userSeq,Pageable page) {
-        Page<Feed> feeds = feedRepository.findAllByActivatedIsTrueAndSecretYnIsFalseAndTempSaveYnIsFalseAndUserUserSeq(userSeq,page);
+        Page<Feed> feeds;
+        if(userSeq.equals(jwtUtil.getCurrentUserSeq())){
+            feeds = feedRepository.findAllByActivatedIsTrueAndUserUserSeqAndTempSaveYnIsFalse(userSeq,page);
+        }else{
+            feeds = feedRepository.findAllByActivatedIsTrueAndSecretYnIsFalseAndTempSaveYnIsFalseAndUserUserSeq(userSeq,page);
+        }
         List<FeedDto> feedDtos = new ArrayList<>();
         feeds.forEach(
                 feed -> feedDtos.add(FeedDto.builder()
