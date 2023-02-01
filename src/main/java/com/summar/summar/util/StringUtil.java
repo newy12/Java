@@ -104,5 +104,102 @@ public class StringUtil {
             "                    \"    \\\"errorCode\\\": \\\"\\\",\\n\" +\n" +
             "                    \"    \\\"result\\\": null\\n\" +\n" +
             "                    \"}";
+    public static final String setting = "{\\n\" +\n" +
+            "                    \"  \\\"status\\\": \\\"SUCCESS\\\",\\n\" +\n" +
+            "                    \"  \\\"message\\\": \\\"정상처리\\\",\\n\" +\n" +
+            "                    \"  \\\"errorMessage\\\": null,\\n\" +\n" +
+            "                    \"  \\\"errorCode\\\": null,\\n\" +\n" +
+            "                    \"  \\\"result\\\": {\\n\" +\n" +
+            "                    \"    \\\"results\\\": [\\n\" +\n" +
+            "                    \"      {\\n\" +\n" +
+            "                    \"        \\\"settingId\\\": 1,\\n\" +\n" +
+            "                    \"        \\\"settingType\\\": \\\"NOTICE\\\",\\n\" +\n" +
+            "                    \"        \\\"title\\\": \\\"써머 출시 1.0.0 업데이트 안내\\\",\\n\" +\n" +
+            "                    \"        \\\"content\\\": \\\"업데이트 안내입니다. 업데이트 안내입니다.업데이트 안내입니다. 업데이트 안내입니다. 업데이트 안내입니다. 업데이트 안내입니다. 업데이트 안내입니다. 업데이트 안내입니다. 업데이트 안내입니다. 업데이트 안내입니다. 업데이트 안내입니다. 업데이트 안내입니다.\\\",\\n\" +\n" +
+            "                    \"        \\\"regDatetime\\\": \\\"2022.01.13\\\"\\n\" +\n" +
+            "                    \"      },\\n\" +\n" +
+            "                    \"      {\\n\" +\n" +
+            "                    \"        \\\"settingId\\\": 2,\\n\" +\n" +
+            "                    \"        \\\"settingType\\\": \\\"NOTICE\\\",\\n\" +\n" +
+            "                    \"        \\\"title\\\": \\\"써머 장애 안내\\\",\\n\" +\n" +
+            "                    \"        \\\"content\\\": \\\"업데이트 안내입니다.\\\",\\n\" +\n" +
+            "                    \"        \\\"regDatetime\\\": \\\"2022.01.13\\\"\\n\" +\n" +
+            "                    \"      }\\n\" +\n" +
+            "                    \"    ]\\n\" +\n" +
+            "                    \"  }\\n\" +\n" +
+            "                    \"}" ;
 
+    public static final String findFollowers = "{\\n\" +\n" +
+            "                    \"    \\\"firstPage\\\": true,\\n\" +\n" +
+            "                    \"    \\\"lastPage\\\": true,\\n\" +\n" +
+            "                    \"    \\\"totalPageCount\\\": 1,\\n\" +\n" +
+            "                    \"    \\\"recordsPerPage\\\": 20,\\n\" +\n" +
+            "                    \"    \\\"content\\\": [\\n\" +\n" +
+            "                    \"        {\\n\" +\n" +
+            "                    \"            \\\"userNickname\\\": \\\"영재2\\\",\\n\" +\n" +
+            "                    \"            \\\"introduce\\\": null,\\n\" +\n" +
+            "                    \"            \\\"major1\\\": \\\"공학계열\\\",\\n\" +\n" +
+            "                    \"            \\\"major2\\\": \\\"컴퓨터정보공학과\\\",\\n\" +\n" +
+            "                    \"            \\\"follower\\\": 1,\\n\" +\n" +
+            "                    \"            \\\"following\\\": 1\\n\" +\n" +
+            "                    \"        }\\n\" +\n" +
+            "                    \"    ],\\n\" +\n" +
+            "                    \"    \\\"totalRecordCount\\\": 1,\\n\" +\n" +
+            "                    \"    \\\"currentPageNo\\\": 1\\n\" +\n" +
+            "                    \"}";
+    public static final String findFollowings = "{\\n\" +\n" +
+            "                    \"    \\\"firstPage\\\": true,\\n\" +\n" +
+            "                    \"    \\\"lastPage\\\": true,\\n\" +\n" +
+            "                    \"    \\\"totalPageCount\\\": 1,\\n\" +\n" +
+            "                    \"    \\\"recordsPerPage\\\": 20,\\n\" +\n" +
+            "                    \"    \\\"content\\\": [\\n\" +\n" +
+            "                    \"        {\\n\" +\n" +
+            "                    \"            \\\"userNickname\\\": \\\"영재2\\\",\\n\" +\n" +
+            "                    \"            \\\"introduce\\\": null,\\n\" +\n" +
+            "                    \"            \\\"major1\\\": \\\"공학계열\\\",\\n\" +\n" +
+            "                    \"            \\\"major2\\\": \\\"컴퓨터정보공학과\\\",\\n\" +\n" +
+            "                    \"            \\\"follower\\\": 1,\\n\" +\n" +
+            "                    \"            \\\"following\\\": 1\\n\" +\n" +
+            "                    \"        }\\n\" +\n" +
+            "                    \"    ],\\n\" +\n" +
+            "                    \"    \\\"totalRecordCount\\\": 1,\\n\" +\n" +
+            "                    \"    \\\"currentPageNo\\\": 1\\n\" +\n" +
+            "                    \"}";
+    public static final String addFollower = "{\\n\" +\n" +
+            "                    \"    \\\"status\\\": \\\"SUCCESS\\\",\\n\" +\n" +
+            "                    \"    \\\"message\\\": \\\"정상처리\\\",\\n\" +\n" +
+            "                    \"    \\\"errorMessage\\\": \\\"\\\",\\n\" +\n" +
+            "                    \"    \\\"errorCode\\\": \\\"\\\",\\n\" +\n" +
+            "                    \"    \\\"result\\\": null\\n\" +\n" +
+            "                    \"}";
+    public static final String deleteFollower = "{\\n\" +\n" +
+            "                    \"    \\\"status\\\": \\\"SUCCESS\\\",\\n\" +\n" +
+            "                    \"    \\\"message\\\": \\\"정상처리\\\",\\n\" +\n" +
+            "                    \"    \\\"errorMessage\\\": \\\"\\\",\\n\" +\n" +
+            "                    \"    \\\"errorCode\\\": \\\"\\\",\\n\" +\n" +
+            "                    \"    \\\"result\\\": null\\n\" +\n" +
+            "                    \"}";
+    public static final String selectBanners = "{\\n\" +\n" +
+            "                    \"    \\\"status\\\": \\\"SUCCESS\\\",\\n\" +\n" +
+            "                    \"    \\\"message\\\": \\\"정상처리\\\",\\n\" +\n" +
+            "                    \"    \\\"errorMessage\\\": null,\\n\" +\n" +
+            "                    \"    \\\"errorCode\\\": null,\\n\" +\n" +
+            "                    \"    \\\"result\\\": {\\n\" +\n" +
+            "                    \"        \\\"results\\\": [\\n\" +\n" +
+            "                    \"            {\\n\" +\n" +
+            "                    \"                \\\"bannerSeq\\\": 1,\\n\" +\n" +
+            "                    \"                \\\"imageUrl\\\": \\\"test.png\\\"\\n\" +\n" +
+            "                    \"            }\\n\" +\n" +
+            "                    \"        ]\\n\" +\n" +
+            "                    \"    }\\n\" +\n" +
+            "                    \"}";
+    public static final String followCheck = "{\n" +
+            "    \"status\": \"SUCCESS\",\n" +
+            "    \"message\": \"정상처리\",\n" +
+            "    \"errorMessage\": null,\n" +
+            "    \"errorCode\": null,\n" +
+            "    \"result\": {\n" +
+            "        \"result\": false\n" +
+            "    }\n" +
+            "}";
 }

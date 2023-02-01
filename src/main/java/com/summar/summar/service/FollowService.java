@@ -110,4 +110,15 @@ public class FollowService {
         userRepository.save(followingUser);
         userRepository.save(followedUser);
     }
+
+    @Transactional(readOnly = true)
+    //followedUserSeq = 팔로우 당한사람
+    //followingUserSeq = 팔로우 한사람
+    public Boolean followCheck(Long followedUserSeq, Long followingUserSeq) {
+        User followedUser = userRepository.findByUserSeqAndLeaveYn(followedUserSeq,false)
+                .orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
+        User followingUser = userRepository.findByUserSeqAndLeaveYn(followingUserSeq,false)
+                .orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
+        return followRepository.existsByFollowedUserAndFollowingUserAndFollowYn(followedUser,followingUser,true);
+    }
 }

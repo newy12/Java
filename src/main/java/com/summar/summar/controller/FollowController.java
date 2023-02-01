@@ -1,10 +1,15 @@
 package com.summar.summar.controller;
 
 import com.summar.summar.dto.FollowerRequestDto;
+import com.summar.summar.results.BooleanResult;
 import com.summar.summar.results.ObjectResult;
 import com.summar.summar.results.PageResult;
 import com.summar.summar.service.FollowService;
+import com.summar.summar.util.StringUtil;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -34,24 +39,7 @@ public class FollowController {
      */
     @Operation(summary = "팔로워 전체조회", description = "팔로워 전체조회를 합니다.", security = @SecurityRequirement(name = "Authorization"))
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
-                    "    \"firstPage\": true,\n" +
-                    "    \"lastPage\": true,\n" +
-                    "    \"totalPageCount\": 1,\n" +
-                    "    \"recordsPerPage\": 20,\n" +
-                    "    \"content\": [\n" +
-                    "        {\n" +
-                    "            \"userNickname\": \"영재2\",\n" +
-                    "            \"introduce\": null,\n" +
-                    "            \"major1\": \"공학계열\",\n" +
-                    "            \"major2\": \"컴퓨터정보공학과\",\n" +
-                    "            \"follower\": 1,\n" +
-                    "            \"following\": 1\n" +
-                    "        }\n" +
-                    "    ],\n" +
-                    "    \"totalRecordCount\": 1,\n" +
-                    "    \"currentPageNo\": 1\n" +
-                    "}"))),
+            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.findFollowers))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
     @GetMapping("/followers")
@@ -67,24 +55,7 @@ public class FollowController {
      */
     @Operation(summary = "팔로윙 전체조회", description = "팔로윙 전체조회를 합니다.", security = @SecurityRequirement(name = "Authorization"))
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
-                    "    \"firstPage\": true,\n" +
-                    "    \"lastPage\": true,\n" +
-                    "    \"totalPageCount\": 1,\n" +
-                    "    \"recordsPerPage\": 20,\n" +
-                    "    \"content\": [\n" +
-                    "        {\n" +
-                    "            \"userNickname\": \"영재2\",\n" +
-                    "            \"introduce\": null,\n" +
-                    "            \"major1\": \"공학계열\",\n" +
-                    "            \"major2\": \"컴퓨터정보공학과\",\n" +
-                    "            \"follower\": 1,\n" +
-                    "            \"following\": 1\n" +
-                    "        }\n" +
-                    "    ],\n" +
-                    "    \"totalRecordCount\": 1,\n" +
-                    "    \"currentPageNo\": 1\n" +
-                    "}"))),
+            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.findFollowings))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
     @GetMapping("/followings")
@@ -100,13 +71,7 @@ public class FollowController {
      */
     @Operation(summary = "팔로우 추가", description = "팔로우 추가를 합니다.", security = @SecurityRequirement(name = "Authorization"))
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
-                    "    \"status\": \"SUCCESS\",\n" +
-                    "    \"message\": \"정상처리\",\n" +
-                    "    \"errorMessage\": \"\",\n" +
-                    "    \"errorCode\": \"\",\n" +
-                    "    \"result\": null\n" +
-                    "}"))),
+            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.addFollower))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
     @PostMapping("/follower")
@@ -121,18 +86,24 @@ public class FollowController {
      */
     @Operation(summary = "팔로우 취소", description = "팔로우를 취소를 합니다.", security = @SecurityRequirement(name = "Authorization"))
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
-                    "    \"status\": \"SUCCESS\",\n" +
-                    "    \"message\": \"정상처리\",\n" +
-                    "    \"errorMessage\": \"\",\n" +
-                    "    \"errorCode\": \"\",\n" +
-                    "    \"result\": null\n" +
-                    "}"))),
+            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.deleteFollower))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
     @DeleteMapping("/follower")
     public ResponseEntity<?> deleteFollower(@RequestBody FollowerRequestDto followerRequestDto){
         followService.deleteFollower(followerRequestDto);
         return ObjectResult.ok();
+    }
+    @Operation(summary = "팔로우 했는지 확인", description = "팔로우 했는지 확인합니다. " +
+            "\"true 일경우에 팔로우됀 상태\" " +
+            "\"false 일경우에 팔로우 안됀 상태\"", security = @SecurityRequirement(name = "Authorization"))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.followCheck))),
+            @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
+    })
+    @GetMapping("/follow-check")
+    public ResponseEntity<?> followCheck(@Parameter(description = "팔로우 당한 사람",required = true) @RequestParam(value = "followedUserSeq")Long followedUserSeq,
+                                         @Parameter(description = "팔로우 건사람")@RequestParam(value = "followingUserSeq")Long followingUserSeq){
+        return BooleanResult.build("result",followService.followCheck(followedUserSeq,followingUserSeq));
     }
 }

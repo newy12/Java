@@ -1,8 +1,8 @@
 package com.summar.summar.controller;
 
-import com.summar.summar.results.ListResult;
 import com.summar.summar.results.ObjectResult;
 import com.summar.summar.service.BannerService;
+import com.summar.summar.util.StringUtil;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -27,20 +27,7 @@ public class BannerController {
 
     @Operation(summary = "배너 이미지 정보 추출", description = "배너 이미지 url 획득합니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = "{\n" +
-                    "    \"status\": \"SUCCESS\",\n" +
-                    "    \"message\": \"정상처리\",\n" +
-                    "    \"errorMessage\": null,\n" +
-                    "    \"errorCode\": null,\n" +
-                    "    \"result\": {\n" +
-                    "        \"results\": [\n" +
-                    "            {\n" +
-                    "                \"bannerSeq\": 1,\n" +
-                    "                \"imageUrl\": \"test.png\"\n" +
-                    "            }\n" +
-                    "        ]\n" +
-                    "    }\n" +
-                    "}"))),
+            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.selectBanners))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
     @GetMapping("/list")
