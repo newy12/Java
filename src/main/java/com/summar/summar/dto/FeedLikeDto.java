@@ -16,6 +16,4 @@ public class FeedLikeDto {
 
     private Long userSeq;
 
-    private boolean activated;
-
 }

@@ -12,7 +12,10 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -79,17 +82,10 @@ public class JwtUtil {
         return createToken(claims, loginEmail);
     }
 
-    public static Optional<Long> getCurrentUserSeq() {
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        return Optional
-                .ofNullable(securityContext.getAuthentication())
-                .map(authentication -> {
-                    Object details = authentication.getDetails();
-                    if (details instanceof User) {
-                        return ((User) details).getUserSeq();
-                    }
-                    return null;
-                });
+    public Long getCurrentUserSeq(){
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+        System.out.println("Token2:::"+request.getHeader("Authorization"));
+        return Long.parseLong(extractAllClaims(request.getHeader("Authorization").replace("Bearer ","")).get("userSeq").toString());
     }
 
     public String generateRefreshToken(String loginEmail) {

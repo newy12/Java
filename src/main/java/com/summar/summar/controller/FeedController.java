@@ -18,6 +18,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -93,4 +95,18 @@ public class FeedController {
         feedService.updateFeedComment(feedCommentUpdateDto);
         return ObjectResult.ok();
     }
+
+    @Operation(summary = "유저 피드 스크랩 조회")
+    @GetMapping(value = "/scrap")
+    public ResponseEntity<Page<FeedDto>> getFeedScrap(@PageableDefault(size = 30, sort = "createdDate", direction = Sort.Direction.DESC) Pageable page) {
+        return (ResponseEntity<Page<FeedDto>>) PageResult.build(feedService.getFeedScrap(page));
+    }
+
+    @Operation(summary = "피드 스크랩 추가/삭제")
+    @PostMapping(value = "/scrap/{feedSeq}")
+    public ResponseEntity<BooleanResult> setFeedScrap(@PathVariable(name = "feedSeq") Long feedSeq, @RequestBody FeedScrapDto feedScrapDto) {
+        return BooleanResult.build("result", feedService.setFeedScrap(feedSeq, feedScrapDto));
+    }
+
+
 }
