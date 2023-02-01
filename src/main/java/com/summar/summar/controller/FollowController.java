@@ -69,7 +69,7 @@ public class FollowController {
      * @param followerRequestDto
      * @return
      */
-    @Operation(summary = "팔로우 추가", description = "팔로우 추가를 합니다.", security = @SecurityRequirement(name = "Authorization"))
+    @Operation(summary = "팔로우 추가", description = "팔로우 추가를 합니다. 'followedUserSeq = 팔로우 당한 사람', 'followingUserSeq = 팔로우 건 사람'", security = @SecurityRequirement(name = "Authorization"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.addFollower))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
@@ -84,7 +84,7 @@ public class FollowController {
      * @param followerRequestDto
      * @return
      */
-    @Operation(summary = "팔로우 취소", description = "팔로우를 취소를 합니다.", security = @SecurityRequirement(name = "Authorization"))
+    @Operation(summary = "팔로우 취소", description = "팔로우를 취소를 합니다. 'followedUserSeq = 팔로우 당한 사람', 'followingUserSeq = 팔로우 건 사람'", security = @SecurityRequirement(name = "Authorization"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.deleteFollower))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
@@ -94,6 +94,13 @@ public class FollowController {
         followService.deleteFollower(followerRequestDto);
         return ObjectResult.ok();
     }
+
+    /**
+     * 팔로우 체크
+     * @param followedUserSeq
+     * @param followingUserSeq
+     * @return
+     */
     @Operation(summary = "팔로우 했는지 확인", description = "팔로우 했는지 확인합니다. " +
             "\"true 일경우에 팔로우됀 상태\" " +
             "\"false 일경우에 팔로우 안됀 상태\"", security = @SecurityRequirement(name = "Authorization"))
