@@ -44,6 +44,12 @@ public class FeedController {
         return (ResponseEntity<Page<FeedDto>>) PageResult.build(feedService.getFeed(page));
     }
 
+    @Operation(summary = "임시 저장 피드 조회")
+    @GetMapping(value = "/temp")
+    public ResponseEntity<Page<FeedDto>> getTempFeed(@PageableDefault(size = 30, sort = "createdDate", direction = Sort.Direction.DESC) Pageable page) {
+        return (ResponseEntity<Page<FeedDto>>) PageResult.build(feedService.getTempFeed(page));
+    }
+
     @Operation(summary = "피드 상세 조회")
     @GetMapping(value = "/{feedSeq}")
     public ResponseEntity<FeedDto> getFeed(@PathVariable(name = "feedSeq") Long feedSeq) {
