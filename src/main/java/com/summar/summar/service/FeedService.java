@@ -3,6 +3,7 @@ package com.summar.summar.service;
 import com.summar.summar.domain.*;
 import com.summar.summar.dto.*;
 import com.summar.summar.repository.*;
+import com.summar.summar.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,11 +26,14 @@ public class FeedService {
     private final FeedRepository feedRepository;
     private final FeedImageRepository feedImageRepository;
     private final FeedLikeRepository feedLikeRepository;
+    private final FeedScrapRepository feedScrapRepository;
 
     private final FeedCommentRepository feedCommentRepository;
     private final UserRepository userRepository;
 
     private final S3Service s3Service;
+
+    private final JwtUtil jwtUtil;
 
     @Transactional
     public FeedDto saveFeed(FeedRegisterDto feedRegisterDto) {
@@ -184,5 +189,39 @@ public class FeedService {
     public void updateFeedComment(FeedCommentUpdateDto feedCommentUpdateDto) {
         FeedComment feedComment = feedCommentRepository.findOneByFeedCommentSeq(feedCommentUpdateDto.getFeedCommentSeq());
         feedComment.setComment(feedCommentUpdateDto.getComment());
+    }
+
+    @Transactional(readOnly = true)
+    public Page<FeedDto> getFeedScrap(Pageable page) {
+        Long userSeq = jwtUtil.getCurrentUserSeq();
+        Page<FeedScrap> feedScraps = feedScrapRepository.findByUserUserSeqAndActivatedIsTrueAndFeedActivatedIsTrue(page,userSeq);
+        List<Long> feedScrapIds = feedScraps.stream().map(feedScrap -> feedScrap.getFeed().getFeedSeq()).collect(Collectors.toList());
+        Page<Feed> feeds = feedRepository.findByFeedSeqIn(page,feedScrapIds);
+        List<FeedDto> feedDtos = new ArrayList<>();
+        feeds.forEach(
+                feed -> feedDtos.add(FeedDto.builder()
+                        .feedSeq(feed.getFeedSeq())
+                        .feedImages(feedImageRepository.findByFeedSeq(feed.getFeedSeq()))
+                        .user(new SimpleUserVO(feed.getUser()))
+                        .contents(feed.getContents())
+                        .activated(feed.isActivated())
+                        .lastModifiedDate(feed.getModifiedDate())
+                        .createdDate(feed.getCreatedDate())
+                        .build()));
+        return new PageImpl<>(feedDtos,page,feeds.getTotalElements());
+    }
+
+    @Transactional
+    public Boolean setFeedScrap(Long feedSeq, FeedScrapDto feedScrapDto){
+        Optional<FeedScrap> feedScrap =feedScrapRepository.findByFeedFeedSeqAndUserUserSeq(feedSeq, feedScrapDto.getUserSeq());
+        feedScrap.ifPresentOrElse(
+                findFeed -> findFeed.setActivated(!findFeed.isActivated()),
+                ()-> {
+                    Feed feed = feedRepository.findOneByFeedSeq(feedSeq);
+                    User user = userRepository.findByUserSeqAndLeaveYn(feedScrapDto.getUserSeq(),false).get();
+                    FeedScrap newScrap = new FeedScrap(feed,user,true);
+                    feedScrapRepository.save(newScrap);
+                });
+        return true;
     }
 }
