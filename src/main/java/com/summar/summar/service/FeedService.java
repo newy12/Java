@@ -87,9 +87,35 @@ public class FeedService {
                         .user(new SimpleUserVO(feed.getUser()))
                         .contents(feed.getContents())
                         .activated(feed.isActivated())
+                        .tempSaveYn(feed.isTempSaveYn())
+                        .secretYn(feed.isSecretYn())
+                        .commentYn(feed.isCommentYn())
                         .lastModifiedDate(feed.getModifiedDate())
                         .createdDate(feed.getCreatedDate())
                         .build());
+                });
+        return new PageImpl<>(feedDtos,page,feeds.getTotalElements());
+    }
+
+    @Transactional(readOnly = true)
+    public Page<FeedDto> getTempFeed(Pageable page) {
+        Long userSeq = jwtUtil.getCurrentUserSeq();
+        Page<Feed> feeds = feedRepository.findAllByActivatedIsTrueAndTempSaveYnIsTrueAndUserUserSeq(page,userSeq);
+        List<FeedDto> feedDtos = new ArrayList<>();
+        feeds.forEach(
+                feed -> {
+                    feedDtos.add(FeedDto.builder()
+                            .feedSeq(feed.getFeedSeq())
+                            .feedImages(feedImageRepository.findByFeedSeq(feed.getFeedSeq()))
+                            .user(new SimpleUserVO(feed.getUser()))
+                            .contents(feed.getContents())
+                            .activated(feed.isActivated())
+                            .tempSaveYn(feed.isTempSaveYn())
+                            .secretYn(feed.isSecretYn())
+                            .commentYn(feed.isCommentYn())
+                            .lastModifiedDate(feed.getModifiedDate())
+                            .createdDate(feed.getCreatedDate())
+                            .build());
                 });
         return new PageImpl<>(feedDtos,page,feeds.getTotalElements());
     }
@@ -110,6 +136,9 @@ public class FeedService {
                         .user(new SimpleUserVO(feed.getUser()))
                         .contents(feed.getContents())
                         .activated(feed.isActivated())
+                        .tempSaveYn(feed.isTempSaveYn())
+                        .secretYn(feed.isSecretYn())
+                        .commentYn(feed.isCommentYn())
                         .lastModifiedDate(feed.getModifiedDate())
                         .createdDate(feed.getCreatedDate())
                         .build()));
@@ -210,6 +239,9 @@ public class FeedService {
                         .user(new SimpleUserVO(feed.getUser()))
                         .contents(feed.getContents())
                         .activated(feed.isActivated())
+                        .tempSaveYn(feed.isTempSaveYn())
+                        .secretYn(feed.isSecretYn())
+                        .commentYn(feed.isCommentYn())
                         .lastModifiedDate(feed.getModifiedDate())
                         .createdDate(feed.getCreatedDate())
                         .build()));

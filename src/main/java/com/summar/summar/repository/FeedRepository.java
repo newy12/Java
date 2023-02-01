@@ -11,6 +11,7 @@ public interface FeedRepository extends JpaRepository<Feed, Long> {
 
     Page<Feed> findAllByActivatedIsTrueAndUserUserSeqAndTempSaveYnIsFalse(Long userSeq, Pageable page);
     Page<Feed> findAllByActivatedIsTrueAndSecretYnIsFalseAndTempSaveYnIsFalseAndUserLeaveYnIsFalse(Pageable page);
+    Page<Feed> findAllByActivatedIsTrueAndTempSaveYnIsTrueAndUserUserSeq(Pageable page,Long userSeq);
     Page<Feed> findAllByActivatedIsTrueAndSecretYnIsFalseAndTempSaveYnIsFalseAndUserUserSeq(Long userSeq,Pageable page);
     Page<Feed> findByFeedSeqIn(Pageable page,List<Long> feedSeqIds);
     Feed findOneByFeedSeq(Long feedSeq);
