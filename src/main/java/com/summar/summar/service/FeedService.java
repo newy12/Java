@@ -80,31 +80,28 @@ public class FeedService {
         Page<Feed> feeds = feedRepository.findAllByActivatedIsTrueAndSecretYnIsFalseAndTempSaveYnIsFalseAndUserLeaveYnIsFalse(page);
         List<FeedDto> feedDtos = new ArrayList<>();
         feeds.forEach(
-                feed -> {
-                    feedDtos.add(FeedDto.builder()
-                        .feedSeq(feed.getFeedSeq())
-                        .feedImages(feedImageRepository.findByFeedSeq(feed.getFeedSeq()))
-                        .user(new SimpleUserVO(feed.getUser()))
-                        .contents(feed.getContents())
-                        .activated(feed.isActivated())
-                        .tempSaveYn(feed.isTempSaveYn())
-                        .secretYn(feed.isSecretYn())
-                        .commentYn(feed.isCommentYn())
-                        .lastModifiedDate(feed.getModifiedDate())
-                        .createdDate(feed.getCreatedDate())
-                        .build());
-                });
+                feed -> feedDtos.add(FeedDto.builder()
+                    .feedSeq(feed.getFeedSeq())
+                    .feedImages(feedImageRepository.findByFeedSeq(feed.getFeedSeq()))
+                    .user(new SimpleUserVO(feed.getUser()))
+                    .contents(feed.getContents())
+                    .activated(feed.isActivated())
+                    .tempSaveYn(feed.isTempSaveYn())
+                    .secretYn(feed.isSecretYn())
+                    .commentYn(feed.isCommentYn())
+                    .lastModifiedDate(feed.getModifiedDate())
+                    .createdDate(feed.getCreatedDate())
+                    .build()));
         return new PageImpl<>(feedDtos,page,feeds.getTotalElements());
     }
 
     @Transactional(readOnly = true)
-    public Page<FeedDto> getTempFeed(Pageable page) {
-        Long userSeq = jwtUtil.getCurrentUserSeq();
-        Page<Feed> feeds = feedRepository.findAllByActivatedIsTrueAndTempSaveYnIsTrueAndUserUserSeq(page,userSeq);
+    public Page<FeedDto> getTempFeed(Long userSeq,Pageable page) {
         List<FeedDto> feedDtos = new ArrayList<>();
-        feeds.forEach(
-                feed -> {
-                    feedDtos.add(FeedDto.builder()
+        if(userSeq.equals(jwtUtil.getCurrentUserSeq())){
+            Page<Feed> feeds = feedRepository.findAllByActivatedIsTrueAndTempSaveYnIsTrueAndUserUserSeq(page,userSeq);
+            feeds.forEach(
+                    feed -> feedDtos.add(FeedDto.builder()
                             .feedSeq(feed.getFeedSeq())
                             .feedImages(feedImageRepository.findByFeedSeq(feed.getFeedSeq()))
                             .user(new SimpleUserVO(feed.getUser()))
@@ -115,9 +112,11 @@ public class FeedService {
                             .commentYn(feed.isCommentYn())
                             .lastModifiedDate(feed.getModifiedDate())
                             .createdDate(feed.getCreatedDate())
-                            .build());
-                });
-        return new PageImpl<>(feedDtos,page,feeds.getTotalElements());
+                            .build()));
+            return new PageImpl<>(feedDtos,page,feeds.getTotalElements());
+        }else{
+            return new PageImpl<>(feedDtos,page,0);
+        }
     }
 
     @Transactional(readOnly = true)

@@ -45,9 +45,9 @@ public class FeedController {
     }
 
     @Operation(summary = "임시 저장 피드 조회")
-    @GetMapping(value = "/temp")
-    public ResponseEntity<Page<FeedDto>> getTempFeed(@PageableDefault(size = 30, sort = "createdDate", direction = Sort.Direction.DESC) Pageable page) {
-        return (ResponseEntity<Page<FeedDto>>) PageResult.build(feedService.getTempFeed(page));
+    @GetMapping(value = "/temp/{userSeq}")
+    public ResponseEntity<Page<FeedDto>> getTempFeed(@PathVariable(name="userSeq") Long userSeq,@PageableDefault(size = 30, sort = "createdDate", direction = Sort.Direction.DESC) Pageable page) {
+        return (ResponseEntity<Page<FeedDto>>) PageResult.build(feedService.getTempFeed(userSeq,page));
     }
 
     @Operation(summary = "피드 상세 조회")
