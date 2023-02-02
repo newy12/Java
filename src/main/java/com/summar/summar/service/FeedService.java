@@ -40,12 +40,14 @@ public class FeedService {
         User user = userRepository.findById(feedRegisterDto.getUserSeq()).get();
         Feed feed = new Feed(feedRegisterDto,user);
         Long feedSeq = feedRepository.save(feed).getFeedSeq();
-        feedRegisterDto.getImages().forEach(
-                image -> {
-                    String feedImg = s3Service.upload(image,S3Service.FEED_IMAGE);
-                    FeedImage feedImage = new FeedImage(feedSeq, feedImg.replace("https","http"),feedRegisterDto.getImages().indexOf(image), feed);
-                    feedImageRepository.save(feedImage);
-                });
+        if(feedRegisterDto.getImages()!=null) {
+            feedRegisterDto.getImages().forEach(
+                    image -> {
+                        String feedImg = s3Service.upload(image, S3Service.FEED_IMAGE);
+                        FeedImage feedImage = new FeedImage(feedSeq, feedImg.replace("https", "http"), feedRegisterDto.getImages().indexOf(image), feed);
+                        feedImageRepository.save(feedImage);
+                    });
+        }
         SimpleUserVO simpleUserVO = new SimpleUserVO(userRepository.findById(feedRegisterDto.getUserSeq()).get());
         return FeedDto.builder()
                 .feedSeq(feedSeq)

@@ -32,7 +32,7 @@ public class FeedController {
     @Operation(summary = "피드 등록")
     @PostMapping(value = "", consumes = {"multipart/form-data"})
     public ResponseEntity<FeedDto> registFeed(@ModelAttribute FeedRegisterDto feedRegisterDto) {
-        if (feedRegisterDto.getImages().get(0).getSize() < 1 && feedRegisterDto.getContents().length() < 1) {
+        if (feedRegisterDto.getImages()==null && feedRegisterDto.getContents().length() < 1) {
             throw new SummarCommonException(SummarErrorCode.INVALID_TEMP_SAVE.getCode(), SummarErrorCode.INVALID_TEMP_SAVE.getMessage());
         }
         return (ResponseEntity<FeedDto>) ObjectResult.build("result", feedService.saveFeed(feedRegisterDto));
