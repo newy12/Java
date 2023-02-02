@@ -32,7 +32,7 @@ public class FeedController {
     @Operation(summary = "피드 등록")
     @PostMapping(value = "", consumes = {"multipart/form-data"})
     public ResponseEntity<FeedDto> registFeed(@ModelAttribute FeedRegisterDto feedRegisterDto) {
-        if (feedRegisterDto.getImages().get(0).getSize() < 1 && feedRegisterDto.getContents().length() < 1) {
+        if (feedRegisterDto.getImages()==null && feedRegisterDto.getContents().length() < 1) {
             throw new SummarCommonException(SummarErrorCode.INVALID_TEMP_SAVE.getCode(), SummarErrorCode.INVALID_TEMP_SAVE.getMessage());
         }
         return (ResponseEntity<FeedDto>) ObjectResult.build("result", feedService.saveFeed(feedRegisterDto));
@@ -45,9 +45,9 @@ public class FeedController {
     }
 
     @Operation(summary = "임시 저장 피드 조회")
-    @GetMapping(value = "/temp")
-    public ResponseEntity<Page<FeedDto>> getTempFeed(@PageableDefault(size = 30, sort = "createdDate", direction = Sort.Direction.DESC) Pageable page) {
-        return (ResponseEntity<Page<FeedDto>>) PageResult.build(feedService.getTempFeed(page));
+    @GetMapping(value = "/temp/{userSeq}")
+    public ResponseEntity<Page<FeedDto>> getTempFeed(@PathVariable(name="userSeq") Long userSeq,@PageableDefault(size = 30, sort = "createdDate", direction = Sort.Direction.DESC) Pageable page) {
+        return (ResponseEntity<Page<FeedDto>>) PageResult.build(feedService.getTempFeed(userSeq,page));
     }
 
     @Operation(summary = "피드 상세 조회")
