@@ -45,6 +45,9 @@ public class FeedDto {
     @Schema(description = "피드 임시 저장 여부")
     private boolean tempSaveYn;
 
+    @Schema(description = "해당 피드 좋아요 여부")
+    private boolean likeYn;
+
     @Schema(description = "활성화 여부, true:활성화, false:삭제")
     private boolean activated;
 

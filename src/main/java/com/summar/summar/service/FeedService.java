@@ -107,6 +107,7 @@ public class FeedService {
                 .commentYn(feed.get().isCommentYn())
                 .tempSaveYn(feed.get().isTempSaveYn())
                 .secretYn(feed.get().isSecretYn())
+                .likeYn(feedLikeRepository.existsByActivatedIsTrueAndFeedFeedSeqAndUserUserSeq(feedSeq,jwtUtil.getCurrentUserSeq()))
                 .activated(feed.get().isActivated())
                 .lastModifiedDate(feed.get().getModifiedDate())
                 .createdDate(feed.get().getCreatedDate())
@@ -127,6 +128,7 @@ public class FeedService {
                     .tempSaveYn(feed.isTempSaveYn())
                     .secretYn(feed.isSecretYn())
                     .commentYn(feed.isCommentYn())
+                    .likeYn(feedLikeRepository.existsByActivatedIsTrueAndFeedFeedSeqAndUserUserSeq(feed.getFeedSeq(),jwtUtil.getCurrentUserSeq()))
                     .lastModifiedDate(feed.getModifiedDate())
                     .createdDate(feed.getCreatedDate())
                     .build()));
@@ -176,6 +178,7 @@ public class FeedService {
                         .tempSaveYn(feed.isTempSaveYn())
                         .secretYn(feed.isSecretYn())
                         .commentYn(feed.isCommentYn())
+                        .likeYn(feedLikeRepository.existsByActivatedIsTrueAndFeedFeedSeqAndUserUserSeq(feed.getFeedSeq(),jwtUtil.getCurrentUserSeq()))
                         .lastModifiedDate(feed.getModifiedDate())
                         .createdDate(feed.getCreatedDate())
                         .build()));
@@ -267,6 +270,7 @@ public class FeedService {
                         .commentYn(feed.isCommentYn())
                         .lastModifiedDate(feed.getModifiedDate())
                         .createdDate(feed.getCreatedDate())
+                        .likeYn(feedLikeRepository.existsByActivatedIsTrueAndFeedFeedSeqAndUserUserSeq(feed.getFeedSeq(),jwtUtil.getCurrentUserSeq()))
                         .build()));
         return new PageImpl<>(feedDtos,page,feeds.getTotalElements());
     }
