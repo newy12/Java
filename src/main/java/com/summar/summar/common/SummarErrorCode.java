@@ -28,6 +28,7 @@ public enum SummarErrorCode {
 
     //feed
     INVALID_TEMP_SAVE(200, "E200", "임시 저장할 수 없습니다."),
+    SEQUENCE_NOT_MATCH(200, "E201", "요청한 시퀀스가 잘못 되었습니다."),
     ;
     private final String code;
     private final String message;

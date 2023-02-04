@@ -1,5 +1,7 @@
 package com.summar.summar.service;
 
+import com.summar.summar.common.SummarCommonException;
+import com.summar.summar.common.SummarErrorCode;
 import com.summar.summar.domain.*;
 import com.summar.summar.dto.*;
 import com.summar.summar.repository.*;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -44,14 +47,15 @@ public class FeedService {
             feedRegisterDto.getImages().forEach(
                     image -> {
                         String feedImg = s3Service.upload(image, S3Service.FEED_IMAGE);
-                        FeedImage feedImage = new FeedImage(feedSeq, feedImg.replace("https", "http"), feedRegisterDto.getImages().indexOf(image), feed);
+                        FeedImage feedImage = new FeedImage(feedSeq, feedImg.replace("https", "http")
+                                , feedRegisterDto.getImages().indexOf(image), feed, true);
                         feedImageRepository.save(feedImage);
                     });
         }
         SimpleUserVO simpleUserVO = new SimpleUserVO(userRepository.findById(feedRegisterDto.getUserSeq()).get());
         return FeedDto.builder()
                 .feedSeq(feedSeq)
-                .feedImages(feedImageRepository.findByFeedSeq(feedSeq))
+                .feedImages(feedImageRepository.findByFeedSeqAndActivatedIsTrue(feedSeq))
                 .user(simpleUserVO)
                 .contents(feedRegisterDto.getContents())
                 .commentYn(feedRegisterDto.isCommentYn())
@@ -60,12 +64,44 @@ public class FeedService {
                 .build();
     }
 
+    @Transactional
+    public FeedDto updateFeed(FeedUpdateDto feedUpdateDto){
+        Long feedSeq = feedUpdateDto.getFeedSeq();
+        Feed feed = feedRepository.findOneByFeedSeq(feedSeq);
+        if(!feed.isTempSaveYn() && feedUpdateDto.isTempSaveYn()){
+            throw new SummarCommonException(SummarErrorCode.INVALID_TEMP_SAVE.getCode(), SummarErrorCode.INVALID_TEMP_SAVE.getMessage());
+        }
+        if(feedUpdateDto.getDeleteImageSeqs()!=null){
+            feedImageRepository.findAllById(feedUpdateDto.getDeleteImageSeqs())
+                    .forEach(feedImage -> feedImage.setActivated(false));
+        }
+        if(feedUpdateDto.getInsertImages()!=null){
+            feedUpdateDto.getInsertImages().forEach(
+                    image -> {
+                        String feedImg = s3Service.upload(image, S3Service.FEED_IMAGE);
+                        FeedImage feedImage = new FeedImage(feedSeq, feedImg.replace("https", "http")
+                                , feedUpdateDto.getInsertImages().indexOf(image), feed, true);
+                        feedImageRepository.save(feedImage);
+                    });
+        }
+        feedRepository.save(feed);
+        return FeedDto.builder()
+                .feedSeq(feedSeq)
+                .feedImages(feedImageRepository.findByFeedSeqAndActivatedIsTrue(feedSeq))
+                .user(new SimpleUserVO(feed.getUser()))
+                .contents(feedUpdateDto.getContents())
+                .commentYn(feedUpdateDto.isCommentYn())
+                .tempSaveYn(feedUpdateDto.isTempSaveYn())
+                .secretYn(feedUpdateDto.isSecretYn())
+                .build();
+    }
+
     @Transactional(readOnly = true)
     public Optional<FeedDto> getFeedByFeedSeq(Long feedSeq) {
         Optional<Feed> feed = feedRepository.findById(feedSeq);
         return Optional.ofNullable(FeedDto.builder()
                 .feedSeq(feedSeq)
-                .feedImages(feedImageRepository.findByFeedSeq(feedSeq))
+                .feedImages(feedImageRepository.findByFeedSeqAndActivatedIsTrue(feedSeq))
                 .user(new SimpleUserVO(feed.get().getUser()))
                 .contents(feed.get().getContents())
                 .commentYn(feed.get().isCommentYn())
@@ -84,7 +120,7 @@ public class FeedService {
         feeds.forEach(
                 feed -> feedDtos.add(FeedDto.builder()
                     .feedSeq(feed.getFeedSeq())
-                    .feedImages(feedImageRepository.findByFeedSeq(feed.getFeedSeq()))
+                    .feedImages(feedImageRepository.findByFeedSeqAndActivatedIsTrue(feed.getFeedSeq()))
                     .user(new SimpleUserVO(feed.getUser()))
                     .contents(feed.getContents())
                     .activated(feed.isActivated())
@@ -105,7 +141,7 @@ public class FeedService {
             feeds.forEach(
                     feed -> feedDtos.add(FeedDto.builder()
                             .feedSeq(feed.getFeedSeq())
-                            .feedImages(feedImageRepository.findByFeedSeq(feed.getFeedSeq()))
+                            .feedImages(feedImageRepository.findByFeedSeqAndActivatedIsTrue(feed.getFeedSeq()))
                             .user(new SimpleUserVO(feed.getUser()))
                             .contents(feed.getContents())
                             .activated(feed.isActivated())
@@ -133,7 +169,7 @@ public class FeedService {
         feeds.forEach(
                 feed -> feedDtos.add(FeedDto.builder()
                         .feedSeq(feed.getFeedSeq())
-                        .feedImages(feedImageRepository.findByFeedSeq(feed.getFeedSeq()))
+                        .feedImages(feedImageRepository.findByFeedSeqAndActivatedIsTrue(feed.getFeedSeq()))
                         .user(new SimpleUserVO(feed.getUser()))
                         .contents(feed.getContents())
                         .activated(feed.isActivated())
@@ -152,7 +188,7 @@ public class FeedService {
         feed.setActivated(false);
         return FeedDto.builder()
                 .feedSeq(feedSeq)
-                .feedImages(feedImageRepository.findByFeedSeq(feedSeq))
+                .feedImages(feedImageRepository.findByFeedSeqAndActivatedIsTrue(feedSeq))
                 .user(new SimpleUserVO(feed.getUser()))
                 .contents(feed.getContents())
                 .commentYn(feed.isCommentYn())
@@ -182,27 +218,13 @@ public class FeedService {
     public Page<FeedCommentDto> getFeedCommentsByFeedSeq(Pageable page, Long feedSeq) {
         Page<FeedComment> feedComments = feedCommentRepository.findAllByFeedFeedSeq(feedSeq,page);
         List<FeedCommentDto> feedCommentDtos = new ArrayList<>();
-        List<FeedComment> parentComments = feedComments.stream().filter(feedComment1 -> feedComment1.getParentCommentSeq().equals(0L))
-                .collect(Collectors.toList());
-        List<FeedComment> childComments = feedComments.stream().filter(feedComment1 -> !feedComment1.getParentCommentSeq().equals(0L))
-                .collect(Collectors.toList());
-        parentComments.forEach(
-                parentComment -> {
-                    List<FeedCommentDto> myChildrenComments = new ArrayList<>();
-                    childComments.stream().filter(childComment->childComment.getParentCommentSeq().equals(parentComment.getFeedCommentSeq())).collect(Collectors.toList())
-                            .forEach(
-                                    myChild ->{
-                                        FeedCommentDto myChildren = new FeedCommentDto(myChild.getFeedCommentSeq()
-                                                , myChild.getFeed().getFeedSeq(), new SimpleUserVO(myChild.getUser()), myChild.isActivated()
-                                                , null,0, myChild.getModifiedDate()
-                                                , myChild.getCreatedDate(), myChild.getComment());
-                                        myChildrenComments.add(myChildren);
-                                    });
-                    feedCommentDtos.add(new FeedCommentDto(parentComment.getFeedCommentSeq()
-                            , parentComment.getFeed().getFeedSeq(), new SimpleUserVO(parentComment.getUser()), parentComment.isActivated()
-                            , myChildrenComments, myChildrenComments.size(), parentComment.getModifiedDate()
-                            , parentComment.getCreatedDate(), parentComment.getComment()));
-                });
+        feedComments.forEach(
+                feedComment -> feedCommentDtos.add(new FeedCommentDto(feedComment.getFeedCommentSeq()
+                        , feedComment.getFeed().getFeedSeq(), new SimpleUserVO(feedComment.getUser()), feedComment.isActivated()
+                        ,feedComment.getParentCommentSeq()
+                        , feedComment.getModifiedDate()
+                        , feedComment.getCreatedDate(), feedComment.getComment()))
+        );
         return new PageImpl<>(feedCommentDtos,page,feedComments.getTotalElements());
     }
 
@@ -236,7 +258,7 @@ public class FeedService {
         feeds.forEach(
                 feed -> feedDtos.add(FeedDto.builder()
                         .feedSeq(feed.getFeedSeq())
-                        .feedImages(feedImageRepository.findByFeedSeq(feed.getFeedSeq()))
+                        .feedImages(feedImageRepository.findByFeedSeqAndActivatedIsTrue(feed.getFeedSeq()))
                         .user(new SimpleUserVO(feed.getUser()))
                         .contents(feed.getContents())
                         .activated(feed.isActivated())
