@@ -24,9 +24,11 @@ public class FeedCommentDto {
 
     private boolean activated;
 
-    private List<FeedCommentDto> childComments;
+    private Long parentCommentSeq;
 
-    private int childCommentsCount;
+    //private List<FeedCommentDto> childComments;
+
+    //private int childCommentsCount;
 
     private LocalDateTime lastModifiedDate;
 

@@ -56,6 +56,15 @@ public class FeedController {
         return (ResponseEntity<FeedDto>) ObjectResult.build("result", feedService.getFeedByFeedSeq(feedSeq));
     }
 
+    @Operation(summary = "피드 수정")
+    @PutMapping(value = "/{feedSeq}", consumes = {"multipart/form-data"})
+    public ResponseEntity<FeedDto> updateFeed(@PathVariable(name = "feedSeq" ) Long feedSeq, @ModelAttribute FeedUpdateDto feedUpdateDto) {
+        if(!feedSeq.equals(feedUpdateDto.getFeedSeq())){
+            throw new SummarCommonException(SummarErrorCode.SEQUENCE_NOT_MATCH.getCode(), SummarErrorCode.SEQUENCE_NOT_MATCH.getMessage());
+        }
+        return (ResponseEntity<FeedDto>) ObjectResult.build("result", feedService.updateFeed(feedUpdateDto));
+    }
+
     @Operation(summary = "피드 비활성화 (삭제)")
     @PatchMapping(value = "/{feedSeq}")
     public ResponseEntity<FeedDto> setFeedInActivated(@PathVariable(name = "feedSeq") Long feedSeq) {
@@ -113,6 +122,4 @@ public class FeedController {
     public ResponseEntity<BooleanResult> setFeedScrap(@PathVariable(name = "feedSeq") Long feedSeq, @RequestBody FeedScrapDto feedScrapDto) {
         return BooleanResult.build("result", feedService.setFeedScrap(feedSeq, feedScrapDto));
     }
-
-
 }
