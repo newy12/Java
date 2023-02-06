@@ -18,6 +18,8 @@ import java.util.Objects;
 public class Push2Service {
     private final String API_URL = "https://fcm.googleapis.com/v1/projects/summar-924e4/messages:send";
     private final ObjectMapper objectMapper;
+}
+/*
 
     public void sendMessageTo(String targetToken, String title, String body, String image) throws IOException {
         String message = makeMessage(targetToken, title, body, image);
@@ -75,3 +77,4 @@ public class Push2Service {
         return googleCredentials.getAccessToken().getTokenValue();
     }
 }
+*/
