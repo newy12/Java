@@ -30,7 +30,7 @@ import java.io.IOException;
 public class FollowController {
 
     private final FollowService followService;
-    private final Push2Service push2Service;
+    //private final Push2Service push2Service;
 
 
     /**
@@ -117,8 +117,8 @@ public class FollowController {
     }
 
 
-    @PostMapping("/test")
+/*    @PostMapping("/test")
     public void test() throws IOException {
         push2Service.sendMessageTo("c_uqfV0BBE-EmwgFyknWWt:APA91bHKKfSPFTVipMLCpFtZ6BG-anQ9Ff3tGCFpWbp66k0wmVRclhJN501nrVDI8LRbp0GGMtFMGCPLUmK5iHmKHrK2AeKRSctmG3OyFUXniHTMLoHaR0BWeGjjUUsq97JANUjh00nn","testTitle","contents","http://image.summar.io.s3.ap-northeast-2.amazonaws.com/feed/8a337862-8448-46e4-b1ab-f04b5a4380bf.jpg");
-    }
+    }*/
 }
