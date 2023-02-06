@@ -11,7 +11,6 @@ import lombok.Data;
 @Builder
 public class FollowerResponseDto{
     private String userNickname;
-    private String introduce;
     private String major1;
     private String major2;
     private Integer follower;
