@@ -53,6 +53,15 @@ dependencies {
     api "com.querydsl:querydsl-jpa:${queryDslVersion}"
     api 'org.springframework.boot:spring-boot-starter-jdbc'
     //runtimeOnly "com.h2database:h2"
+    // https://mvnrepository.com/artifact/com.google.firebase/firebase-admin
+    runtimeOnly 'com.google.firebase:firebase-admin:8.1.0'
+    // https://mvnrepository.com/artifact/com.squareup.okhttp3/okhttp
+    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+    // https://mvnrepository.com/artifact/com.google.api-client/google-api-client
+    implementation 'com.google.api-client:google-api-client:2.0.0'
+    // https://mvnrepository.com/artifact/com.google.auth/google-auth-library-oauth2-http
+    implementation 'com.google.auth:google-auth-library-oauth2-http:1.14.0'
+
     runtimeOnly 'org.springframework.boot:spring-boot-devtools:2.7.3'
     runtimeOnly 'mysql:mysql-connector-java:8.0.30'
     testImplementation 'org.mockito:mockito-all:1.10.19'

@@ -5,9 +5,8 @@ import com.summar.summar.results.BooleanResult;
 import com.summar.summar.results.ObjectResult;
 import com.summar.summar.results.PageResult;
 import com.summar.summar.service.FollowService;
+import com.summar.summar.service.Push2Service;
 import com.summar.summar.util.StringUtil;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -21,6 +20,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 
 @Slf4j
 @RestController
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 public class FollowController {
 
     private final FollowService followService;
+    private final Push2Service push2Service;
 
 
     /**
@@ -112,5 +114,11 @@ public class FollowController {
     public ResponseEntity<?> followCheck(@Parameter(description = "팔로우 당한 사람",required = true) @RequestParam(value = "followedUserSeq")Long followedUserSeq,
                                          @Parameter(description = "팔로우 건사람")@RequestParam(value = "followingUserSeq")Long followingUserSeq){
         return BooleanResult.build("result",followService.followCheck(followedUserSeq,followingUserSeq));
+    }
+
+
+    @PostMapping("/test")
+    public void test() throws IOException {
+        push2Service.sendMessageTo("c_uqfV0BBE-EmwgFyknWWt:APA91bHKKfSPFTVipMLCpFtZ6BG-anQ9Ff3tGCFpWbp66k0wmVRclhJN501nrVDI8LRbp0GGMtFMGCPLUmK5iHmKHrK2AeKRSctmG3OyFUXniHTMLoHaR0BWeGjjUUsq97JANUjh00nn","testTitle","contents","http://image.summar.io.s3.ap-northeast-2.amazonaws.com/feed/8a337862-8448-46e4-b1ab-f04b5a4380bf.jpg");
     }
 }
