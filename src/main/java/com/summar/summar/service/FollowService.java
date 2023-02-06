@@ -33,11 +33,12 @@ public class FollowService {
         Page<Follow> followerList = followRepository.findByFollowedUserAndFollowYn(userInfo,true, pageable);
         return followerList.map(m -> FollowerResponseDto.builder()
                 .userNickname(m.getFollowingUser().getUserNickname())
-                .introduce(m.getFollowingUser().getIntroduce())
                 .follower(m.getFollowingUser().getFollower())
                 .following(m.getFollowingUser().getFollowing())
                 .major1(m.getFollowingUser().getMajor1())
                 .major2(m.getFollowingUser().getMajor2())
+                .profileImageUrl(m.getFollowingUser().getProfileImageUrl())
+                .userSeq(m.getFollowingUser().getUserSeq())
                 .build());
     }
 
@@ -47,11 +48,12 @@ public class FollowService {
         Page<Follow> followingList = followRepository.findByFollowingUserAndFollowYn(userInfo, true, pageable);
         return followingList.map(m -> FollowerResponseDto.builder()
                 .userNickname(m.getFollowedUser().getUserNickname())
-                .introduce(m.getFollowedUser().getIntroduce())
                 .follower(m.getFollowedUser().getFollower())
                 .following(m.getFollowedUser().getFollowing())
                 .major1(m.getFollowedUser().getMajor1())
                 .major2(m.getFollowedUser().getMajor2())
+                .profileImageUrl(m.getFollowedUser().getProfileImageUrl())
+                .userSeq(m.getFollowedUser().getUserSeq())
                 .build());
     }
     @Transactional

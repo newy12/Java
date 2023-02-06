@@ -30,7 +30,7 @@ import java.io.IOException;
 public class FollowController {
 
     private final FollowService followService;
-    private final Push2Service push2Service;
+    //private final Push2Service push2Service;
 
 
     /**
