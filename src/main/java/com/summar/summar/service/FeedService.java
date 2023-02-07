@@ -153,15 +153,16 @@ public class FeedService {
                             .forEach(
                                     myChild ->{
                                         FeedCommentDto myChildren = new FeedCommentDto(myChild.getFeedCommentSeq()
+                                                , myChild.getCreatedDate()
                                                 , myChild.getFeed().getFeedSeq(), new SimpleUserVO(myChild.getUser()), myChild.isActivated()
-                                                , null,0, myChild.getModifiedDate()
-                                                , myChild.getCreatedDate(), myChild.getComment());
+                                                , null,0, myChild.getModifiedDate(), myChild.getComment());
                                         myChildrenComments.add(myChildren);
                                     });
                     feedCommentDtos.add(new FeedCommentDto(parentComment.getFeedCommentSeq()
+                            , parentComment.getCreatedDate()
                             , parentComment.getFeed().getFeedSeq(), new SimpleUserVO(parentComment.getUser()), parentComment.isActivated()
                             , myChildrenComments, myChildrenComments.size(), parentComment.getModifiedDate()
-                            , parentComment.getCreatedDate(), parentComment.getComment()));
+                            , parentComment.getComment()));
                 });
         return new PageImpl<>(feedCommentDtos,page,feedComments.getTotalElements());
     }

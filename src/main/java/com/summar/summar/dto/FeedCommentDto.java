@@ -18,6 +18,8 @@ public class FeedCommentDto {
 
     private Long feedCommentSeq;
 
+    private LocalDateTime createdDate;
+
     private Long feedSeq;
 
     private SimpleUserVO user;
@@ -29,8 +31,6 @@ public class FeedCommentDto {
     private int childCommentsCount;
 
     private LocalDateTime lastModifiedDate;
-
-    private LocalDateTime createdDate;
 
     private String comment;
 
