@@ -105,7 +105,7 @@ public class UserController {
         return ObjectResult.build("result", userService.getUserInfo(userSeq));
     }
 
-    /**
+    /**∑
      * 마이페이지 개인정보 수정
      *
      * @param changeUserInfoRequestDto

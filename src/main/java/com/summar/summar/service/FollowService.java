@@ -33,24 +33,7 @@ public class FollowService {
         //userSeq = 1
         User userInfo = userRepository.findByUserSeqAndLeaveYn(userSeq,false).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         Page<Follow> followingList = followRepository.findByFollowedUserAndFollowYn(userInfo,true, pageable);
-        for (Follow follow1:followingList) {
-            //followed가 1이면서
-            List<Follow> followList = followRepository.findByFollowedUserAndFollowYn(follow1.getFollowingUser(),true);
-            for (Follow follow2:followList) {
-                if(follow2.getFollowedUser().equals(follow1.getFollowingUser())){
-                    log.info("맞팔인 사람 : {}",follow2.getFollowId());
-                    Follow followInfo1 = followRepository.findById(follow2.getFollowId()).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
-                    Follow followInfo2 = followRepository.findById(follow1.getFollowId()).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
 
-                    log.info("userInfo : {}",followInfo1.getFollowId()+" , "+followInfo2.getFollowId());
-                    followInfo1.setFollowUp(true);
-                    followInfo2.setFollowUp(true);
-
-                    followRepository.save(followInfo1);
-                    followRepository.save(followInfo2);
-                }
-            }
-        }
         return followingList.map(m -> FollowerResponseDto.builder()
                 .userNickname(m.getFollowingUser().getUserNickname())
                 .follower(m.getFollowingUser().getFollower())
@@ -76,6 +59,7 @@ public class FollowService {
                 .major2(m.getFollowedUser().getMajor2())
                 .profileImageUrl(m.getFollowedUser().getProfileImageUrl())
                 .userSeq(m.getFollowedUser().getUserSeq())
+                .followUp(m.getFollowUp())
                 .build());
     }
     @Transactional
@@ -85,7 +69,9 @@ public class FollowService {
         }
         User followedUser = userRepository.findByUserSeqAndLeaveYn(followerRequestDto.getFollowedUserSeq(),false).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         User followingUser = userRepository.findByUserSeqAndLeaveYn(followerRequestDto.getFollowingUserSeq(),false).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
-        Follow followInfo = followRepository.findByFollowedUserAndFollowingUserAndFollowYn(followedUser, followingUser, false).orElse(null);
+        Follow followInfo1 = followRepository.findByFollowedUserAndFollowingUserAndFollowYn(followedUser, followingUser, false).orElse(null);
+
+
         //푸쉬 알람
         PushNotificationDto pushNotificationDto = PushNotificationDto.builder()
                 .title("Summar")
@@ -93,7 +79,7 @@ public class FollowService {
                 .userNickname(followedUser.getUserNickname())
                 .build();
         //팔로우 정보가 없다면
-        if (followInfo == null) {
+        if (followInfo1 == null) {
             FollowerSaveDto followerSaveDto = FollowerSaveDto.builder()
                     .followedUser(followedUser)
                     .followYn(true)
@@ -107,16 +93,39 @@ public class FollowService {
             followingUser.updateFollowing(followingCount);
             userRepository.save(followingUser);
 
+            //맞팔을 위한 비교
+            Follow follow1 = followRepository.findByFollowedUserAndFollowingUserAndFollowYn(followedUser,followingUser,true).orElse(null);
+            Follow follow2 = followRepository.findByFollowedUserAndFollowingUserAndFollowYn(followingUser,followedUser,true).orElse(null);
+            if(follow1 !=null && follow2 != null){
+                if(follow1.getFollowedUser().equals(follow2.getFollowingUser()) && follow1.getFollowingUser().equals(follow2.getFollowedUser())){
+                    follow1.setFollowUp(true);
+                    follow2.setFollowUp(true);
+                    followRepository.save(follow1);
+                    followRepository.save(follow2);
+                }
+            }
         } else {
             //기존 팔로우 정보가 있다면
-            followInfo.setFollowYn(true);
-            followRepository.save(followInfo);
+            followInfo1.setFollowYn(true);
+            followRepository.save(followInfo1);
             Integer followerCount = followRepository.countByFollowedUserAndFollowYn(followedUser, true);
             Integer followingCount = followRepository.countByFollowingUserAndFollowYn(followingUser, true);
             followedUser.updateFollower(followerCount);
             userRepository.save(followedUser);
             followingUser.updateFollowing(followingCount);
             userRepository.save(followingUser);
+
+            //맞팔을 위한 비교
+            Follow follow1 = followRepository.findByFollowedUserAndFollowingUserAndFollowYn(followedUser,followingUser,true).orElse(null);
+            Follow follow2 = followRepository.findByFollowedUserAndFollowingUserAndFollowYn(followingUser,followedUser,true).orElse(null);
+            if(follow1 !=null && follow2 != null){
+                if(follow1.getFollowedUser().equals(follow2.getFollowingUser()) && follow1.getFollowingUser().equals(follow2.getFollowedUser())){
+                    follow1.setFollowUp(true);
+                    follow2.setFollowUp(true);
+                    followRepository.save(follow1);
+                    followRepository.save(follow2);
+                }
+            }
         }
         //푸시알림 발송
         pushService.pushNotification(pushNotificationDto);
@@ -126,9 +135,15 @@ public class FollowService {
     public void deleteFollower(FollowerRequestDto followerRequestDto) {
         User followingUser = userRepository.findByUserSeqAndLeaveYn(followerRequestDto.getFollowingUserSeq(),false).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         User followedUser = userRepository.findByUserSeqAndLeaveYn(followerRequestDto.getFollowedUserSeq(),false).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
-        Follow followInfo = followRepository.findByFollowedUserAndFollowingUserAndFollowYn(followedUser,followingUser , true).orElseThrow(() -> new SummarCommonException(SummarErrorCode.FOLLOW_NOT_FOUND.getCode(), SummarErrorCode.FOLLOW_NOT_FOUND.getMessage()));
-        followInfo.setFollowYn(false);
-        followRepository.save(followInfo);
+        Follow followInfo1 = followRepository.findByFollowedUserAndFollowingUserAndFollowYn(followedUser,followingUser , true).orElse(null);
+        Follow followInfo2 = followRepository.findByFollowedUserAndFollowingUserAndFollowYn(followingUser,followedUser , true).orElse(null);
+        if(followInfo1 != null && followInfo2 != null){
+            followInfo1.setFollowUp(false);
+            followInfo2.setFollowUp(false);
+            followRepository.save(followInfo1);
+            followRepository.save(followInfo2);
+        }
+        followInfo1.setFollowYn(false);
         Integer followerCount = followRepository.countByFollowedUserAndFollowYn(followedUser, true);
         Integer followingCount = followRepository.countByFollowingUserAndFollowYn(followingUser, true);
         followedUser.updateFollower(followerCount);
