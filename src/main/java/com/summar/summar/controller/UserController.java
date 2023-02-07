@@ -122,9 +122,9 @@ public class UserController {
         userService.changeUserInfo(changeUserInfoRequestDto);
         return ObjectResult.ok();
     }
+
     /**
      * 필명 중복체크
-     *
      * @param userNickname
      * @return
      * @throws NoSuchAlgorithmException
@@ -154,6 +154,13 @@ public class UserController {
     public ResponseEntity<?> searchUserInfo(@RequestParam(value = "userSeq")Long userSeq){
        return ObjectResult.build("results",userService.searchUserInfo(userSeq));
     }
+
+    /**
+     * 한글 초성 & 단어 검색 기능
+     * @param userNickname
+     * @param pageable
+     * @return
+     */
     @Operation(summary = "한글 초성 & 단어 검색 기능", description = "회원의 닉네임검색 기능입니다.", security = @SecurityRequirement(name = "Authorization"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.searchUserInitialList))),
@@ -164,6 +171,12 @@ public class UserController {
     public ResponseEntity<?> searchUserInitialList(@RequestParam(value = "userNickname")String userNickname, @PageableDefault(size = 30) Pageable pageable) {
         return PageResult.build(userService.searchUserList(userNickname,pageable));
     }
+
+    /**
+     * 푸시 알림 상태 변경
+     * @param pushNotificationStatusDto
+     * @return
+     */
     @Operation(summary = "푸시 알림 상태 변경", description = "회원의 푸시 알림 상태를 변경합니다.", security = @SecurityRequirement(name = "Authorization"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.searchUserInitialList))),
@@ -174,7 +187,13 @@ public class UserController {
         userService.changePushNotification(pushNotificationStatusDto);
         return ObjectResult.ok();
     }
-    @Operation(summary = "한글 초성 & 단어 검색 기능", description = "회원의 닉네임검색 기능입니다.", security = @SecurityRequirement(name = "Authorization"))
+
+    /**
+     * 푸시 알림 상태 조회
+     * @param userNickname
+     * @return
+     */
+    @Operation(summary = "푸시 알림 상태 조회", description = "회원의 푸시 알림 상태 조회합니다.", security = @SecurityRequirement(name = "Authorization"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.searchUserInitialList))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = StringUtil.nulls))),

@@ -24,6 +24,8 @@ public class Follow {
     @Column(name = "follow_yn")
     @Type(type = "yes_no")
     private Boolean followYn; //팔로우 Y/N
+
+    private Boolean followUp = false; //맞팔 유무   맞팔 : 'Y' , 맞팧아님 : 'N'  [default : 'N']
     @ManyToOne
     @JsonBackReference
     @JoinColumn(name = "following_user_id")
@@ -37,5 +39,9 @@ public class Follow {
 
     public void setFollowYn(boolean followYn) {
         this.followYn = followYn;
+    }
+
+    public void setFollowUp(boolean followUp) {
+        this.followUp = followUp;
     }
 }

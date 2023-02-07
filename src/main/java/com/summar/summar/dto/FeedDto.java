@@ -2,6 +2,7 @@ package com.summar.summar.dto;
 
 
 import com.summar.summar.domain.FeedImage;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -23,24 +24,37 @@ import java.util.List;
 public class FeedDto {
 
 
+    @Schema(description = "피드 시퀀스")
     private Long feedSeq;
 
+    @Schema(description = "유저 정보")
     private SimpleUserVO user;
 
+    @Schema(description = "피드 내용")
     private String contents;
 
+    @Schema(description = "피드 이미지 리스트")
     private List<FeedImage> feedImages;
 
+    @Schema(description = "비공개 여부")
     private boolean secretYn;
 
+    @Schema(description = "댓글 허용 여부")
     private boolean commentYn;
 
+    @Schema(description = "피드 임시 저장 여부")
     private boolean tempSaveYn;
 
+    @Schema(description = "해당 피드 좋아요 여부")
+    private boolean likeYn;
+
+    @Schema(description = "활성화 여부, true:활성화, false:삭제")
     private boolean activated;
 
+    @Schema(description = "마지막 수정 날짜")
     private LocalDateTime lastModifiedDate;
 
+    @Schema(description = "최초 생성 날짜")
     private LocalDateTime createdDate;
 
 }
