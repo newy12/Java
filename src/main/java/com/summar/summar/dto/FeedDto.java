@@ -48,6 +48,15 @@ public class FeedDto {
     @Schema(description = "해당 피드 좋아요 여부")
     private boolean likeYn;
 
+    @Schema(description = "해당 피드 좋아요 수")
+    private int totalLikeCount;
+
+    @Schema(description = "해당 피드 스크랩 여부")
+    private boolean scrapYn;
+
+    @Schema(description = "해당 피드 댓글 수(대댓글 포함)")
+    private int totalCommentCount;
+
     @Schema(description = "활성화 여부, true:활성화, false:삭제")
     private boolean activated;
 
