@@ -26,12 +26,32 @@ public class FollowService {
     private final PushService pushService;
 
 
-    @Transactional(readOnly = true)
+    @Transactional
     public Page<FollowerResponseDto> findFollowers(Long userSeq, Pageable pageable) {
         //해당 유저의 팔로워들 정보 추출
+        //나를 팔로우하는사람들 리스트
+        //userSeq = 1
         User userInfo = userRepository.findByUserSeqAndLeaveYn(userSeq,false).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
-        Page<Follow> followerList = followRepository.findByFollowedUserAndFollowYn(userInfo,true, pageable);
-        return followerList.map(m -> FollowerResponseDto.builder()
+        Page<Follow> followingList = followRepository.findByFollowedUserAndFollowYn(userInfo,true, pageable);
+        for (Follow follow1:followingList) {
+            //followed가 1이면서
+            List<Follow> followList = followRepository.findByFollowedUserAndFollowYn(follow1.getFollowingUser(),true);
+            for (Follow follow2:followList) {
+                if(follow2.getFollowedUser().equals(follow1.getFollowingUser())){
+                    log.info("맞팔인 사람 : {}",follow2.getFollowId());
+                    Follow followInfo1 = followRepository.findById(follow2.getFollowId()).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
+                    Follow followInfo2 = followRepository.findById(follow1.getFollowId()).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
+
+                    log.info("userInfo : {}",followInfo1.getFollowId()+" , "+followInfo2.getFollowId());
+                    followInfo1.setFollowUp(true);
+                    followInfo2.setFollowUp(true);
+
+                    followRepository.save(followInfo1);
+                    followRepository.save(followInfo2);
+                }
+            }
+        }
+        return followingList.map(m -> FollowerResponseDto.builder()
                 .userNickname(m.getFollowingUser().getUserNickname())
                 .follower(m.getFollowingUser().getFollower())
                 .following(m.getFollowingUser().getFollowing())
@@ -39,11 +59,13 @@ public class FollowService {
                 .major2(m.getFollowingUser().getMajor2())
                 .profileImageUrl(m.getFollowingUser().getProfileImageUrl())
                 .userSeq(m.getFollowingUser().getUserSeq())
+                .followUp(m.getFollowUp())
                 .build());
     }
 
    @Transactional(readOnly = true)
     public Page<?> findFollowings(Long userSeq, Pageable pageable) {
+        //내가 팔로우 하는 사람들 리스트
         User userInfo = userRepository.findByUserSeqAndLeaveYn(userSeq,false).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         Page<Follow> followingList = followRepository.findByFollowingUserAndFollowYn(userInfo, true, pageable);
         return followingList.map(m -> FollowerResponseDto.builder()

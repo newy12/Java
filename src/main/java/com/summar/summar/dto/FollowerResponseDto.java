@@ -17,4 +17,6 @@ public class FollowerResponseDto{
     private Integer following;
     private String profileImageUrl;
     private Long userSeq;
+    private Boolean followUp;
+
 }
