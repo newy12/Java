@@ -32,10 +32,12 @@ public class FeedCommentDto {
     @Schema(description = "삭제 여부")
     private boolean activated;
 
-    @Schema(description = "상위(부모) 댓글 시퀀스")
-    private Long parentCommentSeq;
+    @Schema(description = "하위 댓글 리스트")
+    private List<FeedCommentDto> childComments;
 
-    @Schema(description = "마지막 수정 날짜")
+    @Schema(description = "하위 댓글 수")
+    private int childCommentsCount;
+
     private LocalDateTime lastModifiedDate;
 
     @Schema(description = "댓글 내용")
