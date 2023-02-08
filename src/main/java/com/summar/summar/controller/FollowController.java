@@ -1,6 +1,8 @@
 package com.summar.summar.controller;
 
+import com.summar.summar.domain.Follow;
 import com.summar.summar.dto.FollowerRequestDto;
+import com.summar.summar.dto.OtherFollowersCheckRequestDto;
 import com.summar.summar.results.BooleanResult;
 import com.summar.summar.results.ObjectResult;
 import com.summar.summar.results.PageResult;
@@ -114,6 +116,15 @@ public class FollowController {
     public ResponseEntity<?> followCheck(@Parameter(description = "팔로우 당한 사람",required = true) @RequestParam(value = "followedUserSeq")Long followedUserSeq,
                                          @Parameter(description = "팔로우 건사람")@RequestParam(value = "followingUserSeq")Long followingUserSeq){
         return BooleanResult.build("result",followService.followCheck(followedUserSeq,followingUserSeq));
+    }
+
+    @GetMapping("/other-followers")
+    public ResponseEntity<?> otherFollowers(@ModelAttribute OtherFollowersCheckRequestDto otherFollowerCheckRequestDto, Pageable pageable){
+        return PageResult.build(followService.searchOtherFollowers(otherFollowerCheckRequestDto,pageable));
+    }
+    @GetMapping("/other-followings")
+    public ResponseEntity<?> otherFollowings(@ModelAttribute OtherFollowersCheckRequestDto otherFollowerCheckRequestDto, Pageable pageable){
+        return PageResult.build(followService.searchOtherFollowings(otherFollowerCheckRequestDto,pageable));
     }
 
 

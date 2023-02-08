@@ -2,6 +2,7 @@ package com.summar.summar.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.summar.summar.dto.FollowerSaveDto;
+import com.summar.summar.enumeration.FollowStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,6 +32,10 @@ public class Follow {
     @JoinColumn(name = "following_user_id")
     private User followingUser; //팔로우 한사람
 
+    @Transient
+    @Enumerated(EnumType.STRING)
+    private FollowStatus followStatus;
+
     public Follow(FollowerSaveDto followerSaveDto){
         this.followedUser = followerSaveDto.getFollowedUser();
         this.followYn = followerSaveDto.getFollowYn();
@@ -43,5 +48,9 @@ public class Follow {
 
     public void setFollowUp(boolean followUp) {
         this.followUp = followUp;
+    }
+
+    public void setFollowStatus(FollowStatus followStatus) {
+        this.followStatus = followStatus;
     }
 }
