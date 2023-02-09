@@ -252,7 +252,9 @@ public class FollowService {
                 continue;
             }
             //아무것도 아닐때
-            otherFollowerList.getContent().get(index).setFollowStatus(FollowStatus.암것도아님); // "암것도아님";
+            otherFollowerList.getContent().get(index).setFollowStatus(FollowStatus.암것도아님);
+            index++;
+            continue;// "암것도아님";
   /*          //둘다 팔로우 아닌 경우
             if (!followRepository.existsByFollowedUserAndFollowingUserAndFollowYn(user, followCheck.getFollowedUser(), true) &&
                     !followRepository.existsByFollowedUserAndFollowingUserAndFollowYn(followCheck.getFollowedUser(), user, true)) {
