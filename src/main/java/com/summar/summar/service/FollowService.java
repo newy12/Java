@@ -167,7 +167,7 @@ public class FollowService {
 
     @Transactional(readOnly = true)
     public Page<FollowerResponseDto> searchOtherFollowers(OtherFollowersCheckRequestDto otherFollowerCheckRequestDto, Pageable pageable) {
-        //1
+        //3
         User otherUser = userRepository.findById(otherFollowerCheckRequestDto.getOtherSeq())
                 .orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         //10
@@ -177,27 +177,36 @@ public class FollowService {
         Page<Follow> otherFollowerList = followRepository.findByFollowedUserAndFollowYn(otherUser, true, pageable);
         int index = 0;
         for (Follow followCheck : otherFollowerList) {
-            //맞팔인 경우
+            //나자신인경우
+            if(user.equals(followCheck.getFollowingUser())){
+                otherFollowerList.getContent().get(index).setFollowStatus(FollowStatus.나자신);  // "나자신"
+                index++;
+                continue;
+            }
+            // 맞팔인 경우
             if (followRepository.existsByFollowedUserAndFollowingUserAndFollowYn(user, followCheck.getFollowingUser(), true) &&
                     followRepository.existsByFollowedUserAndFollowingUserAndFollowYn(followCheck.getFollowingUser(), user, true)) {
                 otherFollowerList.getContent().get(index).setFollowStatus(FollowStatus.맞팔);  // "맞팔"
                 index++;
                 continue;
             }
-            //누구 한쪽이 팔로우 인경우
-            if (followRepository.existsByFollowedUserAndFollowingUserAndFollowYn(user, followCheck.getFollowingUser(), true) ||
-                    followRepository.existsByFollowedUserAndFollowingUserAndFollowYn(followCheck.getFollowingUser(), user, true)) {
+            //userSeq -> otherSeq 팔로우 인 경우.
+            if (followRepository.existsByFollowedUserAndFollowingUserAndFollowYn(followCheck.getFollowingUser(), user, true)) {
                 otherFollowerList.getContent().get(index).setFollowStatus(FollowStatus.한쪽팔로우); // "한쪽팔로우";
                 index++;
                 continue;
             }
-            //둘다 팔로우 아닌 경우
+            //둘다 팔로우 아님
+            otherFollowerList.getContent().get(index).setFollowStatus(FollowStatus.암것도아님);
+            index++;
+            continue;
+/*            //둘다 팔로우 아닌 경우
             if (!followRepository.existsByFollowedUserAndFollowingUserAndFollowYn(user, followCheck.getFollowingUser(), true) &&
                     !followRepository.existsByFollowedUserAndFollowingUserAndFollowYn(followCheck.getFollowingUser(), user, true)) {
                 otherFollowerList.getContent().get(index).setFollowStatus(FollowStatus.둘다팔로우아님);  // "둘다팔로우아님";
                 index++;
                 continue;
-            }
+            }*/
         }
         return otherFollowerList.map(m -> FollowerResponseDto.builder()
                 .userNickname(m.getFollowingUser().getUserNickname())
@@ -213,16 +222,22 @@ public class FollowService {
     }
 
     public Page<FollowerResponseDto> searchOtherFollowings(OtherFollowersCheckRequestDto otherFollowerCheckRequestDto, Pageable pageable) {
-        //1
+        //6
         User otherUser = userRepository.findById(otherFollowerCheckRequestDto.getOtherSeq())
                 .orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
-        //15
+        //10
         User user = userRepository.findById(otherFollowerCheckRequestDto.getUserSeq())
                 .orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         //다른사람을 팔로잉하고있는 사람들 리스트
         Page<Follow> otherFollowerList = followRepository.findByFollowingUserAndFollowYn(otherUser, true, pageable);
         int index = 0;
         for (Follow followCheck : otherFollowerList) {
+            //나 자신
+            if(user.equals(followCheck.getFollowedUser())){
+                otherFollowerList.getContent().get(index).setFollowStatus(FollowStatus.나자신);  // "나자신"
+                index++;
+                continue;
+            }
             //맞팔인 경우
             if (followRepository.existsByFollowedUserAndFollowingUserAndFollowYn(user, followCheck.getFollowedUser(), true) &&
                     followRepository.existsByFollowedUserAndFollowingUserAndFollowYn(followCheck.getFollowedUser(), user, true)) {
@@ -231,19 +246,20 @@ public class FollowService {
                 continue;
             }
             //누구 한쪽이 팔로우 인경우
-            if (followRepository.existsByFollowedUserAndFollowingUserAndFollowYn(user, followCheck.getFollowedUser(), true) ||
-                    followRepository.existsByFollowedUserAndFollowingUserAndFollowYn(followCheck.getFollowedUser(), user, true)) {
+            if (followRepository.existsByFollowedUserAndFollowingUserAndFollowYn(followCheck.getFollowedUser(), user, true)) {
                 otherFollowerList.getContent().get(index).setFollowStatus(FollowStatus.한쪽팔로우); // "한쪽팔로우";
                 index++;
                 continue;
             }
-            //둘다 팔로우 아닌 경우
+            //아무것도 아닐때
+            otherFollowerList.getContent().get(index).setFollowStatus(FollowStatus.암것도아님); // "암것도아님";
+  /*          //둘다 팔로우 아닌 경우
             if (!followRepository.existsByFollowedUserAndFollowingUserAndFollowYn(user, followCheck.getFollowedUser(), true) &&
                     !followRepository.existsByFollowedUserAndFollowingUserAndFollowYn(followCheck.getFollowedUser(), user, true)) {
                 otherFollowerList.getContent().get(index).setFollowStatus(FollowStatus.둘다팔로우아님);  // "둘다팔로우아님";
                 index++;
                 continue;
-            }
+            }*/
         }
         return otherFollowerList.map(m -> FollowerResponseDto.builder()
                 .userNickname(m.getFollowedUser().getUserNickname())
