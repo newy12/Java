@@ -202,4 +202,75 @@ public class StringUtil {
             "        \"result\": false\n" +
             "    }\n" +
             "}";
+    public static final String otherFollowers = "{\n" +
+            "    \"firstPage\": true,\n" +
+            "    \"lastPage\": true,\n" +
+            "    \"totalPageCount\": 1,\n" +
+            "    \"recordsPerPage\": 20,\n" +
+            "    \"content\": [\n" +
+            "        {\n" +
+            "            \"userNickname\": \"신승욱카카오\",\n" +
+            "            \"major1\": \"공학계열\",\n" +
+            "            \"major2\": \"컴퓨터ㆍ통신\",\n" +
+            "            \"follower\": 0,\n" +
+            "            \"following\": 5,\n" +
+            "            \"profileImageUrl\": \"http://test.jpg\",\n" +
+            "            \"userSeq\": 6,\n" +
+            "            \"followUp\": false,\n" +
+            "            \"followStatus\": \"암것도아님\"\n" +
+            "        },\n" +
+            "        {\n" +
+            "            \"userNickname\": \"신승욱애플\",\n" +
+            "            \"major1\": \"공학계열\",\n" +
+            "            \"major2\": \"컴퓨터ㆍ통신\",\n" +
+            "            \"follower\": 1,\n" +
+            "            \"following\": 1,\n" +
+            "            \"profileImageUrl\": null,\n" +
+            "            \"userSeq\": 9,\n" +
+            "            \"followUp\": false,\n" +
+            "            \"followStatus\": \"암것도아님\"\n" +
+            "        }\n" +
+            "    ],\n" +
+            "    \"totalRecordCount\": 2,\n" +
+            "    \"currentPageNo\": 1\n" +
+            "}";
+    public static final String otherFollowings = "{\n" +
+            "    \"firstPage\": true,\n" +
+            "    \"lastPage\": true,\n" +
+            "    \"totalPageCount\": 1,\n" +
+            "    \"recordsPerPage\": 20,\n" +
+            "    \"content\": [\n" +
+            "        {\n" +
+            "            \"userNickname\": \"신승욱네이버\",\n" +
+            "            \"major1\": \"예체능계열\",\n" +
+            "            \"major2\": \"무용ㆍ체육\",\n" +
+            "            \"follower\": 2,\n" +
+            "            \"following\": 0,\n" +
+            "            \"profileImageUrl\": \"http://test.jpg\",\n" +
+            "            \"userSeq\": 3,\n" +
+            "            \"followUp\": false,\n" +
+            "            \"followStatus\": \"한쪽팔로우\"\n" +
+            "        }\n" +
+            "    ],\n" +
+            "    \"totalRecordCount\": 1,\n" +
+            "    \"currentPageNo\": 1\n" +
+            "}";
+    public static final String notificationList = "{\n" +
+            "    \"result\": [\n" +
+            "        {\n" +
+            "            \"content\": \"신승욱카카오님이 회원님을 팔로우했어요.\",\n" +
+            "            \"userSeq\": 11,\n" +
+            "            \"otherUserSeq\": 6,\n" +
+            "            \"notificationType\": \"팔로우\",\n" +
+            "            \"createdDate\": \"2023-02-09 15:55:12\"\n" +
+            "        },\n" +
+            "        {\n" +
+            "            \"content\": \"맹씨님이 회원님을 팔로우했어요.\",\n" +
+            "            \"userSeq\": 11,\n" +
+            "            \"otherUserSeq\": 10,\n" +
+            "            \"notificationType\": \"팔로우\",\n" +
+            "            \"createdDate\": \"2023-02-09 15:55:43\"\n" +
+            "        }\n" +
+            "    ]\n" +
+            "}";
 }

@@ -118,10 +118,33 @@ public class FollowController {
         return BooleanResult.build("result",followService.followCheck(followedUserSeq,followingUserSeq));
     }
 
+    /**
+     * 다른 사람계정의 팔로워들 조회
+     * @param otherFollowerCheckRequestDto
+     * @param pageable
+     * @return
+     */
+    @Operation(summary = "다른 사람계정의 팔로워들 조회", description = "다른 사람계정의 팔로워들 조회합니다. ", security = @SecurityRequirement(name = "Authorization"))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.otherFollowers))),
+            @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
+    })
     @GetMapping("/other-followers")
     public ResponseEntity<?> otherFollowers(@ModelAttribute OtherFollowersCheckRequestDto otherFollowerCheckRequestDto, Pageable pageable){
         return PageResult.build(followService.searchOtherFollowers(otherFollowerCheckRequestDto,pageable));
     }
+
+    /**
+     * 다른 사람계정의 팔로잉들 조회
+     * @param otherFollowerCheckRequestDto
+     * @param pageable
+     * @return
+     */
+    @Operation(summary = "다른 사람계정의 팔로잉들 조회", description = "다른 사람계정의 팔로잉들 조회합니다. " , security = @SecurityRequirement(name = "Authorization"))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.otherFollowings))),
+            @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
+    })
     @GetMapping("/other-followings")
     public ResponseEntity<?> otherFollowings(@ModelAttribute OtherFollowersCheckRequestDto otherFollowerCheckRequestDto, Pageable pageable){
         return PageResult.build(followService.searchOtherFollowings(otherFollowerCheckRequestDto,pageable));

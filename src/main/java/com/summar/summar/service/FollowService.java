@@ -3,10 +3,13 @@ package com.summar.summar.service;
 import com.summar.summar.common.SummarCommonException;
 import com.summar.summar.common.SummarErrorCode;
 import com.summar.summar.domain.Follow;
+import com.summar.summar.domain.GatheringNotification;
 import com.summar.summar.domain.User;
 import com.summar.summar.dto.*;
 import com.summar.summar.enumeration.FollowStatus;
+import com.summar.summar.enumeration.NotificationType;
 import com.summar.summar.repository.FollowRepository;
+import com.summar.summar.repository.GatheringNotificationRepository;
 import com.summar.summar.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +28,7 @@ public class FollowService {
     private final FollowRepository followRepository;
     private final UserRepository userRepository;
     private final PushService pushService;
+    private final GatheringNotificationRepository gatheringNotificationRepository;
 
 
     @Transactional
@@ -131,6 +135,18 @@ public class FollowService {
         }
         //푸시알림 발송
         pushService.pushNotification(pushNotificationDto);
+
+
+
+        //알림리스트에 저장
+        GatheringNotification gatheringNotification = new GatheringNotification(
+                GatheringNotificationSaveDto.builder()
+                        .content(pushNotificationDto.getBody())
+                        .userSeq(followedUser)
+                        .otherUserSeq(followingUser)
+                        .notificationType(NotificationType.팔로우)
+                        .build());
+        gatheringNotificationRepository.save(gatheringNotification);
     }
 
     @Transactional
