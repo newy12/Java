@@ -1,4 +1,4 @@
-package com.summar.summar.domain;
+package com.summar.summar.enumeration;
 
 public enum UserStatus {
     normal,sleep,out

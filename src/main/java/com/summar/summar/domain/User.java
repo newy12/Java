@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.summar.summar.dto.*;
 import com.summar.summar.enumeration.SocialType;
+import com.summar.summar.enumeration.UserStatus;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,7 +1,7 @@
 package com.summar.summar.service;
 
 import com.summar.summar.domain.User;
-import com.summar.summar.domain.UserStatus;
+import com.summar.summar.enumeration.UserStatus;
 import com.summar.summar.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
