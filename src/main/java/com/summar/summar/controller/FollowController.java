@@ -149,7 +149,6 @@ public class FollowController {
     public ResponseEntity<?> otherFollowings(@ModelAttribute OtherFollowersCheckRequestDto otherFollowerCheckRequestDto, Pageable pageable){
         return PageResult.build(followService.searchOtherFollowings(otherFollowerCheckRequestDto,pageable));
     }
-//
 
 /*    @PostMapping("/test")
     public void test() throws IOException {
