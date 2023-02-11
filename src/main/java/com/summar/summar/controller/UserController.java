@@ -58,6 +58,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.leaveUser))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = StringUtil.nulls))),
     })
+    @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/leave")
     public ResponseEntity<?> leave(@RequestParam(value = "userSeq")Long userSeq){
         userService.leaveUser(userSeq);
@@ -99,7 +100,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.findUserInfo))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = StringUtil.nulls))),
     })
-    //@PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/user-info")
     public ResponseEntity<?> findUserInfo(@RequestParam(value = "userSeq") Long userSeq) {
         return ObjectResult.build("result", userService.getUserInfo(userSeq));
@@ -116,6 +117,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.changeUserInfo))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = StringUtil.nulls))),
     })
+    @PreAuthorize("isAuthenticated()")
     @PutMapping(value = "/user-info",consumes ={"multipart/form-data"})
     public ResponseEntity<?> changeUserInfo(@ModelAttribute ChangeUserInfoRequestDto changeUserInfoRequestDto) {
 
@@ -182,6 +184,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.searchUserInitialList))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = StringUtil.nulls))),
     })
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/push-notification-change")
     public ResponseEntity<?> pushNotification(@RequestBody PushNotificationStatusDto pushNotificationStatusDto){
         userService.changePushNotification(pushNotificationStatusDto);
@@ -198,6 +201,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.searchUserInitialList))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = StringUtil.nulls))),
     })
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/push-notification-info")
     public ResponseEntity<?> pushNotificationInfo(@RequestParam(value = "userNickname")String userNickname){
       return ObjectResult.build("result",userService.userPushStatusInfo(userNickname));

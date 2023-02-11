@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +32,7 @@ public class FeedController {
 
 
     @Operation(summary = "피드 등록", security = @SecurityRequirement(name = "Authorization"))
+    @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "", consumes = {"multipart/form-data"})
     public ResponseEntity<FeedDto> registFeed(@ModelAttribute FeedRegisterDto feedRegisterDto) {
         if (feedRegisterDto.getImages()==null && feedRegisterDto.getContents().length() < 1) {
@@ -40,24 +42,28 @@ public class FeedController {
     }
 
     @Operation(summary = "피드 조회", security = @SecurityRequirement(name = "Authorization"))
+    @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "")
     public ResponseEntity<Page<FeedDto>> getFeed(@PageableDefault(size = 30, sort = "createdDate", direction = Sort.Direction.DESC) Pageable page) {
         return (ResponseEntity<Page<FeedDto>>) PageResult.build(feedService.getFeed(page));
     }
 
     @Operation(summary = "임시 저장 피드 조회", security = @SecurityRequirement(name = "Authorization"))
+    @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/temp/{userSeq}")
     public ResponseEntity<Page<FeedDto>> getTempFeed(@PathVariable(name="userSeq") Long userSeq,@PageableDefault(size = 30, sort = "createdDate", direction = Sort.Direction.DESC) Pageable page) {
         return (ResponseEntity<Page<FeedDto>>) PageResult.build(feedService.getTempFeed(userSeq,page));
     }
 
     @Operation(summary = "피드 상세 조회", security = @SecurityRequirement(name = "Authorization"))
+    @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/{feedSeq}")
     public ResponseEntity<FeedDto> getFeed(@PathVariable(name = "feedSeq") Long feedSeq) {
         return (ResponseEntity<FeedDto>) ObjectResult.build("result", feedService.getFeedByFeedSeq(feedSeq));
     }
 
     @Operation(summary = "피드 수정", security = @SecurityRequirement(name = "Authorization"))
+    @PreAuthorize("isAuthenticated()")
     @PutMapping(value = "/{feedSeq}", consumes = {"multipart/form-data"})
     public ResponseEntity<FeedDto> updateFeed(@PathVariable(name = "feedSeq" ) Long feedSeq, @ModelAttribute FeedUpdateDto feedUpdateDto) {
         if(!feedSeq.equals(feedUpdateDto.getFeedSeq())){
@@ -67,24 +73,28 @@ public class FeedController {
     }
 
     @Operation(summary = "피드 비활성화 (삭제)", security = @SecurityRequirement(name = "Authorization"))
+    @PreAuthorize("isAuthenticated()")
     @PatchMapping(value = "/{feedSeq}")
     public ResponseEntity<FeedDto> setFeedInActivated(@PathVariable(name = "feedSeq") Long feedSeq) {
         return (ResponseEntity<FeedDto>) ObjectResult.build("result", feedService.updateFeedInActivated(feedSeq));
     }
 
     @Operation(summary = "특정 유저 피드 조회", security = @SecurityRequirement(name = "Authorization"))
+    @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/user/{userSeq}")
     public ResponseEntity<Page<FeedDto>> getFeedByUserSeq(@PageableDefault(size = 30, sort = "createdDate", direction = Sort.Direction.DESC) Pageable page, @PathVariable(name = "userSeq") Long userSeq) {
         return (ResponseEntity<Page<FeedDto>>) PageResult.build(feedService.getFeedByUserSeq(userSeq, page));
     }
 
     @Operation(summary = "피드 좋아요 추가/삭제", security = @SecurityRequirement(name = "Authorization"))
+    @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/like/{feedSeq}")
     public ResponseEntity<BooleanResult> setFeedLike(@PathVariable(name = "feedSeq") Long feedSeq, @RequestBody FeedLikeDto feedLikeDto) {
         return BooleanResult.build("result", feedService.setFeedLike(feedSeq, feedLikeDto));
     }
 
     @Operation(summary = "특정 피드 댓글 조회", security = @SecurityRequirement(name = "Authorization"))
+    @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "{feedSeq}/comments")
     public ResponseEntity<Page<FeedCommentDto>> getFeedCommentsByFeedSeq(@PageableDefault(size = 30, sort = "createdDate", direction = Sort.Direction.DESC) Pageable page,
                                                                 @PathVariable(name = "feedSeq")  Long feedSeq) {
@@ -92,6 +102,7 @@ public class FeedController {
     }
 
     @Operation(summary = "댓글 등록", security = @SecurityRequirement(name = "Authorization"))
+    @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "{feedSeq}/comments")
     public ResponseEntity<?> registFeedComment(@RequestBody FeedCommentRegisterDto feedCommentRegisterDto) {
         feedService.saveFeedComment(feedCommentRegisterDto);
@@ -99,6 +110,7 @@ public class FeedController {
     }
 
     @Operation(summary = "댓글 비활성화 (삭제)", security = @SecurityRequirement(name = "Authorization"))
+    @PreAuthorize("isAuthenticated()")
     @PatchMapping(value = "/comments/{feedCommentSeq}")
     public ResponseEntity<?> setFeedCommentInActivated(@PathVariable(name = "feedCommentSeq") Long feedCommentSeq) {
         feedService.updateFeedCommentInActivated(feedCommentSeq);
@@ -106,6 +118,7 @@ public class FeedController {
     }
 
     @Operation(summary = "댓글 수정", security = @SecurityRequirement(name = "Authorization"))
+    @PreAuthorize("isAuthenticated()")
     @PutMapping(value = "{feedSeq}/comments")
     public ResponseEntity<?> updateFeedComment(@RequestBody FeedCommentUpdateDto feedCommentUpdateDto) {
         feedService.updateFeedComment(feedCommentUpdateDto);
@@ -113,12 +126,14 @@ public class FeedController {
     }
 
     @Operation(summary = "유저 피드 스크랩 조회", security = @SecurityRequirement(name = "Authorization"))
+    @PreAuthorize("isAuthenticated()")
     @GetMapping(value = "/scrap")
     public ResponseEntity<Page<FeedDto>> getFeedScrap(@PageableDefault(size = 30, sort = "createdDate", direction = Sort.Direction.DESC) Pageable page) {
         return (ResponseEntity<Page<FeedDto>>) PageResult.build(feedService.getFeedScrap(page));
     }
 
     @Operation(summary = "피드 스크랩 추가/삭제", security = @SecurityRequirement(name = "Authorization"))
+    @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/scrap/{feedSeq}")
     public ResponseEntity<BooleanResult> setFeedScrap(@PathVariable(name = "feedSeq") Long feedSeq, @RequestBody FeedScrapDto feedScrapDto) {
         return BooleanResult.build("result", feedService.setFeedScrap(feedSeq, feedScrapDto));

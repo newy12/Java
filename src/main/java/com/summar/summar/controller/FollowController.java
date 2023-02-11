@@ -20,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -46,6 +47,7 @@ public class FollowController {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.findFollowers))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/followers")
     public ResponseEntity<?> findFollowers(@RequestParam(value = "userSeq")Long userSeq, Pageable pageable){
         return PageResult.build(followService.findFollowers(userSeq,pageable));
@@ -62,6 +64,7 @@ public class FollowController {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.findFollowings))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/followings")
     public ResponseEntity<?> findFollowings(@RequestParam(value = "userSeq")Long userSeq, Pageable pageable){
         return PageResult.build(followService.findFollowings(userSeq,pageable));
@@ -78,6 +81,7 @@ public class FollowController {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.addFollower))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/follower")
     public ResponseEntity<?> addFollower(@RequestBody FollowerRequestDto followerRequestDto){
         followService.addFollower(followerRequestDto);
@@ -93,6 +97,7 @@ public class FollowController {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.deleteFollower))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
+    @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/follower")
     public ResponseEntity<?> deleteFollower(@RequestBody FollowerRequestDto followerRequestDto){
         followService.deleteFollower(followerRequestDto);
@@ -112,6 +117,7 @@ public class FollowController {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.followCheck))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/follow-check")
     public ResponseEntity<?> followCheck(@Parameter(description = "팔로우 당한 사람",required = true) @RequestParam(value = "followedUserSeq")Long followedUserSeq,
                                          @Parameter(description = "팔로우 건사람")@RequestParam(value = "followingUserSeq")Long followingUserSeq){
@@ -129,6 +135,7 @@ public class FollowController {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.otherFollowers))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/other-followers")
     public ResponseEntity<?> otherFollowers(@ModelAttribute OtherFollowersCheckRequestDto otherFollowerCheckRequestDto, Pageable pageable){
         return PageResult.build(followService.searchOtherFollowers(otherFollowerCheckRequestDto,pageable));
@@ -145,6 +152,7 @@ public class FollowController {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.otherFollowings))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/other-followings")
     public ResponseEntity<?> otherFollowings(@ModelAttribute OtherFollowersCheckRequestDto otherFollowerCheckRequestDto, Pageable pageable){
         return PageResult.build(followService.searchOtherFollowings(otherFollowerCheckRequestDto,pageable));
