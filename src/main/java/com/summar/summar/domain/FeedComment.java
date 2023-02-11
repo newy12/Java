@@ -9,6 +9,8 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -29,6 +31,10 @@ public class FeedComment extends BaseTimeEntity implements Serializable {
     @JoinColumn(name="user_seq", referencedColumnName = "user_seq")
     @JsonIgnoreProperties(value = { "feedComments" }, allowSetters = true)
     private User user;
+
+    @OneToMany(mappedBy = "feedComment",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = {"feedComments"}, allowSetters = true)
+    private List<Report> reports = new ArrayList<>();
 
     private Long parentCommentSeq;
 

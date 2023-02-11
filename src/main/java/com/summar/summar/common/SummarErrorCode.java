@@ -16,6 +16,8 @@ public enum SummarErrorCode {
     // user
     USER_NOT_FOUND(200, "E100", "존재하지 않는 사용자입니다."),
     FOLLOW_NOT_FOUND(200,"E100","존재하지 않은 팔로우정보입니다."),
+    FEED_NOT_FOUND(200,"E100","존재하지 않은 피드정보입니다."),
+    FEED_COMMENT_NOT_FOUND(200,"E100","존재하지 않은 피드댓글정보입니다."),
     INVALID_USER_INFO(201, "E101", "유효하지 않은 사용자 정보입니다."),
     UNAUTHORIZED(202, "E102", "승인된 계정이 아닙니다."),
     PASSWORD_NOT_MATCH(203, "E103", "비밀번호가 일치하지 않습니다."),

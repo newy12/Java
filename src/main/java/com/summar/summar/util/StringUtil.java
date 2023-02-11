@@ -273,4 +273,13 @@ public class StringUtil {
             "        }\n" +
             "    ]\n" +
             "}";
+    public static final String report = "{\n" +
+            "    \"status\": \"SUCCESS\",\n" +
+            "    \"message\": \"정상처리\",\n" +
+            "    \"errorMessage\": null,\n" +
+            "    \"errorCode\": null,\n" +
+            "    \"result\": {\n" +
+            "        \"results\": true\n" +
+            "    }\n" +
+            "}";
 }

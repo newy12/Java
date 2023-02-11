@@ -89,6 +89,11 @@ public class User extends BaseTimeEntity implements Serializable {
     @JsonManagedReference
     private List<GatheringNotification> gatheringNotificationsOfOtherUserList;
 
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Report> reportsOfUsers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "otherUser",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Report> reportsOfOtherUsers = new ArrayList<>();
     @Builder
     public User(Long userSeq, String userEmail, String userNickname) {
         this.userSeq = userSeq;

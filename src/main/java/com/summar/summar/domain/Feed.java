@@ -57,6 +57,11 @@ public class Feed extends BaseTimeEntity implements Serializable {
     @JsonIgnoreProperties(value = {"feed"}, allowSetters = true)
     private List<FeedComment> feedComments = new ArrayList<>();
 
+    @OneToMany(mappedBy = "feed",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JsonIgnoreProperties(value = {"feed"}, allowSetters = true)
+    private List<Report> reports = new ArrayList<>();
+
+
     public boolean isActivated() {
         return activated;
     }
