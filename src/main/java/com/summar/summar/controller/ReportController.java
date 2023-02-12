@@ -37,6 +37,6 @@ public class ReportController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("")
     public ResponseEntity<?> report(@RequestBody ReportRequestDto reportRequestDto) {
-       return BooleanResult.build("results",reportService.insertReport(reportRequestDto));
+       return BooleanResult.build("result",reportService.insertReport(reportRequestDto));
     }
 }
