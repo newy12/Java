@@ -34,10 +34,9 @@ public class ReportService {
                 .orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         User otherUser = userRepository.findById(reportRequestDto.getUserSeq())
                 .orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
-        Feed feed = feedRepository.findById(reportRequestDto.getFeedSeq())
-                .orElseThrow(() -> new SummarCommonException(SummarErrorCode.FEED_NOT_FOUND.getCode(), SummarErrorCode.FEED_NOT_FOUND.getMessage()));
-        FeedComment feedComment = feedCommentRepository.findById(reportRequestDto.getFeedCommentSeq())
-                .orElseThrow(() -> new SummarCommonException(SummarErrorCode.FEED_COMMENT_NOT_FOUND.getCode(), SummarErrorCode.FEED_COMMENT_NOT_FOUND.getMessage()));
+        Feed feed = feedRepository.findById(reportRequestDto.getFeedSeq()).orElse(null);
+        FeedComment feedComment = feedCommentRepository.findById(reportRequestDto.getFeedCommentSeq()).orElse(null);
+
         ReportSaveDto reportSaveDto = ReportSaveDto.builder()
                 .mySeq(user)
                 .userSeq(otherUser)

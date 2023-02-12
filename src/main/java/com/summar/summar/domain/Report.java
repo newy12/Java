@@ -3,6 +3,7 @@ package com.summar.summar.domain;
 import com.summar.summar.dto.ReportRequestDto;
 import com.summar.summar.dto.ReportSaveDto;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.GeneratorType;
 
@@ -11,11 +12,13 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Slf4j
+@NoArgsConstructor
 @Table(name = "REPORT")
 public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reportSeq;
+    @Column(length = 1000)
     private String reportContent;
     private String reportType;
     @ManyToOne
