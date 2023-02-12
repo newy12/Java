@@ -279,7 +279,7 @@ public class StringUtil {
             "    \"errorMessage\": null,\n" +
             "    \"errorCode\": null,\n" +
             "    \"result\": {\n" +
-            "        \"results\": true\n" +
+            "        \"result\": true\n" +
             "    }\n" +
             "}";
 }
