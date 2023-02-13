@@ -4,6 +4,7 @@ import com.summar.summar.common.SummarCommonException;
 import com.summar.summar.common.SummarErrorCode;
 import com.summar.summar.domain.*;
 import com.summar.summar.dto.*;
+import com.summar.summar.enumeration.NotificationType;
 import com.summar.summar.repository.*;
 import com.summar.summar.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -32,9 +33,13 @@ public class FeedService {
     private final FeedScrapRepository feedScrapRepository;
 
     private final FeedCommentRepository feedCommentRepository;
+
+    private final GatheringNotificationRepository gatheringNotificationRepository;
     private final UserRepository userRepository;
 
     private final S3Service s3Service;
+
+    private final PushService pushService;
 
     private final JwtUtil jwtUtil;
 
@@ -214,15 +219,55 @@ public class FeedService {
 
     @Transactional
     public Boolean setFeedLike(Long feedSeq, FeedLikeDto feedLikeDto){
+
         Optional<FeedLike> feedLike =feedLikeRepository.findByFeedFeedSeqAndUserUserSeq(feedSeq, feedLikeDto.getUserSeq());
+        Feed feed = feedRepository.findOneByFeedSeq(feedSeq);
+        User user = userRepository.findByUserSeqAndLeaveYn(feedLikeDto.getUserSeq(),false).get();
         feedLike.ifPresentOrElse(
-                findFeed -> findFeed.setActivated(!findFeed.isActivated()),
+                findFeed -> {
+                    findFeed.setActivated(!findFeed.isActivated());
+                    if(!feed.getUser().getUserSeq().equals(jwtUtil.getCurrentUserSeq())) {
+                        if (findFeed.isActivated()) {
+                            PushNotificationDto pushNotificationDto = PushNotificationDto.builder()
+                                    .title("Summar")
+                                    .body(user.getUserNickname() + "님이 회원님의 피드를 좋아합니다.")
+                                    .userNickname(feed.getUser().getUserNickname())
+                                    .build();
+                            GatheringNotification gatheringNotification = new GatheringNotification(
+                                    GatheringNotificationSaveDto.builder()
+                                            .content(pushNotificationDto.getBody())
+                                            .userSeq(user)
+                                            .otherUserSeq(feed.getUser())
+                                            .notificationType(NotificationType.좋아요)
+                                            .build());
+                            gatheringNotificationRepository.save(gatheringNotification);
+                            pushService.pushNotification(pushNotificationDto);
+                        }
+                    }
+                },
                 ()-> {
-                    Feed feed = feedRepository.findOneByFeedSeq(feedSeq);
-                    User user = userRepository.findByUserSeqAndLeaveYn(feedLikeDto.getUserSeq(),false).get();
+                    userRepository.findByUserSeqAndLeaveYn(feedLikeDto.getUserSeq(),false).get();
                     FeedLike newLike = new FeedLike(feed,user,true);
                     feedLikeRepository.save(newLike);
+
+                    PushNotificationDto pushNotificationDto = PushNotificationDto.builder()
+                            .title("Summar")
+                            .body(user.getUserNickname() + "님이 회원님의 피드를 좋아합니다.")
+                            .userNickname(feed.getUser().getUserNickname())
+                            .build();
+                    GatheringNotification gatheringNotification = new GatheringNotification(
+                            GatheringNotificationSaveDto.builder()
+                                    .content(pushNotificationDto.getBody())
+                                    .userSeq(user)
+                                    .otherUserSeq(feed.getUser())
+                                    .notificationType(NotificationType.좋아요)
+                                    .build());
+                    gatheringNotificationRepository.save(gatheringNotification);
+                    pushService.pushNotification(pushNotificationDto);
                 });
+
+
+
         return true;
     }
 
@@ -261,6 +306,26 @@ public class FeedService {
         Feed feed = feedRepository.findOneByFeedSeq(feedCommentRegisterDto.getFeedSeq());
         FeedComment feedComment = new FeedComment(feedCommentRegisterDto,feed,user);
         feedCommentRepository.save(feedComment);
+
+        if(!feed.getUser().getUserSeq().equals(jwtUtil.getCurrentUserSeq())){
+            PushNotificationDto pushNotificationDto = PushNotificationDto.builder()
+                    .title("Summar")
+                    .body(user.getUserNickname() + "님이 회원님의 피드에 댓글을 달았어요.")
+                    .userNickname(feed.getUser().getUserNickname())
+                    .build();
+
+            pushService.pushNotification(pushNotificationDto);
+
+            GatheringNotification gatheringNotification = new GatheringNotification(
+                    GatheringNotificationSaveDto.builder()
+                            .content(pushNotificationDto.getBody())
+                            .userSeq(user)
+                            .otherUserSeq(feed.getUser())
+                            .notificationType(NotificationType.댓글)
+                            .build());
+            gatheringNotificationRepository.save(gatheringNotification);
+        }
+
     }
 
     @Transactional

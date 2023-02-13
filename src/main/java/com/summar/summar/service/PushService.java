@@ -4,16 +4,20 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.summar.summar.common.SummarCommonException;
 import com.summar.summar.common.SummarErrorCode;
+import com.summar.summar.domain.PushMessageResult;
 import com.summar.summar.domain.User;
 import com.summar.summar.dto.Notification;
+import com.summar.summar.dto.PushMessageResultDto;
 import com.summar.summar.dto.PushNotificationDto;
 import com.summar.summar.dto.PushRequestDto;
+import com.summar.summar.repository.PushMessageResultRepository;
 import com.summar.summar.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -29,6 +33,8 @@ import java.net.URL;
 public class PushService {
 
     private final UserRepository userRepository;
+
+    private final PushMessageResultRepository pushMessageResultRepository;
     @Value("${push.server-key}")
     private String serverKey;
 
@@ -58,12 +64,15 @@ public class PushService {
 
             String url = "https://fcm.googleapis.com/fcm/send"; //외부 api
 
-            String pushRequedtDtoJson = mapper.writeValueAsString(pushRequestDto);
+            String pushRequestedDtoJson = mapper.writeValueAsString(pushRequestDto);
 
-            HttpEntity<String> request = new HttpEntity<>(pushRequedtDtoJson, header);
+            HttpEntity<Object> request = new HttpEntity<>(pushRequestedDtoJson, header);
 
-            String result = restTemplate.postForObject(new URL(url).toURI(), request, String.class);
+            PushMessageResultDto result = restTemplate.postForObject(new URL(url).toURI(), request, PushMessageResultDto.class);
             log.info("push-Notification result : {}", result);
+
+            pushMessageResultRepository.save(new PushMessageResult(result));
+
         } catch (MalformedURLException | URISyntaxException | JsonProcessingException e) {
             throw new RuntimeException(e);
         }

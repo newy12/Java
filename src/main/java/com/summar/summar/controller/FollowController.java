@@ -1,13 +1,11 @@
 package com.summar.summar.controller;
 
-import com.summar.summar.domain.Follow;
 import com.summar.summar.dto.FollowerRequestDto;
 import com.summar.summar.dto.OtherFollowersCheckRequestDto;
 import com.summar.summar.results.BooleanResult;
 import com.summar.summar.results.ObjectResult;
 import com.summar.summar.results.PageResult;
 import com.summar.summar.service.FollowService;
-import com.summar.summar.service.Push2Service;
 import com.summar.summar.util.StringUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -22,8 +20,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.io.IOException;
 
 
 @Slf4j
