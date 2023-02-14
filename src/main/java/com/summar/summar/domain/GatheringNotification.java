@@ -27,6 +27,13 @@ public class GatheringNotification extends BaseTimeEntity{
     @JoinColumn(name = "other_user_seq")
     private User otherUserSeq;
 
+    private String imageUrl;
+
+    private String feedImageUrl;
+
+
+
+
     @Enumerated(EnumType.STRING)
     private NotificationType notificationType;
 
@@ -34,6 +41,8 @@ public class GatheringNotification extends BaseTimeEntity{
         this.content = gatheringNotificationSaveDto.getContent();
         this.userSeq = gatheringNotificationSaveDto.getUserSeq();
         this.otherUserSeq = gatheringNotificationSaveDto.getOtherUserSeq();
+        this.imageUrl = gatheringNotificationSaveDto.getImageUrl();
+        this.feedImageUrl = gatheringNotificationSaveDto.getFeedImageUrl();
         this.notificationType = gatheringNotificationSaveDto.getNotificationType();
     }
 }

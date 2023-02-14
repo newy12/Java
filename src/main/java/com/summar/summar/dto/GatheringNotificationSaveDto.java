@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 
 
+
 @Data
 @Builder
 public class GatheringNotificationSaveDto {
@@ -15,6 +16,10 @@ public class GatheringNotificationSaveDto {
     private User userSeq;
     //상대계정 seq
     private User otherUserSeq;
+    //이미지 url
+    private String imageUrl;
+    //피드이미지 url
+    private String feedImageUrl;
     //알림타입
     private NotificationType notificationType;
 

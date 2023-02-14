@@ -259,17 +259,19 @@ public class StringUtil {
             "    \"result\": [\n" +
             "        {\n" +
             "            \"content\": \"신승욱카카오님이 회원님을 팔로우했어요.\",\n" +
-            "            \"userSeq\": 11,\n" +
+            "            \"userSeq\": 14,\n" +
             "            \"otherUserSeq\": 6,\n" +
+            "            \"imageUrl\": null,\n" +
             "            \"notificationType\": \"팔로우\",\n" +
-            "            \"createdDate\": \"2023-02-09 15:55:12\"\n" +
+            "            \"createdDate\": \"2023-02-13 12:41:12\"\n" +
             "        },\n" +
             "        {\n" +
             "            \"content\": \"맹씨님이 회원님을 팔로우했어요.\",\n" +
-            "            \"userSeq\": 11,\n" +
+            "            \"userSeq\": 14,\n" +
             "            \"otherUserSeq\": 10,\n" +
+            "            \"imageUrl\": \"https://www.naver.com\",\n" +
             "            \"notificationType\": \"팔로우\",\n" +
-            "            \"createdDate\": \"2023-02-09 15:55:43\"\n" +
+            "            \"createdDate\": \"2023-02-14 16:14:12\"\n" +
             "        }\n" +
             "    ]\n" +
             "}";

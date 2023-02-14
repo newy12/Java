@@ -19,6 +19,10 @@ public class GatheringNotificationResponseDto {
     private Long userSeq;
     //상대계정 seq
     private Long otherUserSeq;
+    //이미지Url
+    private String imageUrl;
+    //피드이미지Url
+    private String feedImageUrl;
     //알림타입
     private NotificationType notificationType;
 
@@ -32,5 +36,7 @@ public class GatheringNotificationResponseDto {
         this.otherUserSeq = gatheringNotification.getOtherUserSeq().getUserSeq();
         this.notificationType = gatheringNotification.getNotificationType();
         this.createdDate = gatheringNotification.getCreatedDate();
+        this.imageUrl = gatheringNotification.getImageUrl();
+        this.feedImageUrl = gatheringNotification.getFeedImageUrl();
     }
 }

@@ -144,6 +144,7 @@ public class FollowService {
                         .content(pushNotificationDto.getBody())
                         .userSeq(followedUser)
                         .otherUserSeq(followingUser)
+                        .imageUrl(followingUser.getProfileImageUrl())
                         .notificationType(NotificationType.팔로우)
                         .build());
         gatheringNotificationRepository.save(gatheringNotification);

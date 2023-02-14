@@ -224,7 +224,7 @@ public class FeedService {
         Feed feed = feedRepository.findOneByFeedSeq(feedSeq);
         User user = userRepository.findByUserSeqAndLeaveYn(feedLikeDto.getUserSeq(),false).get();
         feedLike.ifPresentOrElse(
-                findFeed -> {
+                findFeed ->{
                     findFeed.setActivated(!findFeed.isActivated());
                     if(!feed.getUser().getUserSeq().equals(jwtUtil.getCurrentUserSeq())) {
                         if (findFeed.isActivated()) {
@@ -238,6 +238,9 @@ public class FeedService {
                                             .content(pushNotificationDto.getBody())
                                             .userSeq(user)
                                             .otherUserSeq(feed.getUser())
+                                            .imageUrl(user.getProfileImageUrl())
+                                            //처음꺼 피드이미지 노출
+                                            .feedImageUrl(findFeed.getFeed().getFeedImages().get(0).getImageUrl())
                                             .notificationType(NotificationType.좋아요)
                                             .build());
                             gatheringNotificationRepository.save(gatheringNotification);
@@ -260,6 +263,9 @@ public class FeedService {
                                     .content(pushNotificationDto.getBody())
                                     .userSeq(user)
                                     .otherUserSeq(feed.getUser())
+                                    .imageUrl(user.getProfileImageUrl())
+                                    //처음꺼 피드이미지 노출
+                                    .feedImageUrl(feed.getFeedImages().get(0).getImageUrl())
                                     .notificationType(NotificationType.좋아요)
                                     .build());
                     gatheringNotificationRepository.save(gatheringNotification);
@@ -321,6 +327,9 @@ public class FeedService {
                             .content(pushNotificationDto.getBody())
                             .userSeq(user)
                             .otherUserSeq(feed.getUser())
+                            .imageUrl(user.getProfileImageUrl())
+                            //처음꺼 피드이미지 노출
+                            .feedImageUrl(feed.getFeedImages().get(0).getImageUrl())
                             .notificationType(NotificationType.댓글)
                             .build());
             gatheringNotificationRepository.save(gatheringNotification);

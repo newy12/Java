@@ -29,6 +29,7 @@ public class GatheringNotificationService {
     public List<GatheringNotificationResponseDto> findByNotificationList(Long userSeq) {
         User userInfo = userRepository.findById(userSeq).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         List<GatheringNotification> gatheringNotificationList = gatheringNotificationRepository.findAllByUserSeq(userInfo);
+
         return gatheringNotificationList
                 .stream()
                 .map(GatheringNotificationResponseDto::new)
