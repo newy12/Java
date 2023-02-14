@@ -262,6 +262,7 @@ public class StringUtil {
             "            \"userSeq\": 14,\n" +
             "            \"otherUserSeq\": 6,\n" +
             "            \"imageUrl\": null,\n" +
+            "            \"feedImageUrl\": null,\n" +
             "            \"notificationType\": \"팔로우\",\n" +
             "            \"createdDate\": \"2023-02-13 12:41:12\"\n" +
             "        },\n" +
@@ -269,7 +270,8 @@ public class StringUtil {
             "            \"content\": \"맹씨님이 회원님을 팔로우했어요.\",\n" +
             "            \"userSeq\": 14,\n" +
             "            \"otherUserSeq\": 10,\n" +
-            "            \"imageUrl\": \"https://www.naver.com\",\n" +
+            "            \"imageUrl\": \"http://www.naver.com\",\n" +
+            "            \"feedImageUrl\": null,\n" +
             "            \"notificationType\": \"팔로우\",\n" +
             "            \"createdDate\": \"2023-02-14 16:14:12\"\n" +
             "        }\n" +
