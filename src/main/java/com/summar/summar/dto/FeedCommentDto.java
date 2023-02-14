@@ -3,7 +3,7 @@ package com.summar.summar.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -21,7 +21,7 @@ public class FeedCommentDto {
     private Long feedCommentSeq;
 
     @Schema(description = "최초 등록 날짜")
-    private ZonedDateTime createdDate;
+    private LocalDateTime createdDate;
 
     @Schema(description = "피드 시퀀스")
     private Long feedSeq;
@@ -38,7 +38,7 @@ public class FeedCommentDto {
     @Schema(description = "하위 댓글 수")
     private int childCommentsCount;
 
-    private ZonedDateTime lastModifiedDate;
+    private LocalDateTime lastModifiedDate;
 
     @Schema(description = "댓글 내용")
     private String comment;

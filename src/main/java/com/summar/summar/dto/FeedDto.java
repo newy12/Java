@@ -6,8 +6,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.time.ZonedDateTime;
+import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -58,9 +61,9 @@ public class FeedDto {
     private boolean activated;
 
     @Schema(description = "마지막 수정 날짜")
-    private ZonedDateTime lastModifiedDate;
+    private LocalDateTime lastModifiedDate;
 
     @Schema(description = "최초 생성 날짜")
-    private ZonedDateTime createdDate;
+    private LocalDateTime createdDate;
 
 }

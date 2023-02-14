@@ -13,7 +13,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
-import java.time.ZonedDateTime;
+import java.time.Instant;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -26,7 +27,7 @@ public abstract class BaseTimeEntity {
     @CreatedDate
     @Column(updatable = false)
     @JsonIgnore
-    private ZonedDateTime createdDate;
+    private LocalDateTime createdDate;
 
     @CreatedBy
     @Column(updatable = false)
@@ -35,7 +36,7 @@ public abstract class BaseTimeEntity {
 
     @LastModifiedDate
     @JsonIgnore
-    private ZonedDateTime modifiedDate;
+    private LocalDateTime modifiedDate;
 
     @LastModifiedBy
     @Column(name = "last_modified_by", length = 50)
