@@ -10,6 +10,8 @@ import javax.persistence.*;
 public class Banner {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "banner_seq")
     public Long bannerSeq;
+    @Column(name = "image_url")
     private String imageUrl;
 }

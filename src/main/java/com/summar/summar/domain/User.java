@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.summar.summar.dto.*;
 import com.summar.summar.enumeration.SocialType;
 import com.summar.summar.enumeration.UserStatus;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Document(indexName = "users")
 @Entity
 @Table(name = "USER")
@@ -100,6 +103,7 @@ public class User extends BaseTimeEntity implements Serializable {
         this.userEmail = userEmail;
         this.userNickname = userNickname;
     }
+
 
     public User(LoginRequestDto loginRequestDto) {
         this.userNickname = loginRequestDto.getUserNickname();

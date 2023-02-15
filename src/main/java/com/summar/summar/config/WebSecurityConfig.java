@@ -2,6 +2,7 @@ package com.summar.summar.config;
 
 import com.summar.summar.auth.JwtAuthenticationEntryPoint;
 import com.summar.summar.filter.JwtAuthenticationFilter;
+import com.summar.summar.filter.JwtExceptionFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +33,7 @@ public class WebSecurityConfig {
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtExceptionFilter jwtExceptionFilter;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -80,6 +82,7 @@ public class WebSecurityConfig {
                 .xssProtection();
 
         httpSecurity.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        httpSecurity.addFilterBefore(jwtExceptionFilter, JwtAuthenticationFilter.class);
         return httpSecurity.build();
     }
     @Bean

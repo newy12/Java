@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.summar.summar.dto.FollowerSaveDto;
 import com.summar.summar.enumeration.FollowStatus;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
@@ -12,9 +13,11 @@ import javax.persistence.*;
 
 
 @Getter
+@Builder
 @Table(name = "FOLLOW")
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 public class Follow {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long followId;
