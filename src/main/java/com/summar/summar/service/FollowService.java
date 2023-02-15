@@ -250,28 +250,31 @@ public class FollowService {
         int index = 0;
         for (Follow followCheck : otherFollowerList) {
             //나 자신
-            if(user.equals(followCheck.getFollowedUser())){
+            if(user.getUserSeq().equals(followCheck.getFollowedUser().getUserSeq())){
                 otherFollowerList.getContent().get(index).setFollowStatus(FollowStatus.나자신);  // "나자신"
                 index++;
                 continue;
             }
             //맞팔인 경우
-            if (followRepository.existsByFollowedUserAndFollowingUserAndFollowYn(user, followCheck.getFollowedUser(), true) &&
+            else if (followRepository.existsByFollowedUserAndFollowingUserAndFollowYn(user, followCheck.getFollowedUser(), true) &&
                     followRepository.existsByFollowedUserAndFollowingUserAndFollowYn(followCheck.getFollowedUser(), user, true)) {
                 otherFollowerList.getContent().get(index).setFollowStatus(FollowStatus.맞팔);  // "맞팔"
                 index++;
                 continue;
             }
             //누구 한쪽이 팔로우 인경우
-            if (followRepository.existsByFollowedUserAndFollowingUserAndFollowYn(followCheck.getFollowedUser(), user, true)) {
+            else if (followRepository.existsByFollowedUserAndFollowingUserAndFollowYn(followCheck.getFollowedUser(), user, true)) {
                 otherFollowerList.getContent().get(index).setFollowStatus(FollowStatus.한쪽팔로우); // "한쪽팔로우";
                 index++;
                 continue;
+                //아무것도 아닐때
+            }else{
+                otherFollowerList.getContent().get(index).setFollowStatus(FollowStatus.암것도아님);
+                index++;
+                continue;
             }
-            //아무것도 아닐때
-            otherFollowerList.getContent().get(index).setFollowStatus(FollowStatus.암것도아님);
-            index++;
-            continue;// "암것도아님";
+
+            // "암것도아님";
   /*          //둘다 팔로우 아닌 경우
             if (!followRepository.existsByFollowedUserAndFollowingUserAndFollowYn(user, followCheck.getFollowedUser(), true) &&
                     !followRepository.existsByFollowedUserAndFollowingUserAndFollowYn(followCheck.getFollowedUser(), user, true)) {
