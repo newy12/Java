@@ -168,6 +168,46 @@ public class UserRepositoryTest {
     }
 
     @Test
+    @DisplayName("본인계정이 팔로우 한 수(남의 계정을 팔로우할경우)")
+    void countByFollowedUser() {
+        //given
+        for (int i = 11; i <= 15; i++) {
+            User user = UserHelper.createDummyUser("tester" + i);
+            userRepository.save(user);
+        }
+
+        User followedUser1 = userRepository.findByUserNicknameAndLeaveYn("tester5", false).orElse(null);
+        User followedUser2 = userRepository.findByUserNicknameAndLeaveYn("tester6", false).orElse(null);
+        User followedUser3 = userRepository.findByUserNicknameAndLeaveYn("tester7", false).orElse(null);
+        User followingUser = userRepository.findByUserNicknameAndLeaveYn("tester8", false).orElse(null);
+
+        Follow follow1 = Follow.builder()
+                .followYn(true)
+                .followedUser(followedUser1)
+                .followingUser(followingUser)
+                .followUp(false)
+                .build();
+        followRepository.save(follow1);
+        Follow follow2 = Follow.builder()
+                .followYn(true)
+                .followedUser(followedUser2)
+                .followingUser(followingUser)
+                .followUp(false)
+                .build();
+        followRepository.save(follow2);
+        Follow follow3 = Follow.builder()
+                .followYn(true)
+                .followedUser(followedUser3)
+                .followingUser(followingUser)
+                .followUp(false)
+                .build();
+        followRepository.save(follow3);
+
+        //then
+        assertEquals(3,followRepository.countByFollowingUserAndFollowYn(followingUser,true));
+    }
+
+    @Test
     @DisplayName("본인계정 팔로잉 수(남이 본인계정 팔로우할경우)")
     void countByFollowingUser() {
         //given
@@ -203,8 +243,8 @@ public class UserRepositoryTest {
                 .build();
         followRepository.save(follow3);
 
-
-
+        //then
+        assertEquals(3,followRepository.countByFollowedUserAndFollowYn(followedUser,true));
     }
 
 
