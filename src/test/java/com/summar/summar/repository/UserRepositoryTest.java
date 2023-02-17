@@ -187,20 +187,22 @@ public class UserRepositoryTest {
                 .followingUser(followingUser)
                 .followUp(false)
                 .build();
-        followRepository.save(follow1);
         Follow follow2 = Follow.builder()
                 .followYn(true)
                 .followedUser(followedUser2)
                 .followingUser(followingUser)
                 .followUp(false)
                 .build();
-        followRepository.save(follow2);
         Follow follow3 = Follow.builder()
                 .followYn(true)
                 .followedUser(followedUser3)
                 .followingUser(followingUser)
                 .followUp(false)
                 .build();
+
+        //then
+        followRepository.save(follow1);
+        followRepository.save(follow2);
         followRepository.save(follow3);
 
         //then
@@ -227,20 +229,22 @@ public class UserRepositoryTest {
                 .followingUser(followingUser1)
                 .followUp(false)
                 .build();
-        followRepository.save(follow1);
         Follow follow2 = Follow.builder()
                 .followYn(true)
                 .followedUser(followedUser)
                 .followingUser(followingUser2)
                 .followUp(false)
                 .build();
-        followRepository.save(follow2);
         Follow follow3 = Follow.builder()
                 .followYn(true)
                 .followedUser(followedUser)
                 .followingUser(followingUser3)
                 .followUp(false)
                 .build();
+
+        //when
+        followRepository.save(follow1);
+        followRepository.save(follow2);
         followRepository.save(follow3);
 
         //then
