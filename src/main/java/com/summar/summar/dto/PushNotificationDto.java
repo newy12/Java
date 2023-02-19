@@ -9,4 +9,5 @@ public class PushNotificationDto {
     private String title;
     private String body;
     private String userNickname;
+    private Long seq;
 }

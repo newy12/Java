@@ -2,7 +2,6 @@ package com.summar.summar.service;
 
 import com.summar.summar.domain.User;
 import com.summar.summar.dto.ChangeUserInfoRequestDto;
-import com.summar.summar.dto.ChangeUserInfoResponseDto;
 import com.summar.summar.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,9 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
-
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -29,6 +26,10 @@ public class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+
+
+
 
     static class TestUser extends User {
         public TestUser(){

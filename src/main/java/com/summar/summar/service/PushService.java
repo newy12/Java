@@ -6,10 +6,7 @@ import com.summar.summar.common.SummarCommonException;
 import com.summar.summar.common.SummarErrorCode;
 import com.summar.summar.domain.PushMessageResult;
 import com.summar.summar.domain.User;
-import com.summar.summar.dto.Notification;
-import com.summar.summar.dto.PushMessageResultDto;
-import com.summar.summar.dto.PushNotificationDto;
-import com.summar.summar.dto.PushRequestDto;
+import com.summar.summar.dto.*;
 import com.summar.summar.repository.PushMessageResultRepository;
 import com.summar.summar.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -46,12 +43,17 @@ public class PushService {
                     .body(pushNotificationDto.getBody())
                     .build();
 
+            DataDto dataDto = DataDto.builder()
+                    .seq(pushNotificationDto.getSeq())
+                    .build();
+
             //device token 정보 찾기
             User user = userRepository.findByUserNicknameAndLeaveYn(pushNotificationDto.getUserNickname(),false).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
 
             PushRequestDto pushRequestDto = PushRequestDto.builder()
                     .to(user.getDeviceToken())  //해당기기 디바이스 토큰
                     .notification(notification) //알림 - 제목,내용
+                    .data(dataDto)
                     .build();
             HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
             factory.setConnectTimeout(5000); //타임아웃 설정 5초

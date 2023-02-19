@@ -10,4 +10,5 @@ public class PushRequestDto {
     private String to;
     private String priority;
     private Notification notification;
+    private DataDto data;
 }
