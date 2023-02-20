@@ -45,12 +45,18 @@ public class PushService {
                     .sound("default")
                     .body(pushNotificationDto.getBody())
                     .build();
-            if(pushNotificationDto.getUserSeq() != null){
+            if(pushNotificationDto.getUserSeq() != null && pushNotificationDto.getPushType().equals("팔로우")){
                 dataDto.setUserSeq(pushNotificationDto.getUserSeq());
+                dataDto.setPushType(pushNotificationDto.getPushType());
             }
-            if(pushNotificationDto.getUserSeq() == null & pushNotificationDto.getFeedSeq() != null & pushNotificationDto.getFeedCommentSeq() != null){
+            if(pushNotificationDto.getUserSeq() != null && pushNotificationDto.getPushType().equals("좋아요")){
+                dataDto.setUserSeq(pushNotificationDto.getUserSeq());
+                dataDto.setPushType(pushNotificationDto.getPushType());
+            }
+            if(pushNotificationDto.getUserSeq() == null && pushNotificationDto.getFeedSeq() != null && pushNotificationDto.getFeedCommentSeq() != null){
                 dataDto.setFeedSeq(pushNotificationDto.getFeedSeq());
                 dataDto.setFeedCommentSeq(pushNotificationDto.getFeedCommentSeq());
+                dataDto.setPushType(pushNotificationDto.getPushType());
             }
 
             //device token 정보 찾기

@@ -77,7 +77,7 @@ public class FollowController {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.addFollower))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = "\"result\":null"))),
     })
-   // @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/follower")
     public ResponseEntity<?> addFollower(@RequestBody FollowerRequestDto followerRequestDto){
         followService.addFollower(followerRequestDto);

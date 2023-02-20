@@ -84,6 +84,7 @@ public class FollowService {
                 .body(followingUser.getUserNickname() + "님이 회원님을 팔로우했어요.")
                 .userNickname(followedUser.getUserNickname())
                 .userSeq(followingUser.getUserSeq())
+                .pushType("팔로우")
                 .build();
         //팔로우 정보가 없다면
         if (followInfo1 == null) {

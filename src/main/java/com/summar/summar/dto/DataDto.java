@@ -8,4 +8,5 @@ public class DataDto {
     private Long userSeq;
     private Long feedCommentSeq;
     private Long feedSeq;
+    private String pushType;
 }

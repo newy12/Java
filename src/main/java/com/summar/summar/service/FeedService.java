@@ -233,6 +233,7 @@ public class FeedService {
                                     .body(user.getUserNickname() + "님이 회원님의 피드를 좋아합니다.")
                                     .userNickname(feed.getUser().getUserNickname())
                                     .userSeq(user.getUserSeq())
+                                    .pushType("좋아요")
                                     .build();
                             GatheringNotification gatheringNotification = new GatheringNotification(
                                     GatheringNotificationSaveDto.builder()
@@ -259,6 +260,7 @@ public class FeedService {
                             .body(user.getUserNickname() + "님이 회원님의 피드를 좋아합니다.")
                             .userNickname(feed.getUser().getUserNickname())
                             .userSeq(user.getUserSeq())
+                            .pushType("좋아요")
                             .build();
                     GatheringNotification gatheringNotification = new GatheringNotification(
                             GatheringNotificationSaveDto.builder()
@@ -322,6 +324,7 @@ public class FeedService {
                     .userNickname(feed.getUser().getUserNickname())
                     .feedCommentSeq(feedComment.getFeedCommentSeq())
                     .feedSeq(feed.getFeedSeq())
+                    .pushType(feedComment.getParentCommentSeq() == 0L ? "댓글" : "대댓글")
                     .build();
 
             pushService.pushNotification(pushNotificationDto);

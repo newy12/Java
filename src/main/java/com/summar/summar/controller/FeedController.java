@@ -87,7 +87,7 @@ public class FeedController {
     }
 
     @Operation(summary = "피드 좋아요 추가/삭제", security = @SecurityRequirement(name = "Authorization"))
-    //@PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated()")
     @PostMapping(value = "/like/{feedSeq}")
     public ResponseEntity<BooleanResult> setFeedLike(@PathVariable(name = "feedSeq") Long feedSeq, @RequestBody FeedLikeDto feedLikeDto) {
         return BooleanResult.build("result", feedService.setFeedLike(feedSeq, feedLikeDto));
