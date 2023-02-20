@@ -72,6 +72,8 @@ public class PushService {
 
             PushMessageResultDto result = restTemplate.postForObject(new URL(url).toURI(), request, PushMessageResultDto.class);
             log.info("push-Notification result : {}", result);
+            log.info("json result1 :   {}",request);
+            log.info("json result2 :   {}",pushNotificationDto);
 
             pushMessageResultRepository.save(new PushMessageResult(result));
 
