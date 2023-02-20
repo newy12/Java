@@ -269,7 +269,7 @@ public class FeedService {
                                     .otherUserSeq(feed.getUser())
                                     .imageUrl(user.getProfileImageUrl())
                                     //처음꺼 피드이미지 노출
-                                    .feedImageUrl(feed.getFeedImages().get(0).getImageUrl())
+                                    .feedImageUrl(feed.getFeedImages().size() == 0? "" : feed.getFeedImages().get(0).getImageUrl())
                                     .notificationType(NotificationType.좋아요)
                                     .build());
                     gatheringNotificationRepository.save(gatheringNotification);
