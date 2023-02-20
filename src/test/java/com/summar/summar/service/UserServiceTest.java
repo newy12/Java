@@ -1,9 +1,12 @@
 package com.summar.summar.service;
 
+import com.summar.summar.domain.Follow;
 import com.summar.summar.domain.RefreshToken;
 import com.summar.summar.domain.User;
 import com.summar.summar.dto.ChangeUserInfoRequestDto;
+import com.summar.summar.dto.PushNotificationStatusDto;
 import com.summar.summar.dto.RefreshTokenRequestDto;
+import com.summar.summar.repository.FollowRepository;
 import com.summar.summar.repository.RefreshTokenRepository;
 import com.summar.summar.repository.UserRepository;
 import com.summar.summar.util.JwtUtil;
@@ -14,9 +17,8 @@ import org.mockito.AdditionalAnswers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.util.ReflectionTestUtils;
-
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -30,13 +32,12 @@ public class UserServiceTest {
 
     @InjectMocks
     private UserService userService;
-
     @Mock
     private UserRepository userRepository;
-
     @Mock
     private RefreshTokenRepository refreshTokenRepository;
-
+    @Mock
+    private FollowRepository followRepository;
     @Mock
     JwtUtil jwtUtil;
 
@@ -49,6 +50,12 @@ public class UserServiceTest {
 
     static class TestRefreshToken extends RefreshToken {
         public TestRefreshToken() {
+            super();
+        }
+    }
+
+    static class TestFollow extends Follow {
+        public TestFollow() {
             super();
         }
     }
@@ -69,13 +76,7 @@ public class UserServiceTest {
 
         given(userRepository.findByUserNicknameAndLeaveYn(any(), anyBoolean())).willReturn(Optional.of(user));
 
-        ChangeUserInfoRequestDto changeUserInfoRequestDto = ChangeUserInfoRequestDto.builder()
-                .userNickname("beforeNickname")
-                .updateUserNickname("afterNickname")
-                .major1("afterMajor1")
-                .major2("afterMajor2")
-                .introduce("afterIntroduce")
-                .build();
+        ChangeUserInfoRequestDto changeUserInfoRequestDto = ChangeUserInfoRequestDto.builder().userNickname("beforeNickname").updateUserNickname("afterNickname").major1("afterMajor1").major2("afterMajor2").introduce("afterIntroduce").build();
         when(userRepository.save(any(User.class))).then(AdditionalAnswers.returnsFirstArg());
         //when
         userService.changeUserInfo(changeUserInfoRequestDto);
@@ -106,7 +107,84 @@ public class UserServiceTest {
         userService.giveAccessToken(refreshTokenRequestDto);
 
         //then
-        assertEquals("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTE0ODk2NTE0MDAyMDExNTA4ODAiLCJleHAiOjE2NzY4NTAxMjIsImlhdCI6MTY3NjgxNDEyMn0.tNuTJCkABx_VUhvJlh4uAFPMUnsYaiX0j7YUN-xcGeM"
-                , userService.giveAccessToken(refreshTokenRequestDto));
+        assertEquals("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMTE0ODk2NTE0MDAyMDExNTA4ODAiLCJleHAiOjE2NzY4NTAxMjIsImlhdCI6MTY3NjgxNDEyMn0.tNuTJCkABx_VUhvJlh4uAFPMUnsYaiX0j7YUN-xcGeM", userService.giveAccessToken(refreshTokenRequestDto));
+    }
+
+    @Test
+    @DisplayName("리프레시 토큰, 엑세스 토큰 둘다 만료되었을 때, 둘 다 재발급 되는지 확인")
+    void giveBothToken() {
+        //given
+        User user = new TestUser();
+        RefreshToken refreshToken = new TestRefreshToken();
+        RefreshTokenRequestDto refreshTokenRequestDto = new RefreshTokenRequestDto();
+        ReflectionTestUtils.setField(refreshTokenRequestDto, "userEmail", "newy12@naver.com");
+        given(userRepository.findByUserEmailAndLeaveYn(any(), anyBoolean())).willReturn(Optional.of(user));
+        given(refreshTokenRepository.findByUser(any())).willReturn(Optional.of(refreshToken));
+        given(jwtUtil.generateToken(user)).willReturn("accessToken");
+        given(jwtUtil.generateRefreshToken(refreshTokenRequestDto.getUserEmail())).willReturn("refreshToken");
+        when(refreshTokenRepository.save(any(RefreshToken.class))).then(AdditionalAnswers.returnsFirstArg());
+
+        //when
+        userService.giveBothToken(refreshTokenRequestDto);
+
+        //then
+        assertEquals("accessToken", userService.giveBothToken(refreshTokenRequestDto).getAccessToken());
+
+        //타입 비교
+        assertEquals("java.util.UUID", userService.giveBothToken(refreshTokenRequestDto).getRefreshTokenSeq().getClass().getName());
+    }
+
+    @Test
+    @DisplayName("푸시알림 상태 제대로 변경 되는지 확인")
+    void changePushNotification() {
+        //given
+        User user = new TestUser();
+        PushNotificationStatusDto pushNotificationStatusDto = new PushNotificationStatusDto();
+        given(userRepository.findByUserNicknameAndLeaveYn(any(), anyBoolean())).willReturn(Optional.of(user));
+        ReflectionTestUtils.setField(user, "pushAlarmYn", false);
+        ReflectionTestUtils.setField(pushNotificationStatusDto, "status", true);
+
+        when(userRepository.save(any(User.class))).then(AdditionalAnswers.returnsFirstArg());
+        //when
+        userService.changePushNotification(pushNotificationStatusDto);
+
+        //then
+        assertTrue(user.getPushAlarmYn());
+    }
+
+    @Test
+    @DisplayName("유저닉네임으로 푸시알림 상태 정상적으로 가져오는지 확인")
+    void userPushStatusInfo() {
+        //given
+        User user = new TestUser();
+        ReflectionTestUtils.setField(user, "pushAlarmYn", false);
+        given(userRepository.findByUserNicknameAndLeaveYn(anyString(), anyBoolean())).willReturn(Optional.of(user));
+
+        //when
+        userService.userPushStatusInfo("testNickname");
+
+        //then
+        assertFalse(userService.userPushStatusInfo("testNickname").getStatus());
+    }
+
+    @Test
+    @DisplayName("회원 탈퇴 시 개인정보 초기화 제대로 되는지 확인")
+    void leaveUser() {
+        //given
+        User user = new TestUser();
+        ReflectionTestUtils.setField(user, "userSeq", 1L);
+        given(userRepository.findByUserSeqAndLeaveYn(any(), anyBoolean())).willReturn(Optional.of(user));
+        given(followRepository.findByFollowingUserAndFollowYn(any(), anyBoolean())).willReturn(Collections.emptyList());
+        when(userRepository.save(any(User.class))).then(AdditionalAnswers.returnsFirstArg());
+
+
+        //when
+        userService.leaveUser(user.getUserSeq());
+
+        //then
+        assertEquals("", user.getUserNickname());
+        assertEquals("", user.getUserEmail());
+        assertEquals("", user.getDeviceToken());
+
     }
 }

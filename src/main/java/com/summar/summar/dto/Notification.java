@@ -7,5 +7,6 @@ import lombok.Data;
 @Builder
 public class Notification {
     private String title;
+    private String sound;
     private String body;
 }

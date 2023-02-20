@@ -40,6 +40,7 @@ public class PushService {
             ObjectMapper mapper = new ObjectMapper();
             Notification notification = Notification.builder()
                     .title(pushNotificationDto.getTitle())
+                    .sound("default")
                     .body(pushNotificationDto.getBody())
                     .build();
 
@@ -51,7 +52,8 @@ public class PushService {
             User user = userRepository.findByUserNicknameAndLeaveYn(pushNotificationDto.getUserNickname(),false).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
 
             PushRequestDto pushRequestDto = PushRequestDto.builder()
-                    .to(user.getDeviceToken())  //해당기기 디바이스 토큰
+                    .to(user.getDeviceToken())
+                    .priority("high")//해당기기 디바이스 토큰
                     .notification(notification) //알림 - 제목,내용
                     .data(dataDto)
                     .build();
