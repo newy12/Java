@@ -4,7 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
 public class DataDto {
-    private Long seq;
+    private Long userSeq;
+    private Long feedCommentSeq;
+    private Long feedSeq;
 }

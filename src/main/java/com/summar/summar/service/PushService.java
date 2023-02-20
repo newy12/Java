@@ -17,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.MalformedURLException;
@@ -37,16 +38,20 @@ public class PushService {
 
     public void pushNotification(PushNotificationDto pushNotificationDto) {
         try {
+            DataDto dataDto = new DataDto();
             ObjectMapper mapper = new ObjectMapper();
             Notification notification = Notification.builder()
                     .title(pushNotificationDto.getTitle())
                     .sound("default")
                     .body(pushNotificationDto.getBody())
                     .build();
-
-            DataDto dataDto = DataDto.builder()
-                    .seq(pushNotificationDto.getSeq())
-                    .build();
+            if(pushNotificationDto.getUserSeq() != null){
+                dataDto.setUserSeq(pushNotificationDto.getUserSeq());
+            }
+            if(pushNotificationDto.getUserSeq() == null & pushNotificationDto.getFeedSeq() != null & pushNotificationDto.getFeedCommentSeq() != null){
+                dataDto.setFeedSeq(pushNotificationDto.getFeedSeq());
+                dataDto.setFeedCommentSeq(pushNotificationDto.getFeedCommentSeq());
+            }
 
             //device token 정보 찾기
             User user = userRepository.findByUserNicknameAndLeaveYn(pushNotificationDto.getUserNickname(),false).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
