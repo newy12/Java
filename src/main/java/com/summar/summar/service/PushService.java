@@ -51,6 +51,7 @@ public class PushService {
             }
             if(pushNotificationDto.getUserSeq() != null && pushNotificationDto.getPushType().equals("좋아요")){
                 dataDto.setUserSeq(pushNotificationDto.getUserSeq());
+                dataDto.setFeedSeq(pushNotificationDto.getFeedSeq());
                 dataDto.setPushType(pushNotificationDto.getPushType());
             }
             if(pushNotificationDto.getUserSeq() == null && pushNotificationDto.getFeedSeq() != null && pushNotificationDto.getFeedCommentSeq() != null){
