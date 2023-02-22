@@ -2,5 +2,5 @@
 /target/
 /out/
 /target/classes
-application.yml
+/src/main/resources/application.yml
 application-h2.yml
