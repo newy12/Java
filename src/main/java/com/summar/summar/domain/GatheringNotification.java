@@ -31,8 +31,16 @@ public class GatheringNotification extends BaseTimeEntity{
 
     private String feedImageUrl;
 
+    //팔로우 체크
+    private Boolean followCheck = false;
 
+    public void setFollowCheck(Boolean followCheck){
+        this.followCheck = followCheck;
+    }
 
+    public void setContent(String content) {
+        this.content = content;
+    }
 
     @Enumerated(EnumType.STRING)
     private NotificationType notificationType;

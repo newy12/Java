@@ -17,8 +17,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 import org.webjars.NotFoundException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -112,6 +114,16 @@ public class FollowService {
                     followRepository.save(follow2);
                 }
             }
+            //알림리스트에 저장
+            GatheringNotification gatheringNotification = new GatheringNotification(
+                    GatheringNotificationSaveDto.builder()
+                            .content(pushNotificationDto.getBody())
+                            .userSeq(followedUser)
+                            .otherUserSeq(followingUser)
+                            .imageUrl(followingUser.getProfileImageUrl())
+                            .notificationType(NotificationType.팔로우)
+                            .build());
+            gatheringNotificationRepository.save(gatheringNotification);
         } else {
             //기존 팔로우 정보가 있다면
             followInfo1.setFollowYn(true);
@@ -134,22 +146,15 @@ public class FollowService {
                     followRepository.save(follow2);
                 }
             }
+            //기존에 있던 알림 정보 업데이트 [list 일리는 없지만 혹시나를 위해 list 타입 지정]
+            List<GatheringNotification> gatheringNotification = gatheringNotificationRepository.findAllByContentAndUserSeqAndOtherUserSeq(pushNotificationDto.getBody(),followedUser,followingUser);
+            if(!ObjectUtils.isEmpty(gatheringNotification)){
+                gatheringNotification.get(0).setCreatedDate(LocalDateTime.now());
+                gatheringNotificationRepository.save(gatheringNotification.get(0));
+            }
         }
         //푸시알림 발송
         pushService.pushNotification(pushNotificationDto);
-
-
-
-        //알림리스트에 저장
-        GatheringNotification gatheringNotification = new GatheringNotification(
-                GatheringNotificationSaveDto.builder()
-                        .content(pushNotificationDto.getBody())
-                        .userSeq(followedUser)
-                        .otherUserSeq(followingUser)
-                        .imageUrl(followingUser.getProfileImageUrl())
-                        .notificationType(NotificationType.팔로우)
-                        .build());
-        gatheringNotificationRepository.save(gatheringNotification);
     }
 
     @Transactional

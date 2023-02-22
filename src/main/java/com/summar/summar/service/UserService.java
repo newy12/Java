@@ -3,10 +3,12 @@ package com.summar.summar.service;
 import com.summar.summar.common.SummarCommonException;
 import com.summar.summar.common.SummarErrorCode;
 import com.summar.summar.domain.Follow;
+import com.summar.summar.domain.GatheringNotification;
 import com.summar.summar.domain.RefreshToken;
 import com.summar.summar.domain.User;
 import com.summar.summar.dto.*;
 import com.summar.summar.repository.FollowRepository;
+import com.summar.summar.repository.GatheringNotificationRepository;
 import com.summar.summar.repository.RefreshTokenRepository;
 import com.summar.summar.repository.UserRepository;
 import com.summar.summar.util.JwtUtil;
@@ -31,6 +33,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
     private final FollowRepository followRepository;
+    private final GatheringNotificationRepository gatheringNotificationRepository;
     private final JwtUtil jwtUtil;
     private final S3Service s3Service;
 
@@ -55,6 +58,15 @@ public class UserService {
         changeUserInfoResponseDto.setIntroduce("".equals(changeUserInfoRequestDto.getIntroduce())? null : changeUserInfoRequestDto.getIntroduce());
         user.changeUserInfo(changeUserInfoResponseDto);
         userRepository.save(user);
+
+        //변경된 닉네임에 따른 알림리스트 업데이트 반영
+        List<GatheringNotification> gatheringNotifications = gatheringNotificationRepository.findAllByContentContains(changeUserInfoRequestDto.getUserNickname());
+        gatheringNotifications.forEach(gatherInfo -> {
+            String gatherContent = gatherInfo.getContent();
+            gatherContent = changeUserInfoRequestDto.getUpdateUserNickname() + "님이 회원님을 팔로우 했어요.";
+            gatherInfo.setContent(gatherContent);
+            gatheringNotificationRepository.save(gatherInfo);
+        });
     }
 
     @Transactional
