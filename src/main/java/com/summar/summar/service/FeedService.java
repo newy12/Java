@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -117,8 +118,8 @@ public class FeedService {
                 .scrapYn(feedScrapRepository.existsByActivatedIsTrueAndFeedFeedSeqAndUserUserSeq(feedSeq,jwtUtil.getCurrentUserSeq()))
                 .totalCommentCount(feedCommentRepository.findAllByFeedFeedSeq(feedSeq).size())
                 .activated(feed.get().isActivated())
-                .lastModifiedDate(feed.get().getModifiedDate())
-                .createdDate(feed.get().getCreatedDate())
+                .lastModifiedDate(feed.get().getModifiedDate().atZone(ZoneId.of("Asia/Seoul")))
+                .createdDate(feed.get().getCreatedDate().atZone(ZoneId.of("Asia/Seoul")))
                 .build());
     }
 
@@ -140,8 +141,8 @@ public class FeedService {
                     .totalLikeCount(feedLikeRepository.findByFeedFeedSeqAndActivatedIsTrue(feed.getFeedSeq()).get().size())
                     .scrapYn(feedScrapRepository.existsByActivatedIsTrueAndFeedFeedSeqAndUserUserSeq(feed.getFeedSeq(),jwtUtil.getCurrentUserSeq()))
                     .totalCommentCount(feedCommentRepository.findAllByFeedFeedSeq(feed.getFeedSeq()).size())
-                    .lastModifiedDate(feed.getModifiedDate())
-                    .createdDate(feed.getCreatedDate())
+                    .lastModifiedDate(feed.getModifiedDate().atZone(ZoneId.of("Asia/Seoul")))
+                    .createdDate(feed.getCreatedDate().atZone(ZoneId.of("Asia/Seoul")))
                     .build()));
         return new PageImpl<>(feedDtos,page,feeds.getTotalElements());
     }
@@ -161,8 +162,8 @@ public class FeedService {
                             .tempSaveYn(feed.isTempSaveYn())
                             .secretYn(feed.isSecretYn())
                             .commentYn(feed.isCommentYn())
-                            .lastModifiedDate(feed.getModifiedDate())
-                            .createdDate(feed.getCreatedDate())
+                            .lastModifiedDate(feed.getModifiedDate().atZone(ZoneId.of("Asia/Seoul")))
+                            .createdDate(feed.getCreatedDate().atZone(ZoneId.of("Asia/Seoul")))
                             .build()));
             return new PageImpl<>(feedDtos,page,feeds.getTotalElements());
         }else{
@@ -193,8 +194,8 @@ public class FeedService {
                         .totalLikeCount(feedLikeRepository.findByFeedFeedSeqAndActivatedIsTrue(feed.getFeedSeq()).get().size())
                         .scrapYn(feedScrapRepository.existsByActivatedIsTrueAndFeedFeedSeqAndUserUserSeq(feed.getFeedSeq(),jwtUtil.getCurrentUserSeq()))
                         .totalCommentCount(feedCommentRepository.findAllByFeedFeedSeq(feed.getFeedSeq()).size())
-                        .lastModifiedDate(feed.getModifiedDate())
-                        .createdDate(feed.getCreatedDate())
+                        .lastModifiedDate(feed.getModifiedDate().atZone(ZoneId.of("Asia/Seoul")))
+                        .createdDate(feed.getCreatedDate().atZone(ZoneId.of("Asia/Seoul")))
                         .build()));
         return new PageImpl<>(feedDtos,page,feeds.getTotalElements());
     }
@@ -212,8 +213,8 @@ public class FeedService {
                 .tempSaveYn(feed.isTempSaveYn())
                 .secretYn(feed.isSecretYn())
                 .activated(feed.isActivated())
-                .lastModifiedDate(feed.getModifiedDate())
-                .createdDate(feed.getCreatedDate())
+                .lastModifiedDate(feed.getModifiedDate().atZone(ZoneId.of("Asia/Seoul")))
+                .createdDate(feed.getCreatedDate().atZone(ZoneId.of("Asia/Seoul")))
                 .build();
     }
 
@@ -375,8 +376,8 @@ public class FeedService {
                         .tempSaveYn(feed.isTempSaveYn())
                         .secretYn(feed.isSecretYn())
                         .commentYn(feed.isCommentYn())
-                        .lastModifiedDate(feed.getModifiedDate())
-                        .createdDate(feed.getCreatedDate())
+                        .lastModifiedDate(feed.getModifiedDate().atZone(ZoneId.of("Asia/Seoul")))
+                        .createdDate(feed.getCreatedDate().atZone(ZoneId.of("Asia/Seoul")))
                         .likeYn(feedLikeRepository.existsByActivatedIsTrueAndFeedFeedSeqAndUserUserSeq(feed.getFeedSeq(),jwtUtil.getCurrentUserSeq()))
                         .totalLikeCount(feedLikeRepository.findByFeedFeedSeqAndActivatedIsTrue(feed.getFeedSeq()).get().size())
                         .scrapYn(feedScrapRepository.existsByActivatedIsTrueAndFeedFeedSeqAndUserUserSeq(feed.getFeedSeq(),jwtUtil.getCurrentUserSeq()))
