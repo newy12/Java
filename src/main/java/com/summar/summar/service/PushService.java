@@ -11,6 +11,8 @@ import com.summar.summar.repository.PushMessageResultRepository;
 import com.summar.summar.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -26,10 +28,10 @@ import java.net.URL;
 
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class PushService {
 
+    private final Logger log = LoggerFactory.getLogger(PushService.class);
     private final UserRepository userRepository;
 
     private final PushMessageResultRepository pushMessageResultRepository;

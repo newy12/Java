@@ -37,14 +37,27 @@ public class GatheringNotificationResponseDto {
     private LocalDateTime createdDate;
 
     public GatheringNotificationResponseDto(GatheringNotification gatheringNotification){
-        this.content = gatheringNotification.getContent();
         this.userSeq = gatheringNotification.getUserSeq().getUserSeq();
         this.otherUserSeq = gatheringNotification.getOtherUserSeq().getUserSeq();
         this.notificationType = gatheringNotification.getNotificationType();
+        this.content = gatheringNotification.getOtherUserSeq().getUserNickname();
+        switch (gatheringNotification.getNotificationType()){
+            case 댓글: content += "님이 회원님의 피드에 댓글을 달았어요.";break;
+            case 좋아요: content += "님이 회원님의 피드를 좋아합니다.";break;
+            case 팔로우: content += "님이 회원님을 팔로우 했어요.";break;
+        }
         this.createdDate = gatheringNotification.getCreatedDate();
         this.imageUrl = gatheringNotification.getImageUrl();
-        this.feedSeq = gatheringNotification.getFeed().getFeedSeq();
-        this.feedCommentSeq = gatheringNotification.getFeedComment().getFeedCommentSeq();
+        if(gatheringNotification.getFeed()!=null){
+            this.feedSeq = gatheringNotification.getFeed().getFeedSeq();
+        }else{
+            this.feedSeq = 0L;
+        }
+        if(gatheringNotification.getFeedComment()!=null){
+             this.feedCommentSeq = gatheringNotification.getFeedComment().getFeedCommentSeq();
+        }else {
+            this.feedCommentSeq = 0L;
+        }
         this.feedImageUrl = gatheringNotification.getFeedImageUrl();
         this.followCheck = gatheringNotification.getFollowCheck();
     }

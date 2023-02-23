@@ -73,6 +73,12 @@ public class GatheringNotification extends BaseTimeEntity{
         this.content = gatheringNotificationSaveDto.getContent();
         this.userSeq = gatheringNotificationSaveDto.getUserSeq();
         this.otherUserSeq = gatheringNotificationSaveDto.getOtherUserSeq();
+        if(gatheringNotificationSaveDto.getFeed()!=null){
+            this.feed = gatheringNotificationSaveDto.getFeed();
+        }
+        if(gatheringNotificationSaveDto.getFeedComment()!=null){
+            this.feedComment = gatheringNotificationSaveDto.getFeedComment();
+        }
         this.imageUrl = gatheringNotificationSaveDto.getImageUrl();
         this.feedImageUrl = gatheringNotificationSaveDto.getFeedImageUrl();
         this.notificationType = gatheringNotificationSaveDto.getNotificationType();

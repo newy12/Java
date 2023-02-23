@@ -9,6 +9,8 @@ import com.summar.summar.repository.*;
 import com.summar.summar.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -24,10 +26,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-@Slf4j
 @Service
 public class FeedService {
-
+    private final Logger log = LoggerFactory.getLogger(FeedService.class);
     private final FeedRepository feedRepository;
     private final FeedImageRepository feedImageRepository;
     private final FeedLikeRepository feedLikeRepository;
@@ -239,7 +240,7 @@ public class FeedService {
                                     .build();
                             GatheringNotification gatheringNotification = new GatheringNotification(
                                     GatheringNotificationSaveDto.builder()
-                                            .content(pushNotificationDto.getBody())
+                                            .content("님이 회원님의 피드를 좋아합니다.")
                                             .userSeq(feed.getUser())
                                             .otherUserSeq(user)
                                             .imageUrl(user.getProfileImageUrl())
@@ -270,12 +271,12 @@ public class FeedService {
                                 .build();
                         GatheringNotification gatheringNotification = new GatheringNotification(
                                 GatheringNotificationSaveDto.builder()
-                                        .content(pushNotificationDto.getBody())
+                                        .content("님이 회원님의 피드를 좋아합니다.")
                                         .userSeq(feed.getUser())
                                         .otherUserSeq(user)
                                         .imageUrl(user.getProfileImageUrl())
                                         //처음꺼 피드이미지 노출
-                                        .feedImageUrl(feed.getFeedImages().size() == 0 ? "" : feed.getFeedImages().get(0).getImageUrl())
+                                        .feedImageUrl(feed.getFeedImages().isEmpty() ? "" : feed.getFeedImages().get(0).getImageUrl())
                                         .notificationType(NotificationType.좋아요)
                                         .feed(feed)
                                         .feedComment(null)
@@ -340,7 +341,7 @@ public class FeedService {
 
             GatheringNotification gatheringNotification = new GatheringNotification(
                     GatheringNotificationSaveDto.builder()
-                            .content(pushNotificationDto.getBody())
+                            .content("님이 회원님의 피드에 댓글을 달았어요.")
                             .userSeq(feed.getUser())
                             .otherUserSeq(user)
                             .imageUrl(user.getProfileImageUrl())
