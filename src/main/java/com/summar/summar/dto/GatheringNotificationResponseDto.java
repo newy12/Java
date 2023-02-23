@@ -19,6 +19,11 @@ public class GatheringNotificationResponseDto {
     private Long userSeq;
     //상대계정 seq
     private Long otherUserSeq;
+
+    private Long feedSeq;
+
+    private Long feedCommentSeq;
+
     //이미지Url
     private String imageUrl;
     //피드이미지Url
@@ -32,12 +37,14 @@ public class GatheringNotificationResponseDto {
     private LocalDateTime createdDate;
 
     public GatheringNotificationResponseDto(GatheringNotification gatheringNotification){
-        this.content = gatheringNotification.getOtherUserSeq().getUserNickname()+"님이 회원님을 팔로우했어요.";
+        this.content = gatheringNotification.getContent();
         this.userSeq = gatheringNotification.getUserSeq().getUserSeq();
         this.otherUserSeq = gatheringNotification.getOtherUserSeq().getUserSeq();
         this.notificationType = gatheringNotification.getNotificationType();
         this.createdDate = gatheringNotification.getCreatedDate();
         this.imageUrl = gatheringNotification.getImageUrl();
+        this.feedSeq = gatheringNotification.getFeed().getFeedSeq();
+        this.feedCommentSeq = gatheringNotification.getFeedComment().getFeedCommentSeq();
         this.feedImageUrl = gatheringNotification.getFeedImageUrl();
         this.followCheck = gatheringNotification.getFollowCheck();
     }

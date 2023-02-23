@@ -37,8 +37,8 @@ public class GatheringNotificationService {
         User userInfo = userRepository.findById(userSeq).orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         List<GatheringNotification> gatheringNotificationList = gatheringNotificationRepository.findAllByUserSeqOrderByGatheringNotificationSeqDesc(userInfo);
         gatheringNotificationList.forEach(gather -> {
-            User user = userRepository.findById(gather.getUserSeq().getUserSeq()).orElse(null);
-            User otherUser = userRepository.findById(gather.getOtherUserSeq().getUserSeq()).orElse(null);
+            User user = gather.getUserSeq();
+            User otherUser = gather.getOtherUserSeq();
             Follow follow = followRepository.findByFollowedUserAndFollowingUserAndFollowYn(otherUser,user,true).orElse(null);
             gather.setFollowCheck(!ObjectUtils.isEmpty(follow));
         });

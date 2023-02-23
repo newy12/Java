@@ -27,6 +27,14 @@ public class GatheringNotification extends BaseTimeEntity{
     @JoinColumn(name = "other_user_seq")
     private User otherUserSeq;
 
+    @ManyToOne
+    @JoinColumn(name = "feed_seq")
+    private Feed feed;
+
+    @ManyToOne
+    @JoinColumn(name = "feed_comment_seq")
+    private FeedComment feedComment;
+
     private String imageUrl;
 
     private String feedImageUrl;
@@ -44,6 +52,22 @@ public class GatheringNotification extends BaseTimeEntity{
 
     @Enumerated(EnumType.STRING)
     private NotificationType notificationType;
+
+    public Feed getFeed() {
+        return feed;
+    }
+
+    public void setFeed(Feed feed) {
+        this.feed = feed;
+    }
+
+    public FeedComment getFeedComment() {
+        return feedComment;
+    }
+
+    public void setFeedComment(FeedComment feedComment) {
+        this.feedComment = feedComment;
+    }
 
     public GatheringNotification(GatheringNotificationSaveDto gatheringNotificationSaveDto){
         this.content = gatheringNotificationSaveDto.getContent();

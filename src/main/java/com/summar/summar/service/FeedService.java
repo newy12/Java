@@ -246,6 +246,8 @@ public class FeedService {
                                             //처음꺼 피드이미지 노출
                                             .feedImageUrl(findFeed.getFeed().getFeedImages().get(0).getImageUrl())
                                             .notificationType(NotificationType.좋아요)
+                                            .feed(feed)
+                                            .feedComment(null)
                                             .build());
                             gatheringNotificationRepository.save(gatheringNotification);
                             pushService.pushNotification(pushNotificationDto);
@@ -275,6 +277,8 @@ public class FeedService {
                                         //처음꺼 피드이미지 노출
                                         .feedImageUrl(feed.getFeedImages().size() == 0 ? "" : feed.getFeedImages().get(0).getImageUrl())
                                         .notificationType(NotificationType.좋아요)
+                                        .feed(feed)
+                                        .feedComment(null)
                                         .build());
                         gatheringNotificationRepository.save(gatheringNotification);
                         pushService.pushNotification(pushNotificationDto);
@@ -343,6 +347,8 @@ public class FeedService {
                             //처음꺼 피드이미지 노출
                             .feedImageUrl(feed.getFeedImages().get(0).getImageUrl())
                             .notificationType(NotificationType.댓글)
+                            .feed(feed)
+                            .feedComment(feedComment)
                             .build());
             gatheringNotificationRepository.save(gatheringNotification);
         }

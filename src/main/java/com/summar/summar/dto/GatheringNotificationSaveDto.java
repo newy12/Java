@@ -1,5 +1,7 @@
 package com.summar.summar.dto;
 
+import com.summar.summar.domain.Feed;
+import com.summar.summar.domain.FeedComment;
 import com.summar.summar.domain.User;
 import com.summar.summar.enumeration.NotificationType;
 import lombok.Builder;
@@ -16,6 +18,8 @@ public class GatheringNotificationSaveDto {
     private User userSeq;
     //상대계정 seq
     private User otherUserSeq;
+    private Feed feed;
+    private FeedComment feedComment;
     //이미지 url
     private String imageUrl;
     //피드이미지 url
