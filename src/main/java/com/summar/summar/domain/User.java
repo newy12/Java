@@ -138,7 +138,7 @@ public class User extends BaseTimeEntity implements Serializable {
     public void setPushAlarmYn(Boolean pushStatus){
         this.pushAlarmYn = pushStatus;
     }
-//빌드 테스트2
+
     public void changeUserInfo(ChangeUserInfoResponseDto changeUserInfoResponseDto) {
         this.userNickname = changeUserInfoResponseDto.getUpdateUserNickname();
         this.major1 = changeUserInfoResponseDto.getMajor1();
