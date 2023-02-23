@@ -54,6 +54,13 @@ public class PushService {
                 dataDto.setFeedSeq(pushNotificationDto.getFeedSeq());
                 dataDto.setPushType(pushNotificationDto.getPushType());
             }
+            if(pushNotificationDto.getUserSeq() != null && (pushNotificationDto.getPushType().equals("댓글")|| pushNotificationDto.getPushType().equals("대댓글"))){
+                dataDto.setUserSeq(pushNotificationDto.getUserSeq());
+                dataDto.setFeedSeq(pushNotificationDto.getFeedSeq());
+                dataDto.setFeedCommentSeq(pushNotificationDto.getFeedCommentSeq());
+                dataDto.setPushType(pushNotificationDto.getPushType());
+            }
+
             if(pushNotificationDto.getUserSeq() == null && pushNotificationDto.getFeedSeq() != null && pushNotificationDto.getFeedCommentSeq() != null){
                 dataDto.setFeedSeq(pushNotificationDto.getFeedSeq());
                 dataDto.setFeedCommentSeq(pushNotificationDto.getFeedCommentSeq());
