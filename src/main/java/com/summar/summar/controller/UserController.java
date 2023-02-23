@@ -72,7 +72,7 @@ public class UserController {
      * @param refreshTokenRequestDto
      * @return
      */
-    @Operation(summary = "리프레시토큰이 유효할 시 액새스토큰 재발급!", description = "토큰이 재발급 됩니다,")
+    @Operation(summary = "리프레시토큰이 유효할 시 액새스토큰 재발급!!", description = "토큰이 재발급 됩니다,")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "정상 처리", content = @Content(examples = @ExampleObject(value = StringUtil.giveAccessToken))),
             @ApiResponse(responseCode = "403", description = "권한 없음(다른 회원의 계정 변경)", content = @Content(examples = @ExampleObject(value = StringUtil.nulls))),
