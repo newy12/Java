@@ -158,13 +158,13 @@ public class UserServiceTest {
         //given
         User user = new TestUser();
         ReflectionTestUtils.setField(user, "pushAlarmYn", false);
-        given(userRepository.findByUserNicknameAndLeaveYn(anyString(), anyBoolean())).willReturn(Optional.of(user));
+        given(userRepository.findByUserSeqAndLeaveYn(any(), anyBoolean())).willReturn(Optional.of(user));
 
         //when
-        userService.userPushStatusInfo("testNickname");
+        userService.userPushStatusInfo(1L);
 
         //then
-        assertFalse(userService.userPushStatusInfo("testNickname").getStatus());
+        assertFalse(userService.userPushStatusInfo(1L).getStatus());
     }
 
     @Test

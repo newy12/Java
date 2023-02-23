@@ -11,7 +11,7 @@ spring:
     secret-access-token: 61a8d20dd4dc8047f65ef5eeec6c51bcf83ce17e6c50defc3bba00fccb6858ad
     secret-refresh-token: df45e8e2e54ab8d0a9d2a8a82fb48765bdce1db29d8718f413296fcc9d08c2c0
   datasource:
-    url: jdbc:mysql://summar.cv9xsydusdbz.ap-northeast-2.rds.amazonaws.com:3306/summar?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://3.39.68.127:3306/summar?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: admin
     password: summarmysql
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -31,7 +31,7 @@ spring:
         max-active: 10
         max-idle: 10
         min-idle: 2
-    host: 13.209.114.45
+    host: 3.39.68.127
     port: 6379
     password: summarredis
 springdoc:
@@ -49,7 +49,7 @@ application:
     secretKey: m7KQOtsACrPQR4B3zS39WnqJGTdpY8AXzoO7ym3N
     s3Bucket: image.summar.io
 elasticsearch:
-  host: 13.209.114.45
+  host: 3.39.68.127
   port: 9200
 
 push:

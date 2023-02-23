@@ -203,7 +203,7 @@ public class UserController {
     })
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/push-notification-info")
-    public ResponseEntity<?> pushNotificationInfo(@RequestParam(value = "userNickname")String userNickname){
-      return ObjectResult.build("result",userService.userPushStatusInfo(userNickname));
+    public ResponseEntity<?> pushNotificationInfo(@RequestParam(value = "userSeq")Long userSeq){
+      return ObjectResult.build("result",userService.userPushStatusInfo(userSeq));
     }
 }

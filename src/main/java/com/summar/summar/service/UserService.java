@@ -231,8 +231,8 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public UserPushStatusInfoResponseDto userPushStatusInfo(String userNickname) {
-        User user = userRepository.findByUserNicknameAndLeaveYn(userNickname,false)
+    public UserPushStatusInfoResponseDto userPushStatusInfo(Long userSeq) {
+        User user = userRepository.findByUserSeqAndLeaveYn(userSeq,false)
                 .orElseThrow(() -> new SummarCommonException(SummarErrorCode.USER_NOT_FOUND.getCode(), SummarErrorCode.USER_NOT_FOUND.getMessage()));
         UserPushStatusInfoResponseDto userPushStatusInfoResponseDto = new UserPushStatusInfoResponseDto();
         userPushStatusInfoResponseDto.setStatus(user.getPushAlarmYn());
