@@ -257,26 +257,28 @@ public class FeedService {
                     FeedLike newLike = new FeedLike(feed,user,true);
                     feedLikeRepository.save(newLike);
 
-                    PushNotificationDto pushNotificationDto = PushNotificationDto.builder()
-                            .title("Summar")
-                            .body(user.getUserNickname() + "님이 회원님의 피드를 좋아합니다.")
-                            .userNickname(feed.getUser().getUserNickname())
-                            .userSeq(user.getUserSeq())
-                            .feedSeq(feedSeq)
-                            .pushType("좋아요")
-                            .build();
-                    GatheringNotification gatheringNotification = new GatheringNotification(
-                            GatheringNotificationSaveDto.builder()
-                                    .content(pushNotificationDto.getBody())
-                                    .userSeq(feed.getUser())
-                                    .otherUserSeq(user)
-                                    .imageUrl(user.getProfileImageUrl())
-                                    //처음꺼 피드이미지 노출
-                                    .feedImageUrl(feed.getFeedImages().size() == 0? "" : feed.getFeedImages().get(0).getImageUrl())
-                                    .notificationType(NotificationType.좋아요)
-                                    .build());
-                    gatheringNotificationRepository.save(gatheringNotification);
-                    pushService.pushNotification(pushNotificationDto);
+                    if(!feed.getUser().getUserSeq().equals(jwtUtil.getCurrentUserSeq())) {
+                        PushNotificationDto pushNotificationDto = PushNotificationDto.builder()
+                                .title("Summar")
+                                .body(user.getUserNickname() + "님이 회원님의 피드를 좋아합니다.")
+                                .userNickname(feed.getUser().getUserNickname())
+                                .userSeq(user.getUserSeq())
+                                .feedSeq(feedSeq)
+                                .pushType("좋아요")
+                                .build();
+                        GatheringNotification gatheringNotification = new GatheringNotification(
+                                GatheringNotificationSaveDto.builder()
+                                        .content(pushNotificationDto.getBody())
+                                        .userSeq(feed.getUser())
+                                        .otherUserSeq(user)
+                                        .imageUrl(user.getProfileImageUrl())
+                                        //처음꺼 피드이미지 노출
+                                        .feedImageUrl(feed.getFeedImages().size() == 0 ? "" : feed.getFeedImages().get(0).getImageUrl())
+                                        .notificationType(NotificationType.좋아요)
+                                        .build());
+                        gatheringNotificationRepository.save(gatheringNotification);
+                        pushService.pushNotification(pushNotificationDto);
+                    }
                 });
 
 
