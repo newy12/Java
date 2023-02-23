@@ -239,8 +239,8 @@ public class FeedService {
                             GatheringNotification gatheringNotification = new GatheringNotification(
                                     GatheringNotificationSaveDto.builder()
                                             .content(pushNotificationDto.getBody())
-                                            .userSeq(user)
-                                            .otherUserSeq(feed.getUser())
+                                            .userSeq(feed.getUser())
+                                            .otherUserSeq(user)
                                             .imageUrl(user.getProfileImageUrl())
                                             //처음꺼 피드이미지 노출
                                             .feedImageUrl(findFeed.getFeed().getFeedImages().get(0).getImageUrl())
@@ -267,8 +267,8 @@ public class FeedService {
                     GatheringNotification gatheringNotification = new GatheringNotification(
                             GatheringNotificationSaveDto.builder()
                                     .content(pushNotificationDto.getBody())
-                                    .userSeq(user)
-                                    .otherUserSeq(feed.getUser())
+                                    .userSeq(feed.getUser())
+                                    .otherUserSeq(user)
                                     .imageUrl(user.getProfileImageUrl())
                                     //처음꺼 피드이미지 노출
                                     .feedImageUrl(feed.getFeedImages().size() == 0? "" : feed.getFeedImages().get(0).getImageUrl())
@@ -334,8 +334,8 @@ public class FeedService {
             GatheringNotification gatheringNotification = new GatheringNotification(
                     GatheringNotificationSaveDto.builder()
                             .content(pushNotificationDto.getBody())
-                            .userSeq(user)
-                            .otherUserSeq(feed.getUser())
+                            .userSeq(feed.getUser())
+                            .otherUserSeq(user)
                             .imageUrl(user.getProfileImageUrl())
                             //처음꺼 피드이미지 노출
                             .feedImageUrl(feed.getFeedImages().get(0).getImageUrl())
