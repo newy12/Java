@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 
 @Data
 public class GatheringNotificationResponseDto {
+
+    private Long gatheringNotificationSeq;
     //내용
     private String content;
     //내계정 seq
@@ -37,6 +39,7 @@ public class GatheringNotificationResponseDto {
     private LocalDateTime createdDate;
 
     public GatheringNotificationResponseDto(GatheringNotification gatheringNotification){
+        this.gatheringNotificationSeq = gatheringNotification.getGatheringNotificationSeq();
         this.userSeq = gatheringNotification.getUserSeq().getUserSeq();
         this.otherUserSeq = gatheringNotification.getOtherUserSeq().getUserSeq();
         this.notificationType = gatheringNotification.getNotificationType();
@@ -47,18 +50,26 @@ public class GatheringNotificationResponseDto {
             case 팔로우: content += "님이 회원님을 팔로우 했어요.";break;
         }
         this.createdDate = gatheringNotification.getCreatedDate();
-        this.imageUrl = gatheringNotification.getImageUrl();
+        this.imageUrl = gatheringNotification.getOtherUserSeq().getProfileImageUrl();
         if(gatheringNotification.getFeed()!=null){
             this.feedSeq = gatheringNotification.getFeed().getFeedSeq();
+            this.feedImageUrl = gatheringNotification.getFeed().getFeedImages().get(0).getImageUrl();
         }else{
             this.feedSeq = 0L;
+            this.feedImageUrl = null;
         }
         if(gatheringNotification.getFeedComment()!=null){
-             this.feedCommentSeq = gatheringNotification.getFeedComment().getFeedCommentSeq();
+            this.feedCommentSeq = gatheringNotification.getFeedComment().getFeedCommentSeq();
+            String comment = gatheringNotification.getFeedComment().getComment();
+            if(comment.length()>10){
+                 comment.substring(0,11);
+            }
+            this.content += "\n"+comment;
+            this.feedImageUrl = gatheringNotification.getFeed().getFeedImages().get(0).getImageUrl();
         }else {
             this.feedCommentSeq = 0L;
+            this.feedImageUrl = null;
         }
-        this.feedImageUrl = gatheringNotification.getFeedImageUrl();
         this.followCheck = gatheringNotification.getFollowCheck();
     }
 }

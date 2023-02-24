@@ -12,18 +12,13 @@ import lombok.Data;
 @Data
 @Builder
 public class GatheringNotificationSaveDto {
-    //내용
-    private String content;
+
     //내계정 seq
     private User userSeq;
     //상대계정 seq
     private User otherUserSeq;
     private Feed feed;
     private FeedComment feedComment;
-    //이미지 url
-    private String imageUrl;
-    //피드이미지 url
-    private String feedImageUrl;
     //알림타입
     private NotificationType notificationType;
 

@@ -58,15 +58,6 @@ public class UserService {
         changeUserInfoResponseDto.setIntroduce("".equals(changeUserInfoRequestDto.getIntroduce())? null : changeUserInfoRequestDto.getIntroduce());
         user.changeUserInfo(changeUserInfoResponseDto);
         userRepository.save(user);
-
-        //변경된 닉네임에 따른 알림리스트 업데이트 반영
-        List<GatheringNotification> gatheringNotifications = gatheringNotificationRepository.findAllByContentContains(changeUserInfoRequestDto.getUserNickname());
-        gatheringNotifications.forEach(gatherInfo -> {
-            String gatherContent = gatherInfo.getContent();
-            gatherContent = changeUserInfoRequestDto.getUpdateUserNickname() + "님이 회원님을 팔로우 했어요.";
-            gatherInfo.setContent(gatherContent);
-            gatheringNotificationRepository.save(gatherInfo);
-        });
     }
 
     @Transactional

@@ -240,12 +240,8 @@ public class FeedService {
                                     .build();
                             GatheringNotification gatheringNotification = new GatheringNotification(
                                     GatheringNotificationSaveDto.builder()
-                                            .content("님이 회원님의 피드를 좋아합니다.")
                                             .userSeq(feed.getUser())
                                             .otherUserSeq(user)
-                                            .imageUrl(user.getProfileImageUrl())
-                                            //처음꺼 피드이미지 노출
-                                            .feedImageUrl(findFeed.getFeed().getFeedImages().get(0).getImageUrl())
                                             .notificationType(NotificationType.좋아요)
                                             .feed(feed)
                                             .feedComment(null)
@@ -271,12 +267,8 @@ public class FeedService {
                                 .build();
                         GatheringNotification gatheringNotification = new GatheringNotification(
                                 GatheringNotificationSaveDto.builder()
-                                        .content("님이 회원님의 피드를 좋아합니다.")
                                         .userSeq(feed.getUser())
                                         .otherUserSeq(user)
-                                        .imageUrl(user.getProfileImageUrl())
-                                        //처음꺼 피드이미지 노출
-                                        .feedImageUrl(feed.getFeedImages().isEmpty() ? "" : feed.getFeedImages().get(0).getImageUrl())
                                         .notificationType(NotificationType.좋아요)
                                         .feed(feed)
                                         .feedComment(null)
@@ -341,12 +333,8 @@ public class FeedService {
 
             GatheringNotification gatheringNotification = new GatheringNotification(
                     GatheringNotificationSaveDto.builder()
-                            .content("님이 회원님의 피드에 댓글을 달았어요.")
                             .userSeq(feed.getUser())
                             .otherUserSeq(user)
-                            .imageUrl(user.getProfileImageUrl())
-                            //처음꺼 피드이미지 노출
-                            .feedImageUrl(feed.getFeedImages().get(0).getImageUrl())
                             .notificationType(NotificationType.댓글)
                             .feed(feed)
                             .feedComment(feedComment)

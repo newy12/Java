@@ -117,10 +117,8 @@ public class FollowService {
             //알림리스트에 저장
             GatheringNotification gatheringNotification = new GatheringNotification(
                     GatheringNotificationSaveDto.builder()
-                            .content(pushNotificationDto.getBody())
                             .userSeq(followedUser)
                             .otherUserSeq(followingUser)
-                            .imageUrl(followingUser.getProfileImageUrl())
                             .notificationType(NotificationType.팔로우)
                             .build());
             gatheringNotificationRepository.save(gatheringNotification);
@@ -147,7 +145,7 @@ public class FollowService {
                 }
             }
             //기존에 있던 알림 정보 업데이트 [list 일리는 없지만 혹시나를 위해 list 타입 지정]
-            List<GatheringNotification> gatheringNotification = gatheringNotificationRepository.findAllByContentAndUserSeqAndOtherUserSeq(pushNotificationDto.getBody(),followedUser,followingUser);
+            List<GatheringNotification> gatheringNotification = gatheringNotificationRepository.findAllByNotificationTypeAndUserSeqAndOtherUserSeq(NotificationType.팔로우,followedUser,followingUser);
             if(!ObjectUtils.isEmpty(gatheringNotification)){
                 gatheringNotification.get(0).setCreatedDate(LocalDateTime.now());
                 gatheringNotificationRepository.save(gatheringNotification.get(0));

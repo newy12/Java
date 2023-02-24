@@ -18,7 +18,7 @@ public class GatheringNotification extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long gatheringNotificationSeq;
-    private String content;
+
     @ManyToOne
     @JoinColumn(name = "user_seq")
     private User userSeq;
@@ -35,10 +35,6 @@ public class GatheringNotification extends BaseTimeEntity{
     @JoinColumn(name = "feed_comment_seq")
     private FeedComment feedComment;
 
-    private String imageUrl;
-
-    private String feedImageUrl;
-
     //팔로우 체크
     private Boolean followCheck = false;
 
@@ -46,9 +42,7 @@ public class GatheringNotification extends BaseTimeEntity{
         this.followCheck = followCheck;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
+
 
     @Enumerated(EnumType.STRING)
     private NotificationType notificationType;
@@ -70,7 +64,6 @@ public class GatheringNotification extends BaseTimeEntity{
     }
 
     public GatheringNotification(GatheringNotificationSaveDto gatheringNotificationSaveDto){
-        this.content = gatheringNotificationSaveDto.getContent();
         this.userSeq = gatheringNotificationSaveDto.getUserSeq();
         this.otherUserSeq = gatheringNotificationSaveDto.getOtherUserSeq();
         if(gatheringNotificationSaveDto.getFeed()!=null){
@@ -79,8 +72,6 @@ public class GatheringNotification extends BaseTimeEntity{
         if(gatheringNotificationSaveDto.getFeedComment()!=null){
             this.feedComment = gatheringNotificationSaveDto.getFeedComment();
         }
-        this.imageUrl = gatheringNotificationSaveDto.getImageUrl();
-        this.feedImageUrl = gatheringNotificationSaveDto.getFeedImageUrl();
         this.notificationType = gatheringNotificationSaveDto.getNotificationType();
     }
 }
