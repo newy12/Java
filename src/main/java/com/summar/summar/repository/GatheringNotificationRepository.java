@@ -12,4 +12,7 @@ public interface GatheringNotificationRepository extends JpaRepository<Gathering
 
     List<GatheringNotification> findAllByNotificationTypeAndUserSeqAndOtherUserSeq(NotificationType notificationType, User followedUser, User followingUser);
 
+    int deleteAllByUserSeqUserSeqAndOtherUserSeqUserSeqAndNotificationTypeAndFeedFeedSeq(Long userSeq,Long otherUserSeq,NotificationType notificationType, Long feedSeq);
+
+    int deleteAllByFeedCommentFeedCommentSeqAndNotificationType(Long feedCommentSeq,NotificationType notificationType);
 }

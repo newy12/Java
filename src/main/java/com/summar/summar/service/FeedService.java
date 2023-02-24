@@ -248,6 +248,10 @@ public class FeedService {
                                             .build());
                             gatheringNotificationRepository.save(gatheringNotification);
                             pushService.pushNotification(pushNotificationDto);
+                        }else{
+                            gatheringNotificationRepository.deleteAllByUserSeqUserSeqAndOtherUserSeqUserSeqAndNotificationTypeAndFeedFeedSeq(
+                                    feed.getUser().getUserSeq(),user.getUserSeq(),NotificationType.좋아요,feed.getFeedSeq()
+                            );
                         }
                     }
                 },
@@ -348,6 +352,9 @@ public class FeedService {
     public void updateFeedCommentInActivated(Long feedCommentSeq) {
         FeedComment feedComment = feedCommentRepository.findOneByFeedCommentSeq(feedCommentSeq);
         feedComment.setActivated(false);
+        gatheringNotificationRepository.deleteAllByFeedCommentFeedCommentSeqAndNotificationType(
+                feedCommentSeq,NotificationType.댓글
+        );
     }
 
     @Transactional
