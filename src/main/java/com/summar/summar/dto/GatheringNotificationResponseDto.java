@@ -54,20 +54,18 @@ public class GatheringNotificationResponseDto {
         if(gatheringNotification.getFeed()!=null){
             this.feedSeq = gatheringNotification.getFeed().getFeedSeq();
             this.feedImageUrl = gatheringNotification.getFeed().getFeedImages().get(0).getImageUrl();
+            if(gatheringNotification.getFeedComment()!=null){
+                this.feedCommentSeq = gatheringNotification.getFeedComment().getFeedCommentSeq();
+                String comment = gatheringNotification.getFeedComment().getComment();
+                if(comment.length()>10){
+                    comment = comment.substring(0,11) + "...";
+                }
+                this.content += comment;
+            }else{
+                this.feedCommentSeq = 0L;
+            }
         }else{
             this.feedSeq = 0L;
-            this.feedImageUrl = null;
-        }
-        if(gatheringNotification.getFeedComment()!=null){
-            this.feedCommentSeq = gatheringNotification.getFeedComment().getFeedCommentSeq();
-            String comment = gatheringNotification.getFeedComment().getComment();
-            if(comment.length()>10){
-                 comment.substring(0,11);
-            }
-            this.content += "\n"+comment;
-            this.feedImageUrl = gatheringNotification.getFeed().getFeedImages().get(0).getImageUrl();
-        }else {
-            this.feedCommentSeq = 0L;
             this.feedImageUrl = null;
         }
         this.followCheck = gatheringNotification.getFollowCheck();

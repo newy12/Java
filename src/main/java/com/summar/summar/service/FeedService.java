@@ -324,9 +324,13 @@ public class FeedService {
         feedCommentRepository.save(feedComment);
 
         if(!feed.getUser().getUserSeq().equals(jwtUtil.getCurrentUserSeq())){
+            String comment = feedComment.getComment();
+            if(comment.length()>10){
+                comment = comment.substring(0,11) + "...";
+            }
             PushNotificationDto pushNotificationDto = PushNotificationDto.builder()
                     .title("Summar")
-                    .body(user.getUserNickname() + "님이 회원님의 피드에 댓글을 달았어요.")
+                    .body(user.getUserNickname() + "님이 회원님의 피드에 댓글을 달았어요." + comment)
                     .userNickname(feed.getUser().getUserNickname())
                     .feedCommentSeq(feedComment.getFeedCommentSeq())
                     .feedSeq(feed.getFeedSeq())
