@@ -60,7 +60,7 @@ public class GatheringNotificationResponseDto {
                 if(comment.length()>10){
                     comment = comment.substring(0,11) + "...";
                 }
-                this.content += comment;
+                this.content += "\""+comment+"\"";
             }else{
                 this.feedCommentSeq = 0L;
             }

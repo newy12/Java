@@ -330,7 +330,7 @@ public class FeedService {
             }
             PushNotificationDto pushNotificationDto = PushNotificationDto.builder()
                     .title("Summar")
-                    .body(user.getUserNickname() + "님이 회원님의 피드에 댓글을 달았어요." + comment)
+                    .body(user.getUserNickname() + "님이 회원님의 피드에 댓글을 달았어요." +  "\""+comment+"\"")
                     .userNickname(feed.getUser().getUserNickname())
                     .feedCommentSeq(feedComment.getFeedCommentSeq())
                     .feedSeq(feed.getFeedSeq())
