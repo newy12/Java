@@ -70,6 +70,22 @@ public class Feed extends BaseTimeEntity implements Serializable {
         this.activated = activated;
     }
 
+    public void setContents(String contents) {
+        this.contents = contents;
+    }
+
+    public void setSecretYn(boolean secretYn) {
+        this.secretYn = secretYn;
+    }
+
+    public void setCommentYn(boolean commentYn) {
+        this.commentYn = commentYn;
+    }
+
+    public void setTempSaveYn(boolean tempSaveYn) {
+        this.tempSaveYn = tempSaveYn;
+    }
+
     public Feed(FeedRegisterDto feedRegisterDto, User user) {
         this.user = user;
         this.contents = feedRegisterDto.getContents();

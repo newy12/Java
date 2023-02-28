@@ -92,7 +92,10 @@ public class FeedService {
                         feedImageRepository.save(feedImage);
                     });
         }
-        feedRepository.save(feed);
+        feed.setCommentYn(feedUpdateDto.isCommentYn());
+        feed.setContents(feedUpdateDto.getContents());
+        feed.setTempSaveYn(feedUpdateDto.isTempSaveYn());
+        feed.setSecretYn(feedUpdateDto.isSecretYn());
         return FeedDto.builder()
                 .feedSeq(feedSeq)
                 .feedImages(feedImageRepository.findByFeedSeqAndActivatedIsTrue(feedSeq))
