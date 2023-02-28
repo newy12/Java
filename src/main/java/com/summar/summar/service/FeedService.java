@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -78,11 +79,11 @@ public class FeedService {
         if(!feed.isTempSaveYn() && feedUpdateDto.isTempSaveYn()){
             throw new SummarCommonException(SummarErrorCode.INVALID_TEMP_SAVE.getCode(), SummarErrorCode.INVALID_TEMP_SAVE.getMessage());
         }
-        if(feedUpdateDto.getDeleteImageSeqs()!=null){
+        if(feedUpdateDto.getDeleteImageSeqs()!=null && !feedUpdateDto.getDeleteImageSeqs().get(0).equals(0L)){
             feedImageRepository.findAllById(feedUpdateDto.getDeleteImageSeqs())
                     .forEach(feedImage -> feedImage.setActivated(false));
         }
-        if(feedUpdateDto.getInsertImages()!=null){
+        if(feedUpdateDto.getInsertImages()!=null && !Objects.equals(feedUpdateDto.getInsertImages().get(0).getResource().getFilename(), "")){
             feedUpdateDto.getInsertImages().forEach(
                     image -> {
                         String feedImg = s3Service.upload(image, S3Service.FEED_IMAGE);
