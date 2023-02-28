@@ -79,11 +79,11 @@ public class FeedService {
         if(!feed.isTempSaveYn() && feedUpdateDto.isTempSaveYn()){
             throw new SummarCommonException(SummarErrorCode.INVALID_TEMP_SAVE.getCode(), SummarErrorCode.INVALID_TEMP_SAVE.getMessage());
         }
-        if(feedUpdateDto.getDeleteImageSeqs()!=null && !feedUpdateDto.getDeleteImageSeqs().get(0).equals(0L)){
+        if(feedUpdateDto.getDeleteImageSeqs()!=null){
             feedImageRepository.findAllById(feedUpdateDto.getDeleteImageSeqs())
                     .forEach(feedImage -> feedImage.setActivated(false));
         }
-        if(feedUpdateDto.getInsertImages()!=null && !Objects.equals(feedUpdateDto.getInsertImages().get(0).getResource().getFilename(), "")){
+        if(feedUpdateDto.getInsertImages()!=null){
             feedUpdateDto.getInsertImages().forEach(
                     image -> {
                         String feedImg = s3Service.upload(image, S3Service.FEED_IMAGE);

@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -17,7 +18,7 @@ public class FeedUpdateDto {
     List<Long> deleteImageSeqs;
 
     @Schema(description = "추가할 이미지 파일")
-    List<MultipartFile> insertImages;
+    List<MultipartFile> insertImages = new ArrayList<>();
 
     @Schema(description = "수정할 내용")
     String contents;
