@@ -374,7 +374,7 @@ public class FeedService {
     @Transactional(readOnly = true)
     public Page<FeedDto> getFeedScrap(Pageable page) {
         Long userSeq = jwtUtil.getCurrentUserSeq();
-        Page<FeedScrap> feedScraps = feedScrapRepository.findByUserUserSeqAndActivatedIsTrueAndFeedActivatedIsTrue(page,userSeq);
+        Page<FeedScrap> feedScraps = feedScrapRepository.findByUserUserSeqAndActivatedIsTrueAndFeedActivatedIsTrueAndFeedUserLeaveYnIsFalse(page,userSeq);
         List<Long> feedScrapIds = feedScraps.stream().map(feedScrap -> feedScrap.getFeed().getFeedSeq()).collect(Collectors.toList());
         Page<Feed> feeds = feedRepository.findByFeedSeqIn(page,feedScrapIds);
         List<FeedDto> feedDtos = new ArrayList<>();

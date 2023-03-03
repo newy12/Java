@@ -10,7 +10,7 @@ import java.util.Optional;
 public interface FeedScrapRepository extends JpaRepository<FeedScrap, Long> {
 
     Optional<FeedScrap> findByFeedFeedSeqAndUserUserSeq(Long feedSeq, Long userSeq);
-    Page<FeedScrap> findByUserUserSeqAndActivatedIsTrueAndFeedActivatedIsTrue(Pageable page, Long userSeq);
+    Page<FeedScrap> findByUserUserSeqAndActivatedIsTrueAndFeedActivatedIsTrueAndFeedUserLeaveYnIsFalse(Pageable page, Long userSeq);
 
     boolean existsByActivatedIsTrueAndFeedFeedSeqAndUserUserSeq(Long feedSeq, Long userSeq);
 }
