@@ -72,6 +72,16 @@ public class FeedController {
         return (ResponseEntity<FeedDto>) ObjectResult.build("result", feedService.updateFeed(feedUpdateDto));
     }
 
+    @Operation(summary = "피드 이미지 삭제", security = @SecurityRequirement(name = "Authorization"))
+    @PreAuthorize("isAuthenticated()")
+    @PutMapping(value = "/{feedSeq}/images")
+    public ResponseEntity<FeedDto> deleteFeedImages(@PathVariable(name = "feedSeq" ) Long feedSeq, @RequestBody RequestDeleteFeedImagesDto requestDeleteFeedImagesDto) {
+        if(!feedSeq.equals(requestDeleteFeedImagesDto.getFeedSeq())){
+            throw new SummarCommonException(SummarErrorCode.SEQUENCE_NOT_MATCH.getCode(), SummarErrorCode.SEQUENCE_NOT_MATCH.getMessage());
+        }
+        return (ResponseEntity<FeedDto>) ObjectResult.build("result", feedService.deleteFeedImages(requestDeleteFeedImagesDto));
+    }
+
     @Operation(summary = "피드 비활성화 (삭제)", security = @SecurityRequirement(name = "Authorization"))
     @PreAuthorize("isAuthenticated()")
     @PatchMapping(value = "/{feedSeq}")

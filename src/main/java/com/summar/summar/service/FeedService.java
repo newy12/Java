@@ -79,10 +79,6 @@ public class FeedService {
         if(!feed.isTempSaveYn() && feedUpdateDto.isTempSaveYn()){
             throw new SummarCommonException(SummarErrorCode.INVALID_TEMP_SAVE.getCode(), SummarErrorCode.INVALID_TEMP_SAVE.getMessage());
         }
-        if(feedUpdateDto.getDeleteImageSeqs()!=null){
-            feedImageRepository.findAllById(feedUpdateDto.getDeleteImageSeqs())
-                    .forEach(feedImage -> feedImage.setActivated(false));
-        }
         if(feedUpdateDto.getInsertImages()!=null){
             feedUpdateDto.getInsertImages().forEach(
                     image -> {
@@ -212,6 +208,29 @@ public class FeedService {
         return FeedDto.builder()
                 .feedSeq(feedSeq)
                 .feedImages(feedImageRepository.findByFeedSeqAndActivatedIsTrue(feedSeq))
+                .user(new SimpleUserVO(feed.getUser()))
+                .contents(feed.getContents())
+                .commentYn(feed.isCommentYn())
+                .tempSaveYn(feed.isTempSaveYn())
+                .secretYn(feed.isSecretYn())
+                .activated(feed.isActivated())
+                .lastModifiedDate(feed.getModifiedDate().atZone(ZoneId.of("Asia/Seoul")))
+                .createdDate(feed.getCreatedDate().atZone(ZoneId.of("Asia/Seoul")))
+                .build();
+    }
+
+    @Transactional
+    public FeedDto deleteFeedImages(RequestDeleteFeedImagesDto requestDeleteFeedImagesDto) {
+
+        if(requestDeleteFeedImagesDto.getImageSeqs()!=null){
+            feedImageRepository.findAllById(requestDeleteFeedImagesDto.getImageSeqs())
+                    .forEach(feedImage -> feedImage.setActivated(false));
+        }
+        Feed feed = feedRepository.findOneByFeedSeq(requestDeleteFeedImagesDto.getFeedSeq());
+        feed.setActivated(false);
+        return FeedDto.builder()
+                .feedSeq(feed.getFeedSeq())
+                .feedImages(feedImageRepository.findByFeedSeqAndActivatedIsTrue(feed.getFeedSeq()))
                 .user(new SimpleUserVO(feed.getUser()))
                 .contents(feed.getContents())
                 .commentYn(feed.isCommentYn())
