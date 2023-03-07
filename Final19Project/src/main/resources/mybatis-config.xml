@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+<settings>
+		<!-- null 값이 발생하는 경우 빈칸이 아닌 null로 처리 -->
+		<setting name="jdbcTypeForNull" value="NULL" />
+		<setting name="callSettersOnNulls" value="true"/>
+		
+	</settings>
+	<typeAliases>
+		<typeAlias type="com.ilgusi.member.model.vo.Member" alias="m" />
+		<typeAlias type="com.ilgusi.chat.model.vo.Chat" alias="c"/>
+		<typeAlias type="com.ilgusi.chat.model.vo.ChatContent" alias="cc"/>
+		<typeAlias type="com.ilgusi.favorite.model.vo.Favorite" alias="f"/>
+		<typeAlias type="com.ilgusi.notice.model.vo.Notice" alias="n"/>
+		<typeAlias type="com.ilgusi.question.model.vo.Question" alias="q"/>
+		<typeAlias type="com.ilgusi.request.model.vo.Request" alias="req"/>
+		<typeAlias type="com.ilgusi.category.model.vo.Category" alias="cate"/>
+		<typeAlias type="com.ilgusi.category.model.vo.CategoryRank" alias="cateRank"/>
+		<typeAlias type="com.ilgusi.favorite.model.vo.FavoriteOrder" alias="fo"/>
+		<!-- 서비스 관련 -->
+		<typeAlias type="com.ilgusi.service.model.vo.Join" alias="j"/>
+		<typeAlias type="com.ilgusi.service.model.vo.Service" alias="s"/>
+		<typeAlias type="com.ilgusi.service.model.vo.ServicePay" alias="pay"/>
+		<typeAlias type="com.ilgusi.service.model.vo.ServiceReview" alias="review"/>
+		<typeAlias type="com.ilgusi.service.model.vo.ServiceTrade" alias="trade"/>
+		<typeAlias type="com.ilgusi.service.model.vo.ServiceFile" alias="sf"/>
+		
+	</typeAliases>
+</configuration>

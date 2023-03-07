@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="question">
+	<select id="selectCount" parameterType="map" resultType="_int">
+		select count(*) from
+		question q,member m
+		where q.m_no = m.m_no
+		
+		<if test="type != null and keyword != null">
+				<if test="type==1">
+					and q_title like '%'||#{keyword}||'%'
+				</if>
+				<if test="type==2">
+					and m_id like '%'||#{keyword}||'%'
+				</if>
+			</if>
+	</select>
+	<select id="selectOneQuestion" resultType="q">
+		select q_no qNo,m_no
+		mNo,q_title qTitle,q_content qContent,
+		secret_status
+		secretStatus,write_date writeDate,answer_status
+		answerStatus,answer_contnet answerContent,answer_date answerDate,
+		filePath
+		from question where q_no =
+		#{qNo}
+	</select>
+	<select id="selectQuestionList" resultType="q"
+		parameterType="map">
+		select * from (select rownum rn,q.* from (select
+		q_no qNo,q.m_no
+		mNo,m_id mId,q_title
+		qTitle,q_content qContent,
+		secret_status
+		secretStatus,write_date
+		writeDate,
+		answer_status
+		answerStatus,answer_contnet answerContent,answer_date answerDate,
+		filePath
+		from question q,member m
+		where q.m_no = m.m_no
+		<if test="type != null and keyword != null">
+				<if test="type==1">
+					and q_title like '%'||#{keyword}||'%'
+				</if>
+				<if test="type==2">
+					and m_id like '%'||#{keyword}||'%'
+				</if>
+			</if>
+		order by qNo asc) q)
+		<where>
+			<if test="begin != null and end != null">
+				and rn between #{begin} and #{end}
+			</if>
+		</where>
+		order by rn desc
+	</select>
+	<insert id="insertQuestion" parameterType="q">
+		insert into question
+		values(question_seq.nextval,#{mNo},#{qTitle},#{qContent},#{secretStatus},sysdate,0,null,null,#{filePath})
+	</insert>
+	<update id="updateQuestion" parameterType="q">
+		update question set q_title = #{qTitle},q_content = #{qContent},secret_status = #{secretStatus},filepath = #{filePath} where q_no = #{qNo}
+	</update>
+	<delete id="deleteQuestion" parameterType="_int">
+		delete from question where q_no=#{qNo} 
+	</delete>
+	<update id="updateAnswer" parameterType="q">
+		update question set answer_status = 1,answer_contnet = #{qContent},answer_date = sysdate where q_no = #{qNo}
+	</update>
+</mapper>

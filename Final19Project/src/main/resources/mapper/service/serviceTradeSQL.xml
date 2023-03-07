@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="trade">
+
+	<!-- (문정)사용자 마이페이지-거래내역 불러오기 -->
+	<select id="selectTradeList" parameterType="_int"
+		resultType="trade">
+		select
+		t_no as tNo,
+		s_no as sNo,
+		m_no as mNo,
+		t_status as
+		tStatus,
+		t_price as tPrice,
+		start_date as startDate,
+		end_date as endDate
+		from service_trade where m_no = #{_parameter} order by t_status, t_no
+	</select>
+
+	<!-- (문정)사용자 마이페이지-거래에 해당하는 서비스 불러오기 -->
+	<select id="selectServiceList" parameterType="_int"
+		resultType="s">
+		select
+		s.s_no as sNo,
+		s.m_id as mId,
+		s.s_title as sTitle,
+		s.s_price as sPrice,
+		s.s_content as sContent,
+		s.s_img as sImg
+		from
+		(select s_no from service_trade where m_no = #{_parameter} order by
+		t_status , t_no) t
+		left outer join
+		(service) s on t.s_no=s.s_no
+	</select>
+
+	<!-- (문정)사용자 마이페이지-결제시간 불러오기 -->
+	<select id="selectPayDateList" parameterType="_int"
+		resultType="string">
+		select p.p_date from (select * from service_trade t where
+		m_no = #{_parameter} order by t_status , t_no) t
+		left OUTER join
+		(select * from service_pay where t_no in(select t_no from
+		service_trade where m_no = #{_parameter})) p on p.t_no = t.t_no
+	</select>
+
+
+	<!-- (소현)관리자-작업내역 조회 -->
+	<select resultType="com.ilgusi.service.model.vo.TradeHistory"
+		parameterType="map" id="tradeHistory">
+		select
+		t_no as tNo,
+		t.s_no as sNo,
+		t.m_no as mNo,
+		t_status as tStatus,
+		t_price as tPrice,
+		start_date as startDate,
+		end_date as endDate,
+		s.s_title as sTitle,
+		m.m_id as mId
+		from
+		service_trade t,service s,member
+		m
+		where t.s_no=s.s_no and t.m_no=m.m_no
+		<if test="sNo!=null">and s.s_no=#{sNo}</if>
+		<if test="mNo!=null">and m.m_no=#{mNo}</if>
+	</select>
+
+	<!-- (소현)견적서 작성후 테이블에 insert status=0 -->
+	<insert id="insertTrade" parameterType="map">
+		insert into service_trade
+		values(service_trade_seq.nextval,#{sNo},#{mNo},0,#{price},#{start},#{end})
+	</insert>
+
+	<!-- (문정)사용자 마이페이지 거래 세부 내용 불러오기 -->
+	<select id="serviceTradeView" parameterType="_int"
+		resultType="trade">
+		select
+		t_no as tNo,
+		s_no as sNo,
+		t_price as tPrice,
+		start_date as startDate,
+		end_date as endDate
+		from service_trade where t_no = #{_parameter}
+	</select>
+
+	<!-- (문정)사용자 마이페이지 거래 세부 내용에 해당하는 서비스 불러오기 -->
+	<select id="selectOneService" parameterType="_int" resultType="s">
+		select
+		s.s_no as sNo,
+		s.m_id as mId,
+		s.s_title as sTitle,
+		s.s_content as sContent,
+		s.s_img as sImg
+		from service s where s_no = #{_parameter}
+	</select>
+
+	<!-- (영재) 프리랜서 기준 거래내역 불러오기 -->
+	<select id="selectTradeList2" parameterType="_int" resultType="trade">
+		select
+		t_no as tNo,
+		s_no as sNo,
+		m_no as mNo,
+		t_status as tStatus,
+		t_price as tPrice,
+		start_date as startDate,
+		end_date as endDate,
+		(select m_id from member where member.m_no =s.m_no) as mId
+		from
+		service_trade s
+		where s_no in (select s_no from service where m_id = (select m_id from member where m_no = #{_parameter})) order by t_status,t_no
+	</select>
+
+	<!-- (영재) 프리랜서 기준 거래내역 불러오기 -->
+	<select id="selectPayDateList2" parameterType="_int" resultType="string">
+		select p.p_date
+		from
+		(select t_no from service_trade where s_no in (select s_no from service where
+		m_id= (select m_id from member where m_no = #{_parameter})) order by
+		t_status , t_no) t
+		left outer join
+		(select * from service_pay) p on t.t_no=p.t_no
+	</select>
+
+	<!-- (영재) 프리랜서 기준 거래내역 불러오기 -->
+	<select id="selectServiceList2" parameterType="_int" resultType="s">
+		select 
+		s.s_no as sNo,
+		s.m_id as mId,
+		s.s_title as sTitle,
+		s.s_price as sPrice,
+		s.s_content as sContent,
+		s.s_img as sImg 
+		from
+		(select s_no from service_trade where s_no in (select s_no from service where
+		m_id= (select m_id from member where m_no = #{_parameter} )) order by
+		t_status , t_no) t
+		left outer join
+		(select * from service) s on t.s_no = s.s_no
+	</select>
+
+	<!-- (영재) 거래내역 t_status 변경 (1->2) -->
+	<update id="updateTStatus" parameterType="_int">
+		update service_trade
+		set
+		t_status = 2
+		where t_no = #{tNo}
+	</update>
+
+	<!-- 사용자WarningDate 값 +1 변경 -->
+	<update id="updateWarningCount" parameterType="_int">
+		update member set
+		warning_count = warning_count+1
+		where m_no = #{_parameter}
+	</update>
+	
+	<!-- (소현)sNo,mNo로 거래내역 불러오기 -->
+	<select id="tradeList" parameterType="map" resultType="trade">
+		select
+		t_no as tNo,
+		s_no as sNo,
+		m_no as mNo,
+		t_status as tStatus,
+		t_price as tPrice,
+		start_date as startDate,
+		end_date as endDate
+		from
+		service_trade where s_no=#{sNo} and m_no=#{mNo} order by t_No desc
+		
+	</select>
+
+
+	<!-- (문정) tradenStatus 변경 -->
+	<update id="updateTradeStatus" parameterType="_int">
+		update service_trade set t_status = 1 where t_no = #{_parameter}
+	</update>
+</mapper>

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="member">
+	<!-- 도현 -->
+	<select id="selectBuyingCount" parameterType="_int"
+		resultType="_int">
+		select count(*) from service_trade where m_no = #{mNo} and
+		t_status = 0
+	</select>
+	<select id="selectSellingCount" parameterType="string"
+		resultType="_int">
+		select count(*) from service s,service_trade st where s.s_no=st.s_no and st.t_status = 0 and s.m_id = #{mId}
+	</select>
+	<select id="loginMember" parameterType="HashMap" resultType="m">
+		select
+		m_no mNo,
+		m_id mId,
+		m_pw mPw ,
+		m_name mName ,
+		m_email mEmail ,
+		m_phone mPhone ,
+		m_grade mGrade ,
+		warning_count warningCount ,
+		introduce,
+		enroll_date enrollDate ,
+		brand_name brandName ,
+		contact_time
+		contactTime
+		from member where m_id = #{id} and m_pw = #{pw}
+	</select>
+	<select id="checkId" parameterType="String" resultType="m">
+		select
+		m_id
+		mId
+		from member
+		where m_id=#{id}
+	</select>
+	<select id="searchIdPw" parameterType="m" resultType="m">
+		select
+		m_id
+		mId,
+		m_pw mPw
+		from member
+		where (m_name = #{mName} and m_phone=#{mPhone})
+		or (m_id = #{mId} and
+		m_phone=#{mPhone})
+	</select>
+
+	<update id="changePw" parameterType="m">
+		update member set m_pw =
+		#{mPw} where m_id = #{mId}
+	</update>
+
+	<!-- 문정 -->
+	<update id="changeMypage" parameterType="HashMap">
+		update member set
+		<choose>
+			<when test="object == 'email'">m_email = #{data} </when>
+			<when test="object == 'phone'">m_phone = #{data} </when>
+			<when test="object == 'pw'">m_pw = #{data} </when>
+		</choose>
+		where m_id = #{id}
+	</update>
+
+	<delete id="deleteMember" parameterType="string">
+		delete from member where m_id = #{_parameter}
+	</delete>
+
+	<insert id="registerMember" parameterType="m">
+		insert into member
+		values(member_SEQ.nextval,#{mId},#{mPw},#{mName},#{mEmail},#{mPhone},1,0,null,TO_CHAR(SYSDATE, 'YYYY-MM-DD'),null,null)
+
+	</insert>
+
+	<!--(소현)관리자전체회원조회 -->
+	<select id="selectAllMember" parameterType="String"
+		resultType="m">
+		select
+		m_no mNo,
+		m_id mId,
+		m_pw mPw ,
+		m_name mName ,
+		m_email mEmail ,
+		m_phone mPhone ,
+		m_grade mGrade,
+		warning_count warningCount ,
+		introduce ,
+		enroll_date enrollDate ,
+		brand_name brandName ,
+		contact_time contactTime
+		from member
+		<if test="value!=null">
+			where m_id=#{userId}
+		</if>
+	</select>
+
+	<!-- (소현)멤버-페이징 totalCount -->
+	<select id="totalCount" parameterType="map" resultType="_int">
+		select count(*) totalCount from member
+		<choose>
+			<when test='grade == "free"'>
+				where m_grade=2
+				<if test="keyword != null">
+					and (m_id = #{keyword} or brand_name like
+					'%'||#{keyword}||'%')
+				</if>
+			</when>
+			<when test='grade == "black"'>
+				where warning_count>3
+				<choose>
+					<when test='keyword !=""'>
+						and (m_id = #{keyword} or brand_name like
+					'%'||#{keyword}||'%')
+					</when>
+				</choose>	
+			</when>
+			<when test='grade == "all"'>
+				where (m_grade=1 or m_grade=2)
+				<choose>
+					<when test='keyword !=""'>
+						and (m_id = #{keyword} or brand_name like
+						'%'||#{keyword}||'%')
+					</when>
+				</choose>				
+			</when>
+		</choose>
+	</select>
+
+	<!--(소현)관리자전체회원조회-페이징추가 -->
+	<select id="selectAllMemberPaging" parameterType="map" resultType="m">
+		select
+		m_no as mNo,
+		m_id as mId,
+		m_name as mName ,
+		m_email as mEmail ,
+		m_phone as mPhone ,
+		m_grade as mGrade,
+		warning_count as warningCount ,
+		enroll_date as enrollDate ,
+		brand_name as brandName 
+		from (select rownum as rnum,m.* from(select * from member
+
+		<choose>
+			<when test='grade == "all"'>
+			where (m_grade=1 or m_grade=2)
+				<choose>
+					<when test='keyword !=""'>
+						and (m_id = #{keyword} or brand_name like
+						'%'||#{keyword}||'%')
+					</when>
+				</choose>				
+			</when>
+			<when test='grade == "free"'>
+				where m_grade=2
+				<if test="keyword != null">
+					and (m_id = #{keyword} or brand_name like
+					'%'||#{keyword}||'%')
+				</if>
+			</when>
+			<when test='grade == "black"'>
+				where warning_count>3
+				<choose>
+					<when test='keyword !=""'>
+						and (m_id = #{keyword} or brand_name like
+					'%'||#{keyword}||'%')
+					</when>
+				</choose>				
+			</when>
+		</choose>
+
+		<choose>
+			<when test='order == "new"'>
+				order by m_no desc
+			</when>
+			<when test='order == "black"'>
+				order by warning_count desc
+			</when>
+		</choose>
+		) m) r where rnum between #{start} and #{end}
+	</select>
+
+	<!-- (소현)회원별서비스이용횟수 -->
+	<select id="countHistory" resultType="_int" parameterType="_int">
+		select count(*) from service_trade where m_no=#{_parameter}
+	</select>
+
+
+	<!-- (다솜) 서비스상세보기 브랜드 정보 가져오기 -->
+	<select id="selectBrand" resultType="m" parameterType="string">
+		select
+		m_no mNo,
+		m_id mId,
+		m_pw mPw ,
+		m_name mName ,
+		m_email mEmail ,
+		m_phone
+		mPhone ,
+		m_grade mGrade,
+		warning_count warningCount ,
+		introduce ,
+		enroll_date enrollDate ,
+		brand_name brandName ,
+		contact_time contactTime
+		from member where m_id=#{parameter}
+	</select>
+
+	<!-- (문정) 마이페이지에서 사용자 등급 바꿀 때 -->
+	<update id="changeGrade" parameterType="map">
+		update member set
+		<choose>
+			<when test='grade == 1'> m_grade = 2</when>
+			<otherwise> m_grade = 1 </otherwise>
+		</choose>
+		where m_id = #{mId}
+	</update>
+
+	<!-- (문정) 로그인하면 등급은 무조건 1로 바꿈 -->
+	<update id="settingMemberGrade" parameterType="m">
+		update member set
+		m_grade = 1 where m_no = #{mNo}
+	</update>
+	
+	<!-- (문정) 거래중인 서비스가 있는지 호가인 -->
+	<select id="tradeStatus" parameterType="_int" resultType="_int">
+		select count(*) from service_trade where m_no =#{_parameter} and t_status = 1
+	</select>
+	
+	<!-- (문정) delete_status ='y' 셋팅 -->
+	<update id="setDeleteStatusY" parameterType="string">
+		update service s1 set
+		delete_status='y',s_title='(삭제)'||(select s_title from service s2 where s1.s_no=s2.s_no) where m_id = #{mId}
+	</update>
+	
+</mapper>

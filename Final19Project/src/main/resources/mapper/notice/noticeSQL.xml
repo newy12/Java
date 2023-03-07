@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="notice">
+  
+  <select id="noticeList" parameterType="map" resultType="n">
+	  select
+		n_no as nNo,
+		n_title as nTitle,
+		n_content as nContent,
+		filename, 
+		filepath,
+		write_date as writeDate
+ 	from(select rownum as rnum, n. * from(select*from notice 
+ 	<if test="keyword != null">
+ 		where n_title like '%'||#{keyword}||'%'
+ 	</if>
+ 	order by n_no desc)n) where rnum between #{start} and #{end}
+  </select>
+  
+  <insert id="insertNotice" parameterType="n">
+  	insert into notice values(notice_seq.nextval,#{nTitle},#{nContent},#{filename},#{filepath},to_char(sysdate,'yyyy-mm-dd'))
+  
+  </insert>
+  	
+ <select id="noticeView" parameterType="_int" resultType="n">
+ 	select 
+ 		n_no as nNo,
+	  		n_title as nTitle,
+	  		n_content as nContent,
+	  		filename,
+	  		filepath,
+	  		write_date as writeDate
+ 	from notice where n_no =#{_parameter}
+ </select>
+
+ <delete id="deleteNotice" parameterType="_int">
+	delete from notice where n_no = #{_parameter}
+ </delete>
+
+ <update id="updateNotice" parameterType="n" >
+	update notice set
+		n_title = #{nTitle},
+		n_content = #{nContent},
+		filename = #{filename},
+	  	filepath = #{filepath}
+	where n_no = #{nNo}
+ </update>
+
+ <select id="noticeCount" resultType="_int">
+ 	select count(*)cnt from notice
+ </select>
+</mapper>

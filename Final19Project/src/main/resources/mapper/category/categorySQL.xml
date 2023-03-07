@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="category">
+
+	<select id="selectCategoryList" resultType="cate">
+		select c_no cNo, c_name cName,c_division cDivision
+		from category
+	</select>
+
+	<select id="selectCategoryRankList" resultType="cateRank" parameterType="_int">
+		select s.m_id mId,sum(st.p_price) sumPrice from service s,
+		(select st.*,sp.p_price from service_pay sp, service_trade st where sp.t_no =
+		st.t_no) st
+		where s.m_id is not null and s.s_no = st.s_no and s.main_category = #{cateNum} group by s.m_id
+		order by 2 desc
+	</select>
+
+	<select id="categoryList" resultType="cate" parameterType="cate">
+		select
+		c_no cNo, c_name cName,c_division cDivision
+		from category where c_no between #{cNo}+1 and #{cNo}+9
+	</select>
+
+</mapper>

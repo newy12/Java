@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="servicePay">
+
+	<!-- (문정) 결제 진행 -->
+	<insert id="insertSerivcePay" parameterType="pay">
+		insert into service_pay values (SERVICE_PAY_SEQ.nextval, #{tNo}, #{pPrice}, to_char(sysdate, 'YYYYMMDD HH24:mm'))
+	</insert>
+</mapper>

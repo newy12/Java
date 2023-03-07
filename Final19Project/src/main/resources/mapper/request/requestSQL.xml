@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="request">
+	<!-- (문정) 의뢰글 작성 -->
+	<insert id="insertBoard" parameterType="req">
+		insert into request_board values(REQUEST_BOARD_SEQ.nextval, #{mId},#{reqTitle},#{reqContent},0,#{filename}, #{filepath},to_char(sysdate,'yyyy-mm-dd')) 
+	</insert>
+
+	<!-- (문정) 의뢰게시글 총 개수 -->
+	<select id="totalCount"  parameterType="map" resultType="_int">
+		select count(*) totalCount from request_board 
+		<if test="keyword != 'null'">
+			<choose>
+				<when test='subject == "title"'>
+					where req_title like '%'||#{keyword}||'%' 
+				</when>
+				<when test='subject == "content"'>
+					where req_content like '%'||#{keyword}||'%'
+				</when>
+				<otherwise>
+					where req_title like '%'||#{keyword}||'%' OR req_content like '%'||#{keyword}||'%' 
+				</otherwise>
+			</choose>
+		</if>
+	</select>
+	
+	<!-- (문정) 의뢰 게시글리스트 불러오기 -->
+	<select id="selectRequestList" parameterType="map" resultType="req">
+		select  
+			r.req_no as reqNo,
+			r.m_id as mId, 
+			r.req_title as reqTitle,
+			r.req_content as reqContent,
+			r.req_status as reqStatus,
+			r.filename,
+			r.filepath,
+			r.write_date as writeDate 
+		from (select rownum as rnum, b.* from(select * from request_board 
+		<if test="keyword != 'null'">
+			<choose>
+				<when test='subject == "title"'>
+					where req_title like '%'||#{keyword}||'%' 
+				</when>
+				<when test='subject == "content"'>
+					where req_content like '%'||#{keyword}||'%'
+				</when>
+				<otherwise>
+					where req_title like '%'||#{keyword}||'%' OR req_content like '%'||#{keyword}||'%' 
+				</otherwise>
+			</choose>
+		</if>
+		order by 
+		<choose>
+			<when test='order == "title"'>
+				req_title, req_no desc 
+			</when>
+			<when test='order == "status"'>
+			 	req_status, req_no desc 
+			</when>
+			<otherwise>
+				req_no desc 
+			</otherwise>
+		</choose>
+		) b) r where rnum between #{start} and #{end} 
+	</select>
+	
+	<!-- (문정) 의뢰게시판 글 상세보기 -->
+	<select id="selectOneRequest" parameterType="_int" resultType="req">
+		select 
+			r.req_no as reqNo,
+			r.m_id as mId, 
+			r.req_title as reqTitle,
+			r.req_content as reqContent,
+			r.req_status as reqStatus,
+			r.filename,
+			r.filepath,
+			r.write_date as writeDate 
+		from request_board r where req_no = #{_parameter} 
+	</select>
+
+	<!-- (문정) 의뢰글 수정 -->
+	<update id="requestUpdate" parameterType="req">
+		update request_board set req_title = #{reqTitle}, req_content =#{reqContent}, filename=#{filename}, filepath=#{filepath}
+		where req_no = #{reqNo} 
+	</update>
+	
+	<!-- (문정) 의뢰글 삭제 -->
+	<delete id="requestDeleteOne" parameterType="_int">
+		delete from request_board where req_no = #{_parameter}
+	</delete>
+	
+	<!-- (문정) 판매자의 서비스 조회-->
+	<select id="selectList" parameterType="string" resultType="s">
+	select 
+		s.s_no as sNo,
+		s.m_id as mId,
+		s.s_title as sTitle,
+		s.s_img as sImg,
+	   (select c_name from category  where c_no = s.main_category) as mainCategoryName, 
+	   (select c_name from category where c_no = s.sub_category) as subCategoryName 
+	from service s where m_id = #{_parameter} and admin_approval='y' and delete_status='n'
+	</select>
+</mapper>

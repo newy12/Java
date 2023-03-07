@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="review">
+
+	<!-- (문정) 마이페이지 - 서비스 후기 작성 -->
+	<insert id="serviceReviewInsert" parameterType="review">
+		insert into service_review values(SERVICE_REVIEW_SEQ.nextval, #{tNo},
+		#{sNo}, #{mId} ,#{rContent},#{rRate}, to_char(sysdate,'yyyy-mm-dd'))
+	</insert>
+
+	<!-- (문정) 마이페이지에서 후기 작성 완료하면 tSTatus =3 으로 바꿔줌 -->
+	<update id="serviceReviewSuccess" parameterType="_int">
+		update service_trade set t_status = 3 where t_no = #{_parameter}
+	</update>
+
+	<!-- (문정) 마이페이지 - 거래 후기 작성한거 확인 -->
+	<select id="serviceReviewView" parameterType="review"
+		resultType="review">
+		select
+		r_no as rNo,
+		t_no as tNo,
+		s_no as sNo,
+		m_id as mId,
+		r_content as rContent,
+		r_rate as rRate,
+		write_Date as writeDate
+		from service_review
+		where t_no = #{tNo} and s_no=#{sNo} and m_id=#{mId}
+	</select>
+
+	<!-- (문정) 거래 후기 수정 -->
+	<update id="serviceReviewUpdate" parameterType="review">
+		update service_review set r_rate = #{rRate}, r_Content = #{rContent} where
+		r_no=#{rNo}
+	</update>
+
+	<!-- (문정) 리뷰 삭제 -->
+	<delete id="serviceReviewDelete" parameterType="_int">
+		delete from service_review where r_no = #{_parameter}
+	</delete>
+
+	<!-- (문정) 리뷰 삭제하면 거래내역에서 tStatus 수정해줘야함 -->
+	<update id="serviceTradeStatusUpdate" parameterType="_int">
+		update service_trade set t_status = 2 where t_no = #{_parameter}
+	</update>
+
+	<!-- (다솜)서비스 상세보기 리뷰 리스트 -->
+	<select id="serviceReviewList" parameterType="_int"
+		resultType="review">
+		select
+			r_no as rNo,
+			t_no as tNo,
+			s_no as sNo,
+			m_id as mId,
+			r_content as rContent,
+			r_rate as rRate,
+			write_date as writeDate
+		from (select rownum as rnum, r. * from(select*from service_review where s_no=#{sNo} order by 1 desc)r)
+				where rnum between #{start} and #{end} 
+
+	</select>
+	
+	<!-- (다솜) 해당 서비스의 리뷰 토탈카운트 -->
+	<select id="totalRiviewCount" parameterType="_int" resultType="_int">
+		select count(*) cnt
+		from service_review where s_no= #{parameter}
+	</select>
+
+	<!--(문정) 리뷰 작성하면 서비스테이블 s_rate에 평점 넣어줌  -->
+	<update id="serviceUpdateSRate" parameterType="_int">
+		update service set s_rate = (select round(avg(r_rate),1) from service_review where s_no = #{_parameter}) 
+		where s_no = #{_parameter}
+	</update>
+	
+</mapper>
