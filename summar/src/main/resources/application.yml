@@ -12,8 +12,8 @@ spring:
     secret-refresh-token: df45e8e2e54ab8d0a9d2a8a82fb48765bdce1db29d8718f413296fcc9d08c2c0
   datasource:
     url: jdbc:mysql://3.39.68.127:3306/summar?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: admin
-    password: summarmysql
+    username: username
+    password: password
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
@@ -45,8 +45,8 @@ springdoc:
 
 application:
   aws:
-    accessKey: AKIA3AI73FTRVWWXC2P4
-    secretKey: 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
+    accessKey: accessKey
+    secretKey: secretKey
     s3Bucket: image.summar.io
 elasticsearch:
   host: 3.39.68.127
