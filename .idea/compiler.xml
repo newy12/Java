@@ -16,7 +16,6 @@
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.mysema.commons/mysema-commons-lang/0.2.4/d09c8489d54251a6c22fbce804bdd4a070557317/mysema-commons-lang-0.2.4.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.jdt/ecj/3.26.0/4837be609a3368a0f7e7cf0dc1bdbc7fe94993de/ecj-3.26.0.jar" />
         </processorPath>
-        <module name="summar.main" />
       </profile>
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -27,6 +26,8 @@
     </annotationProcessing>
     <bytecodeTargetLevel target="8">
       <module name="summar" target="1.9" />
+      <module name="summar.main" target="1.9" />
+      <module name="summar.test" target="1.9" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
