@@ -9,6 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.redis.core.RedisHash;
+import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
 
@@ -27,4 +28,8 @@ public class Member implements Serializable {
     private String sex;
     private String height;
     private String weight;
+
+    public void updateRedis(String name) {
+        this.name = name;
+    }
 }
