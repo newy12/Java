@@ -7,8 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,7 +41,7 @@ public class MemberService {
 
 
 
-    @CachePut(value = "member",key = "#id")
+    @CacheEvict(value = "member",allEntries = true)
     public void updateRedis(Long id) {
         Member member = memberRepository.findById(id).orElse(null);
         String name = "바뀜";

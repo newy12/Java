@@ -30,6 +30,6 @@ public class Member implements Serializable {
     private String weight;
 
     public void updateRedis(String name) {
-        this.name = name;
+        this.name = StringUtils.hasText(name) ? name : this.name;
     }
 }
