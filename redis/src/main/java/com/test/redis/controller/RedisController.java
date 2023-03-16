@@ -46,4 +46,5 @@ public class RedisController {
         memberService.updateRedis(id);
         return ResponseEntity.ok().build();
     }
+    //5st
 }
