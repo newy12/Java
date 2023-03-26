@@ -26,8 +26,6 @@
     </annotationProcessing>
     <bytecodeTargetLevel target="8">
       <module name="summar" target="1.9" />
-      <module name="summar.main" target="1.9" />
-      <module name="summar.test" target="1.9" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
