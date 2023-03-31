@@ -16,5 +16,5 @@ public class ElsaticsearchApplication {
     public static void main(String[] args) {
         SpringApplication.run(ElsaticsearchApplication.class, args);
     }
-
+//엘라스틱 연동 테스트
 }
