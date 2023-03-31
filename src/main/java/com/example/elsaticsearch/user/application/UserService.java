@@ -23,15 +23,22 @@ public class UserService {
 
     @Transactional
     public Long save(UserRequestDto userRequestDto) {
-        Users users = new Users(userRequestDto.getName(), userRequestDto.getDescription());
-        Users savedUsers = userRepository.save(users);
-        userSearchRepository.save(users);
-        return savedUsers.getId();
-    }
+        userSearchRepository.deleteAll();
+            Users users = new Users(userRequestDto.getName(), userRequestDto.getDescription());
+            userRepository.save(users);
+            return userSearchRepository.save(users).getId();
+        }
 
     public List<UserResponseDto> searchByName(String name, Pageable pageable) {
         // userSearchRepository.findByBasicProfile_NameContains(name) 가능
         return userSearchRepository.searchByName(name, pageable)
+                .stream()
+                .map(UserResponseDto::from)
+                .collect(Collectors.toList());
+    }
+
+    public List<UserResponseDto> searchByNameInQuery(String name, Pageable pageable) {
+        return userRepository.findByBasicProfile_NameContains(name,pageable)
                 .stream()
                 .map(UserResponseDto::from)
                 .collect(Collectors.toList());
