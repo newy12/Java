@@ -3,6 +3,8 @@ package com.example.elsaticsearch.user.domain;
 import lombok.Getter;
 import org.springframework.data.annotation.PersistenceConstructor;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Mapping;
+import org.springframework.data.elasticsearch.annotations.Setting;
 
 import javax.persistence.*;
 

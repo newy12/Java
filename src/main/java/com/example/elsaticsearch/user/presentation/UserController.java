@@ -3,6 +3,9 @@ package com.example.elsaticsearch.user.presentation;
 import com.example.elsaticsearch.user.application.UserRequestDto;
 import com.example.elsaticsearch.user.application.UserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
+import org.apache.catalina.connector.Response;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +28,7 @@ public class UserController {
                 userRequest.getDescription()
         );
         Long id = userService.save(userRequestDto);
+
         URI uri = URI.create(String.valueOf(id));
         return ResponseEntity.created(uri)
                 .build();
@@ -33,6 +37,15 @@ public class UserController {
     @GetMapping("/user/{name}")
     public ResponseEntity<List<UserResponse>> search(@PathVariable String name, Pageable pageable) {
         List<UserResponse> userResponses = userService.searchByName(name, pageable)
+                .stream()
+                .map(UserResponse::from)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(userResponses);
+    }
+
+    @GetMapping("/users/{name}")
+    public ResponseEntity<List<UserResponse>> search2(@PathVariable String name, Pageable pageable) {
+        List<UserResponse> userResponses = userService.searchByNameInQuery(name,pageable)
                 .stream()
                 .map(UserResponse::from)
                 .collect(Collectors.toList());
