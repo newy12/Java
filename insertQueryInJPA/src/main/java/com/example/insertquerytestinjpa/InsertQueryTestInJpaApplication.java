@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class InsertQueryTestInJpaApplication {
 
     public static void main(String[] args) {
+        //insertquery
         SpringApplication.run(InsertQueryTestInJpaApplication.class, args);
     }
 

@@ -23,6 +23,15 @@
       </GradleProjectSettings>
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/insertQueryInJPA" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/insertQueryInJPA" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/summar" />
         <option name="modules">
           <set>
