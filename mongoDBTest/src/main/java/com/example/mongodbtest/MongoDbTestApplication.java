@@ -11,5 +11,5 @@ public class MongoDbTestApplication {
     public static void main(String[] args) {
         SpringApplication.run(MongoDbTestApplication.class, args);
     }
-
+    //mongodb crud
 }
