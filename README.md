@@ -6,4 +6,4 @@
 2. JPA INSERT 쿼리 성능 개선
 3. JPA N+1 문제 파악 및 성능 개선
 4. redis 연동 및 활용
-5. MongoDB 연동 및 
+5. MongoDB 연동 및 활용
