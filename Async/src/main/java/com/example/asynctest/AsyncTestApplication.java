@@ -9,5 +9,5 @@ public class AsyncTestApplication {
     public static void main(String[] args) {
         SpringApplication.run(AsyncTestApplication.class, args);
     }
-
+//spring Webflux 활용한 비동기 서버처리
 }
