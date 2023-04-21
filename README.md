@@ -7,3 +7,4 @@
 3. JPA N+1 문제 파악 및 성능 개선
 4. redis 연동 및 활용
 5. MongoDB 연동 및 활용
+6. spring Webflux 활용한 비동기 서버처리
