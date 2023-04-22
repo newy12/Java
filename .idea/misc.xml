@@ -3,7 +3,7 @@
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/elastic-search-connection-test" />
-    <file type="web" url="file://$PROJECT_DIR$/insertQueryInJPA" />
+    <file type="web" url="file://$PROJECT_DIR$/insert query test connection with JPA" />
     <file type="web" url="file://$PROJECT_DIR$/mongoDBTest" />
     <file type="web" url="file://$PROJECT_DIR$/summar" />
   </component>
