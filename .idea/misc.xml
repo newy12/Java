@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
-    <file type="web" url="file://$PROJECT_DIR$/elasticSearch connection test in Springboot" />
+    <file type="web" url="file://$PROJECT_DIR$/elasticSearch connection test" />
     <file type="web" url="file://$PROJECT_DIR$/insert query test connection with JPA" />
     <file type="web" url="file://$PROJECT_DIR$/mongoDB connection test in Springboot" />
     <file type="web" url="file://$PROJECT_DIR$/summar" />
