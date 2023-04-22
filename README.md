@@ -8,3 +8,4 @@
 4. redis 연동 및 활용
 5. MongoDB 연동 및 활용
 6. spring Webflux 활용한 비동기 서버처리
+7. chat-gpt api 연동 및 테스트반영
