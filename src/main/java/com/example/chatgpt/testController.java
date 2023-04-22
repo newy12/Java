@@ -26,6 +26,6 @@ public class testController {
     @PostMapping("/image")
     public String testImage(String question){
         String imageUrl = chatgptService.imageGenerate("A cute baby sea otter");
-        return imageUrl; //https://oaidalleapip.......
+        return imageUrl; //https://oaidalleapip........
     }
 }
