@@ -1,0 +1,20 @@
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /mix
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:tcp://localhost/~/mix
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        #default_batch_fetch_size: 1
+mybatis:
+  config-location: classpath:/mybatis/mybatis-config.xml
