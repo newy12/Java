@@ -4,9 +4,12 @@ import com.example.insertquerytestinjpa.entity.Member;
 import com.example.insertquerytestinjpa.entity.Team;
 import com.example.insertquerytestinjpa.repository.MemberRepository;
 import com.example.insertquerytestinjpa.repository.TeamRepository;
+import com.example.insertquerytestinjpa.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,9 +21,10 @@ public class testController {
 
     private final MemberRepository memberRepository;
     private final TeamRepository teamRepository;
+    private final MemberService memberService;
 
     @PostMapping("/test")
-    public void test() {
+    public void insert() {
         //pk 값을 알고 있다면 직접대입 하는 방법 사용.
         Long id = 1L;
 
@@ -32,5 +36,10 @@ public class testController {
                 .build();
 
         memberRepository.save(member);
+    }
+    @PutMapping("/test")
+    public void update(){
+        String name = "박영재" ;
+            memberService.updateMemberInfo(name);
     }
 }

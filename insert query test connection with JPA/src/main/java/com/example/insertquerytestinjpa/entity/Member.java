@@ -5,10 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @Getter
 @Builder
+@DynamicUpdate
 @AllArgsConstructor
 @NoArgsConstructor
 public class Member {
@@ -23,6 +25,10 @@ public class Member {
 
     @Column(name = "team_id")
     private Long teamId;
+
+    public void updateinfo(String name) {
+        this.name = name;
+    }
 }
 
 

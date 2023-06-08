@@ -14,6 +14,15 @@
       </GradleProjectSettings>
       <GradleProjectSettings>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/chatGPT API Connection test" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/chatGPT API Connection test" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$/elasticsearch" />
         <option name="modules">
           <set>
@@ -27,6 +36,15 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/elasticsearchTest" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$/insert query test connection with JPA" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/insert query test connection with JPA" />
           </set>
         </option>
       </GradleProjectSettings>
