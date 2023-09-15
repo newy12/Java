@@ -14,7 +14,7 @@ public class Producer {
 
     private final RabbitTemplate rabbitTemplate;
 
-    @Scheduled(fixedDelay = 1000, initialDelay = 500)
+    //@Scheduled(fixedDelay = 1000, initialDelay = 500)
     public void sendMessage() {
         rabbitTemplate.convertAndSend("hello", "hello world");
     }
