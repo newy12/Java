@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/Java.iml" filepath="$PROJECT_DIR$/.idea/Java.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/chatGPT.main.iml" filepath="$PROJECT_DIR$/.idea/modules/chatGPT.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/insertQueryTestInJPA.main.iml" filepath="$PROJECT_DIR$/.idea/modules/insertQueryTestInJPA.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/programmers/programmers.iml" filepath="$PROJECT_DIR$/programmers/programmers.iml" />
     </modules>
   </component>
